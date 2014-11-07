@@ -1,0 +1,17 @@
+{
+  "name": "riakpbc",
+  "version": "2.1.0",
+  "description": "RiakPBC is a low-level Riak protocol buffer client.",
+  "main": "index.js",
+  "dependencies" : {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com:basho/riak-nodejs-client.git"
+  },
+  "author": "Brian Roach <roach@basho.com>",
+  "license": "Apache-2",
+  "engines": {
+    "node": ">= 0.10.0 < 0.12"
+  }
+}
