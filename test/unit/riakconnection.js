@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-var RiakConnection = require('../lib/core/riakconnection');
-var RpbErrorResp = require('../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
-var responseCode = require('../lib/protobuf/riakprotobuf').getCodeFor('RpbErrorResp');
+var RiakConnection = require('../../lib/core/riakconnection');
+var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
+var responseCode = require('../../lib/protobuf/riakprotobuf').getCodeFor('RpbErrorResp');
 var assert = require('assert');
 
 describe('RiakConnection', function() {
     describe('#_receiveData', function() {
         
-        var conn = new RiakConnection({ remoteAddress : "172.16.1.8",
+        var conn = new RiakConnection({ remoteAddress : "127.0.0.1",
                                             remotePort : 8087,
                                             connectionTimeout : 30000
                                           });
@@ -82,7 +82,7 @@ describe('RiakConnection', function() {
             }
         });
         
-        it('should buffer a partial write', function() {
+        it('should buffer a partial message', function() {
             
             conn._receiveData(header);
 
@@ -91,7 +91,7 @@ describe('RiakConnection', function() {
         
         });
         
-        it('should emit then buffer partial second write', function(done) {
+        it('should emit then buffer partial second message', function(done) {
             
             var errTimeout = setTimeout(function () {
                 assert(false, 'Event never fired'); 
