@@ -87,14 +87,14 @@ describe('RiakConnection', function() {
             conn._receiveData(header);
 
             assert(conn._buffer.flip().remaining() === 5);
-            
+            conn._buffer.clear();
         
         });
         
         it('should emit then buffer partial second write', function(done) {
             
             var errTimeout = setTimeout(function () {
-                assert(false, 'Event never fired twice'); 
+                assert(false, 'Event never fired'); 
                 done();
             }, 1000); 
             
@@ -105,6 +105,7 @@ describe('RiakConnection', function() {
                 assert(conn._buffer.flip().remaining() === 5);
                 assert(conn._buffer.offset === 0);
                 conn.removeAllListeners();
+                conn._buffer.clear();
                 done();
             });
             
