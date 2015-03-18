@@ -30,7 +30,8 @@
       "grunt" : "latest",
       "grunt-contrib-jshint" : "latest",
       "grunt-contrib-watch" : "latest",
-      "grunt-mocha-test" : "latest"
+      "grunt-mocha-test" : "latest",
+      "grunt-contrib-yuidoc" : "latest"
   },
   "engines": {
     "node": ">= 0.10.0"
