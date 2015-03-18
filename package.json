@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com:basho/riak-nodejs-client.git"
+    "url": "git://github.com/basho/riak-nodejs-client.git"
   },
   "author": "Brian Roach <roach@basho.com>",
   "license": "Apache-2",
