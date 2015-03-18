@@ -13,7 +13,8 @@
       "mocha" : "latest",
       "jshint" : "latest",
       "grunt-contrib-jshint" : "latest",
-      "grunt-contrib-watch" : "latest"
+      "grunt-contrib-watch" : "latest",
+      "grunt-mocha-test" : "latest"
   },
   "repository": {
     "type": "git",
