@@ -1,8 +1,21 @@
 {
-  "name": "riak-nodejs-client",
+  "name": "RiakClient",
+  "description": "RiakClient is the Basho supported NodeJS client for Riak",
   "version": "0.1.0",
-  "description": "Riak NodeJS Client is the official NodeJS client for Riak",
-  "main": "index.js",
+  "author": "Brian Roach <roach@basho.com>",
+  "contributors": [
+    "Luke Bakken <luke@bakken.io>"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/basho/riak-nodejs-client.git"
+  },
+  "homepage": "https://github.com/basho/riak-nodejs-client/wiki",
+  "keywords": [
+    "riak", "node", "nodejs", "distributed", "nosql", "driver",
+    "riak-nodejs-client", "client"
+  ],
   "dependencies" : {
       "bytebuffer" : "latest",
       "protobufjs" : "latest",
@@ -19,13 +32,18 @@
       "grunt-contrib-watch" : "latest",
       "grunt-mocha-test" : "latest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/basho/riak-nodejs-client.git"
-  },
-  "author": "Brian Roach <roach@basho.com>",
-  "license": "Apache-2",
   "engines": {
-    "node": ">= 0.10.0 < 0.12"
+    "node": ">= 0.10.0"
   }
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "lib/"
+  ],
+  "bugs": {
+      "url" : "https://github.com/basho/riak-nodejs-client/issues"
+  },
+  "main": "index.js",
+  "directories": { "lib": "./lib" }
 }
