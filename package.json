@@ -12,6 +12,7 @@
   "devDependencies" : {
       "mocha" : "latest",
       "jshint" : "latest",
+      "grunt" : "latest",
       "grunt-contrib-jshint" : "latest",
       "grunt-contrib-watch" : "latest",
       "grunt-mocha-test" : "latest"
