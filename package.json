@@ -9,6 +9,9 @@
       "hashmap"    : "latest",
       "winston"    : "latest"
   },
+  "devDependencies" : {
+      "mocha" : "latest"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com:basho/riak-nodejs-client.git"
