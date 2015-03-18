@@ -1,7 +1,7 @@
 {
-  "name": "riakpbc",
-  "version": "2.1.0",
-  "description": "RiakPBC is a low-level Riak protocol buffer client.",
+  "name": "riak-client",
+  "version": "v0.1.0",
+  "description": "Official Riak NodeJS client",
   "main": "index.js",
   "dependencies" : {
   },
