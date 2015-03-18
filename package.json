@@ -7,7 +7,9 @@
       "bytebuffer" : "latest",
       "protobufjs" : "latest",
       "hashmap"    : "latest",
-      "winston"    : "latest"
+      "winston"    : "latest",
+      "joi"        : "latest",
+      "linkedlist" : "latest"
   },
   "devDependencies" : {
       "mocha" : "latest",
