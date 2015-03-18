@@ -10,7 +10,10 @@
       "winston"    : "latest"
   },
   "devDependencies" : {
-      "mocha" : "latest"
+      "mocha" : "latest",
+      "jshint" : "latest",
+      "grunt-contrib-jshint" : "latest",
+      "grunt-contrib-watch" : "latest"
   },
   "repository": {
     "type": "git",
