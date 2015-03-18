@@ -4,6 +4,10 @@
   "description": "RiakPBC is a low-level Riak protocol buffer client.",
   "main": "index.js",
   "dependencies" : {
+      "bytebuffer" : "latest",
+      "protobufjs" : "latest",
+      "hashmap"    : "latest",
+      "winston"    : "latest"
   },
   "repository": {
     "type": "git",
