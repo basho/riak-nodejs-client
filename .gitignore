@@ -1,1 +1,4 @@
 /nbproject
+node_modules/
+results.txt
+docs/

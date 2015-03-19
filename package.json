@@ -1,17 +1,50 @@
 {
-  "name": "riak-client",
-  "version": "v0.1.0",
-  "description": "Official Riak NodeJS client",
-  "main": "index.js",
-  "dependencies" : {
-  },
+  "name": "riakclient",
+  "description": "RiakClient is the official Basho supported NodeJS client for Riak",
+  "version": "0.1.0",
+  "author": "Brian Roach <roach@basho.com>",
+  "contributors": [
+    "Luke Bakken <luke@bakken.io>"
+  ],
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com:basho/riak-nodejs-client.git"
+    "url": "git://github.com/basho/riak-nodejs-client.git"
   },
-  "author": "Brian Roach <roach@basho.com>",
-  "license": "Apache-2",
+  "homepage": "https://github.com/basho/riak-nodejs-client/wiki",
+  "keywords": [
+    "riak", "node", "nodejs", "distributed", "nosql", "driver",
+    "riak-nodejs-client", "client"
+  ],
+  "dependencies" : {
+      "bytebuffer" : "latest",
+      "protobufjs" : "latest",
+      "hashmap"    : "latest",
+      "winston"    : "latest",
+      "joi"        : "latest",
+      "linkedlist" : "latest"
+  },
+  "devDependencies" : {
+      "mocha" : "latest",
+      "jshint" : "latest",
+      "grunt" : "latest",
+      "grunt-contrib-jshint" : "latest",
+      "grunt-contrib-watch" : "latest",
+      "grunt-mocha-test" : "latest",
+      "grunt-contrib-yuidoc" : "latest"
+  },
   "engines": {
-    "node": ">= 0.10.0 < 0.12"
-  }
+    "node": ">= 0.10.0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "lib/"
+  ],
+  "bugs": {
+      "url" : "https://github.com/basho/riak-nodejs-client/issues"
+  },
+  "main": "index.js",
+  "directories": { "lib": "./lib" }
 }

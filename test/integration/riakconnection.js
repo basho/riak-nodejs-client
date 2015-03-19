@@ -49,22 +49,19 @@ describe('RiakConnection - Integration', function() {
                 done();
             });
             
-            
-            
             conn.connect();
-            
-            
+
         });
         
         it('should emit on connection fail', function(done) {
             var conn = new RiakConnection({ remoteAddress : "127.0.0.1",
-                                            remotePort : 0,
-                                            connectionTimeout : 30000
+                                            remotePort : 65535, // NB: using 0 causes an exception
+                                            connectionTimeout : 1000
                                           });
             var errTimeout = setTimeout(function () {
                 assert(false, 'Event never fired');
                 done();
-            }, 1000); 
+            }, 30000); 
             
             conn.on('connectFailed', function() {
                 clearTimeout(errTimeout);
