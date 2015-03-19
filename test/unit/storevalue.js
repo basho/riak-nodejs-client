@@ -15,7 +15,7 @@
  */
 
 var StoreValue = require('../../lib/commands/kv/storevalue');
-var RiakMeta = require('../../commands/kv/riakmeta');
+var RiakMeta = require('../../lib/commands/kv/riakmeta');
 
 var assert = require('assert');
 
@@ -31,7 +31,7 @@ describe('StoreValue', function() {
             
             
             var vclock = new Buffer(0);
-            var fetchCommand = new FetchValue.Builder()
+            var storeCommand = new StoreValue.Builder()
                .withBucketType('bucket_type')
                .withBucket('bucket_name')
                .withKey('key')
@@ -48,7 +48,7 @@ describe('StoreValue', function() {
                .withCallback(function(){})
                .build();
        
-            var protobuf = fetchCommand.constructPbRequest();
+            var protobuf = storeCommand.constructPbRequest();
             
             assert.equal(protobuf.getType().toString('utf8'), 'bucket_type');
             assert.equal(protobuf.getBucket().toString('utf8'), 'bucket_name');
@@ -62,12 +62,12 @@ describe('StoreValue', function() {
             assert.equal(protobuf.getIfNoneMatch(), true);
             assert.equal(protobuf.getContent().getValue().toString('utf8'), value);
             assert.equal(protobuf.getContent().getContentType().toString('utf8'), 'application/json');
-            assert(protobuf.getIndexes().length === 1);
-            assert.equals(protobuf.getIndexes()[0].key.toString('utf8'), 'email_bin');
-            assert.equals(protobuf.getIndexes()[0].value.toString('utf8'), 'roach@basho.com');
-            assert(protobuf.getUsermeta().length === 1);
-            assert.equals(protobuf.getUsermeta()[0].key.toString('utf8'), 'metaKey1');
-            assert.equals(protobuf.getUsermeta()[0].value.toString('utf8'), 'metaValue1');
+            assert(protobuf.getContent().getIndexes().length === 1);
+            assert.equal(protobuf.getContent().getIndexes()[0].key.toString('utf8'), 'email_bin');
+            assert.equal(protobuf.getContent().getIndexes()[0].value.toString('utf8'), 'roach@basho.com');
+            assert(protobuf.getContent().getUsermeta().length === 1);
+            assert.equal(protobuf.getContent().getUsermeta()[0].key.toString('utf8'), 'metaKey1');
+            assert.equal(protobuf.getContent().getUsermeta()[0].value.toString('utf8'), 'metaValue1');
             assert.equal(protobuf.getTimeout(), 20000);
             done();
             
