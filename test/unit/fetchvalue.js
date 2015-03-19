@@ -38,7 +38,7 @@ describe('FetchValue', function() {
                .withCallback(function(){})
                .build();
        
-            var protobuf = fetchCommand.protobuf;
+            var protobuf = fetchCommand.constructPbRequest();
             
             assert.equal(protobuf.getType().toString('utf8'), 'bucket_type');
             assert.equal(protobuf.getBucket().toString('utf8'), 'bucket_name');
