@@ -18,6 +18,35 @@ var RiakConnection = require('../../lib/core/riakconnection');
 var assert = require('assert');
 
 describe('RiakConnection - Integration', function() {
+    describe('#connect-tls', function() {
+        this.timeout(10000);
+        it('should emit on connection success', function(done) {
+            var winston = require("winston");
+            winston.remove(winston.transports.Console);
+            winston.add(winston.transports.Console, {
+                level : 'debug',
+                colorize: true,
+                timestamp: true
+            });
+            var conn = new RiakConnection({ remoteAddress : "riak-test",
+                                            remotePort : 10017,
+                                            connectionTimeout : 30000
+                                          });
+            var errTimeout = setTimeout(function () {
+                assert(false, 'Event never fired');
+                done();
+            }, 5000); 
+            conn.on('connected', function() {
+                clearTimeout(errTimeout);
+                conn.removeAllListeners();
+                assert(true);
+                server.close();
+                conn.close();
+                done();
+            });
+            conn.connect();
+        });
+    });
     describe('#connect', function() {
         
         this.timeout(5000);
