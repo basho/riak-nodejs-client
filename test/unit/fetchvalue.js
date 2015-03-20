@@ -15,6 +15,10 @@
  */
 
 var FetchValue = require('../../lib/commands/kv/fetchvalue');
+var RpbGetResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbGetResp');
+var RpbContent = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbContent');
+var RpbPair = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbPair');
+var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
 
@@ -55,5 +59,76 @@ describe('FetchValue', function() {
             
         });
         
+        it('should take a RpbGetResp and call the users callback with the response', function(done) {
+            
+            var rpbContent = new RpbContent();
+            rpbContent.setValue(new Buffer('this is a value'));
+            rpbContent.setContentType(new Buffer('application/json'));
+            
+            var pair = new RpbPair();
+            pair.setKey(new Buffer('email_bin'));
+            pair.setValue(new Buffer('roach@basho.com'));
+            rpbContent.indexes.push(pair);
+            
+            pair = new RpbPair();
+            pair.setKey(new Buffer('metaKey1'));
+            pair.setValue(new Buffer('metaValue1'));
+            rpbContent.usermeta.push(pair);
+            
+            var rpbGetResp = new RpbGetResp();
+            rpbGetResp.setContent(rpbContent);
+            rpbGetResp.setVclock(new Buffer('1234'));
+            
+            var callback = function(err, response) {
+                if (response) {
+                    assert.equal(response.getRiakObjects().length, 1);
+                    var riakObject = response.getRiakObjects()[0];
+                    assert.equal(riakObject.getBucketType(), 'bucket_type');
+                    assert.equal(riakObject.getBucket(), 'bucket_name');
+                    assert.equal(riakObject.getKey(), 'key');
+                    assert.equal(riakObject.getContentType(), 'application/json');
+                    assert.equal(riakObject.hasIndexes(), true);
+                    assert.equal(riakObject.getIndex('email_bin')[0], 'roach@basho.com');
+                    assert.equal(riakObject.hasUserMeta(), true);
+                    assert.equal(riakObject.getUserMeta()[0].key, 'metaKey1');
+                    assert.equal(riakObject.getUserMeta()[0].value, 'metaValue1');
+                    assert.equal(riakObject.getVClock().toString('utf8'), '1234');
+                    done();
+                }
+            };
+            
+            var fetchCommand = new FetchValue.Builder()
+               .withBucketType('bucket_type')
+               .withBucket('bucket_name')
+               .withKey('key')
+               .withCallback(callback)
+               .build();
+       
+            fetchCommand.onSuccess(rpbGetResp);
+       });
+       
+       it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
+           var rpbErrorResp = new RpbErrorResp();
+           rpbErrorResp.setErrmsg(new Buffer('this is an error'));
+           
+           var callback = function(err, response) {
+               if (err) {
+                   assert.equal(err,'this is an error');
+                   done();
+               }
+           };
+           
+           var fetchCommand = new FetchValue.Builder()
+               .withBucketType('bucket_type')
+               .withBucket('bucket_name')
+               .withKey('key')
+               .withCallback(callback)
+               .build();
+       
+            fetchCommand.onRiakError(rpbErrorResp);
+           
+           
+       });
+       
     });
 });
