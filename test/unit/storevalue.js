@@ -14,52 +14,70 @@
  * limitations under the License.
  */
 
-var FetchValue = require('../../lib/commands/kv/fetchvalue');
-var RpbGetResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbGetResp');
+var StoreValue = require('../../lib/commands/kv/storevalue');
+var RiakObject = require('../../lib/commands/kv/riakobject');
+var RpbPutResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbPutResp');
 var RpbContent = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbContent');
 var RpbPair = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbPair');
 var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
 
-describe('FetchValue', function() {
+describe('StoreValue', function() {
     describe('Build', function() {
-        it('should build a RpbGetReq correctly', function(done) {
+        it('should build a RpbPutReq correctly', function(done) {
+            
+            var value = 'this is a value';
+            var riakObject = new RiakObject();
+            riakObject.setUserMeta([{key: 'metaKey1', value: 'metaValue1'}]);
+            riakObject.addToIndex('email_bin','roach@basho.com');
+            riakObject.setContentType('application/json');
+            riakObject.setValue('this is a value');
             
             var vclock = new Buffer(0);
-            var fetchCommand = new FetchValue.Builder()
+            var storeCommand = new StoreValue.Builder()
                .withBucketType('bucket_type')
                .withBucket('bucket_name')
                .withKey('key')
-               .withR(3)
-               .withPr(1)
-               .withNotFoundOk(true)
-               .withBasicQuorum(true)
-               .withReturnDeletedVClock(true)
-               .withHeadOnly(true)
-               .withIfNotModified(vclock)
+               .withW(3)
+               .withPw(1)
+               .withDw(2)
+               .withVClock(vclock)
+               .withReturnHead(true)
+               .withReturnBody(true)
+               .withIfNotModified(true)
+               .withIfNoneMatch(true)
                .withTimeout(20000)
+               .withContent(riakObject)
                .withCallback(function(){})
                .build();
        
-            var protobuf = fetchCommand.constructPbRequest();
+            var protobuf = storeCommand.constructPbRequest();
             
             assert.equal(protobuf.getType().toString('utf8'), 'bucket_type');
             assert.equal(protobuf.getBucket().toString('utf8'), 'bucket_name');
             assert.equal(protobuf.getKey().toString('utf8'), 'key');
-            assert.equal(protobuf.getR(), 3);
-            assert.equal(protobuf.getPr(), 1);
-            assert.equal(protobuf.getNotfoundOk(), true);
-            assert.equal(protobuf.getBasicQuorum(), true);
-            assert.equal(protobuf.getDeletedvclock(), true);
-            assert.equal(protobuf.getHead(), true);
-            assert(protobuf.getIfModified().toBuffer() !== null);
+            assert.equal(protobuf.getW(), 3);
+            assert.equal(protobuf.getPw(), 1);
+            assert.equal(protobuf.getDw(), 2);
+            assert(protobuf.getVclock() !== null);
+            assert.equal(protobuf.getReturnHead(), true);
+            assert.equal(protobuf.getIfNotModified(), true);
+            assert.equal(protobuf.getIfNoneMatch(), true);
+            assert.equal(protobuf.getContent().getValue().toString('utf8'), value);
+            assert.equal(protobuf.getContent().getContentType().toString('utf8'), 'application/json');
+            assert(protobuf.getContent().getIndexes().length === 1);
+            assert.equal(protobuf.getContent().getIndexes()[0].key.toString('utf8'), 'email_bin');
+            assert.equal(protobuf.getContent().getIndexes()[0].value.toString('utf8'), 'roach@basho.com');
+            assert(protobuf.getContent().getUsermeta().length === 1);
+            assert.equal(protobuf.getContent().getUsermeta()[0].key.toString('utf8'), 'metaKey1');
+            assert.equal(protobuf.getContent().getUsermeta()[0].value.toString('utf8'), 'metaValue1');
             assert.equal(protobuf.getTimeout(), 20000);
             done();
             
         });
         
-        it('should take a RpbGetResp and call the users callback with the response', function(done) {
+        it('should take a RpbPutResp and call the users callback with the response', function(done) {
             
             var rpbContent = new RpbContent();
             rpbContent.setValue(new Buffer('this is a value'));
@@ -75,9 +93,9 @@ describe('FetchValue', function() {
             pair.setValue(new Buffer('metaValue1'));
             rpbContent.usermeta.push(pair);
             
-            var rpbGetResp = new RpbGetResp();
-            rpbGetResp.setContent(rpbContent);
-            rpbGetResp.setVclock(new Buffer('1234'));
+            var rpbPutResp = new RpbPutResp();
+            rpbPutResp.setContent(rpbContent);
+            rpbPutResp.setVclock(new Buffer('1234'));
             
             var callback = function(err, response) {
                 if (response) {
@@ -97,17 +115,19 @@ describe('FetchValue', function() {
                 }
             };
             
-            var fetchCommand = new FetchValue.Builder()
+            var storeCommand = new StoreValue.Builder()
                .withBucketType('bucket_type')
                .withBucket('bucket_name')
                .withKey('key')
+               .withContent('dummy')
                .withCallback(callback)
                .build();
        
-            fetchCommand.onSuccess(rpbGetResp);
-       });
-       
-       it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
+            storeCommand.onSuccess(rpbPutResp);
+            
+        });
+        
+        it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
            var rpbErrorResp = new RpbErrorResp();
            rpbErrorResp.setErrmsg(new Buffer('this is an error'));
            
@@ -118,17 +138,18 @@ describe('FetchValue', function() {
                }
            };
            
-           var fetchCommand = new FetchValue.Builder()
+           var storeCommand = new StoreValue.Builder()
                .withBucketType('bucket_type')
                .withBucket('bucket_name')
                .withKey('key')
+               .withContent('dummy')
                .withCallback(callback)
                .build();
        
-            fetchCommand.onRiakError(rpbErrorResp);
+            storeCommand.onRiakError(rpbErrorResp);
            
            
-       });
-       
+        });
+        
     });
 });
