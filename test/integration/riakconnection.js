@@ -16,34 +16,53 @@
 
 var RiakConnection = require('../../lib/core/riakconnection');
 var assert = require('assert');
+var fs = require('fs');
+var logger = require('winston');
+
+logger.remove(logger.transports.Console);
+logger.add(logger.transports.Console, {
+    level : 'debug',
+    colorize: true,
+    timestamp: true
+});
 
 describe('RiakConnection - Integration', function() {
     describe('#connect-tls', function() {
         this.timeout(10000);
         it('should emit on connection success', function(done) {
-            var winston = require("winston");
-            winston.remove(winston.transports.Console);
-            winston.add(winston.transports.Console, {
-                level : 'debug',
-                colorize: true,
-                timestamp: true
+
+            logger.debug("Current dir: " + process.cwd());
+
+            var conn = new RiakConnection({
+                remoteAddress : 'riak-test',
+                remotePort : 10017,
+                connectionTimeout : 30000,
+                auth: {
+                    // Use the following when the private key and public cert
+                    // are in two file
+                    // key: fs.readFileSync(''),
+                    // cert: fs.readFileSync('')
+                    user: 'riakuser',
+                    password: '', // NB: optional, leave null when using certs
+                    pfx: fs.readFileSync('./tools/test-ca/certs/riakuser-client-cert.pfx'),
+                    ca: [ fs.readFileSync('./tools/test-ca/certs/cacert.pem') ],
+                    rejectUnauthorized: true
+                }
             });
-            var conn = new RiakConnection({ remoteAddress : "riak-test",
-                                            remotePort : 10017,
-                                            connectionTimeout : 30000
-                                          });
+
             var errTimeout = setTimeout(function () {
                 assert(false, 'Event never fired');
                 done();
             }, 5000); 
+
             conn.on('connected', function() {
+                assert(true);
                 clearTimeout(errTimeout);
                 conn.removeAllListeners();
-                assert(true);
-                server.close();
                 conn.close();
                 done();
             });
+
             conn.connect();
         });
     });
