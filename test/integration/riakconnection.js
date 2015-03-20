@@ -27,7 +27,7 @@ logger.add(logger.transports.Console, {
 });
 
 describe('RiakConnection - Integration', function() {
-    describe('#connect-tls', function() {
+    describe('#connect-tls-clientcert', function() {
         this.timeout(10000);
         it('should emit on connection success', function(done) {
 
@@ -66,6 +66,40 @@ describe('RiakConnection - Integration', function() {
             conn.connect();
         });
     });
+
+    describe('#connect-tls-password', function() {
+        this.timeout(10000);
+        it('should emit on connection success', function(done) {
+
+            var conn = new RiakConnection({
+                remoteAddress : 'riak-test',
+                remotePort : 10017,
+                connectionTimeout : 5000,
+                auth: {
+                    user: 'riakpass',
+                    password: 'Test1234',
+                    ca: [ fs.readFileSync('./tools/test-ca/certs/cacert.pem') ],
+                    rejectUnauthorized: true
+                }
+            });
+
+            var errTimeout = setTimeout(function () {
+                assert(false, 'Event never fired');
+                done();
+            }, 9500); 
+
+            conn.on('connected', function() {
+                assert(true);
+                clearTimeout(errTimeout);
+                conn.removeAllListeners();
+                conn.close();
+                done();
+            });
+
+            conn.connect();
+        });
+    });
+
     describe('#connect', function() {
         
         this.timeout(5000);
