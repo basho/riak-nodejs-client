@@ -3,6 +3,7 @@ var Rpb = require('../../lib/protobuf/riakprotobuf');
 var DtFetchReq = Rpb.getProtoFor('DtFetchReq');
 var DtFetchResp = Rpb.getProtoFor('DtFetchResp');
 var DtValue = Rpb.getProtoFor('DtValue');
+var RpbErrorResp = Rpb.getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
 
@@ -54,6 +55,25 @@ describe('FetchSet', function() {
                     build();
 
             fetch.onSuccess(resp);
+        });
+
+        it('calls back with an error message', function(done) {
+            var errorMessage = "couldn't crdt :(";
+            var errorResp = new RpbErrorResp();
+            errorResp.setErrmsg(new Buffer(errorMessage));
+
+            var callback = function(err, response) {
+                assert(err);
+                assert.equal(err, errorMessage);
+
+                done();
+            };
+
+            var fetch = builder.
+                    withCallback(callback).
+                    build();
+
+            fetch.onRiakError(errorResp);
         });
     });
 });
