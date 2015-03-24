@@ -17,6 +17,7 @@
 var RiakNode = require('../../lib/core/riaknode');
 var assert = require('assert');
 var joi = require('joi');
+var fs = require('fs');
 
 describe('RiakNode', function() {
     describe('auth-validation', function() {
@@ -122,12 +123,47 @@ describe('RiakNode', function() {
             done();
         });
 
+        it('should OK user with cert & key read from a file', function(done) {
+            // This should not throw because *both* cert and key are provided
+            var options = {
+                auth: {
+                    user: 'riaktest',
+                    cert: fs.readFileSync('./tools/test-ca/certs/riakuser-client-cert.pem'),
+                    key: fs.readFileSync('./tools/test-ca/private/riakuser-client-cert-key.pem'),
+                    ca: [ fs.readFileSync('./tools/test-ca/certs/cacert.pem') ],
+                }
+            };
+            assert.doesNotThrow(
+                function() {
+                    var rn = new RiakNode(options);
+                }
+            );
+            done();
+        });
+
         it('should OK user and pfx', function(done) {
             // This should not throw because pfx files contain both public and private keys
             var options = {
                 auth: {
                     user: 'riaktest',
                     pfx: 'DUMMY PFX CONTENTS'
+                }
+            };
+            assert.doesNotThrow(
+                function() {
+                    var rn = new RiakNode(options);
+                }
+            );
+            done();
+        });
+
+        it('should OK user and pfx read from file', function(done) {
+            // This should not throw because pfx files contain both public and private keys
+            var options = {
+                auth: {
+                    user: 'riaktest',
+                    pfx: fs.readFileSync('./tools/test-ca/certs/riakuser-client-cert.pfx'),
+                    ca: [ fs.readFileSync('./tools/test-ca/certs/cacert.pem') ]
                 }
             };
             assert.doesNotThrow(
