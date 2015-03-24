@@ -5,6 +5,7 @@ var DtFetchResp = Rpb.getProtoFor('DtFetchResp');
 var DtValue = Rpb.getProtoFor('DtValue');
 var RpbErrorResp = Rpb.getProtoFor('RpbErrorResp');
 
+var ByteBuffer = require('bytebuffer');
 var assert = require('assert');
 
 describe('FetchSet', function() {
@@ -52,14 +53,26 @@ describe('FetchSet', function() {
             var value = new DtValue();
             resp.setValue(value);
 
-            value.set_value = ["zedo", "piper", "little one"];
+            value.set_value = [new Buffer("zedo"),
+                               new Buffer("piper"),
+                               new Buffer("little one")];
 
+            var includesBuffer = function(haystack, needle) {
+                var needleBuf = new Buffer(needle);
+                var len = haystack.length;
+                for (var i = 0; i < len; i++) {
+                    if (haystack[i].equals(needleBuf)) return true;
+                };
+                
+                return false;
+            };
+            
             var callback = function(err, response) {
                 assert.equal(response.context.toString("utf8"), "asdf");
                 assert.equal(response.dataType, 2);
-                assert.notEqual(response.value.indexOf("zedo"), -1);
-                assert.notEqual(response.value.indexOf("piper"), -1);
-                assert.notEqual(response.value.indexOf("little one"), -1);
+                assert(includesBuffer(response.value, "zedo"));
+                assert(includesBuffer(response.value, "piper"));
+                assert(includesBuffer(response.value, "little one"));
 
                 done();
             };
