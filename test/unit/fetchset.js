@@ -29,7 +29,7 @@ describe('FetchSet', function() {
             done();
         });
 
-        it('calls a callback with results', function(done){
+        it('calls back with successful results', function(done){
             var resp = new DtFetchResp();
             resp.type = 2;
             resp.context = new Buffer("asdf");
