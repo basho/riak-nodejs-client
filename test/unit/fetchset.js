@@ -7,12 +7,14 @@ var DtValue = Rpb.getProtoFor('DtValue');
 var assert = require('assert');
 
 describe('FetchSet', function() {
-    describe('Build', function() {        
+    describe('Build', function() {
+        var builder = new FetchSet.Builder().
+        withBucketType('sets_type').
+        withBucket('set_bucket').
+        withKey('cool_set');
+
         it('builds a DtFetchSet correctly', function(done){
-            var fetchSet = new FetchSet.Builder().
-                    withBucketType('sets_type').
-                    withBucket('set_bucket').
-                    withKey('cool_set').
+            var fetchSet = builder.
                     withCallback(function(){}).
                     build();
 
@@ -36,7 +38,7 @@ describe('FetchSet', function() {
             resp.setValue(value);
 
             value.set_value = ["zedo", "piper", "little one"];
-            
+
             var callback = function(err, response) {
                 assert.equal(response.context.toString("utf8"), "asdf");
                 assert.equal(response.dataType, 2);
@@ -47,10 +49,7 @@ describe('FetchSet', function() {
                 done();
             };
 
-            var fetch = new FetchSet.Builder().
-                    withBucketType('sets_type').
-                    withBucket('set_bucket').
-                    withKey('cool_set').
+            var fetch = builder.
                     withCallback(callback).
                     build();
 
