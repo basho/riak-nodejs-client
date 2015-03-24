@@ -17,6 +17,13 @@ describe('FetchSet', function() {
         it('builds a DtFetchSet correctly', function(done){
             var fetchSet = builder.
                     withCallback(function(){}).
+                    withR(1).
+                    withPr(2).
+                    withNotFoundOk(true).
+                    withUseBasicQuorum(true).
+                    withTimeout(12345).
+                    withSloppyQuorum(true).
+                    withNValue(3).
                     build();
 
             var protobuf = fetchSet.constructPbRequest();
@@ -27,6 +34,13 @@ describe('FetchSet', function() {
                          'set_bucket');
             assert.equal(protobuf.getKey().toString('utf8'),
                          'cool_set');
+            assert.equal(protobuf.getR(), 1);
+            assert.equal(protobuf.getPr(), 2);
+            assert.equal(protobuf.getNotfoundOk(), true);
+            assert.equal(protobuf.getBasicQuorum(), true);
+            assert.equal(protobuf.getTimeout(), 12345);
+            assert.equal(protobuf.getSloppyQuorum(), true);
+            assert.equal(protobuf.getNVal(), 3);
             done();
         });
 
