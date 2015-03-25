@@ -74,7 +74,7 @@ describe('FetchSet', function() {
                 var len = haystack.length;
                 for (var i = 0; i < len; i++) {
                     if (haystack[i].equals(needleBuf)) return true;
-                };
+                }
                 
                 return false;
             };
@@ -83,7 +83,7 @@ describe('FetchSet', function() {
                 var len = haystack.length;
                 for (var i = 0; i < len; i++) {
                     if (haystack[i] === needle) return true;
-                };
+                }
 
                 return false;
             };
