@@ -1,7 +1,5 @@
 TOPDIR = $(realpath $(CURDIR)/..)
 
-.PHONY: setup-integration
-
 TOOLS_DIR = $(TOPDIR)/tools/devrel
 RIAK_CONF = $(RIAK_DIR)/etc/riak.conf
 ADV_CONF = $(RIAK_DIR)/etc/advanced.config
