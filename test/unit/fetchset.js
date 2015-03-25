@@ -66,14 +66,29 @@ describe('FetchSet', function() {
                 
                 return false;
             };
+
+            var includes = function(haystack, needle) {
+                var len = haystack.length;
+                for (var i = 0; i < len; i++) {
+                    if (haystack[i] == needle) return true;
+                };
+
+                return false;
+            };
             
             var callback = function(err, response) {
                 assert.equal(response.context.toString("utf8"), "asdf");
                 assert.equal(response.dataType, 2);
-                assert(includesBuffer(response.value, "zedo"));
-                assert(includesBuffer(response.value, "piper"));
-                assert(includesBuffer(response.value, "little one"));
 
+                assert(includesBuffer(response.valueBuffers, "zedo"));
+                assert(includes(response.value, "zedo"));
+
+                assert(includesBuffer(response.valueBuffers, "piper"));
+                assert(includes(response.value, "piper"));
+                
+                assert(includesBuffer(response.valueBuffers, "little one"));
+                assert(includes(response.value, "little one"));
+                
                 done();
             };
 
