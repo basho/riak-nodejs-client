@@ -6,21 +6,29 @@ GRUNT=$(PROJDIR)/node_modules/grunt-cli/bin/grunt
 all: test
 
 install-deps:
-	$(PROJDIR)/build/install-deps
+	$(PROJDIR)/build/install-deps $(PROJDIR)
+
+lint:
+	$(GRUNT) lint
 
 unit-test:
 	$(GRUNT) unit
 
 integration-test:
-	$(GRUNT) unit
+	$(GRUNT) integration
 
-test: install-deps unit-test integration-test
+test:
+	$(GRUNT)
 
 help:
 	@echo ''
 	@echo ' Targets:'
-	@echo ' ----------------------'
-	@echo ' all  - Run everything '
-	@echo ' test - Run all tests  '
-	@echo ' ----------------------'
+	@echo '--------------------------------------------------'
+	@echo ' all              - Run everything                '
+	@echo ' lint             - Run jshint                    '
+	@echo ' install-deps     - Install required dependencies '
+	@echo ' test             - Run all tests                 '
+	@echo ' unit-test        - Run unit tests                '
+	@echo ' integration-test - Run integration tests         '
+	@echo '--------------------------------------------------'
 	@echo ''

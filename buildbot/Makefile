@@ -1,7 +1,7 @@
-SRCDIR = $(realpath $(CURDIR)/..)
-include $(SRCDIR)/build/common.mk
+PROJDIR = $(realpath $(CURDIR)/..)
+include $(PROJDIR)/build/common.mk
 
-TOOLS_DIR = $(SRCDIR)/tools/devrel
+TOOLS_DIR = $(PROJDIR)/tools/devrel
 RIAK_CONF = $(RIAK_DIR)/etc/riak.conf
 ADV_CONF = $(RIAK_DIR)/etc/advanced.config
 RIAK_ADMIN = $(RIAK_DIR)/bin/riak-admin
@@ -17,11 +17,11 @@ configure:
 compile: install-deps
 
 lint:
-	grunt jshint
+	echo 'Nothing to do!'
 
 setup-integration:
 	echo 'Nothing to do!'
 
 test:
-	grunt
+	$(GRUNT)
 

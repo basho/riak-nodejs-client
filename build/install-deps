@@ -30,27 +30,30 @@ else
     exit 1
 fi
 
+declare -r projdir="$1"
+
 curl=$(which curl 2>/dev/null)
 node=$(which node 2>/dev/null)
 npm=$(which npm 2>/dev/null)
 
 set -o errexit
 
-if [[ -x $curl ]]
+if [[ ! -x $curl ]]
 then
-    echo 'curl dependency is installed'
-else
     export DEBIAN_FRONTEND=noninteractive
     sudo apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' update
     sudo apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install curl
 fi
+echo '[info] curl dependency is installed'
 
-if [[ -x $node && -x $npm ]]
+if [[ ! -x $node || ! -x $npm ]]
 then
-    echo 'node dependencies are installed'
-else
     # https://nodesource.com/blog/nodejs-v012-iojs-and-the-nodesource-linux-repositories
     curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
     sudo apt-get install -y nodejs
 fi
+echo '[info] node dependencies are installed'
+
+echo '[info] running "npm install" to install node modules...'
+(cd $projdir && npm install)
 
