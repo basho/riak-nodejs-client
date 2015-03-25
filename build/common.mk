@@ -1,16 +1,20 @@
-PROJDIR = $(SRCDIR)/src
-
 VERBOSITY = normal
+GRUNT=$(PROJDIR)/node_modules/grunt-cli/bin/grunt
 
-.PHONY: all install-deps help test
+.PHONY: all install-deps help test unit-test integration-test
 
 all: test
 
 install-deps:
-	$(SRCDIR)/build/install-deps
+	$(PROJDIR)/build/install-deps
 
-test: install-deps
-	grunt
+unit-test:
+	$(GRUNT) unit
+
+integration-test:
+	$(GRUNT) unit
+
+test: install-deps unit-test integration-test
 
 help:
 	@echo ''

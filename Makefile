@@ -1,5 +1,2 @@
-SRCDIR = $(realpath $(CURDIR))
-include $(SRCDIR)/build/common.mk
-
-test: test-all
-
+PROJDIR = $(realpath $(CURDIR))
+include $(PROJDIR)/build/common.mk

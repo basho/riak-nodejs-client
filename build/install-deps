@@ -10,6 +10,26 @@ fi
 
 set -o nounset
 
+apt_get=$(which apt-get 2>/dev/null)
+if [[ ! -x $apt_get ]]
+then
+    echo '[error] must be run on Linux platform that uses deb packaging' 2>&1
+    exit 1
+fi
+
+if [[ -f /etc/lsb-release ]]
+then
+    source /etc/lsb-release
+    if [[ $DISTRIB_CODENAME != 'precise' ]]
+    then
+        echo '[error] Only tested on Ubuntu 12 precise' 2>&1
+        exit 1
+    fi
+else
+    echo '[error] /etc/lsb-release does not exist' 2>&1
+    exit 1
+fi
+
 curl=$(which curl 2>/dev/null)
 node=$(which node 2>/dev/null)
 npm=$(which npm 2>/dev/null)

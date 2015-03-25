@@ -18,14 +18,23 @@ module.exports = function(grunt) {
       files: ['Gruntfile.js', 'lib/**/*.js', 'test/**/*.js'],
     },
     mochaTest: {
-        test: {
+        unit: {
             options: {
                 reporter: 'spec',
-                captureFile: 'results.txt',
+                captureFile: 'unit-test-results.txt',
                 quiet: false,
                 clearRequireCache: false
             },
-            src: ['test/**/*.js']
+            src: ['test/unit/**/*.js']
+        },
+        integration: {
+            options: {
+                reporter: 'spec',
+                captureFile: 'integration-test-results.txt',
+                quiet: false,
+                clearRequireCache: false
+            },
+            src: ['test/integration/**/*.js']
         }
     },   
     watch: {
@@ -40,6 +49,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
   grunt.registerTask('default', ['jshint', 'mochaTest']);
+  grunt.registerTask('unit', 'mochaTest:unit');
+  grunt.registerTask('integration', 'mochaTest:integration');
   grunt.registerTask('docs', ['yuidoc']);
 
 };
