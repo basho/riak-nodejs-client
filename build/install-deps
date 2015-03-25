@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+PLATFORM=$(uname -s)
+
+if [[ $PLATFORM != 'Linux' ]]
+then
+    echo '[error] must be run on Linux platforms' 2>&1
+    exit 1
+fi
+
+set -o nounset
+
+curl=$(which curl 2>/dev/null)
+node=$(which node 2>/dev/null)
+npm=$(which npm 2>/dev/null)
+
+set -o errexit
+
+if [[ -x $curl ]]
+then
+    echo 'curl dependency is installed'
+else
+    export DEBIAN_FRONTEND=noninteractive
+    sudo apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' update
+    sudo apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install curl
+fi
+
+if [[ -x $node && -x $npm ]]
+then
+    echo 'node dependencies are installed'
+else
+    # https://nodesource.com/blog/nodejs-v012-iojs-and-the-nodesource-linux-repositories
+    curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
+    sudo apt-get install -y nodejs
+fi
+

@@ -1,6 +1,7 @@
-TOPDIR = $(realpath $(CURDIR)/..)
+SRCDIR = $(realpath $(CURDIR)/..)
+include $(SRCDIR)/build/common.mk
 
-TOOLS_DIR = $(TOPDIR)/tools/devrel
+TOOLS_DIR = $(SRCDIR)/tools/devrel
 RIAK_CONF = $(RIAK_DIR)/etc/riak.conf
 ADV_CONF = $(RIAK_DIR)/etc/advanced.config
 RIAK_ADMIN = $(RIAK_DIR)/bin/riak-admin
@@ -13,7 +14,7 @@ preconfigure:
 configure:
 	$(TOOLS_DIR)/riak-cluster-config $(RIAK_ADMIN) 8098 true false
 
-compile: install-deps debug
+compile: install-deps
 
 lint:
 	grunt jshint
