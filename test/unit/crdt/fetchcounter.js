@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-var FetchCounter = require('../../../lib/commands/datatype/fetchcounter');
+var FetchCounter = require('../../../lib/commands/crdt/fetchcounter');
 var DtFetchResp = require('../../../lib/protobuf/riakprotobuf').getProtoFor('DtFetchResp');
 var DtValue = require('../../../lib/protobuf/riakprotobuf').getProtoFor('DtValue');
 var RpbErrorResp = require('../../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
 
-describe('FecthCounter', function() {
+describe('FetchCounter', function() {
     describe('Build', function() {
         it('should build a DtFetchReq correctly', function(done) {
             

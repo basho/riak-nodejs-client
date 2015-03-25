@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-var UpdateCounter = require('../../../lib/commands/datatype/updatecounter');
+var UpdateCounter = require('../../../lib/commands/crdt/updatecounter');
 var DtUpdateResp = require('../../../lib/protobuf/riakprotobuf').getProtoFor('DtUpdateResp');
 var DtValue = require('../../../lib/protobuf/riakprotobuf').getProtoFor('DtValue');
 var RpbErrorResp = require('../../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
@@ -22,7 +22,7 @@ var RpbErrorResp = require('../../../lib/protobuf/riakprotobuf').getProtoFor('Rp
 var assert = require('assert');
 
 
-describe('FecthCounter', function() {
+describe('UpdateCounter', function() {
     describe('Build', function() {
         it('should build a DtUpdateReq correctly', function(done) {
             
