@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-module.exports = require('./lib/riakclient');
+module.exports = require('./lib/client');
 
