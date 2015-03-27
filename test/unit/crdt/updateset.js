@@ -9,18 +9,18 @@ var ByteBuffer = require('bytebuffer');
 var assert = require('assert');
 
 describe('UpdateSet', function() {
+    // ikea rugs
+    var hampenBuffer = ByteBuffer.fromUTF8("hampen");
+    var snabbfotadBuffer = ByteBuffer.fromUTF8("snabbfotad");
+
+    var someContext = ByteBuffer.fromUTF8("context");
+
+    var builder = new UpdateSet.Builder().
+            withBucketType('sets_type').
+            withBucket('set_bucket').
+            withKey('cool_set');
+
     describe('Build', function() {
-        var builder = new UpdateSet.Builder().
-                withBucketType('sets_type').
-                withBucket('set_bucket').
-                withKey('cool_set');
-
-        // ikea rugs
-        var hampenBuffer = ByteBuffer.fromUTF8("hampen");
-        var snabbfotadBuffer = ByteBuffer.fromUTF8("snabbfotad");
-
-        var someContext = ByteBuffer.fromUTF8("context");
-
         var includesBuffer = function(haystack, needle) {
             var len = haystack.length;
             for (var i = 0; i < len; i++) {
@@ -31,7 +31,7 @@ describe('UpdateSet', function() {
 
             return false;
         };
-        
+
         it('builds a DtUpdateSet correctly', function(done){
             var update = builder.
                     withContext(someContext).
@@ -59,18 +59,111 @@ describe('UpdateSet', function() {
 
             assert.equal(protobuf.getReturnBody(), false);
             assert.equal(protobuf.getTimeout(), 12345);
-            
+
             assert(includesBuffer(protobuf.op.set_op.adds,
-                                      "gåser"));
+                                  "gåser"));
             assert(includesBuffer(protobuf.op.set_op.adds,
-                                      "hampen"));
+                                  "hampen"));
 
             assert(includesBuffer(protobuf.op.set_op.removes,
-                                      "snabbfotad"));
+                                  "snabbfotad"));
             assert(includesBuffer(protobuf.op.set_op.removes,
-                                      "valby ruta"));
+                                  "valby ruta"));
 
             done();
+        });
+    });
+
+    var includesBuffer = function(haystack, needle) {
+        var needleBuf = new Buffer(needle);
+        var len = haystack.length;
+        for (var i = 0; i < len; i++) {
+            if (haystack[i].equals(needleBuf)) return true;
+        }
+
+        return false;
+    };
+
+    var includes = function(haystack, needle) {
+        var len = haystack.length;
+        for (var i = 0; i < len; i++) {
+            if (haystack[i] === needle) return true;
+        }
+
+        return false;
+    };
+
+    describe('with body, without key', function() {
+        it('calls back with successful results', function(done) {
+            var resp = new DtUpdateResp;
+            resp.setContext(new Buffer("asdf"));
+            resp.setSetValue([hampenBuffer, snabbfotadBuffer]);
+
+            var callback = function(err, response) {
+                assert(!err);
+                assert(response);
+
+                assert.equal(response.context.toString("utf8"), "asdf");
+                assert.equal(response.dataType, 2);
+
+                assert(includesBuffer(response.valueBuffers, "hampen"));
+                assert(includes(response.value, "hampen"));
+
+                assert(includesBuffer(response.valueBuffers, "snabbfotad"));
+                assert(includes(response.value, "snabbfotad"));
+
+                done();
+            };
+
+            var update = builder.
+                    withCallback(callback).
+                    withAdditions([hampenBuffer]).
+                    build();
+
+            update.onSuccess(resp);
+        });
+    });
+
+    describe('without body, with key', function() {
+        it('calls back with successful results', function(done) {
+            var resp = new DtUpdateResp();
+            resp.key = new Buffer("ikea_rugs");
+
+            var callback = function(err, response) {
+                assert.equal(response.key.toString("utf8"), "ikea_rugs");
+                assert.equal(response.keyString, "ikea_rugs");
+                done();
+            };
+
+            var update = builder.
+                    withCallback(callback).
+                    withAdditions([hampenBuffer]).
+                    build();
+
+            update.onSuccess(resp);
+        });
+    });
+
+    describe('returning an error', function() {
+        it('calls back with an error message', function(done) {
+            var errorMessage = "couldn't crdt :(";
+            var errorResp = new RpbErrorResp();
+            errorResp.setErrmsg(new Buffer(errorMessage));
+
+            var callback = function(err, response) {
+                assert(err);
+                assert(!response);
+
+                assert.equal(err, errorMessage);
+
+                done();
+            };
+
+            var update = builder.
+                    withCallback(callback).
+                    build();
+
+            update.onRiakError(errorResp);
         });
     });
 });
