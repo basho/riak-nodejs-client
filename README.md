@@ -1,6 +1,11 @@
 Riak NodeJS Client
 ==================
 
+Cloning
+-------
+
+*Note:* Please use the `--recursive` git option or run `git submodule update --init` after cloning as a couple submodules are used. Thanks!
+
 Building From Source
 ----------------------
 
