@@ -20,7 +20,7 @@ var RpbMapRedResp = require('../../../lib/protobuf/riakprotobuf').getProtoFor('R
 
 var assert = require('assert');
 
-describe('FetchValue', function() {
+describe('MapReduce', function() {
     describe('Build', function() {
         it('should build a RpbMapRedReq correctly', function(done) {
 
