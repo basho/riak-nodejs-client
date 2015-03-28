@@ -103,6 +103,36 @@ describe('Client', function() {
             done();
         });
 
+        it('Riak.Commands.CRDT.UpdateSet', function(done) {
+            var typeofCrdtUpdateSet = typeof(Riak.Commands.CRDT.UpdateSet);
+            assert(typeofCrdtUpdateSet === 'function', "typeof(Riak.Commands.CRDT.UpdateSet): " + typeofCrdtUpdateSet);
+            done();
+        });
+        
+        it('Riak.Commands.CRDT.FetchCounter', function(done) {
+            var typeofCrdtFetchCounter = typeof(Riak.Commands.CRDT.FetchCounter);
+            assert(typeofCrdtFetchCounter === 'function', "typeof(Riak.Commands.CRDT.FetchCounter): " + typeofCrdtFetchCounter);
+            done();
+        });
+        
+        it('Riak.Commands.CRDT.UpdateCounter', function(done) {
+            var typeofCrdtUpdateCounter = typeof(Riak.Commands.CRDT.UpdateCounter);
+            assert(typeofCrdtUpdateCounter === 'function', "typeof(Riak.Commands.CRDT.UpdateCounter): " + typeofCrdtUpdateCounter);
+            done();
+        });
+        
+        it('Riak.Commands.CRDT.FetchMap', function(done) {
+            var typeofCrdtFetchMap = typeof(Riak.Commands.CRDT.FetchMap);
+            assert(typeofCrdtFetchMap === 'function', "typeof(Riak.Commands.CRDT.FetchMap): " + typeofCrdtFetchMap);
+            done();
+        });
+        
+        it('Riak.Commands.CRDT.UpdateMap', function(done) {
+            var typeofCrdtUpdateMap = typeof(Riak.Commands.CRDT.UpdateMap);
+            assert(typeofCrdtUpdateMap === 'function', "typeof(Riak.Commands.CRDT.UpdateMap): " + typeofCrdtUpdateMap);
+            done();
+        });
+
         it('Riak.Commands.YZ.DeleteIndex', function(done) {
             var typeofYzDeleteIndex = typeof(Riak.Commands.YZ.DeleteIndex);
             assert(typeofYzDeleteIndex === 'function', "typeof(Riak.Commands.YZ.DeleteIndex): " + typeofYzDeleteIndex);
@@ -131,6 +161,12 @@ describe('Client', function() {
         it('Riak.Commands.YZ.StoreSchema', function(done) {
             var typeofYzStoreSchema = typeof(Riak.Commands.YZ.StoreSchema);
             assert(typeofYzStoreSchema === 'function', "typeof(Riak.Commands.YZ.StoreSchema): " + typeofYzStoreSchema);
+            done();
+        });
+        
+        it('Riak.Commands.MR.MapReduce', function(done) {
+            var typeofMrMapReduce = typeof(Riak.Commands.MR.MapReduce);
+            assert(typeofMrMapReduce === 'function', "typeof(Riak.Commands.MR.MapReduce): " + typeofMrMapReduce);
             done();
         });
     });
