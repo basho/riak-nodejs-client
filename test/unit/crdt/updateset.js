@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015 Basho Technologies, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 var UpdateSet = require('../../../lib/commands/crdt/updateset');
 var Rpb = require('../../../lib/protobuf/riakprotobuf');
 var DtUpdateReq = Rpb.getProtoFor('DtUpdateReq');
@@ -69,6 +85,8 @@ describe('UpdateSet', function() {
                                   "snabbfotad"));
             assert(includesBuffer(protobuf.op.set_op.removes,
                                   "valby ruta"));
+                                  
+            assert.equal(protobuf.getContext().toString('utf8'), 'context');
 
             done();
         });
@@ -93,7 +111,7 @@ describe('UpdateSet', function() {
         return false;
     };
 
-    describe('with body, without key', function() {
+    describe('with body, without key, as buffers', function() {
         it('calls back with successful results', function(done) {
             var resp = new DtUpdateResp;
             resp.setContext(new Buffer("asdf"));
@@ -104,20 +122,45 @@ describe('UpdateSet', function() {
                 assert(response);
 
                 assert.equal(response.context.toString("utf8"), "asdf");
-                assert.equal(response.dataType, 2);
+                assert(includesBuffer(response.values, "hampen"));
+                assert(includesBuffer(response.values, "snabbfotad"));
 
-                assert(includesBuffer(response.valueBuffers, "hampen"));
-                assert(includes(response.value, "hampen"));
-
-                assert(includesBuffer(response.valueBuffers, "snabbfotad"));
-                assert(includes(response.value, "snabbfotad"));
-
+                assert.equal(response.generatedKey, null);
                 done();
             };
 
             var update = builder.
                     withCallback(callback).
                     withAdditions([hampenBuffer]).
+                    withSetsAsBuffers(true).
+                    build();
+
+            update.onSuccess(resp);
+        });
+    });
+
+    describe('with body, without key, as strings', function() {
+        it('calls back with successful results', function(done) {
+            var resp = new DtUpdateResp;
+            resp.setContext(new Buffer("asdf"));
+            resp.setSetValue([hampenBuffer, snabbfotadBuffer]);
+
+            var callback = function(err, response) {
+                assert(!err);
+                assert(response);
+
+                assert.equal(response.context.toString("utf8"), "asdf");
+                assert(includes(response.values, "hampen"));
+                assert(includes(response.values, "snabbfotad"));
+
+                assert.equal(response.generatedKey, null);
+                done();
+            };
+
+            var update = builder.
+                    withCallback(callback).
+                    withAdditions([hampenBuffer]).
+                    withSetsAsBuffers(false).
                     build();
 
             update.onSuccess(resp);
@@ -130,8 +173,7 @@ describe('UpdateSet', function() {
             resp.key = new Buffer("ikea_rugs");
 
             var callback = function(err, response) {
-                assert.equal(response.key.toString("utf8"), "ikea_rugs");
-                assert.equal(response.keyString, "ikea_rugs");
+                assert.equal(response.generatedKey, "ikea_rugs");
                 done();
             };
 

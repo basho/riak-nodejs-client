@@ -40,6 +40,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
   grunt.registerTask('default', ['jshint', 'mochaTest']);
+  grunt.registerTask('lint', 'jshint');
   grunt.registerTask('docs', ['yuidoc']);
 
 };
