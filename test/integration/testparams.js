@@ -51,6 +51,14 @@ if (process.env.RIAK_HOST && process.env.RIAK_PORT) {
 module.exports.nodeAddresses = [ riakHost + ':' + riakPort ];
 module.exports.riakHost = riakHost;
 module.exports.riakPort = riakPort;
+/**
+ * 
+ * CRDTs - need to create these types 
+ */
+module.exports.counterBucketType = 'njstest_test_type_counters';
+module.exports.setBucketType = 'njstest_test_type_sets';
+module.exports.mapBucketType = 'njstest_test_type_maps';
+
 
 module.exports.cleanBucket = function(cluster, type, bucket, callback) {
   

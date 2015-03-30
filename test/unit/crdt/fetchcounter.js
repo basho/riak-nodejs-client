@@ -61,7 +61,7 @@ describe('FetchCounter', function() {
             
             var callback = function(err, response) {
                 if (response) {
-                    assert.equal(response, 42);
+                    assert.equal(response.counterValue, 42);
                     done();
                 }
             };
