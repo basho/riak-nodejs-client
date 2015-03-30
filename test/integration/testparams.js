@@ -42,7 +42,15 @@ module.exports.bucketName = 'riak_index_tests';
 */
 module.exports.bucketType = 'leveldb_type';
 
-module.exports.nodeAddresses = ['riak-test:10017'];
+var riakHost = 'riak-test';
+var riakPort = 10017;
+if (process.env.RIAK_HOST && process.env.RIAK_PORT) {
+    riakHost = process.env.RIAK_HOST;
+    riakPort = process.env.RIAK_PORT;
+}
+module.exports.nodeAddresses = [ riakHost + ':' + riakPort ];
+module.exports.riakHost = riakHost;
+module.exports.riakPort = riakPort;
 
 module.exports.cleanBucket = function(cluster, type, bucket, callback) {
   
