@@ -155,13 +155,13 @@ describe('SecondaryIndexQuery', function() {
         
         it('should take multiple RpbIndexResp with just object keys and call the users callback with the response', function(done) {
             
-            var callback = function(err, response, complete, continuation) {
+            var callback = function(err, response) {
                 
-                assert.equal(response.length, 100);
-                assert.equal(response[0].indexKey, null);
-                assert.equal(response[0].objectKey, 'object_key');
-                assert.equal(complete, true);
-                assert.equal(continuation.toString('utf8'), '1234');
+                assert.equal(response.values.length, 100);
+                assert.equal(response.values[0].indexKey, null);
+                assert.equal(response.values[0].objectKey, 'object_key');
+                assert.equal(response.done, true);
+                assert.equal(response.continuation.toString('utf8'), '1234');
                 done();
             };
             
@@ -188,13 +188,13 @@ describe('SecondaryIndexQuery', function() {
         
         it('should take multiple RpbIndexResp with term/key pairs and call the users callback with the response', function(done) {
             
-            var callback = function(err, response, complete, continuation) {
+            var callback = function(err, response) {
                 
-                assert.equal(response.length, 100);
-                assert.equal(response[0].indexKey, 'index_key');
-                assert.equal(response[0].objectKey, 'object_key');
-                assert.equal(complete, true);
-                assert.equal(continuation.toString('utf8'), '1234');
+                assert.equal(response.values.length, 100);
+                assert.equal(response.values[0].indexKey, 'index_key');
+                assert.equal(response.values[0].objectKey, 'object_key');
+                assert.equal(response.done, true);
+                assert.equal(response.continuation.toString('utf8'), '1234');
                 done();
             };
             
@@ -227,19 +227,19 @@ describe('SecondaryIndexQuery', function() {
             
             var count = 0;
             var timesCalled = 0;
-            var callback = function(err, response, complete, continuation) {
+            var callback = function(err, response) {
                 
                 timesCalled++;
-                count += response.length;
+                count += response.values.length;
                 
-                assert.equal(response[0].indexKey, null);
-                assert.equal(response[0].objectKey, 'object_key');
+                assert.equal(response.values[0].indexKey, null);
+                assert.equal(response.values[0].objectKey, 'object_key');
                 
                 
-                if (complete) {
+                if (response.done) {
                     assert.equal(timesCalled, 20);
                     assert.equal(count, 100);
-                    assert.equal(continuation.toString('utf8'), '1234');
+                    assert.equal(response.continuation.toString('utf8'), '1234');
                     done();
                 }
             };
@@ -269,18 +269,18 @@ describe('SecondaryIndexQuery', function() {
             
             var count = 0;
             var timesCalled = 0;
-            var callback = function(err, response, complete, continuation) {
+            var callback = function(err, response) {
                 timesCalled++;
-                count += response.length;
+                count += response.values.length;
                 
-                assert.equal(response[0].indexKey, 123);
-                assert.equal(response[0].objectKey, 'object_key');
+                assert.equal(response.values[0].indexKey, 123);
+                assert.equal(response.values[0].objectKey, 'object_key');
                 
                 
-                if (complete) {
+                if (response.done) {
                     assert.equal(timesCalled, 20);
                     assert.equal(count, 100);
-                    assert.equal(continuation.toString('utf8'), '1234');
+                    assert.equal(response.continuation.toString('utf8'), '1234');
                     done();
                 }
             };

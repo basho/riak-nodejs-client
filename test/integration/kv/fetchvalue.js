@@ -40,7 +40,7 @@ describe('FetchValue - Integration', function() {
                 done();
             }
             
-        }
+        };
         
         var store = new StoreValue.Builder()
                .withBucket(Test.bucketName)

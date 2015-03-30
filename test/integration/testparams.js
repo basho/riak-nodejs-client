@@ -17,10 +17,10 @@
 var ListKeys = require('../../lib/commands/kv/listkeys');
 var DeleteValue = require('../../lib/commands/kv/deletevalue');
 var assert = require('assert');
-
+var logger = require('winston');
 /*
  * To increase logging verbosity: */
-var logger = require('winston');
+
 logger.remove(logger.transports.Console);
 logger.add(logger.transports.Console, {
     level : 'debug',
@@ -48,6 +48,7 @@ module.exports.cleanBucket = function(cluster, type, bucket, callback) {
   
     // Note this also acts as the integration test for ListKeys and 
     // DeleteValue
+    logger.debug('Clearing bucket; %s:%s', type, bucket);
     var numKeys = 0;
     var count = 0;
     var lkCallback = function(err, resp) {
