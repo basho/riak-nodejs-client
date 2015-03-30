@@ -35,14 +35,14 @@ module.exports.bucketName = 'njstest_test_bucket';
 /**
 * Bucket type
 * 
-* you must create the type 'njstest_test_type' to use this:
+* you must create the type 'plain' to use this:
 *
-* riak-admin bucket-type create njstest_test_type '{"props":{}}'
-* riak-admin bucket-type activate njstest_test_type
+* riak-admin bucket-type create plain '{"props":{}}'
+* riak-admin bucket-type activate plain
 */
-module.exports.bucketType = 'njstest_test_type';
+module.exports.bucketType = 'plain';
 
-module.exports.nodeAddresses = ['127.0.0.1:8087'];
+module.exports.nodeAddresses = ['riak-test:10017'];
 
 module.exports.cleanBucket = function(cluster, type, bucket, callback) {
   
