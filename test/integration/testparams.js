@@ -30,7 +30,7 @@ logger.add(logger.transports.Console, {
 // */
 
 
-module.exports.bucketName = 'njstest_test_bucket';
+module.exports.bucketName = 'riak_index_tests';
 
 /**
 * Bucket type
@@ -40,7 +40,7 @@ module.exports.bucketName = 'njstest_test_bucket';
 * riak-admin bucket-type create plain '{"props":{}}'
 * riak-admin bucket-type activate plain
 */
-module.exports.bucketType = 'plain';
+module.exports.bucketType = 'leveldb_type';
 
 module.exports.nodeAddresses = ['riak-test:10017'];
 
@@ -48,25 +48,31 @@ module.exports.cleanBucket = function(cluster, type, bucket, callback) {
   
     // Note this also acts as the integration test for ListKeys and 
     // DeleteValue
-    logger.debug('Clearing bucket; %s:%s', type, bucket);
+    logger.debug('Clearing bucket: %s:%s', type, bucket);
     var numKeys = 0;
     var count = 0;
     var lkCallback = function(err, resp) {
         assert(!err, err);
-        var i;
         
         numKeys += resp.keys.length;
+
+        if (numKeys > 0) {
+            logger.debug('\tkey count to delete %s', numKeys);
+        } else {
+            logger.debug('DONE clearing bucket: %s:%s', type, bucket);
+            callback();
+        }
         
         var dCallback = function(err, resp) {
             assert(!err, err);
             count++;
             if (count === numKeys) {
+                logger.debug('DONE clearing bucket: %s:%s', type, bucket);
                 callback();
             }
-        
         };
         
-        for (i = 0; i < resp.keys.length; i++) {
+        for (var i = 0; i < resp.keys.length; i++) {
             
             var del = new DeleteValue.Builder()
                     .withBucket(resp.bucket)
@@ -89,5 +95,5 @@ module.exports.cleanBucket = function(cluster, type, bucket, callback) {
     
     cluster.execute(list);
     
-    
 };
+

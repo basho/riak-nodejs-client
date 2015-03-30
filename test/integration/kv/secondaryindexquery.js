@@ -48,6 +48,7 @@ describe('Secondary Index Query - Integration', function() {
             ro.addToIndex('id_int', i);
             ro.setValue('this is a value');
             var store = new StoreValue.Builder()
+                    .withBucketType(Test.bucketType)
                     .withBucket(Test.bucketName)
                     .withContent(ro)
                     .withKey('key' + i)
@@ -60,6 +61,7 @@ describe('Secondary Index Query - Integration', function() {
             ro.addToIndex('email_bin', 'email' + i);
             ro.setValue('this is a value');
             store = new StoreValue.Builder()
+                    .withBucketType(Test.bucketType)
                     .withBucket(Test.bucketName)
                     .withContent(ro)
                     .withKey('key_' + i)
@@ -68,11 +70,10 @@ describe('Secondary Index Query - Integration', function() {
 
             cluster.execute(store);
             
-            
-            var ro = new RiakObject();
+            ro = new RiakObject();
             ro.addToIndex('id_int', i);
             ro.setValue('this is a value');
-            var store = new StoreValue.Builder()
+            store = new StoreValue.Builder()
                     .withBucketType(Test.bucketType)
                     .withBucket(Test.bucketName)
                     .withContent(ro)
@@ -102,7 +103,7 @@ describe('Secondary Index Query - Integration', function() {
     after(function(done) {
         Test.cleanBucket(cluster, 'default', Test.bucketName, function() { 
             Test.cleanBucket(cluster, Test.bucketType, Test.bucketName, function() {
-                cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done();} });
+                cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done(); } });
                 cluster.stop();
             });
         });
@@ -123,6 +124,7 @@ describe('Secondary Index Query - Integration', function() {
         
         var siq = new SecondaryIndexQuery.Builder()
 					.withBucket(Test.bucketName)
+                    .withBucketType(Test.bucketType)
 					.withIndexName('id_int')
 					.withRange(0,10000)
 					.withCallback(callback)
@@ -130,7 +132,6 @@ describe('Secondary Index Query - Integration', function() {
 					.build();
 
 		cluster.execute(siq);
-
        
    });
    
@@ -156,7 +157,6 @@ describe('Secondary Index Query - Integration', function() {
 					.build();
 
 		cluster.execute(siq);
-
        
    });
    
@@ -174,6 +174,7 @@ describe('Secondary Index Query - Integration', function() {
         
         var siq = new SecondaryIndexQuery.Builder()
 					.withBucket(Test.bucketName)
+                    .withBucketType(Test.bucketType)
 					.withIndexName('email_bin')
 					.withRange('a','z')
 					.withCallback(callback)
@@ -181,7 +182,6 @@ describe('Secondary Index Query - Integration', function() {
 					.build();
 
 		cluster.execute(siq);
-
        
    });
    
@@ -207,11 +207,10 @@ describe('Secondary Index Query - Integration', function() {
 					.build();
 
 		cluster.execute(siq);
-
        
    });
    
-   it('Should set a coninuation on a pagenated query', function(done) {
+   it('Should set a coninuation on a paginated query', function(done) {
       
        var count = 0;
         var callback = function(err, response) {
@@ -240,6 +239,3 @@ describe('Secondary Index Query - Integration', function() {
     
 });
 
-        
-        
-  
