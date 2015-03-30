@@ -48,7 +48,7 @@ describe('StoreValue - Integration', function() {
         };
       
         var store = new StoreValue.Builder()
-               .withBucket(Test.bucketName)
+               .withBucket(Test.bucketName + '_sv')
                .withKey('my_key1')
                .withContent('this is a value in Riak')
                .withCallback(callback)
@@ -79,7 +79,7 @@ describe('StoreValue - Integration', function() {
         };
         
         var store = new StoreValue.Builder()
-               .withBucket(Test.bucketName)
+               .withBucket(Test.bucketName + '_sv')
                .withKey('my_key2')
                .withContent(myObject)
                .withCallback(callback)
@@ -104,7 +104,7 @@ describe('StoreValue - Integration', function() {
         };
         
         var store = new StoreValue.Builder()
-               .withBucket(Test.bucketName)
+               .withBucket(Test.bucketName + '_sv')
                .withKey('my_key3')
                .withContent(new Buffer('some content'))
                .withCallback(callback)
@@ -128,7 +128,7 @@ describe('StoreValue - Integration', function() {
         };
       
         var store = new StoreValue.Builder()
-               .withBucket(Test.bucketName)
+               .withBucket(Test.bucketName + '_sv')
                .withBucketType(Test.bucketType)
                .withKey('my_key1')
                .withContent('this is a value in Riak')
@@ -152,7 +152,7 @@ describe('StoreValue - Integration', function() {
         };
       
         var store = new StoreValue.Builder()
-               .withBucket(Test.bucketName)
+               .withBucket(Test.bucketName + '_sv')
                .withKey('my_key4')
                .withContent('this is a value in Riak')
                .withCallback(callback)
@@ -172,7 +172,7 @@ describe('StoreValue - Integration', function() {
          };
 
          var store = new StoreValue.Builder()
-                .withBucket(Test.bucketName)
+                .withBucket(Test.bucketName + '_sv')
                 .withContent('this is a value in Riak')
                 .withCallback(callback)
                 .build();
@@ -182,8 +182,8 @@ describe('StoreValue - Integration', function() {
    });
    
    after(function(done) {
-        Test.cleanBucket(cluster, 'default', Test.bucketName, function() { 
-            Test.cleanBucket(cluster, Test.bucketType, Test.bucketName, function() {
+        Test.cleanBucket(cluster, 'default', Test.bucketName + '_sv', function() { 
+            Test.cleanBucket(cluster, Test.bucketType, Test.bucketName + '_sv', function() {
                 cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done();} });
                 cluster.stop();
             });

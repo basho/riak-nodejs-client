@@ -46,7 +46,8 @@ module.exports.nodeAddresses = ['127.0.0.1:8087'];
 
 module.exports.cleanBucket = function(cluster, type, bucket, callback) {
   
-    
+    // Note this also acts as the integration test for ListKeys and 
+    // DeleteValue
     var numKeys = 0;
     var count = 0;
     var lkCallback = function(err, resp) {
