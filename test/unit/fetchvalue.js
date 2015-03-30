@@ -81,8 +81,8 @@ describe('FetchValue', function() {
             
             var callback = function(err, response) {
                 if (response) {
-                    assert.equal(response.getRiakObjects().length, 1);
-                    var riakObject = response.getRiakObjects()[0];
+                    assert.equal(response.values.length, 1);
+                    var riakObject = response.values[0];
                     assert.equal(riakObject.getBucketType(), 'bucket_type');
                     assert.equal(riakObject.getBucket(), 'bucket_name');
                     assert.equal(riakObject.getKey(), 'key');

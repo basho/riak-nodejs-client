@@ -1,0 +1,195 @@
+/*
+ * Copyright 2015 Basho Technologies, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var Test = require('../testparams');
+var StoreValue = require('../../../lib/commands/kv/storevalue');
+var RiakNode = require('../../../lib/core/riaknode');
+var RiakCluster = require('../../../lib/core/riakcluster');
+var assert = require('assert');
+
+
+
+describe('StoreValue - Integration', function() {
+   
+    this.timeout(10000);
+   
+    var cluster;
+    
+    before(function(done) {
+        var nodes = RiakNode.buildNodes(Test.nodeAddresses);
+        cluster = new RiakCluster({ nodes: nodes});
+        cluster.start();
+        done();
+    });
+   
+    it('Should store a (String) value in Riak (default type) and return it', function(done) {
+            
+        var callback = function(err, resp) {
+            assert(!err, err);
+            assert.equal(resp.generatedKey, null);
+            assert(resp.vclock);
+            assert.equal(resp.values.length, 1);
+            assert.equal(resp.values[0].getValue().toString('utf8'), 'this is a value in Riak');
+            done();
+            
+        };
+      
+        var store = new StoreValue.Builder()
+               .withBucket(Test.bucketName)
+               .withKey('my_key1')
+               .withContent('this is a value in Riak')
+               .withCallback(callback)
+               .withReturnBody(true)
+               .build();
+       
+       cluster.execute(store);
+       
+   });
+   
+   it('Should store a JS object as JSON in Riak (default type) and return it', function(done) {
+       
+       var myObject = { field1: 'field1_value', field2: 'field2_value', field3: 7 };
+       
+       var callback = function(err, resp) {
+            assert(!err, err);
+            assert.equal(resp.generatedKey, null);
+            assert(resp.vclock);
+            assert.equal(resp.values.length, 1);
+            
+            var returnedObj = resp.values[0].getValue();
+            
+            assert.equal(returnedObj.field1, 'field1_value');
+            assert.equal(returnedObj.field2, 'field2_value');
+            assert.equal(returnedObj.field3, 7);
+            done();
+            
+        };
+        
+        var store = new StoreValue.Builder()
+               .withBucket(Test.bucketName)
+               .withKey('my_key2')
+               .withContent(myObject)
+               .withCallback(callback)
+               .withReturnBody(true, true)
+               .build();
+       
+       cluster.execute(store);
+       
+   });
+   
+   it('Should store a buffer in Riak (default type) and return it', function(done) {
+       
+       var callback = function(err, resp) {
+            assert(!err, err);
+            assert.equal(resp.generatedKey, null);
+            assert(resp.vclock);
+            assert.equal(resp.values.length, 1);
+            
+            assert.equal(resp.values[0].getValue().toString('utf8'), 'some content');
+            done();
+            
+        };
+        
+        var store = new StoreValue.Builder()
+               .withBucket(Test.bucketName)
+               .withKey('my_key3')
+               .withContent(new Buffer('some content'))
+               .withCallback(callback)
+               .withReturnBody(true)
+               .build();
+       
+       cluster.execute(store);
+       
+   });
+   
+   it('Should store an object in a non-default bucket-type and return it', function(done) {
+      
+       var callback = function(err, resp) {
+            assert(!err, err);
+            assert.equal(resp.generatedKey, null);
+            assert(resp.vclock);
+            assert.equal(resp.values.length, 1);
+            assert.equal(resp.values[0].getValue().toString('utf8'), 'this is a value in Riak');
+            done();
+            
+        };
+      
+        var store = new StoreValue.Builder()
+               .withBucket(Test.bucketName)
+               .withBucketType(Test.bucketType)
+               .withKey('my_key1')
+               .withContent('this is a value in Riak')
+               .withCallback(callback)
+               .withReturnBody(true)
+               .build();
+       
+       cluster.execute(store);
+       
+   });
+   
+   it('Should store an object and not return it (returnBody=false)', function(done) {
+      
+       var callback = function(err, resp) {
+            assert(!err, err);
+            assert.equal(resp.generatedKey, null);
+            assert(!resp.vclock);
+            assert.equal(resp.values.length, 0);
+            done();
+            
+        };
+      
+        var store = new StoreValue.Builder()
+               .withBucket(Test.bucketName)
+               .withKey('my_key4')
+               .withContent('this is a value in Riak')
+               .withCallback(callback)
+               .build();
+       
+       cluster.execute(store);
+       
+   });
+   
+   it('Should store a value and generate a key, returning it', function(done) {
+      
+        var callback = function(err, resp) {
+             assert(!err, err);
+             assert(resp.generatedKey);
+             done();
+
+         };
+
+         var store = new StoreValue.Builder()
+                .withBucket(Test.bucketName)
+                .withContent('this is a value in Riak')
+                .withCallback(callback)
+                .build();
+       
+        cluster.execute(store);
+       
+   });
+   
+   after(function(done) {
+        Test.cleanBucket(cluster, 'default', Test.bucketName, function() { 
+            Test.cleanBucket(cluster, Test.bucketType, Test.bucketName, function() {
+                cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done();} });
+                cluster.stop();
+            });
+        });
+        
+   });
+   
+});
+
