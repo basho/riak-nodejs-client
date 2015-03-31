@@ -34,6 +34,8 @@ Please see the [wiki](https://github.com/basho/riak-nodejs-client/wiki).
 Release Notes
 -------------
 
+* v1.0.0 - Initial release with Riak 2 compatibility.
+
 License
 -------
 
