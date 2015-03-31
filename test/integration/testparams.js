@@ -18,17 +18,6 @@ var ListKeys = require('../../lib/commands/kv/listkeys');
 var DeleteValue = require('../../lib/commands/kv/deletevalue');
 var assert = require('assert');
 var logger = require('winston');
-/*
- * To increase logging verbosity: */
-
-logger.remove(logger.transports.Console);
-logger.add(logger.transports.Console, {
-    level : 'debug',
-    colorize: true,
-    timestamp: true
-});
-// */
-
 
 module.exports.bucketName = 'riak_index_tests';
 

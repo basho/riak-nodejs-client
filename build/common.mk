@@ -17,6 +17,9 @@ unit-test:
 integration-test:
 	$(GRUNT) integration
 
+security-test:
+	$(GRUNT) security
+
 test:
 	$(GRUNT)
 
@@ -27,8 +30,9 @@ help:
 	@echo ' all              - Run everything                '
 	@echo ' lint             - Run jshint                    '
 	@echo ' install-deps     - Install required dependencies '
-	@echo ' test             - Run all tests                 '
+	@echo ' test             - Run unit & integration tests  '
 	@echo ' unit-test        - Run unit tests                '
 	@echo ' integration-test - Run integration tests         '
+	@echo ' security-test    - Run security tests            '
 	@echo '--------------------------------------------------'
 	@echo ''
