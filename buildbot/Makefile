@@ -6,7 +6,7 @@ RIAK_CONF = $(RIAK_DIR)/etc/riak.conf
 ADV_CONF = $(RIAK_DIR)/etc/advanced.config
 RIAK_ADMIN = $(RIAK_DIR)/bin/riak-admin
 
-export RIAK_HOST = 'localhost'
+export RIAK_HOST = localhost
 export RIAK_PORT = 8087
 
 preconfigure:
