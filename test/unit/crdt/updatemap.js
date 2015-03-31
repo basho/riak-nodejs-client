@@ -225,16 +225,16 @@ describe('UpdateMap', function() {
                 mapEntry.set_value.push.apply(mapEntry.set_value, [ByteBuffer.fromUTF8('value_1'), ByteBuffer.fromUTF8('value_2')]);
                 mapEntries.push(mapEntry);
                 
-                var mapEntry = new MapEntry();
-                var mapField = new MapField();
+                mapEntry = new MapEntry();
+                mapField = new MapField();
                 mapField.setType(MapField.MapFieldType.REGISTER);
                 mapField.setName(new Buffer('register_1'));
                 mapEntry.setField(mapField);
                 mapEntry.setRegisterValue(ByteBuffer.fromUTF8('1234'));
                 mapEntries.push(mapEntry);
                 
-                var mapEntry = new MapEntry();
-                var mapField = new MapField();
+                mapEntry = new MapEntry();
+                mapField = new MapField();
                 mapField.setType(MapField.MapFieldType.FLAG);
                 mapField.setName(new Buffer('flag_1'));
                 mapEntry.setField(mapField);
@@ -262,15 +262,15 @@ describe('UpdateMap', function() {
                 assert.equal(resp.context.toString('utf8'), '1234');
                 
                 var verifyMap = function(map) {
-                    assert.equal(map.counters['counter_1'], 50);
-                    assert.equal(map.sets['set_1'][0], 'value_1');
-                    assert.equal(map.sets['set_1'][1], 'value_2');
-                    assert.equal(map.registers['register_1'].toString('utf8'), '1234');
-                    assert.equal(map.flags['flag_1'], true);
+                    assert.equal(map.counters.counter_1, 50);
+                    assert.equal(map.sets.set_1[0], 'value_1');
+                    assert.equal(map.sets.set_1[1], 'value_2');
+                    assert.equal(map.registers.register_1.toString('utf8'), '1234');
+                    assert.equal(map.flags.flag_1, true);
                 };
             
                 verifyMap(resp.map);
-                verifyMap(resp.map.maps['map_1']);
+                verifyMap(resp.map.maps.map_1);
                 done();
             
             };

@@ -42,10 +42,10 @@ describe('ListBuckets', function() {
         
         it('should take multiple RpbListBucketsResp and call the users callback with the response', function(done) {
            
-            var callback = function(err, buckets, complete){
-                
-                assert.equal(buckets.length, 100);
-                assert.equal(complete, true);
+            var callback = function(err, resp){
+                assert(!err, err);
+                assert.equal(resp.buckets.length, 100);
+                assert.equal(resp.done, true);
                 done();
             };
             
@@ -72,11 +72,11 @@ describe('ListBuckets', function() {
            
             var count = 0;
             var timesCalled = 0;
-            var callback = function(err, buckets, complete){
+            var callback = function(err, resp){
                 
                 timesCalled++;
-                count += buckets.length;
-                if (complete) {
+                count += resp.buckets.length;
+                if (resp.done) {
                     assert.equal(timesCalled, 20);
                     assert.equal(count, 100);
                     done();

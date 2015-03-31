@@ -40,10 +40,10 @@ describe('ListKeys', function() {
         
         it('should take multiple RpbListKeysResp and call the users callback with the response', function(done) {
            
-            var callback = function(err, keys, complete){
+            var callback = function(err, resp){
                 
-                assert.equal(keys.length, 100);
-                assert.equal(complete, true);
+                assert.equal(resp.keys.length, 100);
+                assert.equal(resp.done, true);
                 done();
             };
             
@@ -71,11 +71,11 @@ describe('ListKeys', function() {
            
             var count = 0;
             var timesCalled = 0;
-            var callback = function(err, keys, complete){
+            var callback = function(err, resp){
                 
                 timesCalled++;
-                count += keys.length;
-                if (complete) {
+                count += resp.keys.length;
+                if (resp.done) {
                     assert.equal(timesCalled, 20);
                     assert.equal(count, 100);
                     done();

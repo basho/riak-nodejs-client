@@ -77,6 +77,32 @@ describe('StoreValue', function() {
             
         });
         
+        it('Should take the key, bucket, type and vclock from a RiakObject', function(done) {
+           
+            var value = 'this is a value';
+            var riakObject = new RiakObject()
+                    .setKey('key')
+                    .setBucket('bucket_name')
+                    .setBucketType('bucket_type')
+                    .setVClock(new Buffer('1234'))
+                    .setValue('this is a value');
+            
+            var storeCommand = new StoreValue.Builder()
+                    .withContent(riakObject)
+                    .withCallback(function(){})
+                    .build();
+            
+            var protobuf = storeCommand.constructPbRequest();
+            
+            assert.equal(protobuf.getType().toString('utf8'), 'bucket_type');
+            assert.equal(protobuf.getBucket().toString('utf8'), 'bucket_name');
+            assert.equal(protobuf.getKey().toString('utf8'), 'key');
+            assert.equal(protobuf.getVclock().toString('utf8'), '1234');
+            assert.equal(protobuf.getContent().getValue().toString('utf8'), 'this is a value');
+            done();
+            
+        });
+        
         it('should take a RpbPutResp and call the users callback with the response', function(done) {
             
             var rpbContent = new RpbContent();
@@ -99,8 +125,8 @@ describe('StoreValue', function() {
             
             var callback = function(err, response) {
                 if (response) {
-                    assert.equal(response.getRiakObjects().length, 1);
-                    var riakObject = response.getRiakObjects()[0];
+                    assert.equal(response.values.length, 1);
+                    var riakObject = response.values[0];
                     assert.equal(riakObject.getBucketType(), 'bucket_type');
                     assert.equal(riakObject.getBucket(), 'bucket_name');
                     assert.equal(riakObject.getKey(), 'key');

@@ -49,13 +49,13 @@ describe('MapReduce', function() {
             resp.response = new Buffer('[{ "the": 8}]');
             resp.done = true;
             
-            var callback = function(err, resp, complete) {
+            var callback = function(err, resp) {
                 assert(resp.phase_1);
                 // returned JSON is parsed and returned as JS
                 assert.equal(resp.phase_1.constructor, Array);
                 assert.equal(resp.phase_1.length, 1);
                 assert.equal(resp.phase_1[0].the, 8);
-                assert.equal(complete, true);
+                assert.equal(resp.done, true);
                 done();
             };
             
@@ -73,13 +73,13 @@ describe('MapReduce', function() {
             resp.response = new Buffer('[{ "the": 8}]');
             resp.done = true;
             
-            var callback = function(err, resp, complete) {
+            var callback = function(err, resp) {
                 assert.equal(resp.phase, 1);
                 // returned JSON is parsed and returned as JS
                 assert.equal(resp.response.constructor, Array);
                 assert.equal(resp.response.length, 1);
                 assert.equal(resp.response[0].the, 8);
-                assert.equal(complete, true);
+                assert.equal(resp.done, true);
                 done();
             };
             

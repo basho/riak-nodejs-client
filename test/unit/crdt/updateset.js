@@ -113,7 +113,7 @@ describe('UpdateSet', function() {
 
     describe('with body, without key, as buffers', function() {
         it('calls back with successful results', function(done) {
-            var resp = new DtUpdateResp;
+            var resp = new DtUpdateResp();
             resp.setContext(new Buffer("asdf"));
             resp.setSetValue([hampenBuffer, snabbfotadBuffer]);
 
@@ -141,7 +141,7 @@ describe('UpdateSet', function() {
 
     describe('with body, without key, as strings', function() {
         it('calls back with successful results', function(done) {
-            var resp = new DtUpdateResp;
+            var resp = new DtUpdateResp();
             resp.setContext(new Buffer("asdf"));
             resp.setSetValue([hampenBuffer, snabbfotadBuffer]);
 
