@@ -80,10 +80,10 @@ describe('Update and Fetch Map - Integration', function() {
             assert(!err, err);
             assert(resp.context);
             assert(resp.map);
-            assert.equal(resp.map.counters['counter_1'], 50);
-            assert.equal(resp.map.sets['set_1'][0], 'value_1');
-            assert.equal(resp.map.registers['register_1'].toString('utf8'), 'register_value_1');
-            assert.equal(resp.map.flags['flag_1'], true);
+            assert.equal(resp.map.counters.counter_1, 50);
+            assert.equal(resp.map.sets.set_1[0], 'value_1');
+            assert.equal(resp.map.registers.register_1.toString('utf8'), 'register_value_1');
+            assert.equal(resp.map.flags.flag_1, true);
             done();
         };
         
@@ -105,10 +105,10 @@ describe('Update and Fetch Map - Integration', function() {
             assert(!err, err);
             assert(resp.context);
             assert(resp.map);
-            assert(!resp.map.counters['counter_1']);
-            assert.equal(resp.map.sets['set_1'][0], 'value_1');
-            assert.equal(resp.map.registers['register_1'].toString('utf8'), 'register_value_1');
-            assert.equal(resp.map.flags['flag_1'], true);
+            assert(!resp.map.counters.counter_1);
+            assert.equal(resp.map.sets.set_1[0], 'value_1');
+            assert.equal(resp.map.registers.register_1.toString('utf8'), 'register_value_1');
+            assert.equal(resp.map.flags.flag_1, true);
             done();
         };
         

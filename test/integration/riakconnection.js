@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-var Test = require('../testparams');
+var Test = require('./testparams');
 var RiakConnection = require('../../lib/core/riakconnection');
 var assert = require('assert');
 var fs = require('fs');
