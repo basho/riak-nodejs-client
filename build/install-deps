@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+PLATFORM=$(uname -s)
+
+if [[ $PLATFORM != 'Linux' ]]
+then
+    echo '[error] must be run on Linux platforms' 2>&1
+    exit 1
+fi
+
+set -o nounset
+
+apt_get=$(which apt-get 2>/dev/null)
+if [[ ! -x $apt_get ]]
+then
+    echo '[error] must be run on Linux platform that uses deb packaging' 2>&1
+    exit 1
+fi
+
+if [[ -f /etc/lsb-release ]]
+then
+    source /etc/lsb-release
+    if [[ $DISTRIB_CODENAME != 'precise' ]]
+    then
+        echo '[error] Only tested on Ubuntu 12 precise' 2>&1
+        exit 1
+    fi
+else
+    echo '[error] /etc/lsb-release does not exist' 2>&1
+    exit 1
+fi
+
+declare -r projdir="$1"
+
+curl=$(which curl 2>/dev/null)
+node=$(which node 2>/dev/null)
+npm=$(which npm 2>/dev/null)
+
+set -o errexit
+
+if [[ ! -x $curl ]]
+then
+    export DEBIAN_FRONTEND=noninteractive
+    sudo apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' update
+    sudo apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install curl
+fi
+echo '[info] curl dependency is installed'
+
+if [[ ! -x $node || ! -x $npm ]]
+then
+    # https://nodesource.com/blog/nodejs-v012-iojs-and-the-nodesource-linux-repositories
+    curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
+    sudo apt-get install -y nodejs
+fi
+echo '[info] node dependencies are installed'
+
+echo '[info] running "npm install" to install node modules...'
+(cd $projdir && npm install)
+

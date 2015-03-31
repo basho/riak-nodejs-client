@@ -1,6 +1,6 @@
 /nbproject
 node_modules/
-results.txt
+*results.txt
 docs/
 tags
 *.tgz

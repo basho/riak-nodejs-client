@@ -1,9 +1,13 @@
-TOPDIR = $(realpath $(CURDIR)/..)
+PROJDIR = $(realpath $(CURDIR)/..)
+include $(PROJDIR)/build/common.mk
 
-TOOLS_DIR = $(TOPDIR)/tools/devrel
+TOOLS_DIR = $(PROJDIR)/tools/devrel
 RIAK_CONF = $(RIAK_DIR)/etc/riak.conf
 ADV_CONF = $(RIAK_DIR)/etc/advanced.config
 RIAK_ADMIN = $(RIAK_DIR)/bin/riak-admin
+
+export RIAK_HOST = localhost
+export RIAK_PORT = 8087
 
 preconfigure:
 	$(TOOLS_DIR)/gen-riak-conf $(RIAK_CONF) 8098 8087
@@ -13,14 +17,8 @@ preconfigure:
 configure:
 	$(TOOLS_DIR)/riak-cluster-config $(RIAK_ADMIN) 8098 true false
 
-compile: install-deps debug
-
-lint:
-	grunt jshint
+compile: install-deps
 
 setup-integration:
 	echo 'Nothing to do!'
-
-test:
-	grunt
 
