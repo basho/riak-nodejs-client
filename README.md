@@ -36,4 +36,5 @@ The following people have contributed to Riak NodeJS Client:
 
 * Brian Roach
 * Luke Bakken
+* Bryce Kerley
 
