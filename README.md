@@ -1,6 +1,9 @@
 Riak NodeJS Client
 ==================
 
+This is a **work in progress**. We are nearing completetion of what will be v1.0 of the Riak NodeJS client. 
+Check back soon!
+
 Cloning
 -------
 

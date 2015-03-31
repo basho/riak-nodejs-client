@@ -20,6 +20,7 @@ var DtFetchReq = Rpb.getProtoFor('DtFetchReq');
 var DtFetchResp = Rpb.getProtoFor('DtFetchResp');
 var DtValue = Rpb.getProtoFor('DtValue');
 var RpbErrorResp = Rpb.getProtoFor('RpbErrorResp');
+var ByteBuffer = require('bytebuffer');
 
 var ByteBuffer = require('bytebuffer');
 var assert = require('assert');
@@ -57,17 +58,17 @@ describe('FetchSet', function() {
             done();
         });
 
-        it('calls back with successful results', function(done){
+        it('calls back with successful results as buffers', function(done){
             var resp = new DtFetchResp();
             resp.type = 2;
-            resp.context = new Buffer("asdf");
+            resp.context = ByteBuffer.fromUTF8("asdf");
 
             var value = new DtValue();
             resp.setValue(value);
 
-            value.set_value = [new Buffer("zedo"),
-                               new Buffer("piper"),
-                               new Buffer("little one")];
+            value.set_value = [ByteBuffer.fromUTF8("zedo"),
+                               ByteBuffer.fromUTF8("piper"),
+                               ByteBuffer.fromUTF8("little one")];
 
             var includesBuffer = function(haystack, needle) {
                 var needleBuf = new Buffer(needle);
@@ -78,6 +79,38 @@ describe('FetchSet', function() {
                 
                 return false;
             };
+
+            var callback = function(err, response) {
+                assert.equal(response.context.toString("utf8"), "asdf");
+
+                assert(includesBuffer(response.values, "zedo"));
+
+                assert(includesBuffer(response.values, "piper"));
+                
+                assert(includesBuffer(response.values, "little one"));
+                
+                done();
+            };
+
+            var fetch = builder.
+                    withCallback(callback).
+                    withSetsAsBuffers(true).
+                    build();
+
+            fetch.onSuccess(resp);
+        });
+        
+        it('calls back with successful results as strings', function(done){
+            var resp = new DtFetchResp();
+            resp.type = 2;
+            resp.context = ByteBuffer.fromUTF8("asdf");
+
+            var value = new DtValue();
+            resp.setValue(value);
+
+            value.set_value = [ByteBuffer.fromUTF8("zedo"),
+                               ByteBuffer.fromUTF8("piper"),
+                               ByteBuffer.fromUTF8("little one")];
 
             var includes = function(haystack, needle) {
                 var len = haystack.length;
@@ -90,22 +123,19 @@ describe('FetchSet', function() {
             
             var callback = function(err, response) {
                 assert.equal(response.context.toString("utf8"), "asdf");
-                assert.equal(response.dataType, 2);
 
-                assert(includesBuffer(response.valueBuffers, "zedo"));
-                assert(includes(response.value, "zedo"));
+                assert(includes(response.values, "zedo"));
 
-                assert(includesBuffer(response.valueBuffers, "piper"));
-                assert(includes(response.value, "piper"));
+                assert(includes(response.values, "piper"));
                 
-                assert(includesBuffer(response.valueBuffers, "little one"));
-                assert(includes(response.value, "little one"));
+                assert(includes(response.values, "little one"));
                 
                 done();
             };
 
             var fetch = builder.
                     withCallback(callback).
+                    withSetsAsBuffers(false).
                     build();
 
             fetch.onSuccess(resp);

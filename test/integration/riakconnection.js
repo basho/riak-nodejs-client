@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+var Test = require('./testparams');
 var RiakConnection = require('../../lib/core/riakconnection');
 var assert = require('assert');
 var fs = require('fs');
@@ -34,8 +35,8 @@ describe('RiakConnection - Integration', function() {
         it('should emit on connection success', function(done) {
 
             var conn = new RiakConnection({
-                remoteAddress : 'riak-test',
-                remotePort : 10017,
+                remoteAddress : Test.riakHost,
+                remotePort : Test.riakPort,
                 connectionTimeout : 30000,
                 auth: {
                     // Use the following when the private key and public cert
@@ -72,8 +73,8 @@ describe('RiakConnection - Integration', function() {
         it('should emit on connection success', function(done) {
 
             var conn = new RiakConnection({
-                remoteAddress : 'riak-test',
-                remotePort : 10017,
+                remoteAddress : Test.riakHost,
+                remotePort : Test.riakPort,
                 connectionTimeout : 5000,
                 auth: {
                     user: 'riakpass',
@@ -105,10 +106,11 @@ describe('RiakConnection - Integration', function() {
         this.timeout(5000);
         
         it('should emit on connection success', function(done) {
-            var conn = new RiakConnection({ remoteAddress : "127.0.0.1",
-                                            remotePort : 1337,
-                                            connectionTimeout : 30000
-                                          });
+            var conn = new RiakConnection({
+                remoteAddress : "127.0.0.1",
+                remotePort : 1337,
+                connectionTimeout : 30000
+            });
             var errTimeout = setTimeout(function () {
                 assert(false, 'Event never fired');
                 done();

@@ -1,0 +1,106 @@
+{
+  "name": "riakclient",
+  "version": "0.1.0",
+  "npm-shrinkwrap-version": "5.3.0",
+  "node-version": "v0.12.0",
+  "dependencies": {
+    "bytebuffer": {
+      "version": "3.5.4",
+      "resolved": "https://registry.npmjs.org/bytebuffer/-/bytebuffer-3.5.4.tgz",
+      "dependencies": {
+        "bufferview": {
+          "version": "1.0.1",
+          "resolved": "https://registry.npmjs.org/bufferview/-/bufferview-1.0.1.tgz"
+        },
+        "long": {
+          "version": "2.2.3",
+          "resolved": "https://registry.npmjs.org/long/-/long-2.2.3.tgz"
+        }
+      }
+    },
+    "hashmap": {
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/hashmap/-/hashmap-2.0.1.tgz"
+    },
+    "joi": {
+      "version": "6.0.8",
+      "resolved": "https://registry.npmjs.org/joi/-/joi-6.0.8.tgz",
+      "dependencies": {
+        "hoek": {
+          "version": "2.12.0",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-2.12.0.tgz"
+        },
+        "isemail": {
+          "version": "1.1.1",
+          "resolved": "https://registry.npmjs.org/isemail/-/isemail-1.1.1.tgz"
+        },
+        "moment": {
+          "version": "2.9.0",
+          "resolved": "https://registry.npmjs.org/moment/-/moment-2.9.0.tgz"
+        },
+        "topo": {
+          "version": "1.0.2",
+          "resolved": "https://registry.npmjs.org/topo/-/topo-1.0.2.tgz"
+        }
+      }
+    },
+    "linkedlist": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/linkedlist/-/linkedlist-1.0.1.tgz"
+    },
+    "protobufjs": {
+      "version": "3.8.2",
+      "resolved": "https://registry.npmjs.org/protobufjs/-/protobufjs-3.8.2.tgz",
+      "dependencies": {
+        "ascli": {
+          "version": "0.3.0",
+          "resolved": "https://registry.npmjs.org/ascli/-/ascli-0.3.0.tgz",
+          "dependencies": {
+            "colour": {
+              "version": "0.7.1",
+              "resolved": "https://registry.npmjs.org/colour/-/colour-0.7.1.tgz"
+            },
+            "optjs": {
+              "version": "3.2.1-boom",
+              "resolved": "https://registry.npmjs.org/optjs/-/optjs-3.2.1-boom.tgz"
+            }
+          }
+        }
+      }
+    },
+    "winston": {
+      "version": "0.9.0",
+      "resolved": "https://registry.npmjs.org/winston/-/winston-0.9.0.tgz",
+      "dependencies": {
+        "async": {
+          "version": "0.9.0",
+          "resolved": "https://registry.npmjs.org/async/-/async-0.9.0.tgz"
+        },
+        "colors": {
+          "version": "1.0.3",
+          "resolved": "https://registry.npmjs.org/colors/-/colors-1.0.3.tgz"
+        },
+        "cycle": {
+          "version": "1.0.3",
+          "resolved": "https://registry.npmjs.org/cycle/-/cycle-1.0.3.tgz"
+        },
+        "eyes": {
+          "version": "0.1.8",
+          "resolved": "https://registry.npmjs.org/eyes/-/eyes-0.1.8.tgz"
+        },
+        "isstream": {
+          "version": "0.1.2",
+          "resolved": "https://registry.npmjs.org/isstream/-/isstream-0.1.2.tgz"
+        },
+        "pkginfo": {
+          "version": "0.3.0",
+          "resolved": "https://registry.npmjs.org/pkginfo/-/pkginfo-0.3.0.tgz"
+        },
+        "stack-trace": {
+          "version": "0.0.9",
+          "resolved": "https://registry.npmjs.org/stack-trace/-/stack-trace-0.0.9.tgz"
+        }
+      }
+    }
+  }
+}
