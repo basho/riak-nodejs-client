@@ -4,6 +4,9 @@ Riak NodeJS Client
 This is a **work in progress**. We are nearing completetion of what will be v1.0 of the Riak NodeJS client. 
 Check back soon!
 
+Travis-CI Build Status
+----------------------
+
 Cloning
 -------
 
@@ -23,14 +26,10 @@ Building From Source
     make unit-test
     ```
 
-Travis-CI Build Status
-----------------------
-
-Authors
--------
-
 Documentation
 -------------
+
+Please see the [wiki](https://github.com/basho/riak-nodejs-client/wiki).
 
 Release Notes
 -------------
