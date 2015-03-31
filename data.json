@@ -1,5 +1,10 @@
 {
-    "project": {},
+    "project": {
+        "name": "Basho Riak NodeJS CLient",
+        "description": "The offical NodeJS client for Riak, supported by Basho Technologies",
+        "version": "1.0.0",
+        "url": "http://basho.github.io/riak-nodejs-client/"
+    },
     "files": {
         "lib/commands/crdt/fetchcounter.js": {
             "name": "lib/commands/crdt/fetchcounter.js",
@@ -8078,207 +8083,472 @@
             "description": "See {{#crossLink \"RiakCluster/execute:method\"}}RiakCluster#execute{{/crossLink}}",
             "itemtype": "method",
             "name": "execute",
+            "params": [
+                {
+                    "name": "command",
+                    "description": "Any Riak command object from the various modules.",
+                    "type": "Object"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 72,
+            "line": 73,
             "description": "See {{#crossLink \"Ping\"}}{{/crossLink}}",
-            "itemtype": "method",
-            "name": "ping",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 81,
+            "line": 82,
             "description": "See {{#crossLink \"DeleteValue\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "deleteValue",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 90,
+            "line": 93,
             "description": "See {{#crossLink \"FetchBucketProps\"}}{{/crossLink}}",
             "itemtype": "method",
-            "name": "fetchBucketProps",
+            "name": "fetchBucketProps * @param  options The options for this operation.",
+            "type": "Object",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 99,
+            "line": 103,
             "description": "See {{#crossLink \"FetchValue\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchValue",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 108,
+            "line": 114,
             "description": "See {{#crossLink \"ListBuckets\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "ListBuckets",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 117,
+            "line": 125,
             "description": "See {{#crossLink \"ListKeys\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "listKeys",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 126,
+            "line": 136,
             "description": "See {{#crossLink \"SecondaryIndexQuery\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "secondaryIndexQuery",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 135,
+            "line": 147,
             "description": "See {{#crossLink \"StoreBucketProps\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeBucketProps",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 144,
+            "line": 158,
             "description": "See {{#crossLink \"StoreValue\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeValue",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 157,
+            "line": 173,
             "description": "See {{#crossLink \"FetchCounter\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchCounter",
-            "class": "Client",
-            "module": "Client"
-        },
-        {
-            "file": "lib/client.js",
-            "line": 166,
-            "description": "See {{#crossLink \"UpdateCounter\"}}{{/crossLink}}",
-            "itemtype": "method",
-            "name": "updateCounter",
-            "class": "Client",
-            "module": "Client"
-        },
-        {
-            "file": "lib/client.js",
-            "line": 175,
-            "description": "See {{#crossLink \"FetchSet\"}}{{/crossLink}}",
-            "itemtype": "method",
-            "name": "fetchSet",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
             "line": 184,
+            "description": "See {{#crossLink \"UpdateCounter\"}}{{/crossLink}}",
+            "itemtype": "method",
+            "name": "updateCounter",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
+            "class": "Client",
+            "module": "Client"
+        },
+        {
+            "file": "lib/client.js",
+            "line": 195,
+            "description": "See {{#crossLink \"FetchSet\"}}{{/crossLink}}",
+            "itemtype": "method",
+            "name": "fetchSet",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
+            "class": "Client",
+            "module": "Client"
+        },
+        {
+            "file": "lib/client.js",
+            "line": 206,
             "description": "See {{#crossLink \"UpdateSet\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "updateSet",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 193,
+            "line": 217,
             "description": "See {{#crossLink \"FetchMap\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchMap",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 202,
+            "line": 228,
             "description": "See {{#crossLink \"UpdateMap\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "updateMap",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 215,
+            "line": 243,
             "description": "See {{#crossLink \"DeleteIndex\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "deleteIndex",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 224,
+            "line": 254,
             "description": "See {{#crossLink \"FetchIndex\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchIndex",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 233,
+            "line": 265,
             "description": "See {{#crossLink \"FetchSchema\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchSchema",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 242,
+            "line": 276,
             "description": "See {{#crossLink \"Search\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "search",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 251,
+            "line": 287,
             "description": "See {{#crossLink \"StoreIndex\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeIndex",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 260,
+            "line": 298,
             "description": "See {{#crossLink \"StoreSchema\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeSchema",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         },
         {
             "file": "lib/client.js",
-            "line": 273,
+            "line": 313,
             "description": "See {{#crossLink \"MapReduce\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "mapReduce",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this operation.",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function"
+                }
+            ],
             "class": "Client",
             "module": "Client"
         }
     ],
-    "warnings": []
+    "warnings": [
+        {
+            "message": "Missing item type\nSee {{#crossLink \"Ping\"}}{{/crossLink}}",
+            "line": " lib/client.js:73"
+        }
+    ]
 }
