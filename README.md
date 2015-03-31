@@ -12,6 +12,17 @@ Cloning
 Building From Source
 ----------------------
 
+* Ensure NodeJS 0.12 or later is installed
+* Ensure the `npm` command is available.
+* Clone and build it:
+
+    ```
+    git clone --recursive git://github.com/basho/riak-nodejs-client.git`
+    cd riak-nodejs-client
+    make install-deps
+    make unit-test
+    ```
+
 Travis-CI Build Status
 ----------------------
 
