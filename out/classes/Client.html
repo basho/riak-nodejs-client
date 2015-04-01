@@ -148,6 +148,28 @@
 
 <div class="box intro">
     <p>A Class that represents a Riak client.</p>
+<p>The client constructor accepts a <a href="../classes/RiakCluster.html" class="crosslink">RiakCluster</a>, or a list of host[:port] from
+which it will create a RiakCluster using our default configuration.</p>
+<pre class="code prettyprint"><code>var Riak = require('riak');
+var client = new Riak.Client(['192.168.1.1:8087', '192.168.1.2:8087']);
+</code></pre>
+<p>Two styles of use are supported. Each command you can send to Riak is a
+class and can be instantiated then executed by the client's execute() method.
+In addition, convenience methods are provided directly by the Client class
+that corrispond to each of the commands.</p>
+<pre class="code prettyprint"><code>// Using the builder, but options can also be passed directly to the constructor
+var fetch = new Riak.Commands.KV.FetchValue.Builder() 
+             .withBucket('myBucket')
+             .withKey('myKey')
+             .withCallback(callback)
+             .build();
+             
+client.execute(fetch);
+</code></pre>
+<p>or</p>
+<pre class="code prettyprint"><code>client.fetchValue({ bucket: 'myBucket', key: 'myKey' }, callback);
+</code></pre>
+<p>All command callbacks are the typical node.js function(err, resp) style.</p>
 
 </div>
 
@@ -196,7 +218,7 @@
         
                             <div class="param-description">
                                 <ul>
-        <li>either an array of IP|fqdn[:port] or the cluster to use. See <a href="../classes/RiakCluster.html" class="crosslink">RiakCluster</a>.</li>
+        <li>either an array of host[:port] strings or the cluster to use. See <a href="../classes/RiakCluster.html" class="crosslink">RiakCluster</a>.</li>
         </ul>
         
                             </div>
@@ -278,6 +300,10 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_ping">ping</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_search">search</a>
 
                             </li>
@@ -347,7 +373,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l244"><code>lib&#x2F;client.js:244</code></a>
+        <a href="../files/lib_client.js.html#l271"><code>lib&#x2F;client.js:271</code></a>
         </p>
 
 
@@ -415,7 +441,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l82"><code>lib&#x2F;client.js:82</code></a>
+        <a href="../files/lib_client.js.html#l109"><code>lib&#x2F;client.js:109</code></a>
         </p>
 
 
@@ -480,7 +506,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l64"><code>lib&#x2F;client.js:64</code></a>
+        <a href="../files/lib_client.js.html#l90"><code>lib&#x2F;client.js:90</code></a>
         </p>
 
 
@@ -537,7 +563,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l93"><code>lib&#x2F;client.js:93</code></a>
+        <a href="../files/lib_client.js.html#l120"><code>lib&#x2F;client.js:120</code></a>
         </p>
 
 
@@ -605,7 +631,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l174"><code>lib&#x2F;client.js:174</code></a>
+        <a href="../files/lib_client.js.html#l201"><code>lib&#x2F;client.js:201</code></a>
         </p>
 
 
@@ -673,7 +699,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l255"><code>lib&#x2F;client.js:255</code></a>
+        <a href="../files/lib_client.js.html#l282"><code>lib&#x2F;client.js:282</code></a>
         </p>
 
 
@@ -741,7 +767,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l218"><code>lib&#x2F;client.js:218</code></a>
+        <a href="../files/lib_client.js.html#l245"><code>lib&#x2F;client.js:245</code></a>
         </p>
 
 
@@ -809,7 +835,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l266"><code>lib&#x2F;client.js:266</code></a>
+        <a href="../files/lib_client.js.html#l293"><code>lib&#x2F;client.js:293</code></a>
         </p>
 
 
@@ -877,7 +903,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l196"><code>lib&#x2F;client.js:196</code></a>
+        <a href="../files/lib_client.js.html#l223"><code>lib&#x2F;client.js:223</code></a>
         </p>
 
 
@@ -945,7 +971,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l104"><code>lib&#x2F;client.js:104</code></a>
+        <a href="../files/lib_client.js.html#l131"><code>lib&#x2F;client.js:131</code></a>
         </p>
 
 
@@ -1013,7 +1039,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l115"><code>lib&#x2F;client.js:115</code></a>
+        <a href="../files/lib_client.js.html#l142"><code>lib&#x2F;client.js:142</code></a>
         </p>
 
 
@@ -1081,7 +1107,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l126"><code>lib&#x2F;client.js:126</code></a>
+        <a href="../files/lib_client.js.html#l153"><code>lib&#x2F;client.js:153</code></a>
         </p>
 
 
@@ -1149,7 +1175,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l314"><code>lib&#x2F;client.js:314</code></a>
+        <a href="../files/lib_client.js.html#l341"><code>lib&#x2F;client.js:341</code></a>
         </p>
 
 
@@ -1193,6 +1219,60 @@
 
 
 </div>
+<div id="method_ping" class="method item">
+    <h3 class="name"><code>ping</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_client.js.html#l99"><code>lib&#x2F;client.js:99</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>See <a href="../classes/Ping.html" class="crosslink">Ping</a></p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                        <p>The callback to be executed when the operation completes.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_search" class="method item">
     <h3 class="name"><code>search</code></h3>
 
@@ -1217,7 +1297,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l277"><code>lib&#x2F;client.js:277</code></a>
+        <a href="../files/lib_client.js.html#l304"><code>lib&#x2F;client.js:304</code></a>
         </p>
 
 
@@ -1285,7 +1365,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l137"><code>lib&#x2F;client.js:137</code></a>
+        <a href="../files/lib_client.js.html#l164"><code>lib&#x2F;client.js:164</code></a>
         </p>
 
 
@@ -1353,7 +1433,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l148"><code>lib&#x2F;client.js:148</code></a>
+        <a href="../files/lib_client.js.html#l175"><code>lib&#x2F;client.js:175</code></a>
         </p>
 
 
@@ -1421,7 +1501,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l288"><code>lib&#x2F;client.js:288</code></a>
+        <a href="../files/lib_client.js.html#l315"><code>lib&#x2F;client.js:315</code></a>
         </p>
 
 
@@ -1489,7 +1569,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l299"><code>lib&#x2F;client.js:299</code></a>
+        <a href="../files/lib_client.js.html#l326"><code>lib&#x2F;client.js:326</code></a>
         </p>
 
 
@@ -1557,7 +1637,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l159"><code>lib&#x2F;client.js:159</code></a>
+        <a href="../files/lib_client.js.html#l186"><code>lib&#x2F;client.js:186</code></a>
         </p>
 
 
@@ -1625,7 +1705,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l185"><code>lib&#x2F;client.js:185</code></a>
+        <a href="../files/lib_client.js.html#l212"><code>lib&#x2F;client.js:212</code></a>
         </p>
 
 
@@ -1693,7 +1773,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l229"><code>lib&#x2F;client.js:229</code></a>
+        <a href="../files/lib_client.js.html#l256"><code>lib&#x2F;client.js:256</code></a>
         </p>
 
 
@@ -1761,7 +1841,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_client.js.html#l207"><code>lib&#x2F;client.js:207</code></a>
+        <a href="../files/lib_client.js.html#l234"><code>lib&#x2F;client.js:234</code></a>
         </p>
 
 

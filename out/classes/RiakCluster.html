@@ -148,8 +148,8 @@
 
 <div class="box intro">
     <p>Provides the RiakCluster class and its Builder.</p>
-<p>Instances of this class maintain a set of RiakNode objects and
-execute commands on them.</p>
+<p>Instances of this class maintain a set of <a href="../classes/RiakNode.html" class="crosslink">RiakNode</a> objects and
+executes commands on them.</p>
 <p><strong>options</strong> is an object with the following defaults:</p>
 <pre class="code prettyprint"><code>{
   nodes: [defaultRiakNode],
@@ -223,7 +223,7 @@ var myCluster = new RiakCluster.builder().withNodes(arrayOfNodes).build();
                                             <span class="type"><a href="../classes/RiakNode.html" class="crosslink">RiakNode[]</a></span>
         
                                         <div class="param-description">
-                                            <p>An array of (unstarted) RiakNode objects.</p>
+                                            <p>An array of (unstarted) <a href="../classes/RiakNode.html" class="crosslink">RiakNode</a> objects.</p>
         
                                         </div>
         
@@ -254,6 +254,7 @@ var myCluster = new RiakCluster.builder().withNodes(arrayOfNodes).build();
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
             <li class="api-class-tab events"><a href="#events">Events</a></li>
     </ul>
 
@@ -288,6 +289,17 @@ var myCluster = new RiakCluster.builder().withNodes(arrayOfNodes).build();
                     </ul>
                 </div>
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_State">State</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                    </ul>
+                </div>
 
 
                 <div class="index-section events">
@@ -555,6 +567,45 @@ The node being removed will also be stopped.</p>
 </div>
             </div>
 
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+                    <div id="property_State" class="property item">
+                        <h3 class="name"><code>State</code></h3>
+                        <span class="type">Object</span>
+                    
+                    
+                    
+                            <span class="flag final">final</span>
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/lib_core_riakcluster.js.html#l256"><code>lib&#x2F;core&#x2F;riakcluster.js:256</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>The state of this cluster.</p>
+                    <p>If listeneing for stateChange events, a numeric value will be sent that
+                    can be compared to:</p>
+                    <pre class="code prettyprint"><code>RiakCluster.State.CREATED
+                    RiakCluster.State.RUNNING
+                    RiakCluster.State.SHUTTING_DOWN
+                    RiakCluster.State.SHUTDOWN
+                    </code></pre>
+                    <p>See: <a href="../classes/RiakCluster.html#event_stateChange" class="crosslink">stateChange</a></p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+            </div>
 
 
             <div id="events" class="api-class-tabpanel">
@@ -571,7 +622,7 @@ The node being removed will also be stopped.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_core_riakcluster.js.html#l277"><code>lib&#x2F;core&#x2F;riakcluster.js:277</code></a>
+                            <a href="../files/lib_core_riakcluster.js.html#l296"><code>lib&#x2F;core&#x2F;riakcluster.js:296</code></a>
                             </p>
                     
                     
@@ -593,7 +644,7 @@ The node being removed will also be stopped.</p>
                     
                                         <div class="param-description">
                                             <ul>
-                    <li>the RiakNode object whose state changed</li>
+                    <li>the <a href="../classes/RiakNode.html" class="crosslink">RiakNode</a> object whose state changed</li>
                     </ul>
                     
                                         </div>
@@ -606,7 +657,7 @@ The node being removed will also be stopped.</p>
                     
                                         <div class="param-description">
                                             <ul>
-                    <li>the RiakNode.state</li>
+                    <li>the <a href="../classes/RiakNode.html#property_State" class="crosslink">RiakNode.State</a></li>
                     </ul>
                     
                                         </div>
@@ -628,14 +679,15 @@ The node being removed will also be stopped.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_core_riakcluster.js.html#l270"><code>lib&#x2F;core&#x2F;riakcluster.js:270</code></a>
+                            <a href="../files/lib_core_riakcluster.js.html#l288"><code>lib&#x2F;core&#x2F;riakcluster.js:288</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            <p>This event is fired when the state of the RiakCluster changes.</p>
+                            <p>This event is fired when the state of the RiakCluster changes.
+                    See: <a href="../classes/RiakCluster.html#property_State" class="crosslink">RiakCluster.State</a></p>
                     
                         </div>
                     
@@ -650,7 +702,7 @@ The node being removed will also be stopped.</p>
                     
                                         <div class="param-description">
                                             <ul>
-                    <li>the new RiakCluster.State</li>
+                    <li>the new <a href="../classes/RiakCluster.html#property_State" class="crosslink">RiakCluster.State</a></li>
                     </ul>
                     
                                         </div>

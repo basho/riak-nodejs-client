@@ -178,10 +178,36 @@ var MR = require(&#x27;./commands/mr&#x27;);
 
 /**
  * A Class that represents a Riak client.
+ * 
+ * The client constructor accepts a {{#crossLink &quot;RiakCluster&quot;}}{{/crossLink}}, or a list of host[:port] from
+ * which it will create a RiakCluster using our default configuration. 
+ * 
+ *     var Riak = require(&#x27;riak&#x27;);
+ *     var client = new Riak.Client([&#x27;192.168.1.1:8087&#x27;, &#x27;192.168.1.2:8087&#x27;]);
+ *
+ * Two styles of use are supported. Each command you can send to Riak is a 
+ * class and can be instantiated then executed by the client&#x27;s execute() method.
+ * In addition, convenience methods are provided directly by the Client class
+ * that corrispond to each of the commands.
+ * 
+ *     // Using the builder, but options can also be passed directly to the constructor
+ *     var fetch = new Riak.Commands.KV.FetchValue.Builder() 
+ *                  .withBucket(&#x27;myBucket&#x27;)
+ *                  .withKey(&#x27;myKey&#x27;)
+ *                  .withCallback(callback)
+ *                  .build();
+ *                  
+ *     client.execute(fetch);
+ *     
+ * or
+ * 
+ *     client.fetchValue({ bucket: &#x27;myBucket&#x27;, key: &#x27;myKey&#x27; }, callback);
+ *     
+ * All command callbacks are the typical node.js function(err, resp) style. 
  *
  * @class Client
  * @constructor
- * @param {String[]|RiakCluster} cluster - either an array of IP|fqdn[:port] or the cluster to use. See {{#crossLink &quot;RiakCluster&quot;}}{{/crossLink}}.
+ * @param {String[]|RiakCluster} cluster - either an array of host[:port] strings or the cluster to use. See {{#crossLink &quot;RiakCluster&quot;}}{{/crossLink}}.
  */
 function Client() {
     if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Core.RiakCluster) {
@@ -211,6 +237,7 @@ Client.prototype.execute = function(command) {
 
 /**
  * See {{#crossLink &quot;Ping&quot;}}{{/crossLink}}
+ * @method ping
  * @param {Function} callback The callback to be executed when the operation completes.
  */
 Client.prototype.ping = function(callback) {

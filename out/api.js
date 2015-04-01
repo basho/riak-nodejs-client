@@ -71,7 +71,8 @@ YUI.add("yuidoc-meta", function(Y) {
         },
         {
             "displayName": "Core",
-            "name": "Core"
+            "name": "Core",
+            "description": "Provides the classes that make up the core of the client."
         },
         {
             "displayName": "CRDT",
