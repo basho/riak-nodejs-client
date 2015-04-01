@@ -210,6 +210,7 @@ function CommandBase(pbRequestName, pbResponseName, callback) {
 /**
  * Fires the user&#x27;s callback with the arguments passed in.
  * @method getCallback
+ * @private
  * @return {Function} the user supplied callback
  */
 CommandBase.prototype._callback = function() {
@@ -219,7 +220,8 @@ CommandBase.prototype._callback = function() {
 /**
  * Returns the expected response code for this command.
  * @method getExpectedResponseCode
- * @return {number} the expected response code for this command.
+ * @private
+* @return {number} the expected response code for this command.
  */
 CommandBase.prototype.getExpectedResponseCode = function() {
         return this.expectedCode;
@@ -227,6 +229,7 @@ CommandBase.prototype.getExpectedResponseCode = function() {
 
 /**
  * Returns the encoded protobuf and message header.
+ * @private
  * @method getRiakMessage
  * @return {Object} object containing the header and encoded protobuf
  */
@@ -250,6 +253,7 @@ CommandBase.prototype.getRiakMessage = function() {
 /**
  * Returns and instance of the protocol buffer message builder for this command.
  * This is determined via the pbRequestName passed to the constructor.
+ * @private
  * @method getPbReqBuilder
  * @return {Object} the builder for the protocol buffer message to be sent for this command
  */
@@ -266,6 +270,7 @@ CommandBase.prototype.getPbReqBuilder = function() {
 /** 
  * Construct and return the Riak protocol buffer message for this command.
  * Subclasses must override this method.
+ * @protected
  * @method constructPbRequest
  * @return {Object} a protocol buffer message builder
  */
@@ -276,6 +281,7 @@ CommandBase.prototype.constructPbRequest = function() {
 /**
  * Called by RiakNode when a response is received.
  * Subclasses must override this method.
+ * @protected
  * @method onSuccess
  * @param {Object} pbResponseMessage the protocol buffer received from riak
  * @return {Boolean} true if not streaming or the last response has been received, false otherwise.
@@ -287,6 +293,7 @@ CommandBase.prototype.onSuccess = function(pbResponseMessage) {
 /**
  * Called by RiakNode when a RpbErrorResp is received and all retries are exhausted.
  * Commands must override this method.
+ * @protected
  * @method onRiakError
  * @param {Object} rpbErrorResp the RpbErrorResp protocol buffer
  */
@@ -296,6 +303,7 @@ CommandBase.prototype.onRiakError = function(rpbErrorResp) {
 
 /**
  * Called by Riaknode if an error occurs executing the command and all retries are exhausted.
+ * @protected
  * @method onError
  * @param {String} msg an error message
  */
@@ -303,7 +311,6 @@ CommandBase.prototype.onError = function(msg) {
     this._callback(msg, null);
 };
 
-// TODO how to inherit from this schema in derived classes?
 var schema = Joi.object().keys({
     callback: Joi.func().required()
 });

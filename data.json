@@ -7514,6 +7514,8 @@
             "description": "Fires the user's callback with the arguments passed in.",
             "itemtype": "method",
             "name": "getCallback",
+            "access": "private",
+            "tagname": "",
             "return": {
                 "description": "the user supplied callback",
                 "type": "Function"
@@ -7523,10 +7525,12 @@
         },
         {
             "file": "lib/commands/commandbase.js",
-            "line": 80,
+            "line": 81,
             "description": "Returns the expected response code for this command.",
             "itemtype": "method",
             "name": "getExpectedResponseCode",
+            "access": "private",
+            "tagname": "",
             "return": {
                 "description": "the expected response code for this command.",
                 "type": "Number"
@@ -7536,8 +7540,10 @@
         },
         {
             "file": "lib/commands/commandbase.js",
-            "line": 89,
+            "line": 91,
             "description": "Returns the encoded protobuf and message header.",
+            "access": "private",
+            "tagname": "",
             "itemtype": "method",
             "name": "getRiakMessage",
             "return": {
@@ -7549,8 +7555,10 @@
         },
         {
             "file": "lib/commands/commandbase.js",
-            "line": 111,
+            "line": 114,
             "description": "Returns and instance of the protocol buffer message builder for this command.\nThis is determined via the pbRequestName passed to the constructor.",
+            "access": "private",
+            "tagname": "",
             "itemtype": "method",
             "name": "getPbReqBuilder",
             "return": {
@@ -7562,8 +7570,10 @@
         },
         {
             "file": "lib/commands/commandbase.js",
-            "line": 127,
+            "line": 131,
             "description": "Construct and return the Riak protocol buffer message for this command.\nSubclasses must override this method.",
+            "access": "protected",
+            "tagname": "",
             "itemtype": "method",
             "name": "constructPbRequest",
             "return": {
@@ -7575,8 +7585,10 @@
         },
         {
             "file": "lib/commands/commandbase.js",
-            "line": 137,
+            "line": 142,
             "description": "Called by RiakNode when a response is received.\nSubclasses must override this method.",
+            "access": "protected",
+            "tagname": "",
             "itemtype": "method",
             "name": "onSuccess",
             "params": [
@@ -7595,8 +7607,10 @@
         },
         {
             "file": "lib/commands/commandbase.js",
-            "line": 148,
+            "line": 154,
             "description": "Called by RiakNode when a RpbErrorResp is received and all retries are exhausted.\nCommands must override this method.",
+            "access": "protected",
+            "tagname": "",
             "itemtype": "method",
             "name": "onRiakError",
             "params": [
@@ -7611,8 +7625,10 @@
         },
         {
             "file": "lib/commands/commandbase.js",
-            "line": 158,
+            "line": 165,
             "description": "Called by Riaknode if an error occurs executing the command and all retries are exhausted.",
+            "access": "protected",
+            "tagname": "",
             "itemtype": "method",
             "name": "onError",
             "params": [
