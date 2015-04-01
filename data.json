@@ -8138,7 +8138,36 @@
         },
         {
             "file": "lib/client.js",
-            "line": 90,
+            "line": 86,
+            "description": "Shut down the client gracefully.\n\nThis will cause all connections to be closed and any remaining in-flight\ncommands to finish. \n\nThe provided callback will be added as a stateChange listener to the client's\nRiakCluster.\n\nSee: {{#crossLink \"RiakCluster/stateChange:event\"}}RiakCluster.stateChange{{/crossLink}}",
+            "itemtype": "method",
+            "name": "shutdown",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "- will be registered as a stateChange listener on the RiakCluster.",
+                    "type": "Function"
+                }
+            ],
+            "class": "Client",
+            "module": "Client"
+        },
+        {
+            "file": "lib/client.js",
+            "line": 105,
+            "description": "Get the client's RiakCluster.",
+            "itemtype": "method",
+            "name": "getRiakCluster",
+            "return": {
+                "description": "",
+                "type": "Core.RiakCluster"
+            },
+            "class": "Client",
+            "module": "Client"
+        },
+        {
+            "file": "lib/client.js",
+            "line": 119,
             "description": "See {{#crossLink \"RiakCluster/execute:method\"}}RiakCluster#execute{{/crossLink}}",
             "itemtype": "method",
             "name": "execute",
@@ -8154,7 +8183,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 99,
+            "line": 128,
             "description": "See {{#crossLink \"Ping\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "ping",
@@ -8170,7 +8199,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 109,
+            "line": 138,
             "description": "See {{#crossLink \"DeleteValue\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "deleteValue",
@@ -8191,7 +8220,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 120,
+            "line": 149,
             "description": "See {{#crossLink \"FetchBucketProps\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchBucketProps",
@@ -8212,7 +8241,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 131,
+            "line": 160,
             "description": "See {{#crossLink \"FetchValue\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchValue",
@@ -8233,7 +8262,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 142,
+            "line": 171,
             "description": "See {{#crossLink \"ListBuckets\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "ListBuckets",
@@ -8254,7 +8283,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 153,
+            "line": 182,
             "description": "See {{#crossLink \"ListKeys\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "listKeys",
@@ -8275,7 +8304,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 164,
+            "line": 193,
             "description": "See {{#crossLink \"SecondaryIndexQuery\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "secondaryIndexQuery",
@@ -8296,7 +8325,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 175,
+            "line": 204,
             "description": "See {{#crossLink \"StoreBucketProps\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeBucketProps",
@@ -8317,7 +8346,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 186,
+            "line": 215,
             "description": "See {{#crossLink \"StoreValue\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeValue",
@@ -8338,7 +8367,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 201,
+            "line": 230,
             "description": "See {{#crossLink \"FetchCounter\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchCounter",
@@ -8359,7 +8388,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 212,
+            "line": 241,
             "description": "See {{#crossLink \"UpdateCounter\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "updateCounter",
@@ -8380,7 +8409,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 223,
+            "line": 252,
             "description": "See {{#crossLink \"FetchSet\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchSet",
@@ -8401,7 +8430,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 234,
+            "line": 263,
             "description": "See {{#crossLink \"UpdateSet\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "updateSet",
@@ -8422,7 +8451,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 245,
+            "line": 274,
             "description": "See {{#crossLink \"FetchMap\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchMap",
@@ -8443,7 +8472,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 256,
+            "line": 285,
             "description": "See {{#crossLink \"UpdateMap\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "updateMap",
@@ -8464,7 +8493,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 271,
+            "line": 300,
             "description": "See {{#crossLink \"DeleteIndex\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "deleteIndex",
@@ -8485,7 +8514,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 282,
+            "line": 311,
             "description": "See {{#crossLink \"FetchIndex\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchIndex",
@@ -8506,7 +8535,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 293,
+            "line": 322,
             "description": "See {{#crossLink \"FetchSchema\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchSchema",
@@ -8527,7 +8556,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 304,
+            "line": 333,
             "description": "See {{#crossLink \"Search\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "search",
@@ -8548,7 +8577,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 315,
+            "line": 344,
             "description": "See {{#crossLink \"StoreIndex\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeIndex",
@@ -8569,7 +8598,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 326,
+            "line": 355,
             "description": "See {{#crossLink \"StoreSchema\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeSchema",
@@ -8590,7 +8619,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 341,
+            "line": 370,
             "description": "See {{#crossLink \"MapReduce\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "mapReduce",

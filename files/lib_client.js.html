@@ -222,6 +222,35 @@ function Client() {
     }
 }
 
+/**
+ * Shut down the client gracefully.
+ * 
+ * This will cause all connections to be closed and any remaining in-flight
+ * commands to finish. 
+ * 
+ * The provided callback will be added as a stateChange listener to the client&#x27;s
+ * RiakCluster.
+ * 
+ * See: {{#crossLink &quot;RiakCluster/stateChange:event&quot;}}RiakCluster.stateChange{{/crossLink}}
+ * 
+ * @method shutdown
+ * @param {Function} callback - will be registered as a stateChange listener on the RiakCluster.
+ */
+Client.prototype.shutdown = function(callback) {
+    this.cluster.on(&#x27;stateChange&#x27;, callback);
+    this.cluster.stop();
+};
+
+/**
+ * Get the client&#x27;s RiakCluster.
+ * 
+ * @method getRiakCluster
+ * @return {Core.RiakCluster}
+ */
+Client.prototype.getRiakCluster = function() {
+    return this.cluster;
+};
+
 /*
  * KV methods
  */
