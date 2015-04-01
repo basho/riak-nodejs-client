@@ -34,14 +34,36 @@ describe('Client', function() {
             assert(typeofRiakNode === 'function', "typeof(Riak.Node): " + typeofRiakNode);
             done();
         });
+        it('Riak.Node.Builder', function(done) {
+            var typeofRiakNode = typeof(Riak.Node.Builder);
+            assert(typeofRiakNode === 'function', "typeof(Riak.Node.Builder): " + typeofRiakNode);
+            done();
+        });
+        it('Riak.Node.State', function(done) {
+            var typeofRiakNode = typeof(Riak.Node.State);
+            assert(typeofRiakNode === 'object', "typeof(Riak.Node.State): " + typeofRiakNode);
+            done();
+        });
+        it('Riak.Node.buildNodes', function(done) {
+            var typeofRiakNode = typeof(Riak.Node.buildNodes);
+            assert(typeofRiakNode === 'function', "typeof(Riak.Node.buildNodes): " + typeofRiakNode);
+            done();
+        });
+
         it('Riak.Client', function(done) {
             var typeofRiakClient = typeof(Riak.Client);
             assert(typeofRiakClient === 'function', "typeof(Riak.Client): " + typeofRiakClient);
             done();
         });
+
         it('Riak.Cluster', function(done) {
             var typeofRiakCluster = typeof(Riak.Cluster);
             assert(typeofRiakCluster === 'function', "typeof(Riak.Cluster): " + typeofRiakCluster);
+            done();
+        });
+        it('Riak.Cluster.State', function(done) {
+            var typeofRiakClusterState = typeof(Riak.Cluster.State);
+            assert(typeofRiakClusterState === 'object', "typeof(Riak.Cluster.State): " + typeofRiakClusterState);
             done();
         });
 
