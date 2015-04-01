@@ -503,6 +503,26 @@ RiakNode.prototype._expireIdleConnections = function() {
     logger.debug(&quot;RiakNode (%s:%d) expired %d connections.&quot;, this.remoteAddress, this.remotePort, count);
 };
 
+
+/**
+ * The state of this node.
+ * 
+ * If listeneing for stateChange events, a numeric value will be sent that
+ * can be compared to:
+ * 
+ *     RiakNode.State.CREATED
+ *     RiakNode.State.RUNNING
+ *     RiakNode.State.HEALTH_CHECKING
+ *     RiakNode.State.SHUTTING_DOWN
+ *     RiakNode.State.SHUTDOWN
+ * 
+ * See: {{#crossLink &quot;RiakNode/stateChange:event&quot;}}stateChange{{/crossLink}}
+ * 
+ * @property State
+ * @type {Object}
+ * @static
+ * @final
+ */
 var State = Object.freeze({ CREATED : 0, 
                             RUNNING : 1, 
                             HEALTH_CHECKING : 2, 
@@ -543,7 +563,7 @@ var schema = Joi.object().keys({
  * This event is fired whenever the state of the RiakNode changes.
  * @event stateChange
  * @param {Object} node - the RiakNode object whose state changed
- * @param {Number} state - the RiakNode.state
+ * @param {Number} state - the {{#crossLink &quot;RiakNode/State:property&quot;}}RiakNode.State{{/crossLink}}
  */
 var EVT_SC = &#x27;stateChange&#x27;;
 

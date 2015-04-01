@@ -166,8 +166,8 @@ var util = require(&#x27;util&#x27;);
 /**
  * Provides the RiakCluster class and its Builder.
  * 
- * Instances of this class maintain a set of RiakNode objects and 
- * execute commands on them. 
+ * Instances of this class maintain a set of {{#crossLink &quot;RiakNode&quot;}}{{/crossLink}} objects and 
+ * executes commands on them.
  * 
  * __options__ is an object with the following defaults:
  * 
@@ -190,7 +190,7 @@ var util = require(&#x27;util&#x27;);
  * @class RiakCluster
  * @constructor
  * @param {Object} options - the options to use.
- * @param {RiakNode[]} options.nodes An array of (unstarted) RiakNode objects.
+ * @param {RiakNode[]} options.nodes An array of (unstarted) {{#crossLink &quot;RiakNode&quot;}}{{/crossLink}} objects.
  * @param {Number} [options.executionAttempts=3] Number of times to retry commands on failure.
  */
 function RiakCluster(options) {
@@ -392,6 +392,24 @@ RiakCluster.prototype._stateCheck = function(allowedStates) {
 };
 
 
+/**
+ * The state of this cluster.
+ * 
+ * If listeneing for stateChange events, a numeric value will be sent that
+ * can be compared to:
+ * 
+ *     RiakCluster.State.CREATED
+ *     RiakCluster.State.RUNNING
+ *     RiakCluster.State.SHUTTING_DOWN
+ *     RiakCluster.State.SHUTDOWN
+ * 
+ * See: {{#crossLink &quot;RiakCluster/stateChange:event&quot;}}stateChange{{/crossLink}}
+ * 
+ * @property State
+ * @type {Object}
+ * @static
+ * @final
+ */
 var State = Object.freeze({ CREATED : 0, 
                             RUNNING : 1, 
                             SHUTTING_DOWN : 2, 
@@ -408,16 +426,17 @@ var schema = Joi.object().keys({
 
 /**
  * This event is fired when the state of the RiakCluster changes.
+ * See: {{#crossLink &quot;RiakCluster/State:property&quot;}}RiakCluster.State{{/crossLink}}
  * @event stateChange
- * @param {Number} state - the new RiakCluster.State
+ * @param {Number} state - the new {{#crossLink &quot;RiakCluster/State:property&quot;}}RiakCluster.State{{/crossLink}}
  */
 var EVT_SC = &#x27;stateChange&#x27;;
 
 /**
  * This event is fired when the state of any RiakNode in the cluster changes.
  * @event nodeStateChange
- * @param {Object} node - the RiakNode object whose state changed
- * @param {Number} state - the RiakNode.state
+ * @param {Object} node - the {{#crossLink &quot;RiakNode&quot;}}{{/crossLink}} object whose state changed
+ * @param {Number} state - the {{#crossLink &quot;RiakNode/State:property&quot;}}RiakNode.State{{/crossLink}}
  */
 var EVT_NSC = &#x27;nodeStateChange&#x27;;
 
@@ -442,7 +461,7 @@ Builder.prototype = {
     /**
      * The RiakNodes to use.
      * @method withRiakNodes
-     * @param {RiakNode[]} nodes array of (unstarted) RiakNode instances.
+     * @param {RiakNode[]} nodes array of (unstarted) {{#crossLink &quot;RiakNode&quot;}}{{/crossLink}} instances.
      * @return {RiakCluster.Builder}
      */
     withRiakNodes : function(nodes) {
