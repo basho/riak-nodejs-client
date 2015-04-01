@@ -158,7 +158,7 @@ class and can be instantiated then executed by the client's execute() method.
 In addition, convenience methods are provided directly by the Client class
 that corrispond to each of the commands.</p>
 <pre class="code prettyprint"><code>// Using the builder, but options can also be passed directly to the constructor
-var fetch = new Riak.Commands.KV.FetchValue.Builder() 
+var fetch = new KV.FetchValue.Builder() 
              .withBucket('myBucket')
              .withKey('myKey')
              .withCallback(callback)
