@@ -4,3 +4,5 @@ node_modules/
 docs/
 tags
 *.tgz
+*.log
+*.out
