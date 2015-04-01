@@ -2,6 +2,7 @@
 node_modules/
 *results.txt
 docs/
+out/
 tags
 *.tgz
 *.log
