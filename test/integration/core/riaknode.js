@@ -83,6 +83,7 @@ describe('RianNode - Integration', function() {
                 }
                 
                 if (heathChecking && healthChecked) {
+                    clearTimeout(errTimeout);
                     node.removeAllListeners();
                     node.stop();
                     server.close();
@@ -158,6 +159,7 @@ describe('RianNode - Integration', function() {
                 }
                 
                 if (heathChecking && healthChecked) {
+                    clearTimeout(errTimeout);
                     node.removeAllListeners();
                     node.stop();
                     server.close();
