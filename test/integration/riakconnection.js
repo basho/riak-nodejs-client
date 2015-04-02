@@ -18,6 +18,8 @@ var Test = require('./testparams');
 var RiakConnection = require('../../lib/core/riakconnection');
 var assert = require('assert');
 var fs = require('fs');
+var Ping = require('../../lib/commands/ping');
+var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
 
 describe('RiakConnection - Integration', function() {
 
@@ -123,6 +125,94 @@ describe('RiakConnection - Integration', function() {
                 clearTimeout(errTimeout);
                 conn.removeAllListeners();
                 assert(true);
+                done();
+            });
+            
+            conn.connect();
+            
+        });
+        
+        it('should emit on healthcheck fail', function(done) {
+           
+            var conn = new RiakConnection({
+                remoteAddress : "127.0.0.1",
+                remotePort : 1337,
+                connectionTimeout : 30000,
+                healthCheck: new Ping(function(){})
+            });
+            var errTimeout = setTimeout(function () {
+                assert(false, 'Event never fired');
+                done();
+            }, 1000); 
+            
+            var net = require('net');
+           
+            
+            var server = net.createServer(function(socket) {
+                    var header = new Buffer(5);
+                    header.writeUInt8(0, 4);
+                    
+                    var rpbErr = new RpbErrorResp();
+                    rpbErr.setErrmsg(new Buffer('this is an error'));
+                    rpbErr.setErrcode(0);
+                    var encoded = rpbErr.encode().toBuffer();
+                    
+                    header.writeInt32BE(encoded.length + 1, 0);
+                    socket.write(header);
+                    socket.write(encoded);
+            });
+            
+            server.listen(1337, '127.0.0.1');
+            
+            var errTimeout = setTimeout(function () {
+                assert(false, 'Event never fired');
+                done();
+            }, 30000); 
+            
+            conn.on('connectFailed', function() {
+                clearTimeout(errTimeout);
+                conn.removeAllListeners();
+                assert(true);
+                server.close();
+                conn.close();
+                done();
+            });
+            
+            conn.connect();
+            
+        });
+        
+        it('should emit on healthcheck success', function(done) {
+           
+            var conn = new RiakConnection({
+                remoteAddress : "127.0.0.1",
+                remotePort : 1337,
+                connectionTimeout : 30000,
+                healthCheck: new Ping(function(){})
+            });
+            var errTimeout = setTimeout(function () {
+                assert(false, 'Event never fired');
+                done();
+            }, 1000); 
+            
+            var net = require('net');
+           
+            
+            var server = net.createServer(function(socket) {
+                    var header = new Buffer(5);
+                    header.writeUInt8(2, 4);
+                    header.writeInt32BE(1, 0);
+                    socket.write(header);
+            });
+            
+            server.listen(1337, '127.0.0.1');
+            
+            conn.on('connected', function() {
+                clearTimeout(errTimeout);
+                conn.removeAllListeners();
+                assert(true);
+                server.close();
+                conn.close();
                 done();
             });
             
