@@ -1,7 +1,7 @@
 {
 	"name": "Basho Riak NodeJS CLient",
 	"description": "The offical NodeJS client for Riak, supported by Basho Technologies",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"url": "http://basho.github.io/riak-nodejs-client/",
 	"options" : {
 		"paths":"./lib"
