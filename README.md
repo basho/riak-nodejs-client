@@ -1,11 +1,10 @@
 Riak NodeJS Client
 ==================
 
-This is a **work in progress**. We are nearing completetion of what will be v1.0 of the Riak NodeJS client. 
-Check back soon!
-
 Travis-CI Build Status
 ----------------------
+
+[![Build Status](https://travis-ci.org/basho/riak-nodejs-client.svg?branch=master)](https://travis-ci.org/basho/riak-nodejs-client)
 
 Cloning
 -------
@@ -34,7 +33,8 @@ Please see the [wiki](https://github.com/basho/riak-nodejs-client/wiki).
 Release Notes
 -------------
 
-* v1.0.0 - Initial release with Riak 2 compatibility.
+Please see the [release
+notes](https://github.com/basho/riak-nodejs-client/blob/master/RELNOTES.md).
 
 License
 -------
