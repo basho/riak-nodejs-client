@@ -140,10 +140,6 @@ describe('RiakConnection - Integration', function() {
                 connectionTimeout : 30000,
                 healthCheck: new Ping(function(){})
             });
-            var errTimeout = setTimeout(function () {
-                assert(false, 'Event never fired');
-                done();
-            }, 1000); 
             
             var net = require('net');
            
