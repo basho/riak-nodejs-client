@@ -18,6 +18,7 @@ var FetchValue = require('../../lib/commands/kv/fetchvalue');
 var RpbGetResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbGetResp');
 var RpbContent = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbContent');
 var RpbPair = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbPair');
+var RpbLink = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbLink');
 var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
@@ -75,6 +76,17 @@ describe('FetchValue', function() {
             pair.setValue(new Buffer('metaValue1'));
             rpbContent.usermeta.push(pair);
             
+            var link = new RpbLink();
+            link.setBucket(new Buffer('b'));
+            link.setKey(new Buffer('k'));
+            link.setTag(new Buffer('t'));
+            rpbContent.links.push(link);
+            link = new RpbLink();
+            link.setBucket(new Buffer('b'));
+            link.setKey(new Buffer('k2'));
+            link.setTag(new Buffer('t2'));
+            rpbContent.links.push(link);
+            
             var rpbGetResp = new RpbGetResp();
             rpbGetResp.setContent(rpbContent);
             rpbGetResp.setVclock(new Buffer('1234'));
@@ -92,6 +104,12 @@ describe('FetchValue', function() {
                     assert.equal(riakObject.hasUserMeta(), true);
                     assert.equal(riakObject.getUserMeta()[0].key, 'metaKey1');
                     assert.equal(riakObject.getUserMeta()[0].value, 'metaValue1');
+                    assert.equal(riakObject.getLinks()[0].bucket, 'b');
+                    assert.equal(riakObject.getLinks()[0].key, 'k');
+                    assert.equal(riakObject.getLinks()[0].tag, 't');
+                    assert.equal(riakObject.getLinks()[1].bucket, 'b');
+                    assert.equal(riakObject.getLinks()[1].key, 'k2');
+                    assert.equal(riakObject.getLinks()[1].tag, 't2');
                     assert.equal(riakObject.getVClock().toString('utf8'), '1234');
                     done();
                 }

@@ -33,6 +33,8 @@ describe('StoreValue', function() {
             riakObject.addToIndex('email_bin','roach@basho.com');
             riakObject.setContentType('application/json');
             riakObject.setValue('this is a value');
+            riakObject.setLinks([{bucket: 'b', key: 'k', tag: 't'},
+                {bucket: 'b', key: 'k2', tag: 't2'}]);
             
             var vclock = new Buffer(0);
             var storeCommand = new StoreValue.Builder()
@@ -72,6 +74,12 @@ describe('StoreValue', function() {
             assert(protobuf.getContent().getUsermeta().length === 1);
             assert.equal(protobuf.getContent().getUsermeta()[0].key.toString('utf8'), 'metaKey1');
             assert.equal(protobuf.getContent().getUsermeta()[0].value.toString('utf8'), 'metaValue1');
+            assert.equal(protobuf.getContent().getLinks()[0].bucket.toString('utf8'), 'b');
+            assert.equal(protobuf.getContent().getLinks()[0].key.toString('utf8'), 'k');
+            assert.equal(protobuf.getContent().getLinks()[0].tag.toString('utf8'), 't');
+            assert.equal(protobuf.getContent().getLinks()[1].bucket.toString('utf8'), 'b');
+            assert.equal(protobuf.getContent().getLinks()[1].key.toString('utf8'), 'k2');
+            assert.equal(protobuf.getContent().getLinks()[1].tag.toString('utf8'), 't2');
             assert.equal(protobuf.getTimeout(), 20000);
             done();
             
