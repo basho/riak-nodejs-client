@@ -34,38 +34,37 @@ describe('RiakCluster - Integration', function() {
             var i;
             var tried = 0;
             
-            for (i = 0; i < 3; i++, port++) {
-                servers[i] = Net.createServer(function(socket) {
+            var header = new Buffer(5);
+            header.writeUInt8(0, 4);
 
-                    socket.on('data' , function(data) {
+            var err = new RpbErrorResp();
+            err.setErrmsg(new Buffer('Some error'));
+            err.setErrcode(0);
+            var encoded = err.encode().toBuffer();
+            header.writeInt32BE(encoded.length + 1, 0);
+            
+            var sockMe = function(socket) {
+                socket.on('data' , function(data) {
 
-                        // the fetch got here
-                        var header = new Buffer(5);
-                        header.writeUInt8(0, 4);
-                        
-                        var err = new RpbErrorResp();
-                        err.setErrmsg(new Buffer('Some error'));
-                        err.setErrcode(0);
-                        var encoded = err.encode().toBuffer();
-                        
-                        header.writeInt32BE(encoded.length + 1, 0);
-                        socket.write(header);
-                        socket.write(encoded);
-                        
-                        
-                        tried++;
-                        if (tried === 3) {
-                            clearTimeout(errTimeout);
-                            cluster.stop();
-                            for (var j = 0; j < 3; j++) {
-                                servers[j].close();
-                            }
-                            done();
+                    // the fetch got here
+                    socket.write(header);
+                    socket.write(encoded);
+
+
+                    tried++;
+                    if (tried === 3) {
+                        clearTimeout(errTimeout);
+                        cluster.stop();
+                        for (var j = 0; j < 3; j++) {
+                            servers[j].close();
                         }
-                        
-
-                    });
+                        done();
+                    }
                 });
+            };
+            
+            for (i = 0; i < 3; i++, port++) {
+                servers[i] = Net.createServer(sockMe);
             
                 servers[i].listen(port, '127.0.0.1');
                 
