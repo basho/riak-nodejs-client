@@ -18,6 +18,7 @@ var RiakCluster = require('../../../lib/core/riakcluster');
 var RiakNode = require('../../../lib/core/riaknode');
 var RpbErrorResp = require('../../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
 var FetchValue = require('../../../lib/commands/kv/fetchvalue');
+var StoreValue = require('../../../lib/commands/kv/storevalue');
 var assert = require('assert');
 var Net = require('net');
 
@@ -86,6 +87,112 @@ describe('RiakCluster - Integration', function() {
             var fetch = new FetchValue({bucket: 'b', key: 'k'}, function(){});
             cluster.execute(fetch);
             
+            
+        });
+        
+    });
+    
+    describe('Command queueing', function() {
+       
+        it('Should queue commands and retry from the queue', function(done) {
+           
+           var server = Net.createServer(function(socket) {
+              
+               socket.on('data', function(data) {
+                  
+                   // it got here
+                   var header = new Buffer(5);
+                    header.writeUInt8(12, 4);
+                    header.writeInt32BE(1, 0);
+                    socket.write(header);
+                   
+               });
+               
+           });
+           
+           var storeCheck = new StoreValue({bucket: 'b', value: 'v'}, function(){});
+           var node = new RiakNode.Builder()
+                   .withRemotePort(1337)
+                   .withHealthCheck(storeCheck)
+                   .build();         
+           
+           var cluster = new RiakCluster.Builder()
+                   .withRiakNodes([node])
+                   .withQueueCommands()
+                   .build();
+           
+           var stateMe = function(state) {
+             
+               if (state === RiakCluster.State.QUEUEING) {
+                   server.listen(1337, '127.0.0.1');
+               }
+            };
+            
+            cluster.on('stateChange', stateMe);
+            cluster.start();
+            
+            var callMe = function(err, resp) {
+              
+                assert(!err, err);
+                cluster.stop();
+                server.close();
+                done();
+            };
+            
+            var store = new StoreValue({bucket: 'b', value: 'v'}, callMe);
+            
+            cluster.execute(store);
+            
+            
+        });
+        
+        it('should not queue by default', function(done) {
+            
+            var node = new RiakNode.Builder()
+                   .withRemotePort(1337)
+                   .build();         
+
+            var cluster = new RiakCluster.Builder()
+                   .withRiakNodes([node])
+                   .build();
+
+            cluster.start();
+
+            var callMe = function(err, resp) {
+                assert(err);
+                cluster.stop();
+                done();
+            };
+
+            var store = new StoreValue({bucket: 'b', value: 'v'}, callMe);
+
+            cluster.execute(store);
+            
+        });
+        
+        it ('should not queue if maxDepth is reached', function(done) {
+           
+            var node = new RiakNode.Builder()
+                   .withRemotePort(1337)
+                   .build();         
+
+            var cluster = new RiakCluster.Builder()
+                   .withRiakNodes([node])
+                   .withQueueCommands(1)
+                   .build();
+
+            cluster.start();
+
+            var callMe = function(err, resp) {
+                assert(err);
+                cluster.stop();
+                done();
+            };
+
+            var store = new StoreValue({bucket: 'b', value: 'v'}, callMe);
+
+            cluster.execute(store);
+            cluster.execute(store);
             
         });
         
