@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>RiakNode - Basho Riak NodeJS CLient</title>
+    <title>RiakNode - basho-riak-client</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -14,10 +14,10 @@
 <div id="doc">
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
-                <h1><img src="../assets/css/logo.png" title="Basho Riak NodeJS CLient" width="117" height="52"></h1>
+                <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.0.0</em>
+            <em>API Docs for: 1.1.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -41,6 +41,7 @@
                                 <li><a href="../classes/AuthReq.html">AuthReq</a></li>
                                 <li><a href="../classes/Client.html">Client</a></li>
                                 <li><a href="../classes/CommandBase.html">CommandBase</a></li>
+                                <li><a href="../classes/DefaultNodeManager.html">DefaultNodeManager</a></li>
                                 <li><a href="../classes/DeleteIndex.html">DeleteIndex</a></li>
                                 <li><a href="../classes/DeleteIndex.Builder.html">DeleteIndex.Builder</a></li>
                                 <li><a href="../classes/DeleteValue.html">DeleteValue</a></li>
@@ -64,6 +65,7 @@
                                 <li><a href="../classes/ListKeys.html">ListKeys</a></li>
                                 <li><a href="../classes/ListKeys.Builder.html">ListKeys.Builder</a></li>
                                 <li><a href="../classes/MapReduce.html">MapReduce</a></li>
+                                <li><a href="../classes/NodeManager.html">NodeManager</a></li>
                                 <li><a href="../classes/Ping.html">Ping</a></li>
                                 <li><a href="../classes/RiakCluster.html">RiakCluster</a></li>
                                 <li><a href="../classes/RiakCluster.Builder.html">RiakCluster.Builder</a></li>
@@ -138,7 +140,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_core_riaknode.js.html#l29"><code>lib&#x2F;core&#x2F;riaknode.js:29</code></a>
+            Defined in: <a href="../files/lib_core_riaknode.js.html#l30"><code>lib&#x2F;core&#x2F;riaknode.js:30</code></a>
         </div>
 
             Module: <a href="../modules/Core.html">Core</a>
@@ -152,18 +154,16 @@
 a Riak node in a Riak cluster.</p>
 <p><strong>options</strong> is an object with the following defaults:</p>
 <pre class="code prettyprint"><code>{ 
-  remoteAdddress: '127.0.0.1',
+  remoteAdddress: &#39;127.0.0.1&#39;,
   remotePort: 8087,
   maxConnections: 10000,
   minConnections: 1,
   idleTimeout: 3000,
   connectionTimeout: 0
 }
-</code></pre>
-<p>As a convenience a builder class is provided;</p>
+</code></pre><p>As a convenience a builder class is provided;</p>
 <pre class="code prettyprint"><code>var newNode = new RiakNode.Builder().withMinConnections(10).build(); 
-</code></pre>
-<p>See <a href="../classes/RiakNode.Builder.html" class="crosslink">RiakNode.Builder</a></p>
+</code></pre><p>See <a href="../classes/RiakNode.Builder.html" class="crosslink">RiakNode.Builder</a></p>
 
 </div>
 
@@ -190,7 +190,7 @@ a Riak node in a Riak cluster.</p>
             <div class="meta">
                         <p>
                         Defined in
-                <a href="../files/lib_core_riaknode.js.html#l29"><code>lib&#x2F;core&#x2F;riaknode.js:29</code></a>
+                <a href="../files/lib_core_riaknode.js.html#l30"><code>lib&#x2F;core&#x2F;riaknode.js:30</code></a>
                 </p>
         
         
@@ -534,7 +534,7 @@ a Riak node in a Riak cluster.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l107"><code>lib&#x2F;core&#x2F;riaknode.js:107</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l108"><code>lib&#x2F;core&#x2F;riaknode.js:108</code></a>
         </p>
 
 
@@ -599,7 +599,7 @@ a Riak node in a Riak cluster.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_core_riaknode.js.html#l368"><code>lib&#x2F;core&#x2F;riaknode.js:368</code></a>
+                            <a href="../files/lib_core_riaknode.js.html#l370"><code>lib&#x2F;core&#x2F;riaknode.js:370</code></a>
                             </p>
                     
                     
@@ -614,8 +614,7 @@ a Riak node in a Riak cluster.</p>
                     RiakNode.State.HEALTH_CHECKING
                     RiakNode.State.SHUTTING_DOWN
                     RiakNode.State.SHUTDOWN
-                    </code></pre>
-                    <p>See: <a href="../classes/RiakNode.html#event_stateChange" class="crosslink">stateChange</a></p>
+                    </code></pre><p>See: <a href="../classes/RiakNode.html#event_stateChange" class="crosslink">stateChange</a></p>
                     
                         </div>
                     
@@ -639,7 +638,7 @@ a Riak node in a Riak cluster.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_core_riaknode.js.html#l431"><code>lib&#x2F;core&#x2F;riaknode.js:431</code></a>
+                            <a href="../files/lib_core_riaknode.js.html#l435"><code>lib&#x2F;core&#x2F;riaknode.js:435</code></a>
                             </p>
                     
                     
@@ -696,7 +695,7 @@ a Riak node in a Riak cluster.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_core_riaknode.js.html#l423"><code>lib&#x2F;core&#x2F;riaknode.js:423</code></a>
+                            <a href="../files/lib_core_riaknode.js.html#l427"><code>lib&#x2F;core&#x2F;riaknode.js:427</code></a>
                             </p>
                     
                     

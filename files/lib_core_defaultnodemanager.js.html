@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib/commands/mapreduce/mapreduce.js - basho-riak-client</title>
+    <title>lib/core/defaultnodemanager.js - basho-riak-client</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -135,7 +135,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: lib/commands/mapreduce/mapreduce.js</h1>
+<h1 class="file-heading">File: lib/core/defaultnodemanager.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -155,132 +155,59 @@
  * limitations under the License.
  */
 
-
-var CommandBase = require(&#x27;../commandbase&#x27;);
+var NodeManager = require(&#x27;./nodemanager&#x27;);
+var RiakNode = require(&#x27;./riaknode&#x27;);
 var inherits = require(&#x27;util&#x27;).inherits;
-var Joi = require(&#x27;joi&#x27;);
 
 /**
- * Provides the MapReduce class.
- * @module MR
+ * @module Core
  */
 
-
 /**
- * Command used to perform a Map-Reduce query in Riak.
+ * The default NodeManager used by RiakCluster.
  * 
- * The Riak Map-Reduce API uses JSON for its query. 
+ * This NodeManager does a round-robin selection of RiakNodes.
  * 
- * A typical map-reduce query (JSON) will look like:
- * 
- *     {
- *       &quot;inputs&quot;: &quot;goog&quot;,
- *       &quot;query&quot;: [
- *         {
- *            &quot;map&quot;: {
- *              &quot;language&quot;: &quot;javascript&quot;,
- *              &quot;source&quot;: &quot;function(value, keyData, arg){ var data = Riak.mapValuesJson(value)[0]; var month = value.key.split(&#x27;-&#x27;).slice(0,2).join(&#x27;-&#x27;); var obj = {}; obj[month] = data.High - data.Low; return [ obj ];}&quot;
- *            }
- *         },
- *         {
- *            &quot;reduce&quot;: {
- *              &quot;language&quot;: &quot;javascript&quot;,
- *              &quot;source&quot;: &quot;function(values, arg){ return [ values.reduce(function(acc, item){ for(var month in item){ if(acc[month]) { acc[month] = (acc[month] &lt; item[month]) ? item[month] : acc[month]; } else { acc[month] = item[month]; } } return acc;  }) ];}&quot;,
- *              &quot;keep&quot;: true
- *            }
- *         }
- *       ]
- *     }
- * 
- * For more info see:
- * [Loading Data and Running MapReduce](http://docs.basho.com/riak/latest/tutorials/fast-track/Loading-Data-and-Running-MapReduce-Queries/)
- * 
- * @class MapReduce
+ * @class DefaultNodeManager
  * @constructor
- * @param {String} query The Map-Reduce query. This is a string containing JSON.
- * @param {Function} callback The callback to be executed by this command. 
- * @param {String} callback.err An error message. Will be null if no error.
- * @param {Object} callback.response the response from Riak. 
- * @param {Boolean} callback.response.done True if the entire response has been received.
- * @param {Number} callback.response.phase The phase the response is from.
- * @param {Object[]} callback.response.response The results. 
- * @param {Boolean} [stream=true] stream the results or accumulate before calling callback.
- * @extends CommandBase
+ * @extends NodeManager 
  */
-function MapReduce(query, callback, stream) {
-    CommandBase.call(this, &#x27;RpbMapRedReq&#x27;, &#x27;RpbMapRedResp&#x27;, callback);
-    
-    var self = this;
-    Joi.validate({ query: query, stream: stream}, schema, function(err, options) {
-       
-        if (err) {
-            throw err;
-        }
-    
-        self.query = options.query;
-        self.stream = options.stream;
-    });
-    
-    this.remainingTries = 1;
-    if (!this.stream) {
-        this.response = {};
-    }
+function DefaultNodeManager()  {
+    NodeManager.call(this);
+    this._nodeIndex = 0;
 }
 
-inherits(MapReduce, CommandBase);
+inherits(DefaultNodeManager, NodeManager);
 
-MapReduce.prototype.constructPbRequest = function() {
-  
-    var protobuf = this.getPbReqBuilder();
-    
-    protobuf.setContentType(new Buffer(&#x27;application/json&#x27;));
-    protobuf.setRequest(new Buffer(this.query));
-    
-    return protobuf;
-    
-};
+DefaultNodeManager.prototype.executeOnNode = function(nodes, command, previous) {
 
-MapReduce.prototype.onSuccess = function(rpbMapRedResp) {
-    
-    
-     var done = rpbMapRedResp.done ? true : false;
-    // The last message is usually empty with only &#x27;done&#x27; when streaming
-    var responseArray = null;
-    var phase = null;
-    if (rpbMapRedResp.getResponse()) {
-        responseArray = JSON.parse(rpbMapRedResp.getResponse().toString(&#x27;utf8&#x27;));
-        phase = rpbMapRedResp.phase ? rpbMapRedResp.phase : 0;
-    
-        if (!this.stream) {
-            if (!this.response[&#x27;phase_&#x27; + phase]) {
-                this.response[&#x27;phase_&#x27; + phase] = responseArray;
-            } else {
-                Array.prototype.push.apply(this.response[&#x27;phase_&#x27; + phase], responseArray);
-            }
-        } 
-    }
-    
-    if (!this.stream) {
-        if (done) {
-            this.response.done = true;
-            this._callback(null, this.response);
+    var executing = false;
+    var startingIndex = this._nodeIndex;
+    do {
+        var node = nodes[this._nodeIndex];
+        this._nodeIndex++;
+        if (this._nodeIndex === nodes.length) {
+            this._nodeIndex = 0;
         }
-    } else {
-        this._callback(null, { phase : phase, response: responseArray, done: done});
-    }
+        // don&#x27;t try the same node twice in a row if we have multiple nodes
+        if (nodes.length &gt; 1 &amp;&amp; previous &amp;&amp; previous === node) {
+            continue;
+        }
+        
+        if (node.state === RiakNode.State.RUNNING) {
+            if (node.execute(command)) {
+                executing = true;
+                break;
+            }
+        }
+        
+    } while (this._nodeIndex !== startingIndex);
     
-    return done;
+    return executing;
     
 };
 
-var schema = Joi.object().keys({
-    query: Joi.string().required(),
-    callback: Joi.func().strip().optional(),
-    stream: Joi.boolean().default(true).optional()
-});
-
-module.exports = MapReduce;
-
+module.exports = DefaultNodeManager;
     </pre>
 </div>
                     </div>

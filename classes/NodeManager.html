@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib/commands/mapreduce/mapreduce.js - basho-riak-client</title>
+    <title>NodeManager - basho-riak-client</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -135,153 +135,83 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: lib/commands/mapreduce/mapreduce.js</h1>
-
-<div class="file">
-    <pre class="code prettyprint linenums">
-/*
- * Copyright 2015 Basho Technologies, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+<h1>NodeManager Class</h1>
+<div class="box meta">
 
 
-var CommandBase = require(&#x27;../commandbase&#x27;);
-var inherits = require(&#x27;util&#x27;).inherits;
-var Joi = require(&#x27;joi&#x27;);
+        <div class="foundat">
+            Defined in: <a href="../files/lib_core_nodemanager.js.html#l21"><code>lib&#x2F;core&#x2F;nodemanager.js:21</code></a>
+        </div>
 
-/**
- * Provides the MapReduce class.
- * @module MR
- */
+            Module: <a href="../modules/Core.html">Core</a>
+
+</div>
 
 
-/**
- * Command used to perform a Map-Reduce query in Riak.
- * 
- * The Riak Map-Reduce API uses JSON for its query. 
- * 
- * A typical map-reduce query (JSON) will look like:
- * 
- *     {
- *       &quot;inputs&quot;: &quot;goog&quot;,
- *       &quot;query&quot;: [
- *         {
- *            &quot;map&quot;: {
- *              &quot;language&quot;: &quot;javascript&quot;,
- *              &quot;source&quot;: &quot;function(value, keyData, arg){ var data = Riak.mapValuesJson(value)[0]; var month = value.key.split(&#x27;-&#x27;).slice(0,2).join(&#x27;-&#x27;); var obj = {}; obj[month] = data.High - data.Low; return [ obj ];}&quot;
- *            }
- *         },
- *         {
- *            &quot;reduce&quot;: {
- *              &quot;language&quot;: &quot;javascript&quot;,
- *              &quot;source&quot;: &quot;function(values, arg){ return [ values.reduce(function(acc, item){ for(var month in item){ if(acc[month]) { acc[month] = (acc[month] &lt; item[month]) ? item[month] : acc[month]; } else { acc[month] = item[month]; } } return acc;  }) ];}&quot;,
- *              &quot;keep&quot;: true
- *            }
- *         }
- *       ]
- *     }
- * 
- * For more info see:
- * [Loading Data and Running MapReduce](http://docs.basho.com/riak/latest/tutorials/fast-track/Loading-Data-and-Running-MapReduce-Queries/)
- * 
- * @class MapReduce
- * @constructor
- * @param {String} query The Map-Reduce query. This is a string containing JSON.
- * @param {Function} callback The callback to be executed by this command. 
- * @param {String} callback.err An error message. Will be null if no error.
- * @param {Object} callback.response the response from Riak. 
- * @param {Boolean} callback.response.done True if the entire response has been received.
- * @param {Number} callback.response.phase The phase the response is from.
- * @param {Object[]} callback.response.response The results. 
- * @param {Boolean} [stream=true] stream the results or accumulate before calling callback.
- * @extends CommandBase
- */
-function MapReduce(query, callback, stream) {
-    CommandBase.call(this, &#x27;RpbMapRedReq&#x27;, &#x27;RpbMapRedResp&#x27;, callback);
-    
-    var self = this;
-    Joi.validate({ query: query, stream: stream}, schema, function(err, options) {
-       
-        if (err) {
-            throw err;
-        }
-    
-        self.query = options.query;
-        self.stream = options.stream;
-    });
-    
-    this.remainingTries = 1;
-    if (!this.stream) {
-        this.response = {};
-    }
-}
+<div class="box intro">
+    <p>Abstract class that defines a NodeManager</p>
+<p>Every time a command is executed on the <a href="../classes/RiakCluster.html" class="crosslink">RiakCluster</a> 
+a <a href="../classes/RiakNode.html" class="crosslink">RiakNode</a> is selected. The default procedure for 
+doing so is a simple round-robin provided via <a href="../classes/DefaultNodeManager.html" class="crosslink">DefaultNodeManager</a>.</p>
+<p>If you wish to alter this behavior you should extend this class and implement 
+your own executeOnNode(). This function should pick a node from the list and 
+execute the command via <a href="../classes/RiakNode.html#method_execute" class="crosslink">execute</a>.</p>
 
-inherits(MapReduce, CommandBase);
+</div>
 
-MapReduce.prototype.constructPbRequest = function() {
-  
-    var protobuf = this.getPbReqBuilder();
-    
-    protobuf.setContentType(new Buffer(&#x27;application/json&#x27;));
-    protobuf.setRequest(new Buffer(this.query));
-    
-    return protobuf;
-    
-};
+    <div class="constructor">
+        <h2>Constructor</h2>
+        <div id="method_NodeManager" class="method item">
+            <h3 class="name"><code>NodeManager</code></h3>
+        
+                <span class="paren">()</span>
+        
+        
+        
+        
+        
+        
+        
+        
+            <div class="meta">
+                        <p>
+                        Defined in
+                <a href="../files/lib_core_nodemanager.js.html#l21"><code>lib&#x2F;core&#x2F;nodemanager.js:21</code></a>
+                </p>
+        
+        
+        
+            </div>
+        
+            <div class="description">
+                
+            </div>
+        
+        
+        
+        
+        </div>
+    </div>
 
-MapReduce.prototype.onSuccess = function(rpbMapRedResp) {
-    
-    
-     var done = rpbMapRedResp.done ? true : false;
-    // The last message is usually empty with only &#x27;done&#x27; when streaming
-    var responseArray = null;
-    var phase = null;
-    if (rpbMapRedResp.getResponse()) {
-        responseArray = JSON.parse(rpbMapRedResp.getResponse().toString(&#x27;utf8&#x27;));
-        phase = rpbMapRedResp.phase ? rpbMapRedResp.phase : 0;
-    
-        if (!this.stream) {
-            if (!this.response[&#x27;phase_&#x27; + phase]) {
-                this.response[&#x27;phase_&#x27; + phase] = responseArray;
-            } else {
-                Array.prototype.push.apply(this.response[&#x27;phase_&#x27; + phase], responseArray);
-            }
-        } 
-    }
-    
-    if (!this.stream) {
-        if (done) {
-            this.response.done = true;
-            this._callback(null, this.response);
-        }
-    } else {
-        this._callback(null, { phase : phase, response: responseArray, done: done});
-    }
-    
-    return done;
-    
-};
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-var schema = Joi.object().keys({
-    query: Joi.string().required(),
-    callback: Joi.func().strip().optional(),
-    stream: Joi.boolean().default(true).optional()
-});
+    </ul>
 
-module.exports = MapReduce;
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
 
-    </pre>
+
+
+
+        </div>
+
+
+
+
+    </div>
 </div>
                     </div>
                 </div>

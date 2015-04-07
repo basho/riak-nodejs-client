@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Client - Basho Riak NodeJS CLient</title>
+    <title>Client - basho-riak-client</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -14,10 +14,10 @@
 <div id="doc">
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
-                <h1><img src="../assets/css/logo.png" title="Basho Riak NodeJS CLient" width="117" height="52"></h1>
+                <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.0.0</em>
+            <em>API Docs for: 1.1.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -41,6 +41,7 @@
                                 <li><a href="../classes/AuthReq.html">AuthReq</a></li>
                                 <li><a href="../classes/Client.html">Client</a></li>
                                 <li><a href="../classes/CommandBase.html">CommandBase</a></li>
+                                <li><a href="../classes/DefaultNodeManager.html">DefaultNodeManager</a></li>
                                 <li><a href="../classes/DeleteIndex.html">DeleteIndex</a></li>
                                 <li><a href="../classes/DeleteIndex.Builder.html">DeleteIndex.Builder</a></li>
                                 <li><a href="../classes/DeleteValue.html">DeleteValue</a></li>
@@ -64,6 +65,7 @@
                                 <li><a href="../classes/ListKeys.html">ListKeys</a></li>
                                 <li><a href="../classes/ListKeys.Builder.html">ListKeys.Builder</a></li>
                                 <li><a href="../classes/MapReduce.html">MapReduce</a></li>
+                                <li><a href="../classes/NodeManager.html">NodeManager</a></li>
                                 <li><a href="../classes/Ping.html">Ping</a></li>
                                 <li><a href="../classes/RiakCluster.html">RiakCluster</a></li>
                                 <li><a href="../classes/RiakCluster.Builder.html">RiakCluster.Builder</a></li>
@@ -149,27 +151,24 @@
 <div class="box intro">
     <p>A Class that represents a Riak client.</p>
 <p>The client constructor accepts a <a href="../classes/RiakCluster.html" class="crosslink">RiakCluster</a>, or a list of host[:port] from
-which it will create a RiakCluster using our default configuration.</p>
-<pre class="code prettyprint"><code>var Riak = require('riak');
-var client = new Riak.Client(['192.168.1.1:8087', '192.168.1.2:8087']);
-</code></pre>
-<p>Two styles of use are supported. Each command you can send to Riak is a
-class and can be instantiated then executed by the client's execute() method.
+which it will create a RiakCluster using our default configuration. </p>
+<pre class="code prettyprint"><code>var Riak = require(&#39;riak&#39;);
+var client = new Riak.Client([&#39;192.168.1.1:8087&#39;, &#39;192.168.1.2:8087&#39;]);
+</code></pre><p>Two styles of use are supported. Each command you can send to Riak is a 
+class and can be instantiated then executed by the client&#39;s execute() method.
 In addition, convenience methods are provided directly by the Client class
 that corrispond to each of the commands.</p>
 <pre class="code prettyprint"><code>// Using the builder, but options can also be passed directly to the constructor
 var fetch = new KV.FetchValue.Builder() 
-             .withBucket('myBucket')
-             .withKey('myKey')
+             .withBucket(&#39;myBucket&#39;)
+             .withKey(&#39;myKey&#39;)
              .withCallback(callback)
              .build();
-             
+
 client.execute(fetch);
-</code></pre>
-<p>or</p>
-<pre class="code prettyprint"><code>client.fetchValue({ bucket: 'myBucket', key: 'myKey' }, callback);
-</code></pre>
-<p>All command callbacks are the typical node.js function(err, resp) style.</p>
+</code></pre><p>or</p>
+<pre class="code prettyprint"><code>client.fetchValue({ bucket: &#39;myBucket&#39;, key: &#39;myKey&#39; }, callback);
+</code></pre><p>All command callbacks are the typical node.js function(err, resp) style.</p>
 
 </div>
 
@@ -1049,7 +1048,7 @@ client.execute(fetch);
     </div>
 
     <div class="description">
-        <p>Get the client's RiakCluster.</p>
+        <p>Get the client&#39;s RiakCluster.</p>
 
     </div>
 
@@ -1206,10 +1205,13 @@ client.execute(fetch);
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>options</code>
+                        <code>query</code>
                 </li>
                 <li class="arg">
                         <code>callback</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[stream=true]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -1241,12 +1243,12 @@ client.execute(fetch);
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">options</code>
-                        <span class="type">Object</span>
+                        <code class="param-name">query</code>
+                        <span class="type">String</span>
 
 
                     <div class="param-description">
-                        <p>The options for this operation.</p>
+                        <p>The map-reduce query.</p>
 
                     </div>
 
@@ -1258,6 +1260,18 @@ client.execute(fetch);
 
                     <div class="param-description">
                         <p>The callback to be executed when the operation completes.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[stream=true]</code>
+                        <span class="type">Boolean</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>Stream the results or accumulate before calling callback.</p>
 
                     </div>
 
@@ -1489,8 +1503,8 @@ client.execute(fetch);
     <div class="description">
         <p>Shut down the client gracefully.</p>
 <p>This will cause all connections to be closed and any remaining in-flight
-commands to finish.</p>
-<p>The provided callback will be added as a stateChange listener to the client's
+commands to finish. </p>
+<p>The provided callback will be added as a stateChange listener to the client&#39;s
 RiakCluster.</p>
 <p>See: <a href="../classes/RiakCluster.html#event_stateChange" class="crosslink">RiakCluster.stateChange</a></p>
 
