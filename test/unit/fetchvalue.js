@@ -65,6 +65,7 @@ describe('FetchValue', function() {
             var rpbContent = new RpbContent();
             rpbContent.setValue(new Buffer('this is a value'));
             rpbContent.setContentType(new Buffer('application/json'));
+            rpbContent.setVtag(new Buffer('4lfAJ4HnZthG494VIkdjIb'));
             
             var pair = new RpbPair();
             pair.setKey(new Buffer('email_bin'));
@@ -111,6 +112,7 @@ describe('FetchValue', function() {
                     assert.equal(riakObject.getLinks()[1].key, 'k2');
                     assert.equal(riakObject.getLinks()[1].tag, 't2');
                     assert.equal(riakObject.getVClock().toString('utf8'), '1234');
+                    assert.equal(riakObject.getVTag().toString('utf8'), '4lfAJ4HnZthG494VIkdjIb');
                     done();
                 }
             };
