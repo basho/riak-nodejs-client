@@ -24,6 +24,23 @@ var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbEr
 var assert = require('assert');
 
 describe('FetchValue', function() {
+    describe('Options', function() {
+        it('should use options.callback if present', function(done) {
+            function cb(err, rslt) { }
+
+            var options = {
+                bucket: 'foo',
+                key: 'bar',
+                callback: cb
+            };
+
+            assert.doesNotThrow(function () {
+                var fetchCommand = new FetchValue(options);
+                assert(fetchCommand.callback == cb);
+            });
+        });
+    });
+
     describe('Build', function() {
         it('should build a RpbGetReq correctly', function(done) {
             

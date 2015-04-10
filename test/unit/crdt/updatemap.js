@@ -27,7 +27,26 @@ var assert = require('assert');
 describe('UpdateMap', function() {
     
     describe('UpdateMap', function() {
-    
+
+        it('should validate callback correctly', function(done) {
+
+            function cb(err, rslt) { };
+
+            var mapOp = new UpdateMap.MapOperation();
+
+            var options = {
+                bucketType: 'maps',
+                bucket: 'foo',
+                key: 'bar',
+                op: mapOp
+            };
+
+            assert.doesNotThrow(function () {
+                var update = new UpdateMap(options, cb);
+                assert(update.callback == cb);
+            });
+        });
+
         it('should build a DtUpdateReq correctly', function(done) {
            
            var mapOp = new UpdateMap.MapOperation();
