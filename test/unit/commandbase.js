@@ -130,7 +130,62 @@ describe('CommandBase', function() {
             key: 'bar',
             callback: cb
         };
+
+        var default_builder_func = function (b) {
+            b.withBucketType(default_options.bucketType);
+            b.withBucket(default_options.bucket);
+            b.withKey(default_options.key);
+        };
+
+        var updateMapOp = new Riak.Commands.CRDT.UpdateMap.MapOperation();
+
         var commands = {
+            'CRDT.FetchCounter' : {
+                    options : default_options,
+                    builder_func : default_builder_func
+                },
+            'CRDT.FetchMap' : {
+                    options : default_options,
+                    builder_func : default_builder_func
+                },
+            'CRDT.FetchSet' : {
+                    options : default_options,
+                    builder_func : default_builder_func
+                },
+            'CRDT.UpdateCounter' : {
+                    options : {
+                        bucketType: default_options.bucketType,
+                        bucket: default_options.bucket,
+                        key: default_options.key,
+                        increment: 1,
+                        callback: cb
+                    },
+                    builder_func: function (b) {
+                        b.withBucketType(default_options.bucketType);
+                        b.withBucket(default_options.bucket);
+                        b.withKey(default_options.key);
+                        b.withIncrement(1);
+                    }
+                },
+            'CRDT.UpdateMap' : {
+                    options : {
+                        bucketType: default_options.bucketType,
+                        bucket: default_options.bucket,
+                        key: default_options.key,
+                        op: updateMapOp,
+                        callback: cb
+                    },
+                    builder_func: function (b) {
+                        b.withBucketType(default_options.bucketType);
+                        b.withBucket(default_options.bucket);
+                        b.withKey(default_options.key);
+                        b.withMapOperation(updateMapOp);
+                    }
+                },
+            'CRDT.UpdateSet' : {
+                    options : default_options,
+                    builder_func : default_builder_func
+                },
             'KV.DeleteValue' : {
                     options : default_options,
                     builder_func: function (b) {
@@ -221,9 +276,11 @@ describe('CommandBase', function() {
                 try {
                     var cmd = eval(eval_str);
                 } catch (e) {
-                    e_message = e.message;
+                    if (e.message !== '"callback" is not allowed') {
+                        logger.error("%s ctor threw: %s", cmd_name, e.message);
+                        throw e;
+                    }
                 }
-                assert(e_message === '"callback" is not allowed', cmd_name + ": e.message: " + e_message);
             });
             done();
         });
@@ -244,7 +301,7 @@ describe('CommandBase', function() {
                 try {
                     var cmd = builder.build();
                 } catch (e) {
-                    logger.error("%s: %s", cmd_name, e.message);
+                    logger.error("%s builder.build() threw: %s", cmd_name, e.message);
                     throw e;
                 }
                 assert(cmd.callback == cb);
