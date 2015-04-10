@@ -140,6 +140,64 @@ describe('CommandBase', function() {
         var updateMapOp = new Riak.Commands.CRDT.UpdateMap.MapOperation();
 
         var commands = {
+            'YZ.DeleteIndex' : {
+                    options : {
+                        indexName: 'frazzle',
+                        callback: cb
+                    },
+                    builder_func: function (b) {
+                        b.withIndexName('frazzle');
+                    }
+                },
+            'YZ.FetchIndex' : {
+                    options : {
+                        indexName: 'frazzle',
+                        callback: cb
+                    },
+                    builder_func: function (b) {
+                        b.withIndexName('frazzle');
+                    }
+                },
+            'YZ.FetchSchema' : {
+                    options : {
+                        schemaName: 'frazzle',
+                        callback: cb
+                    },
+                    builder_func: function (b) {
+                        b.withSchemaName('frazzle');
+                    }
+                },
+            'YZ.Search' : {
+                    options : {
+                        q : '*:*',
+                        indexName: 'frazzle',
+                        callback: cb
+                    },
+                    builder_func: function (b) {
+                        b.withIndexName('frazzle');
+                        b.withQuery('*:*');
+                    }
+                },
+            'YZ.StoreIndex' : {
+                    options : {
+                        indexName: 'frazzle',
+                        callback: cb
+                    },
+                    builder_func: function (b) {
+                        b.withIndexName('frazzle');
+                    }
+                },
+            'YZ.StoreSchema' : {
+                    options : {
+                        schemaName: 'frazzle',
+                        schema: '<fauxml></fauxml>',
+                        callback: cb
+                    },
+                    builder_func: function (b) {
+                        b.withSchemaName('frazzle');
+                        b.withSchema('<fauxml></fauxml>');
+                    }
+                },
             'CRDT.FetchCounter' : {
                     options : default_options,
                     builder_func : default_builder_func
