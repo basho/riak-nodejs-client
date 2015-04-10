@@ -67,7 +67,7 @@ TestBuilder.prototype = {
 
 describe('CommandBase', function() {
 
-    function cb(err, rslt) { };
+    function cb(err, rslt) { }
 
     describe('TestCommand', function() {
 
@@ -332,7 +332,7 @@ describe('CommandBase', function() {
                 var eval_str = "new Riak.Commands." + cmd_name + "(options, cb)";
                 var e_message = null;
                 try {
-                    var cmd = eval(eval_str);
+                    var cmd = eval(eval_str); // jshint ignore:line
                 } catch (e) {
                     if (e.message !== '"callback" is not allowed') {
                         logger.error("%s ctor threw: %s", cmd_name, e.message);
@@ -349,15 +349,16 @@ describe('CommandBase', function() {
                 var builder_func = commands[cmd_name].builder_func;
 
                 var eval_str = "new Riak.Commands." + cmd_name + ".Builder()";
-                var builder = eval(eval_str);
-                var builder = builder.withCallback(cb);
+                var builder = eval(eval_str); // jshint ignore:line
+                builder.withCallback(cb);
 
                 if (builder_func) {
                     builder_func(builder);
                 }
 
+                var cmd;
                 try {
-                    var cmd = builder.build();
+                    cmd = builder.build();
                 } catch (e) {
                     logger.error("%s builder.build() threw: %s", cmd_name, e.message);
                     throw e;
