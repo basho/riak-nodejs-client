@@ -24,6 +24,7 @@ var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbEr
 var assert = require('assert');
 
 describe('FetchValue', function() {
+
     describe('Build', function() {
         it('should build a RpbGetReq correctly', function(done) {
             

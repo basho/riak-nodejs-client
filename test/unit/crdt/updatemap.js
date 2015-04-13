@@ -25,13 +25,13 @@ var RpbErrorResp = require('../../../lib/protobuf/riakprotobuf').getProtoFor('Rp
 var assert = require('assert');
 
 describe('UpdateMap', function() {
-    
+
     describe('UpdateMap', function() {
-    
+
         it('should build a DtUpdateReq correctly', function(done) {
-           
+
            var mapOp = new UpdateMap.MapOperation();
-           
+
             mapOp.incrementCounter('counter_1', 50)
                 .removeCounter('counter_2')
                 .addToSet('set_1', 'set_value_1')
@@ -42,7 +42,7 @@ describe('UpdateMap', function() {
                 .setFlag('flag_1', true)
                 .removeFlag('flag_2')
                 .removeMap('map_3');
-        
+
             mapOp.map('map_2').incrementCounter('counter_1', 50)
                 .removeCounter('counter_2')
                 .addToSet('set_1', new Buffer('set_value_1'))
@@ -54,8 +54,8 @@ describe('UpdateMap', function() {
                 .removeFlag('flag_2')
                 .removeMap('map_3')
                 .map('map_2');
-        
-           
+
+
             var update = new UpdateMap.Builder()
                 .withBucketType('maps')
                 .withBucket('myBucket')
@@ -69,9 +69,9 @@ describe('UpdateMap', function() {
                 .withReturnBody(true)
                 .withTimeout(20000)
                 .build();
-        
+
             var protobuf = update.constructPbRequest();
-                        
+
             assert.equal(protobuf.getType().toString('utf8'), 'maps');
             assert.equal(protobuf.getBucket().toString('utf8'), 'myBucket');
             assert.equal(protobuf.getKey().toString('utf8'), 'map_1');
@@ -81,9 +81,9 @@ describe('UpdateMap', function() {
             assert.equal(protobuf.getReturnBody(), true);
             assert.equal(protobuf.getTimeout(), 20000);
             assert.equal(protobuf.getContext().toString('utf8'), '1234');
-            
+
             mapOp = protobuf.op.map_op;
-            
+
             var verifyRemoves = function(removes) {
                 assert.equal(removes.length, 5);
                 var i;
@@ -118,19 +118,19 @@ describe('UpdateMap', function() {
                             break;
                     }
                 }
-                
+
                 assert(counterRemoved);
                 assert(setRemoved);
                 assert(registerRemoved);
                 assert(flagRemoved);
                 assert(mapRemoved);
-                
+
             };
-            
+
             verifyRemoves(mapOp.removes);
-            
+
             var verifyUpdates = function(updates) {
-              
+
                 var i;
                 var counterIncremented = false;
                 var setAddedTo = false;
@@ -151,12 +151,12 @@ describe('UpdateMap', function() {
                                 assert.equal(updates[i].field.name.toString('utf8'), 'set_1');
                                 assert.equal(updates[i].set_op.adds[0].toString('utf8'),'set_value_1');
                                 setAddedTo = true;
-                                
+
                             } else {
                                 assert.equal(updates[i].field.name.toString('utf8'), 'set_2');
                                 assert.equal(updates[i].set_op.removes[0].toString('utf8'),'set_value_2');
                                 setRemovedFrom = true;
-                            }   
+                            }
                             break;
                         case MapField.MapFieldType.MAP:
                             assert.equal(updates[i].field.name.toString('utf8'), 'map_2');
@@ -177,38 +177,38 @@ describe('UpdateMap', function() {
                             break;
                     }
                 }
-                
+
                 assert(counterIncremented);
                 assert(setAddedTo);
                 assert(setRemovedFrom);
                 assert(registerSet);
                 assert(flagSet);
                 assert(mapAdded);
-                
+
                 return mapUpdate;
-                
+
             };
-            
+
             verifyRemoves(mapOp.removes);
             var innerMapUpdate = verifyUpdates(mapOp.updates);
             verifyUpdates(innerMapUpdate.map_op.updates);
             verifyRemoves(innerMapUpdate.map_op.removes);
-            
+
             // perform happy dance
-            
+
             done();
-            
+
         });
-        
+
         it('should take a DtUpdateResp and call the users callback with the response', function(done) {
-           
+
             var dtUpdateResp = new DtUpdateResp();
             dtUpdateResp.setKey(new Buffer('riak_generated_key'));
             dtUpdateResp.setContext(new Buffer('1234'));
-            
+
             var createMapEntries = function() {
                 var mapEntries = [];
-                
+
                 var mapEntry = new MapEntry();
                 var mapField = new MapField();
                 mapField.setType(MapField.MapFieldType.COUNTER);
@@ -216,7 +216,7 @@ describe('UpdateMap', function() {
                 mapEntry.setField(mapField);
                 mapEntry.setCounterValue(50);
                 mapEntries.push(mapEntry);
-                
+
                 mapEntry = new MapEntry();
                 mapField = new MapField();
                 mapField.setType(MapField.MapFieldType.SET);
@@ -224,7 +224,7 @@ describe('UpdateMap', function() {
                 mapEntry.setField(mapField);
                 mapEntry.set_value.push.apply(mapEntry.set_value, [ByteBuffer.fromUTF8('value_1'), ByteBuffer.fromUTF8('value_2')]);
                 mapEntries.push(mapEntry);
-                
+
                 mapEntry = new MapEntry();
                 mapField = new MapField();
                 mapField.setType(MapField.MapFieldType.REGISTER);
@@ -232,7 +232,7 @@ describe('UpdateMap', function() {
                 mapEntry.setField(mapField);
                 mapEntry.setRegisterValue(ByteBuffer.fromUTF8('1234'));
                 mapEntries.push(mapEntry);
-                
+
                 mapEntry = new MapEntry();
                 mapField = new MapField();
                 mapField.setType(MapField.MapFieldType.FLAG);
@@ -240,27 +240,27 @@ describe('UpdateMap', function() {
                 mapEntry.setField(mapField);
                 mapEntry.setFlagValue(true);
                 mapEntries.push(mapEntry);
-                
+
                 return mapEntries;
 
             };
-            
+
             dtUpdateResp.map_value.push.apply(dtUpdateResp.map_value, createMapEntries());
-            
+
             var mapEntry = new MapEntry();
             var mapField = new MapField();
             mapField.setType(MapField.MapFieldType.MAP);
             mapField.setName(new Buffer('map_1'));
             mapEntry.setField(mapField);
             mapEntry.map_value.push.apply(mapEntry.map_value, createMapEntries());
-            
+
             dtUpdateResp.map_value.push(mapEntry);
-            
+
             var callback = function(err, resp) {
                 assert(resp !== null);
                 assert.equal(resp.generatedKey.toString('utf8'), 'riak_generated_key');
                 assert.equal(resp.context.toString('utf8'), '1234');
-                
+
                 var verifyMap = function(map) {
                     assert.equal(map.counters.counter_1, 50);
                     assert.equal(map.sets.set_1[0], 'value_1');
@@ -268,16 +268,16 @@ describe('UpdateMap', function() {
                     assert.equal(map.registers.register_1.toString('utf8'), '1234');
                     assert.equal(map.flags.flag_1, true);
                 };
-            
+
                 verifyMap(resp.map);
                 verifyMap(resp.map.maps.map_1);
                 done();
-            
+
             };
-            
+
             var mapOp = new UpdateMap.MapOperation();
-            
-            
+
+
             var update = new UpdateMap.Builder()
                 .withBucketType('maps')
                 .withBucket('myBucket')
@@ -285,22 +285,22 @@ describe('UpdateMap', function() {
                 .withMapOperation(mapOp)
                 .withCallback(callback)
                 .build();
-        
+
             update.onSuccess(dtUpdateResp);
-            
+
         });
-        
+
         it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
             var rpbErrorResp = new RpbErrorResp();
             rpbErrorResp.setErrmsg(new Buffer('this is an error'));
-           
+
             var callback = function(err, response) {
                 if (err) {
                     assert.equal(err,'this is an error');
                     done();
                 }
             };
-            
+
             var mapOp = new UpdateMap.MapOperation();
             var update = new UpdateMap.Builder()
                 .withBucketType('maps')
@@ -309,22 +309,22 @@ describe('UpdateMap', function() {
                 .withMapOperation(mapOp)
                 .withCallback(callback)
                 .build();
-        
+
             update.onRiakError(rpbErrorResp);
         });
-        
+
     });
-    
+
     describe('MapOperation', function() {
-        
+
         it('should add counter increments', function(done) {
-            
+
             var op = new UpdateMap.MapOperation();
-            
+
             op.incrementCounter('counter_1', 5);
             op.incrementCounter('counter_2', 5);
             op.incrementCounter('counter_2', -10);
-            
+
             assert.equal(op.counters.increment.length, 2);
             assert.equal(op.counters.increment[0].key, 'counter_1');
             assert.equal(op.counters.increment[0].increment, 5);
@@ -332,38 +332,38 @@ describe('UpdateMap', function() {
             assert.equal(op.counters.increment[1].increment, -5);
             done();
         });
-        
+
         it('should invalidate counter increment on remove', function(done) {
-           
+
             var op = new UpdateMap.MapOperation();
-            
+
             op.incrementCounter('counter_1', 5);
             op.removeCounter('counter_1');
-            
+
             assert.equal(op.counters.increment.length, 0);
             assert.equal(op.counters.remove.length, 1);
             assert.equal(op.counters.remove[0], 'counter_1');
             assert(op._hasRemoves());
             done();
-            
+
         });
-        
+
         it('should invalidate counter remove on increment', function(done) {
             var op = new UpdateMap.MapOperation();
-            
+
             op.removeCounter('counter_1');
             op.incrementCounter('counter_1', 5);
             assert.equal(op.counters.remove.length, 0);
             assert.equal(op.counters.increment[0].key, 'counter_1');
             assert.equal(op.counters.increment[0].increment, 5);
             done();
-            
+
         });
-        
+
         it('should add set adds', function(done) {
-           
+
             var op = new UpdateMap.MapOperation();
-            
+
             op.addToSet('set_1', 'value_1');
             op.addToSet('set_1', 'value_2');
             op.addToSet('set_2', 'value_1');
@@ -376,13 +376,13 @@ describe('UpdateMap', function() {
             assert.equal(op.sets.adds[1].key, 'set_2');
             assert.equal(op.sets.adds[1].add[0], 'value_1');
             done();
-            
+
         });
-        
+
         it('should add set removes', function(done) {
-            
+
             var op = new UpdateMap.MapOperation();
-            
+
             op.removeFromSet('set_1', 'value_1');
             op.removeFromSet('set_1', 'value_2');
             op.removeFromSet('set_2', 'value_1');
@@ -396,18 +396,18 @@ describe('UpdateMap', function() {
             assert.equal(op.sets.removes[1].remove[0], 'value_1');
             assert(op._hasRemoves());
             done();
-            
+
         });
-        
+
         it('should invalidate adding to a set on a remove set', function(done) {
-           
+
            var op = new UpdateMap.MapOperation();
-           
+
            op.addToSet('set_1', 'value_1');
            op.addToSet('set_2', 'value_1');
            op.removeSet('set_1');
            op.removeSet('set_3');
-           
+
            assert.equal(op.sets.adds.length, 1);
            assert.equal(op.sets.adds[0].key, 'set_2');
            assert.equal(op.sets.remove.length, 2);
@@ -415,18 +415,18 @@ describe('UpdateMap', function() {
            assert.equal(op.sets.remove[1], 'set_3');
            assert(op._hasRemoves());
            done();
-           
+
         });
-        
+
         it('should invalidate removing from a set on a remove set', function(done) {
-           
+
            var op = new UpdateMap.MapOperation();
-           
+
            op.removeFromSet('set_1', 'value_1');
            op.removeFromSet('set_2', 'value_1');
            op.removeSet('set_1');
            op.removeSet('set_3');
-           
+
            assert.equal(op.sets.removes.length, 1);
            assert.equal(op.sets.removes[0].key, 'set_2');
            assert.equal(op.sets.remove.length, 2);
@@ -434,13 +434,13 @@ describe('UpdateMap', function() {
            assert.equal(op.sets.remove[1], 'set_3');
            assert(op._hasRemoves());
            done();
-            
+
         });
-        
+
         it('should invalidate removing a set on an add to set', function(done) {
-           
+
             var op = new UpdateMap.MapOperation();
-            
+
             op.removeSet('set_1');
             op.removeSet('set_3');
             assert.equal(op.sets.remove.length, 2);
@@ -451,13 +451,13 @@ describe('UpdateMap', function() {
             assert(op._hasRemoves());
 
             done();
-            
+
         });
-        
+
         it('should invalidate removing a set on a remove from set', function(done) {
-            
+
             var op = new UpdateMap.MapOperation();
-            
+
             op.removeSet('set_1');
             op.removeSet('set_3');
             assert.equal(op.sets.remove.length, 2);
@@ -468,39 +468,39 @@ describe('UpdateMap', function() {
             assert(op._hasRemoves());
 
             done();
-            
+
         });
-        
+
         it('should add registers', function(done) {
-           
+
            var op = new UpdateMap.MapOperation();
-           
+
            op.setRegister('register_1', new Buffer('value_1'));
            op.setRegister('register_2', new Buffer('value_2'));
-           
+
            assert.equal(op.registers.set.length, 2);
            assert.equal(op.registers.set[0].key, 'register_1');
            assert.equal(op.registers.set[0].value.toString('utf8'), 'value_1');
            assert.equal(op.registers.set[1].key, 'register_2');
            assert.equal(op.registers.set[1].value.toString('utf8'), 'value_2');
-           
+
            op.setRegister('register_1', new Buffer('value_3'));
            assert.equal(op.registers.set[0].key, 'register_1');
            assert.equal(op.registers.set[0].value.toString('utf8'), 'value_3');
            done();
-           
-            
+
+
         });
-        
+
         it('should invalidate register sets on removes', function(done) {
-            
+
             var op = new UpdateMap.MapOperation();
-            
+
             op.setRegister('register_1', new Buffer('value_1'));
             op.setRegister('register_2', new Buffer('value_2'));
-            
+
             op.removeRegister('register_1');
-            
+
             assert.equal(op.registers.set.length, 1);
             assert.equal(op.registers.set[0].key, 'register_2');
             assert.equal(op.registers.set[0].value.toString('utf8'), 'value_2');
@@ -509,16 +509,16 @@ describe('UpdateMap', function() {
             assert(op._hasRemoves());
             done();
         });
-        
+
         if('should invalidate register removes on register sets', function(done) {
-            
+
             var op = new UpdateMap.MapOperation();
             op.removeRegister('register_1');
             op.removeRegister('register_2');
             assert.equal(op.registers.remove.length, 2);
             assert.equal(op.registers.remove[0], 'register_1');
             assert.equal(op.registers.remove[1], 'register_2');
-            
+
             op.setRegister('register_1', new Buffer('value_1'));
             assert.equal(op.registers.set.length, 1);
             assert.equal(op.registers.remove.length, 1);
@@ -526,31 +526,31 @@ describe('UpdateMap', function() {
             assert(op._hasRemoves());
             done();
         });
-        
+
         it('should set flags', function(done) {
-           
+
             var op = new UpdateMap.MapOperation();
-            
+
             op.setFlag('flag_1', true);
             op.setFlag('flag_2', false);
-            
+
             assert.equal(op.flags.set.length, 2);
             assert.equal(op.flags.set[0].key, 'flag_1');
             assert.equal(op.flags.set[1].key, 'flag_2');
             assert.equal(op.flags.set[0].state, true);
             assert.equal(op.flags.set[1].state, false);
-            
+
             op.setFlag('flag_1', false);
             assert.equal(op.flags.set.length, 2);
             assert.equal(op.flags.set[0].state, false);
             done();
-            
+
         });
-        
+
         it('should invalidate a flag set on a flag remove', function(done) {
-           
+
             var op = new UpdateMap.MapOperation();
-            
+
             op.setFlag('flag_1', true);
             op.setFlag('flag_2', false);
             op.removeFlag('flag_2');
@@ -560,13 +560,13 @@ describe('UpdateMap', function() {
             assert.equal(op.flags.remove[0], 'flag_2');
             assert(op._hasRemoves());
             done();
-            
+
         });
-        
+
         it('should invalidate a remove flag on a set flag', function(done) {
-           
+
             var op = new UpdateMap.MapOperation();
-            
+
             op.removeFlag('flag_1');
             op.removeFlag('flag_2');
             assert.equal(op.flags.remove.length, 2);
@@ -576,45 +576,45 @@ describe('UpdateMap', function() {
             assert.equal(op.flags.set.length, 1);
             assert(op._hasRemoves());
             done();
-            
+
         });
-        
+
         it('should nest maps', function(done) {
-            
+
             var op = new UpdateMap.MapOperation();
             op.map('map_1')
                     .setFlag('some_flag', true)
                     .incrementCounter('counter_1', 5)
                     .removeRegister('register_1');
-            
+
             assert.equal(op.counters.increment.length, 0);
             assert.equal(op.flags.set.length, 0);
             assert.equal(op.registers.remove.length, 0);
             assert.equal(op.maps.modify.length, 1);
-            
+
             assert.equal(op.maps.modify[0].map.counters.increment.length, 1);
             assert.equal(op.maps.modify[0].map.flags.set.length, 1);
             assert.equal(op.maps.modify[0].map.registers.remove.length, 1);
             assert(op._hasRemoves());
             done();
-            
+
         });
-    
+
         it('should invalidate a map modify on a map remove', function(done) {
             var op = new UpdateMap.MapOperation();
             op.map('map_1').setFlag('some_flag', true);
-            
+
             op.removeMap('map_1');
             assert.equal(op.maps.modify.length, 0);
             assert.equal(op.maps.remove.length, 1);
             assert(op._hasRemoves());
             assert.equal(op.maps.remove[0], 'map_1');
             done();
-            
+
         });
-        
+
         it('should invalidate a map remove on a map modify', function(done) {
-            
+
             var op = new UpdateMap.MapOperation();
             op.removeMap('map_1');
             op.removeMap('map_2');
@@ -624,9 +624,9 @@ describe('UpdateMap', function() {
             assert.equal(op.maps.modify.length, 1);
             assert(op._hasRemoves());
             done();
-            
+
         });
-    
+
     });
 });
 

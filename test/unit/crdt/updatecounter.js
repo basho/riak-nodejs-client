@@ -106,3 +106,4 @@ describe('UpdateCounter', function() {
         });
     });
 });
+
