@@ -16,6 +16,9 @@ module.exports = function(grunt) {
     },
     jshint: {
       files: ['Gruntfile.js', 'lib/**/*.js', 'test/**/*.js'],
+      options: {
+        node: true
+      }
     },
     mochaTest: {
         unit: {
