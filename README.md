@@ -1,7 +1,7 @@
-Riak NodeJS Client
+Riak Node.js Client
 ==================
 
-**Riak NodeJS Client** is a client which makes it easy to communicate with [Riak](http://basho.com/riak/), an open source, distributed database that focuses on high availability, horizontal scalability, and *predictable*
+**Riak Node.js Client** is a client which makes it easy to communicate with [Riak](http://basho.com/riak/), an open source, distributed database that focuses on high availability, horizontal scalability, and *predictable*
 latency. Both Riak and this code is maintained by [Basho](http://www.basho.com/).
 
 1. [Installation](#installation)
@@ -39,11 +39,9 @@ This repository's maintainers are engineers at Basho and we welcome your contrib
 
 ### An honest disclaimer
 
-Due to our obsession with stability and our rich ecosystem of users, community updates on this repo take longer to review. 
+Due to our obsession with stability and our rich ecosystem of users, community updates on this repo may take a little longer to review. 
 
 The most helpful way to contribute is by reporting your experience through issues. Issues may not be updated while we review internally, but they're still incredibly appreciated.
-
-Pull requests take multiple engineers for verification and testing. If you're passionate enough to want to learn more on how you can get hands on in this process, reach out to [Matt](mailto:mbrender@basho.com), your developer advocate. 
 
 Thank you for being part of the community! We love you for it. 
 
@@ -52,7 +50,7 @@ Thank you for being part of the community! We love you for it.
 TODO
 
 ## License and Authors
-**The Riak NodeJS** Client is Open Source software released under the Apache 2.0 License. Please see the [LICENSE](LICENSE) file for full license details.
+**The Riak Node.js** Client is Open Source software released under the Apache 2.0 License. Please see the [LICENSE](LICENSE) file for full license details.
 
 * Author: [Brian Roach](https://github.com/broach)
 * Author: [Luke Bakken](http://bakken.io/)
