@@ -11,6 +11,9 @@ latency. Both Riak and this code is maintained by [Basho](http://www.basho.com/)
 4. [Roadmap](#roadmap)
 5. [License and Authors](#license-and-authors)
 
+## Installation
+
+`npm install basho-riak-client --save`
 
 ## Documentation
 
@@ -21,7 +24,18 @@ Most documentation is living in the [wiki](https://github.com/basho/riak-nodejs-
 
 ## Contributing
 
-This repo's maintainers are engineers at Basho and we welcome your contribution to the project! Review the details in [CONTRIBUTING.md](CONTRIBUTING.md) in order to give back to this project.
+*Note:* Please clone this repository in such a manner that submodules are also cloned:
+
+```
+git clone --recursive https://github.com/basho/riak-nodejs-client
+
+# OR:
+
+git clone https://github.com/basho/riak-nodejs-client
+git submodule init --update
+```
+
+This repository's maintainers are engineers at Basho and we welcome your contribution to the project! Review the details in [CONTRIBUTING.md](CONTRIBUTING.md) in order to give back to this project.
 
 ### An honest disclaimer
 
@@ -41,3 +55,4 @@ TODO
 * Author: [Brian Roach](https://github.com/broach)
 * Author: [Luke Bakken](http://bakken.io/)
 * Author: [Bryce Kerley](https://github.com/bkerley)
+
