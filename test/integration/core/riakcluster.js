@@ -122,6 +122,7 @@ describe('RiakCluster - Integration', function() {
                    .build();
            
            var stateMe = function(state) {
+                assert.equal(typeof(state), 'number', 'stateType');
              
                if (state === RiakCluster.State.QUEUEING) {
                    server.listen(1337, '127.0.0.1');
