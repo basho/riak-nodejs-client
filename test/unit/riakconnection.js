@@ -17,7 +17,13 @@
 var RiakConnection = require('../../lib/core/riakconnection');
 var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
 var responseCode = require('../../lib/protobuf/riakprotobuf').getCodeFor('RpbErrorResp');
+
+var RpbGetResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbGetResp');
+var RpbContent = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbContent');
+var rpbGetRespCode = require('../../lib/protobuf/riakprotobuf').getCodeFor('RpbGetResp');
+
 var assert = require('assert');
+var logger = require('winston');
 
 describe('RiakConnection', function() {
     describe('#_receiveData', function() {
@@ -114,11 +120,57 @@ describe('RiakConnection', function() {
             conn._receiveData(combined);
             
         });
+
+        it('should not clobber data when decoding buffer', function(done) {
+
+            var vclocks = ['vclock1234', 'vclock5678'];
+
+            var errTimeout = setTimeout(function () {
+                assert(false, 'Event never fired');
+                done();
+            }, 1000); 
+            
+            var decodedMessages = [];
+
+            conn.on('responseReceived', function(conn, command, code, decoded) {
+                clearTimeout(errTimeout);
+                assert(code === rpbGetRespCode);
+                decodedMessages.push(decoded);
+                if (decodedMessages.length === vclocks.length) {
+                    var i = 0;
+                    for (i = 0; i < vclocks.length; ++i) {
+                        var vclock = vclocks[i];
+                        var decodedVclock = decodedMessages[i].getVclock().toString('utf8');
+                        logger.debug("[test/unit/riakconnection] i '%d' vclock '%s' decodedVclock '%s'",
+                            i, vclock, decodedVclock);
+                        assert.equal(decodedVclock, vclock);
+                    }
+                    conn.removeAllListeners();
+                    done();
+                }
+            });
+            
+            vclocks.forEach(function (vclock) {
+                var rpbContent = new RpbContent();
+                rpbContent.setValue(new Buffer('this is a value'));
+                rpbContent.setContentType(new Buffer('application/json'));
+                
+                var rpbGetResp = new RpbGetResp();
+                rpbGetResp.setContent(rpbContent);
+                rpbGetResp.setVclock(new Buffer(vclock));
+
+                var header = new Buffer(5);
+                header.writeUInt8(rpbGetRespCode, 4);
+
+                var encoded = rpbGetResp.encode().toBuffer();
+                var encodedLength = encoded.length + 1;
+                header.writeInt32BE(encodedLength, 0);
+
+                conn._receiveData(header);
+                conn._receiveData(encoded);
+            });
+        });
         
     });
-    
-    
-    
 
 });
-
