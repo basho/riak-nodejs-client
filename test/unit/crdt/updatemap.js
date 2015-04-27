@@ -23,6 +23,7 @@ var ByteBuffer = require('bytebuffer');
 var RpbErrorResp = require('../../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
+var logger = require('winston');
 
 describe('UpdateMap', function() {
 
@@ -54,7 +55,6 @@ describe('UpdateMap', function() {
                 .removeFlag('flag_2')
                 .removeMap('map_3')
                 .map('map_2');
-
 
             var update = new UpdateMap.Builder()
                 .withBucketType('maps')
@@ -92,26 +92,26 @@ describe('UpdateMap', function() {
                 var registerRemoved = false;
                 var flagRemoved = false;
                 var mapRemoved = false;
-                for (i = 0; i < mapOp.removes.length; i++ ) {
-                    switch(mapOp.removes[i].type) {
+                for (i = 0; i < removes.length; i++ ) {
+                    switch(removes[i].type) {
                         case MapField.MapFieldType.COUNTER:
-                            assert.equal(mapOp.removes[i].name.toString('utf8'), 'counter_2');
+                            assert.equal(removes[i].name.toString('utf8'), 'counter_2');
                             counterRemoved = true;
                             break;
                         case MapField.MapFieldType.SET:
-                            assert.equal(mapOp.removes[i].name.toString('utf8'), 'set_3');
+                            assert.equal(removes[i].name.toString('utf8'), 'set_3');
                             setRemoved = true;
                             break;
                         case MapField.MapFieldType.MAP:
-                            assert.equal(mapOp.removes[i].name.toString('utf8'), 'map_3');
+                            assert.equal(removes[i].name.toString('utf8'), 'map_3');
                             mapRemoved = true;
                             break;
                         case MapField.MapFieldType.REGISTER:
-                            assert.equal(mapOp.removes[i].name.toString('utf8'), 'register_2');
+                            assert.equal(removes[i].name.toString('utf8'), 'register_2');
                             registerRemoved = true;
                             break;
                         case MapField.MapFieldType.FLAG:
-                            assert.equal(mapOp.removes[i].name.toString('utf8'), 'flag_2');
+                            assert.equal(removes[i].name.toString('utf8'), 'flag_2');
                             flagRemoved = true;
                             break;
                         default:
@@ -489,7 +489,6 @@ describe('UpdateMap', function() {
            assert.equal(op.registers.set[0].value.toString('utf8'), 'value_3');
            done();
 
-
         });
 
         it('should invalidate register sets on removes', function(done) {
@@ -508,6 +507,7 @@ describe('UpdateMap', function() {
             assert.equal(op.registers.remove[0], 'register_1');
             assert(op._hasRemoves());
             done();
+
         });
 
         if('should invalidate register removes on register sets', function(done) {
@@ -525,6 +525,7 @@ describe('UpdateMap', function() {
             assert.equal(op.registers.remove[0], 'register_2');
             assert(op._hasRemoves());
             done();
+
         });
 
         it('should set flags', function(done) {
@@ -596,6 +597,42 @@ describe('UpdateMap', function() {
             assert.equal(op.maps.modify[0].map.flags.set.length, 1);
             assert.equal(op.maps.modify[0].map.registers.remove.length, 1);
             assert(op._hasRemoves());
+            done();
+
+        });
+
+        it('should detect removes in deeply nested maps', function(done) {
+
+            var op = new UpdateMap.MapOperation();
+            var map_1 = op.map('map_1');
+            map_1.incrementCounter('counter_1', 5);
+
+            var depth_1 = map_1.map('depth_1');
+            depth_1.incrementCounter('depth_1_counter_1', 5);
+
+            var depth_2 = depth_1.map('depth_2');
+            depth_2.incrementCounter('depth_2_counter_1', 5);
+            depth_2.removeRegister('depth_2_register_1');
+
+            assert.equal(op.counters.increment.length, 0);
+            assert.equal(op.flags.set.length, 0);
+            assert.equal(op.registers.remove.length, 0);
+            assert.equal(op.maps.modify.length, 1);
+
+            logger.debug("[unit/crdt/updatemap] op.maps %s", JSON.stringify(op.maps));
+
+            var map_1_modify = op.maps.modify[0].map;
+            assert.equal(map_1_modify.counters.increment.length, 1);
+
+            var depth_1_modify = map_1_modify.maps.modify[0].map;
+            assert.equal(depth_1_modify.counters.increment.length, 1);
+
+            var depth_2_modify = depth_1_modify.maps.modify[0].map;
+            assert.equal(depth_2_modify.counters.increment.length, 1);
+            assert.equal(depth_2_modify.registers.remove.length, 1);
+
+            assert(op._hasRemoves());
+
             done();
 
         });
