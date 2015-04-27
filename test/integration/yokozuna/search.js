@@ -24,7 +24,9 @@ var StoreValue = require('../../../lib/commands/kv/storevalue');
 
 var RiakNode = require('../../../lib/core/riaknode');
 var RiakCluster = require('../../../lib/core/riakcluster');
+
 var assert = require('assert');
+var logger = require('winston');
 
 describe('Search - Integration', function() {
    
@@ -36,9 +38,7 @@ describe('Search - Integration', function() {
         cluster = new RiakCluster({ nodes: nodes});
         cluster.start();
         
-        
         var callback = function(err, resp) {
-          
             assert(!err, err);
             assert(resp);
         };
@@ -49,7 +49,6 @@ describe('Search - Integration', function() {
 				.build();
 
         cluster.execute(store);
-
 
         var prepSearch = function() {
           
@@ -93,10 +92,9 @@ describe('Search - Integration', function() {
             
             storeCb();
 
-
         };
 
-        var setOnBucket = function() {
+        var setOnBucket = function () {
             
             var store = new StoreProps.Builder()
 				.withBucket(Test.bucketName + '_search')
@@ -109,11 +107,17 @@ describe('Search - Integration', function() {
         };
 
         var count = 0;
-        fmCallback = function(err, resp) {
+        var fmCallback = function(err, resp) {
             count++;
-            if(err && err === 'notfound') {
-                if (count < 6) {
-                    setTimeout(fetchme, 2000 * count);
+            if (err) {
+                if (err === 'notfound') {
+                    if (count < 10) {
+                        var sleepMs = 2000 * count;
+                        logger.debug("[test/integration/yokozuna/search] sleeping for '%d' ms", sleepMs);
+                        setTimeout(fetchme, sleepMs);
+                    } else {
+                        assert(!err, err);
+                    }
                 } else {
                     assert(!err, err);
                 }
@@ -123,7 +127,7 @@ describe('Search - Integration', function() {
             }
         };
 
-        var fetchme = function() {
+        var fetchme = function () {
             var fetch = new FetchIndex.Builder()
 				.withIndexName('myIndex')
 				.withCallback(fmCallback)
@@ -155,9 +159,7 @@ describe('Search - Integration', function() {
 
         cluster.execute(store);
         
-        
     });
-        
    
     it('Should perform a search', function(done) {
        
@@ -165,8 +167,8 @@ describe('Search - Integration', function() {
         var callback = function(err, resp) {
             assert(!err, err);
             count++;
-            if(resp.numFound === 0) {
-                if(count < 6) {
+            if (resp.numFound === 0) {
+                if (count < 6) {
                     setTimeout(searchme, 2000 * count);
                 } else {
                     assert.fail('Search failed; ' + resp);
@@ -175,7 +177,6 @@ describe('Search - Integration', function() {
                done();
             }
         };
-        
         
         var searchme = function() {
             var search = new Search.Builder()
@@ -190,7 +191,5 @@ describe('Search - Integration', function() {
         searchme();
         
     });
-   
-    
-    
+
 });
