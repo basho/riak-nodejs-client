@@ -12,7 +12,7 @@ Thank you for being part of the community! We love you for it.
 
 ## Helping through sample code
 
-The most immediately helpful way you can benefit this project is by cloning the [examples repository](https://github.com/basho/riak-nodejs-client-examples), make some changes and submit a pull request.
+The most immediately helpful way you can benefit this project is by cloning the [examples repository](https://github.com/basho/riak-nodejs-client-examples/), make some changes and submit a pull request.
 
 ## How-to contribute to the Node.js client
 
