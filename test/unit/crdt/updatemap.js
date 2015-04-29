@@ -53,8 +53,7 @@ describe('UpdateMap', function() {
                 .removeRegister('register_2')
                 .setFlag('flag_1', true)
                 .removeFlag('flag_2')
-                .removeMap('map_3')
-                .map('map_2');
+                .removeMap('map_3');
 
             var update = new UpdateMap.Builder()
                 .withBucketType('maps')
@@ -129,8 +128,7 @@ describe('UpdateMap', function() {
 
             verifyRemoves(mapOp.removes);
 
-            var verifyUpdates = function(updates) {
-
+            var verifyUpdates = function(updates, expectMapUpdate) {
                 var i;
                 var counterIncremented = false;
                 var setAddedTo = false;
@@ -159,9 +157,11 @@ describe('UpdateMap', function() {
                             }
                             break;
                         case MapField.MapFieldType.MAP:
-                            assert.equal(updates[i].field.name.toString('utf8'), 'map_2');
-                            mapAdded = true;
-                            mapUpdate = updates[i];
+                            if (expectMapUpdate) {
+                                assert.equal(updates[i].field.name.toString('utf8'), 'map_2');
+                                mapAdded = true;
+                                mapUpdate = updates[i];
+                            }
                             break;
                         case MapField.MapFieldType.REGISTER:
                             assert.equal(updates[i].field.name.toString('utf8'), 'register_1');
@@ -183,16 +183,20 @@ describe('UpdateMap', function() {
                 assert(setRemovedFrom);
                 assert(registerSet);
                 assert(flagSet);
-                assert(mapAdded);
+                if (expectMapUpdate) {
+                    assert(mapAdded);
+                } else {
+                    assert(!mapAdded);
+                }
 
                 return mapUpdate;
 
             };
 
             verifyRemoves(mapOp.removes);
-            var innerMapUpdate = verifyUpdates(mapOp.updates);
-            verifyUpdates(innerMapUpdate.map_op.updates);
+            var innerMapUpdate = verifyUpdates(mapOp.updates, true);
             verifyRemoves(innerMapUpdate.map_op.removes);
+            verifyUpdates(innerMapUpdate.map_op.updates, false);
 
             // perform happy dance
 
