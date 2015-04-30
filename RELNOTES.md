@@ -1,6 +1,8 @@
 Release Notes
 =============
 
+* 1.1.3 - Following issues / PRs addressed:
+ * [RiakCluster uses a global DefaultNodeManager](https://github.com/basho/riak-nodejs-client/issues/49)
 * 1.1.2 - Following issues / PRs addressed:
  * [On cluster stop only emit state](https://github.com/basho/riak-nodejs-client/pull/46)
  * [vclock buffer issue](https://github.com/basho/riak-nodejs-client/issues/45)
