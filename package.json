@@ -48,7 +48,11 @@
     "LICENSE",
     "README.md",
     "index.js",
-    "lib/"
+    "lib/commands/",
+    "lib/core/",
+    "lib/protobuf/*.js",
+    "lib/protobuf/riak_pb/src/*.proto",
+    "lib/protobuf/riak_pb/src/*.csv"
   ],
   "bugs": {
     "url": "https://github.com/basho/riak-nodejs-client/issues"
