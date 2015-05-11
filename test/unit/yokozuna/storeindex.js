@@ -39,6 +39,34 @@ describe('StoreIndex', function() {
             assert.equal(index.getSchema().toString('utf8'), 'schemaName');
             done();
         });
+
+        it('should only require name and callback', function(done) {
+
+            assert.throws(function () {
+                new StoreIndex.Builder().build();
+            });
+
+            assert.throws(function () {
+                new StoreIndex.Builder()
+                    .withIndexName('indexName')
+                    .build();
+            });
+
+            assert.throws(function () {
+                new StoreIndex.Builder()
+                    .withCallback(function () {})
+                    build();
+            });
+
+            assert.doesNotThrow(function () {
+                new StoreIndex.Builder()
+                    .withIndexName('indexName')
+                    .withCallback(function () {})
+                    .build();
+            });
+
+            done();
+        });
     });
     
     it('should take a RpbPutResp and call the users callback with the response', function(done) {
