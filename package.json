@@ -32,14 +32,17 @@
     "winston": "~0.9"
   },
   "devDependencies": {
+    "benchmark": "^1.0.0",
     "grunt": "latest",
+    "grunt-benchmark": "^0.3.0",
     "grunt-cli": "latest",
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-watch": "latest",
     "grunt-contrib-yuidoc": "latest",
     "grunt-mocha-test": "latest",
     "jshint": "~2.6",
-    "mocha": "~2.2"
+    "mocha": "~2.2",
+    "randomstring": "^1.0.5"
   },
   "engines": {
     "node": "~0.12"

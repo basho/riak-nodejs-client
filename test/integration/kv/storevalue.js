@@ -20,8 +20,6 @@ var RiakNode = require('../../../lib/core/riaknode');
 var RiakCluster = require('../../../lib/core/riakcluster');
 var assert = require('assert');
 
-
-
 describe('StoreValue - Integration', function() {
    
     this.timeout(10000);
@@ -192,4 +190,3 @@ describe('StoreValue - Integration', function() {
    });
    
 });
-

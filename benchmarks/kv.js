@@ -1,0 +1,131 @@
+﻿/*
+ * Copyright 2015 Basho Technologies, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var Riak = require('../lib/client');
+
+var logger = require('winston');
+var rs = require('randomstring');
+
+var bucketType = 'no_siblings';
+var bucket = 'kv_benchmarks';
+
+var strings = [];
+var i = 0;
+for (i = 0; i < 32; ++i) {
+    strings[i] = rs.generate((i + 1) * 1024);
+}
+var n1c = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10017', cork: true });
+var n2c = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10027', cork: true });
+var n3c = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10037', cork: true });
+var n4c = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10047', cork: true });
+
+var n1 = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10017', cork: false });
+var n2 = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10027', cork: false });
+var n3 = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10037', cork: false });
+var n4 = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10047', cork: false });
+
+var corkCluster = new Riak.Cluster.Builder()
+    .withRiakNodes([n1c, n2c, n3c, n4c])
+    .build();
+var corkClient = new Riak.Client(corkCluster);
+
+var noCorkCluster = new Riak.Cluster.Builder()
+    .withRiakNodes([n1, n2, n3, n4])
+    .build();
+var noCorkClient = new Riak.Client(noCorkCluster);
+
+function getContent() {
+
+    ++i;
+    if (i >= 32 ) {
+        i = 0;
+    }
+
+    var string = strings[i];
+
+    var robj = new Riak.Commands.KV.RiakObject()
+        .setBucketType(bucketType)
+        .setBucket(bucket)
+        .setKey(i.toString())
+        .setContentType('text/plain')
+        .setValue(string);
+
+    return robj;
+}
+
+function kv(deferred, useCork) {
+
+    var client = useCork ? corkClient : noCorkClient;
+
+    var f_callback = function(err, resp) {
+        if (err) {
+            logger.error("[benchmarks/kv] %s", err);
+            throw new Error(err);
+        } else {
+            var robj = resp.values.shift();
+            var length = robj.getValue().toString('utf8').length;
+            logger.debug("[benchmarks/kv] %d value length: %d", i, length);
+        }
+        deferred.resolve();
+    };
+
+    var s_callback = function(err, resp) {
+        if (err) {
+            logger.error("[benchmarks/kv] %s", err);
+            throw new Error(err);
+        } else {
+            var fetch = new Riak.Commands.KV.FetchValue.Builder()
+                .withBucketType(bucketType)
+                .withBucket(bucket)
+                .withKey(i.toString())
+                .withCallback(f_callback)
+                .build();
+
+            client.execute(fetch);
+        }
+    };
+
+    var robj = getContent();
+
+    logger.debug("[benchmarks/kv] storing: %s", JSON.stringify(robj));
+
+    var store = new Riak.Commands.KV.StoreValue.Builder()
+            .withContent(robj)
+            .withCallback(s_callback)
+            .build();
+
+    client.execute(store);
+}
+
+module.exports = {
+    name: 'KV Benchmarks',
+    tests: [
+        {
+            name: 'KV with cork()',
+            defer: true,
+            fn: function (deferred) {
+                kv(deferred, true);
+            }
+        },
+        {
+            name: 'KV without cork()',
+            defer: true,
+            fn: function (deferred) {
+                kv(deferred, false);
+            }
+        }
+    ]
+};
