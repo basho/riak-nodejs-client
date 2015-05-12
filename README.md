@@ -56,3 +56,9 @@ TODO
 * Author: [Luke Bakken](http://bakken.io/)
 * Author: [Bryce Kerley](https://github.com/bkerley)
 
+## Contributors
+
+Thank you to all of our contributors!
+
+* [Tim Kennedy](https://github.com/stretchkennedy)
+* [Doug Luce](https://github.com/dougluce) 
