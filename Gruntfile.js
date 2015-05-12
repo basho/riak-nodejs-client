@@ -2,6 +2,12 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    benchmark: {
+        all: {
+            src: ['benchmarks/*.js'],
+            dest: 'benchmarks.csv'
+        }
+    },
     yuidoc: {
         compile: {
             name: '<%= pkg.name %>',
@@ -16,6 +22,9 @@ module.exports = function(grunt) {
     },
     jshint: {
       files: ['Gruntfile.js', 'lib/**/*.js', 'test/**/*.js'],
+      options: {
+        node: true
+      }
     },
     mochaTest: {
         unit: {
@@ -63,6 +72,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
+  grunt.loadNpmTasks('grunt-benchmark');
 
   grunt.registerTask('lint', 'jshint');
   grunt.registerTask('unit', 'mochaTest:unit');
