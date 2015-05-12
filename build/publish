@@ -104,7 +104,7 @@ git push
 
 npm pack
 
-npm_package="basho-riak-client-$version_string.tgz"
+npm_package="basho-riak-client2-$version_string.tgz"
 if [[ ! -s $npm_package ]]
 then
     errexit "expected to find $npm_package in $PWD"
@@ -114,7 +114,7 @@ fi
 declare -r release_json="{
     \"tag_name\" : \"v$version_string\",
     \"name\" : \"Riak NodeJS Client $version_string\",
-    \"body\" : \"riak-nodejs-client $version_string\nhttps://github.com/basho/riak-nodejs-client/blob/master/RELNOTES.md\",
+    \"body\" : \"riak-nodejs-client $version_string\nhttps://github.com/dougluce/riak-nodejs-client/blob/master/RELNOTES.md\",
     \"draft\" : false,
     \"prerelease\" : false
 }"
@@ -127,7 +127,7 @@ curl_stderr_file="$(make_temp_file)"
 
 curl -4so $curl_content_file -w '%{http_code}' -XPOST \
     -H "Authorization: token $(< $github_api_key_file)" -H 'Content-type: application/json' \
-    'https://api.github.com/repos/basho/riak-nodejs-client/releases' -d "$release_json" 1> "$curl_stdout_file" 2> "$curl_stderr_file"
+    'https://api.github.com/repos/dougluce/riak-nodejs-client/releases' -d "$release_json" 1> "$curl_stdout_file" 2> "$curl_stderr_file"
 if [[ $? != 0 ]]
 then
     errexit "curl error exited with code: '$?' see '$curl_stderr_file'"
@@ -147,7 +147,7 @@ then
     errexit 'no release info to parse for asset uploads'
 fi
 
-# "upload_url": "https://uploads.github.com/repos/basho/riak-nodejs-client/releases/1115734/assets{?name}"
+# "upload_url": "https://uploads.github.com/repos/dougluce/riak-nodejs-client/releases/1115734/assets{?name}"
 # https://uploads.github.com/repos/basho/riak-nodejs-client/releases/1115734/assets{?name}
 declare -r upload_url_with_name=$(perl -ne 'print qq($1\n) and exit if /"upload_url"[ :]+"(https:\/\/[^"]+)"/' "$curl_content_file")
 declare -r upload_url="${upload_url_with_name/\{?name\}/?name=$npm_package}"
