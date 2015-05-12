@@ -27,25 +27,22 @@ var i = 0;
 for (i = 0; i < 32; ++i) {
     strings[i] = rs.generate((i + 1) * 1024);
 }
-var n1c = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10017', cork: true });
-var n2c = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10027', cork: true });
-var n3c = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10037', cork: true });
-var n4c = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10047', cork: true });
 
-var n1 = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10017', cork: false });
-var n2 = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10027', cork: false });
-var n3 = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10037', cork: false });
-var n4 = new Riak.Node({ remoteAddress: 'riak-test', remotePort: '10047', cork: false });
+var corkNodes = [];
+var noCorkNodes = [];
+for (var i = 17; i <= 47; i += 10) {
+    var port = 10000 + i;
+    corkNodes.push(new Riak.Node({ remoteAddress: 'riak-test', remotePort: port.toString(), cork: true }));
+    noCorkNodes.push(new Riak.Node({ remoteAddress: 'riak-test', remotePort: port.toString(), cork: false }));
+}
 
-var corkCluster = new Riak.Cluster.Builder()
-    .withRiakNodes([n1c, n2c, n3c, n4c])
-    .build();
+var corkCluster = new Riak.Cluster.Builder().withRiakNodes(corkNodes).build();
 var corkClient = new Riak.Client(corkCluster);
 
-var noCorkCluster = new Riak.Cluster.Builder()
-    .withRiakNodes([n1, n2, n3, n4])
-    .build();
+var noCorkCluster = new Riak.Cluster.Builder().withRiakNodes(noCorkNodes).build();
 var noCorkClient = new Riak.Client(noCorkCluster);
+
+i = 0;
 
 function getContent() {
 
