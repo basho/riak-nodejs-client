@@ -19,6 +19,7 @@ var rpbuf = require('../../lib/protobuf/riakprotobuf');
 var RpbGetBucketKeyPreflistReq = rpbuf.getProtoFor('RpbGetBucketKeyPreflistReq');
 var RpbGetBucketKeyPreflistResp = rpbuf.getProtoFor('RpbGetBucketKeyPreflistResp');
 var RpbBucketKeyPreflistItem = rpbuf.getProtoFor('RpbBucketKeyPreflistItem');
+var RpbErrorResp = rpbuf.getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
 
@@ -84,7 +85,6 @@ describe('FetchPreflist', function() {
             fetchCommand.onSuccess(rpbGetResp);
         });
        
-        /*
        it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
            var rpbErrorResp = new RpbErrorResp();
            rpbErrorResp.setErrmsg(new Buffer('this is an error'));
@@ -104,8 +104,7 @@ describe('FetchPreflist', function() {
                .build();
        
             fetchCommand.onRiakError(rpbErrorResp);
-           
        });
-       */
+
     });
 });

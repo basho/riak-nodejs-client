@@ -24,10 +24,10 @@ module.exports.bucketName = 'riak_index_tests';
 /**
 * Bucket type
 * 
-* you must create the type 'plain' to use this:
+* you must create the type 'leveldb_type' to use this:
 *
-* riak-admin bucket-type create plain '{"props":{}}'
-* riak-admin bucket-type activate plain
+* riak-admin bucket-type create leveldb_type '{"props":{"backend":"leveldb_backend"}}'
+* riak-admin bucket-type activate leveldb_type
 */
 module.exports.bucketType = 'leveldb_type';
 
@@ -37,9 +37,11 @@ if (process.env.RIAK_HOST && process.env.RIAK_PORT) {
     riakHost = process.env.RIAK_HOST;
     riakPort = process.env.RIAK_PORT;
 }
+
 module.exports.nodeAddresses = [ riakHost + ':' + riakPort ];
 module.exports.riakHost = riakHost;
 module.exports.riakPort = riakPort;
+
 /**
  * 
  * CRDTs - need to create these types 
@@ -101,4 +103,3 @@ module.exports.cleanBucket = function(cluster, type, bucket, callback) {
     cluster.execute(list);
     
 };
-

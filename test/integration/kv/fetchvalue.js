@@ -26,7 +26,6 @@ describe('FetchValue - Integration', function() {
     var cluster;
     this.timeout(10000);
     
-    
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
@@ -39,7 +38,6 @@ describe('FetchValue - Integration', function() {
             if (count === 5) {
                 done();
             }
-            
         };
         
         var store = new StoreValue.Builder()
@@ -73,7 +71,6 @@ describe('FetchValue - Integration', function() {
                 .build();
             
             cluster.execute(store);
-               
        }
 
         store = new StoreValue.Builder()
@@ -85,9 +82,6 @@ describe('FetchValue - Integration', function() {
                 .build();
 
         cluster.execute(store);
-
-        
-        
     });
     
     after(function(done) {
@@ -97,11 +91,9 @@ describe('FetchValue - Integration', function() {
                 cluster.stop();
             });
         });
-        
    });
 
     it('Should fetch a value from Riak (default type)', function(done) {
-       
         var callback = function(err, resp) {
             assert(!err, err);
             assert.equal(resp.values.length, 1);
@@ -117,7 +109,6 @@ describe('FetchValue - Integration', function() {
                 .build();
         
         cluster.execute(fetch);
-        
     });
     
     it('Should fetch a value in a non-default bucket-type from Riak', function(done) {
