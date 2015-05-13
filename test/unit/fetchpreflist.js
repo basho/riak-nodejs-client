@@ -67,7 +67,9 @@ describe('FetchPreflist', function() {
                 if (response) {
                     assert.equal(response.preflist.length, 1);
                     var preflistItem = response.preflist.shift();
-                    assert.equal(preflistItem.getBucketType(), 'bucket_type');
+                    assert.equal(preflistItem.partition, partitionId);
+                    assert.equal(preflistItem.node, node_name);
+                    assert.equal(preflistItem.primary, true);
                     done();
                 }
             };
