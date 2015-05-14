@@ -55,7 +55,7 @@ describe('StoreIndex', function() {
             assert.throws(function () {
                 new StoreIndex.Builder()
                     .withCallback(function () {})
-                    build();
+                    .build();
             });
 
             assert.doesNotThrow(function () {

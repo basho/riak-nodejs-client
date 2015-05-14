@@ -75,9 +75,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-benchmark');
 
   grunt.registerTask('lint', 'jshint');
-  grunt.registerTask('unit', 'mochaTest:unit');
-  grunt.registerTask('integration', 'mochaTest:integration');
-  grunt.registerTask('security', 'mochaTest:security');
+  grunt.registerTask('unit', ['jshint', 'mochaTest:unit']);
+  grunt.registerTask('integration', ['jshint', 'mochaTest:integration']);
+  grunt.registerTask('security', ['jshint', 'mochaTest:security']);
   grunt.registerTask('default', ['jshint', 'mochaTest:unit', 'mochaTest:integration']);
   grunt.registerTask('docs', 'yuidoc');
 
