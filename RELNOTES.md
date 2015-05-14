@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+* 1.2 - Following issues / PRs addressed:
+ * [Add `FetchPreflist` command](https://github.com/basho/riak-nodejs-client/pull/58)
+ * [Use `cork` and `uncork` to send protobuf header and body](https://github.com/basho/riak-nodejs-client/pull/57)
+ * [When creating a Yokozuna index, allow setting a timeout](https://github.com/basho/riak-nodejs-client/pull/55)
+ * [Update to Riak protobuf 2.1.0.2](https://github.com/basho/riak-nodejs-client/pull/54)
 * 1.1.3 - Following issues / PRs addressed:
  * [RiakCluster uses a global DefaultNodeManager](https://github.com/basho/riak-nodejs-client/issues/49)
 * 1.1.2 - Following issues / PRs addressed:
