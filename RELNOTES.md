@@ -1,6 +1,8 @@
 Release Notes
 =============
 
+* 1.2.1 - Following issues / PRs addressed:
+ * [Fix missing `client.js` file](https://github.com/basho/riak-nodejs-client/issues/59)
 * 1.2 - Following issues / PRs addressed:
  * [Add `FetchPreflist` command](https://github.com/basho/riak-nodejs-client/pull/58)
  * [Use `cork` and `uncork` to send protobuf header and body](https://github.com/basho/riak-nodejs-client/pull/57)
@@ -20,4 +22,3 @@ Release Notes
  * [Pluggable Node Selection](https://github.com/basho/riak-nodejs-client/pull/37)
  * [Add Links to `RiakObject`](https://github.com/basho/riak-nodejs-client/pull/35)
 * 1.0.0 - Initial release with Riak 2.0 support.
-
