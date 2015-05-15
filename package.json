@@ -51,6 +51,7 @@
     "LICENSE",
     "README.md",
     "index.js",
+    "lib/*.js",
     "lib/commands/",
     "lib/core/",
     "lib/protobuf/*.js",
