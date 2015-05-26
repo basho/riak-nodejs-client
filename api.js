@@ -17,6 +17,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "FetchIndex.Builder",
         "FetchMap",
         "FetchMap.Builder",
+        "FetchPreflist",
+        "FetchPreflist.Builder",
         "FetchSchema",
         "FetchSchema.Builder",
         "FetchSet",

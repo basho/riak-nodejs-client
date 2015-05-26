@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -140,7 +142,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_core_riakcluster.js.html#l343"><code>lib&#x2F;core&#x2F;riakcluster.js:343</code></a>
+            Defined in: <a href="../files/lib_core_riakcluster.js.html#l353"><code>lib&#x2F;core&#x2F;riakcluster.js:353</code></a>
         </div>
 
             Module: <a href="../modules/Core.html">Core</a>
@@ -158,36 +160,36 @@ a RiakCluster directly, this builder may be used.</p>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_RiakCluster.Builder" class="method item">
-            <h3 class="name"><code>RiakCluster.Builder</code></h3>
+<div id="method_RiakCluster.Builder" class="method item">
+    <h3 class="name"><code>RiakCluster.Builder</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_core_riakcluster.js.html#l353"><code>lib&#x2F;core&#x2F;riakcluster.js:353</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
         
-                <span class="paren">()</span>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_core_riakcluster.js.html#l343"><code>lib&#x2F;core&#x2F;riakcluster.js:343</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-        
-        
-        
-        </div>
+    </div>
+
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -253,7 +255,7 @@ a RiakCluster directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riakcluster.js.html#l423"><code>lib&#x2F;core&#x2F;riakcluster.js:423</code></a>
+        <a href="../files/lib_core_riakcluster.js.html#l432"><code>lib&#x2F;core&#x2F;riakcluster.js:432</code></a>
         </p>
 
 
@@ -300,7 +302,7 @@ a RiakCluster directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riakcluster.js.html#l377"><code>lib&#x2F;core&#x2F;riakcluster.js:377</code></a>
+        <a href="../files/lib_core_riakcluster.js.html#l386"><code>lib&#x2F;core&#x2F;riakcluster.js:386</code></a>
         </p>
 
 
@@ -309,7 +311,7 @@ a RiakCluster directly, this builder may be used.</p>
 
     <div class="description">
         <p>Set the number of times a command will be attempted.
-In the case of a command failing for any reason, it will be retied 
+In the case of a command failing for any reason, it will be retied
 on a different node.</p>
 
     </div>
@@ -366,7 +368,7 @@ on a different node.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riakcluster.js.html#l389"><code>lib&#x2F;core&#x2F;riakcluster.js:389</code></a>
+        <a href="../files/lib_core_riakcluster.js.html#l398"><code>lib&#x2F;core&#x2F;riakcluster.js:398</code></a>
         </p>
 
 
@@ -423,7 +425,7 @@ used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riakcluster.js.html#l402"><code>lib&#x2F;core&#x2F;riakcluster.js:402</code></a>
+        <a href="../files/lib_core_riakcluster.js.html#l411"><code>lib&#x2F;core&#x2F;riakcluster.js:411</code></a>
         </p>
 
 
@@ -433,10 +435,10 @@ used.</p>
     <div class="description">
         <p>Set whether to queue commands or not if no RiakNodes are available.</p>
 <p>If all nodes are down (health checking) or maxConnections are in use on
-all nodes, the default behavior is to fail commands when submitted. </p>
+all nodes, the default behavior is to fail commands when submitted.</p>
 <p>Setting this option causes the the RiakCluster to queue additional commands
-(FIFO) then send them when nodes/connections become available. </p>
-<p>If maxDepth is supplied the queue is bounded and additional commands 
+(FIFO) then send them when nodes/connections become available.</p>
+<p>If maxDepth is supplied the queue is bounded and additional commands
 attempting to be queued will be failed. The default is an unbounded queue.</p>
 
     </div>
@@ -487,7 +489,7 @@ attempting to be queued will be failed. The default is an unbounded queue.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riakcluster.js.html#l361"><code>lib&#x2F;core&#x2F;riakcluster.js:361</code></a>
+        <a href="../files/lib_core_riakcluster.js.html#l371"><code>lib&#x2F;core&#x2F;riakcluster.js:371</code></a>
         </p>
 
 

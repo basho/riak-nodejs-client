@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -155,230 +157,231 @@
     <p>Command used to fetch a set from Riak.</p>
 <p>As a convenience, a builder class is provided:</p>
 <pre class="code prettyprint"><code>var fetch = new FetchSet.Builder()
-                .withBucketType(&#39;myBucketType&#39;)
-                .withBucket(&#39;myBucket&#39;)
-                .withKey(&#39;myKey&#39;)
+                .withBucketType('myBucketType')
+                .withBucket('myBucket')
+                .withKey('myKey')
                 .withCallback(myCallback)
                 .build();
-</code></pre><p> See <a href="../classes/FetchSet.Builder.html" class="crosslink">FetchSet.Builder</a></p>
+</code></pre>
+<p>See <a href="../classes/FetchSet.Builder.html" class="crosslink">FetchSet.Builder</a></p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_FetchSet" class="method item">
-            <h3 class="name"><code>FetchSet</code></h3>
-        
-                <div class="args">
-                    <span class="paren">(</span><ul class="args-list inline commas">
-                        <li class="arg">
-                                <code>options</code>
-                        </li>
-                        <li class="arg">
-                                <code>callback</code>
-                        </li>
-                    </ul><span class="paren">)</span>
-                </div>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_commands_crdt_fetchset.js.html#l27"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchset.js:27</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-                <div class="params">
-                    <h4>Parameters:</h4>
-        
-                    <ul class="params-list">
-                        <li class="param">
-                                <code class="param-name">options</code>
-                                <span class="type">Object</span>
-        
-        
-                            <div class="param-description">
-                                <p>The options to use for this command.</p>
-        
-                            </div>
-        
-                                <ul class="params-list">
-                                    <li class="param">
-                                            <code class="param-name">bucketType</code>
-                                            <span class="type">String</span>
-        
-                                        <div class="param-description">
-                                            <p>The bucket type in riak.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name">bucket</code>
-                                            <span class="type">String</span>
-        
-                                        <div class="param-description">
-                                            <p>The bucket in riak.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name">key</code>
-                                            <span class="type">String</span>
-        
-                                        <div class="param-description">
-                                            <p>The key for the counter you want to fetch.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[setsAsBuffers=false]</code>
-                                            <span class="type">Boolean</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Return values as Buffers rather than strings.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[timeout]</code>
-                                            <span class="type">Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Tet a timeout for this operation.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[r]</code>
-                                            <span class="type">Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>The R value to use for this fetch.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[pr]</code>
-                                            <span class="type">Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>The PR value to use for this fetch.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[notFoundOk]</code>
-                                            <span class="type">Boolean</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>If true a vnode returning notfound for a key increments the r tally.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[useBasicQuorum]</code>
-                                            <span class="type">Boolean</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Controls whether a read request should return early in some fail cases.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                </ul>
-                        </li>
-                        <li class="param">
-                                <code class="param-name">callback</code>
-                                <span class="type">Function</span>
-        
-        
-                            <div class="param-description">
-                                <p>The callback to be executed when the operation completes.</p>
-        
-                            </div>
-        
-                                <ul class="params-list">
-                                    <li class="param">
-                                            <code class="param-name">err</code>
-                                            <span class="type">String</span>
-        
-                                        <div class="param-description">
-                                            <p>An error message. Will be null if no error.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name">response</code>
-                                            <span class="type">Object</span>
-        
-                                        <div class="param-description">
-                                            <p>The response from Riak.</p>
-        
-                                        </div>
-        
-                                            <ul class="params-list">
-                                                <li class="param">
-                                                        <code class="param-name">context</code>
-                                                        <span class="type">Buffer</span>
-        
-                                                    <div class="param-description">
-                                                        An opaque context to be used in any subsequent modification of the set.
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name">values</code>
-                                                        <span class="type">String | Buffer</span>
-        
-                                                    <div class="param-description">
-                                                        An array holding the values in the set. String by default, Buffers if setsAsBuffers was used.
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name">notFound</code>
-                                                        <span class="type">Boolean</span>
-        
-                                                    <div class="param-description">
-                                                        True if there was no set in Riak.
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                    </li>
-                                </ul>
-                        </li>
-                    </ul>
-                </div>
-        
-        
-        
+<div id="method_FetchSet" class="method item">
+    <h3 class="name"><code>FetchSet</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
         </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_crdt_fetchset.js.html#l27"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchset.js:27</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>The options to use for this command.</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">bucketType</code>
+                                    <span class="type">String</span>
+
+                                <div class="param-description">
+                                    <p>The bucket type in riak.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">bucket</code>
+                                    <span class="type">String</span>
+
+                                <div class="param-description">
+                                    <p>The bucket in riak.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">key</code>
+                                    <span class="type">String</span>
+
+                                <div class="param-description">
+                                    <p>The key for the counter you want to fetch.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[setsAsBuffers=false]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Return values as Buffers rather than strings.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[timeout]</code>
+                                    <span class="type">Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Tet a timeout for this operation.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[r]</code>
+                                    <span class="type">Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The R value to use for this fetch.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[pr]</code>
+                                    <span class="type">Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The PR value to use for this fetch.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[notFoundOk]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>If true a vnode returning notfound for a key increments the r tally.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[useBasicQuorum]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Controls whether a read request should return early in some fail cases.</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                        <p>The callback to be executed when the operation completes.</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">err</code>
+                                    <span class="type">String</span>
+
+                                <div class="param-description">
+                                    <p>An error message. Will be null if no error.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">response</code>
+                                    <span class="type">Object</span>
+
+                                <div class="param-description">
+                                    <p>The response from Riak.</p>
+
+                                </div>
+
+                                    <ul class="params-list">
+                                        <li class="param">
+                                                <code class="param-name">context</code>
+                                                <span class="type">Buffer</span>
+
+                                            <div class="param-description">
+                                                An opaque context to be used in any subsequent modification of the set.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name">values</code>
+                                                <span class="type">String | Buffer</span>
+
+                                            <div class="param-description">
+                                                An array holding the values in the set. String by default, Buffers if setsAsBuffers was used.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name">notFound</code>
+                                                <span class="type">Boolean</span>
+
+                                            <div class="param-description">
+                                                True if there was no set in Riak.
+                                            </div>
+                                        </li>
+                                    </ul>
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -465,9 +468,8 @@
     </div>
 
     <div class="description">
-        <p>Construct and return the Riak protocol buffer message for this command.
-Subclasses must override this method.</p>
-
+        Construct and return the Riak protocol buffer message for this command.
+Subclasses must override this method.
     </div>
 
 
@@ -476,8 +478,7 @@ Subclasses must override this method.</p>
 
             <div class="returns-description">
                         <span class="type">Object</span>:
-                    <p>a protocol buffer message builder</p>
-
+                    a protocol buffer message builder
             </div>
         </div>
 
@@ -510,8 +511,7 @@ Subclasses must override this method.</p>
     </div>
 
     <div class="description">
-        <p>Fires the user&#39;s callback with the arguments passed in.</p>
-
+        Fires the user's callback with the arguments passed in.
     </div>
 
 
@@ -520,8 +520,7 @@ Subclasses must override this method.</p>
 
             <div class="returns-description">
                         <span class="type">Function</span>:
-                    <p>the user supplied callback</p>
-
+                    the user supplied callback
             </div>
         </div>
 
@@ -554,8 +553,7 @@ Subclasses must override this method.</p>
     </div>
 
     <div class="description">
-        <p>Returns the expected response code for this command.</p>
-
+        Returns the expected response code for this command.
     </div>
 
 
@@ -564,8 +562,7 @@ Subclasses must override this method.</p>
 
             <div class="returns-description">
                         <span class="type">Number</span>:
-                    <p>the expected response code for this command.</p>
-
+                    the expected response code for this command.
             </div>
         </div>
 
@@ -598,9 +595,8 @@ Subclasses must override this method.</p>
     </div>
 
     <div class="description">
-        <p>Returns and instance of the protocol buffer message builder for this command.
-This is determined via the pbRequestName passed to the constructor.</p>
-
+        Returns and instance of the protocol buffer message builder for this command.
+This is determined via the pbRequestName passed to the constructor.
     </div>
 
 
@@ -609,8 +605,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
 
             <div class="returns-description">
                         <span class="type">Object</span>:
-                    <p>the builder for the protocol buffer message to be sent for this command</p>
-
+                    the builder for the protocol buffer message to be sent for this command
             </div>
         </div>
 
@@ -643,8 +638,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
     </div>
 
     <div class="description">
-        <p>Returns the encoded protobuf and message header.</p>
-
+        Returns the encoded protobuf and message header.
     </div>
 
 
@@ -653,8 +647,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
 
             <div class="returns-description">
                         <span class="type">Object</span>:
-                    <p>object containing the header and encoded protobuf</p>
-
+                    object containing the header and encoded protobuf
             </div>
         </div>
 
@@ -690,8 +683,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
     </div>
 
     <div class="description">
-        <p>Called by Riaknode if an error occurs executing the command and all retries are exhausted.</p>
-
+        Called by Riaknode if an error occurs executing the command and all retries are exhausted.
     </div>
 
         <div class="params">
@@ -704,8 +696,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
 
 
                     <div class="param-description">
-                        <p>an error message</p>
-
+                        an error message
                     </div>
 
                 </li>
@@ -745,9 +736,8 @@ This is determined via the pbRequestName passed to the constructor.</p>
     </div>
 
     <div class="description">
-        <p>Called by RiakNode when a RpbErrorResp is received and all retries are exhausted.
-Commands must override this method.</p>
-
+        Called by RiakNode when a RpbErrorResp is received and all retries are exhausted.
+Commands must override this method.
     </div>
 
         <div class="params">
@@ -760,8 +750,7 @@ Commands must override this method.</p>
 
 
                     <div class="param-description">
-                        <p>the RpbErrorResp protocol buffer</p>
-
+                        the RpbErrorResp protocol buffer
                     </div>
 
                 </li>
@@ -804,9 +793,8 @@ Commands must override this method.</p>
     </div>
 
     <div class="description">
-        <p>Called by RiakNode when a response is received.
-Subclasses must override this method.</p>
-
+        Called by RiakNode when a response is received.
+Subclasses must override this method.
     </div>
 
         <div class="params">
@@ -819,8 +807,7 @@ Subclasses must override this method.</p>
 
 
                     <div class="param-description">
-                        <p>the protocol buffer received from riak</p>
-
+                        the protocol buffer received from riak
                     </div>
 
                 </li>
@@ -832,8 +819,7 @@ Subclasses must override this method.</p>
 
             <div class="returns-description">
                         <span class="type">Boolean</span>:
-                    <p>true if not streaming or the last response has been received, false otherwise.</p>
-
+                    true if not streaming or the last response has been received, false otherwise.
             </div>
         </div>
 

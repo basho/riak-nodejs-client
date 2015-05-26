@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -167,16 +169,16 @@ var Joi = require(&#x27;joi&#x27;);
 
 /**
  * Command used to delete a value from Riak.
- * 
+ *
  * As a convenience, a builder class is provided:
- * 
+ *
  *      var deleteValue = new DeleteValue.Builder()
  *          .withBucket(&#x27;myBucket&#x27;)
  *          .withKey(&#x27;myKey&#x27;)
  *          .withVClock(vclock)
  *          .withCallback(callback)
  *          .build();
- * 
+ *
  * See {{#crossLink &quot;DeleteValue.Builder&quot;}}DeleteValue.Builder{{/crossLink}}
  * @class DeleteValue
  * @constructor
@@ -201,15 +203,15 @@ function DeleteValue(options, callback) {
     CommandBase.call(this, &#x27;RpbDelReq&#x27;, &#x27;RpbDelResp&#x27;, callback);
     var self = this;
     Joi.validate(options, schema, function(err, options) {
-       
+
         if (err) {
             throw err;
         }
-    
+
         self.options = options;
-    
+
     });
-    
+
     this.remainingRetries = 1;
 }
 
@@ -218,51 +220,51 @@ function DeleteValue(options, callback) {
 inherits(DeleteValue, CommandBase);
 
 DeleteValue.prototype.constructPbRequest = function() {
-    
+
     var protobuf = this.getPbReqBuilder();
-    
+
     protobuf.setBucket(new Buffer(this.options.bucket));
     protobuf.setType(new Buffer(this.options.bucketType));
     protobuf.setKey(new Buffer(this.options.key));
-    
+
     if (this.options.hasOwnProperty(&#x27;vclock&#x27;)) {
         protobuf.setVclock(this.options.vclock);
     }
-    
+
     if (this.options.hasOwnProperty(&#x27;w&#x27;)) {
         protobuf.setW(this.options.w);
     }
-    
+
     if (this.options.hasOwnProperty(&#x27;dw&#x27;)) {
         protobuf.setDw(this.options.dw);
     }
-    
+
     if (this.options.hasOwnProperty(&#x27;pw&#x27;)) {
         protobuf.setPw(this.options.pw);
     }
-    
+
     if (this.options.hasOwnProperty(&#x27;r&#x27;)) {
         protobuf.setR(this.options.r);
     }
     if (this.options.hasOwnProperty(&#x27;pr&#x27;)) {
         protobuf.setPr(this.options.pr);
     }
-    
+
     if (this.options.hasOwnProperty(&#x27;rw&#x27;)) {
         protobuf.setRw(this.options.rw);
     }
-    
+
     if (this.options.hasOwnProperty(&#x27;timeout&#x27;)) {
         protobuf.setTimeout(this.options.timeout);
     }
-    
+
     return protobuf;
-    
+
 };
 
 DeleteValue.prototype.onSuccess = function(rpbGetResp) {
 
-    // There is no body to a RpbDelResp. RpbDelReq either 
+    // There is no body to a RpbDelResp. RpbDelReq either
     // succeeds or returns an error. rpbDelResp will always be null
     this._callback(null, true);
     return true;
@@ -280,32 +282,31 @@ var schema = Joi.object().keys({
     pw: Joi.number().optional(),
     rw: Joi.number().optional(),
     timeout: Joi.number().default(null),
-    callback: Joi.func().strip().optional(),
     vclock: Joi.binary().optional()
 });
 
 /**
  * A builder for constructing DeleteValue instances.
- * 
+ *
  * Rather than having to manually construct the __options__ and instantiating
  * a DeleteValue directly, this builder may be used.
- * 
+ *
  *     var deleteValue = new DeleteValue.Builder()
  *          .withBucket(&#x27;myBucket&#x27;)
  *          .withKey(&#x27;myKey&#x27;)
  *          .withVClock(vclock)
  *          .withCallback(callback)
  *          .build();
- *       
+ *
  * @class DeleteValue.Builder
  * @constructor
  */
 function Builder() {
-    
+
 }
 
-Builder.prototype = { 
-  
+Builder.prototype = {
+
     /**
      * Set the bucket.
      * @method withBucket
@@ -415,7 +416,8 @@ Builder.prototype = {
     withVClock : function(vclock) {
         this.vclock = vclock;
         return this;
-    },/**
+    },
+    /**
     * Set a timeout for this operation.
     * @method withTimeout
     * @param {Number} timeout a timeout in milliseconds.
@@ -425,7 +427,6 @@ Builder.prototype = {
         this.timeout = timeout;
         return this;
     },
-    
     /**
      * Set the callback to be executed when the operation completes.
      * @method withCallback
@@ -444,7 +445,9 @@ Builder.prototype = {
      * @return {DeleteValue} an instance of DeleteValue
      */
     build : function() {
-        return new DeleteValue(this, this.callback);
+        var cb = this.callback;
+        delete this.callback;
+        return new DeleteValue(this, cb);
     }
 };
 

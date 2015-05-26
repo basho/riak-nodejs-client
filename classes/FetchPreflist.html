@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>UpdateMap - basho-riak-client</title>
+    <title>FetchPreflist - basho-riak-client</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -137,7 +137,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>UpdateMap Class</h1>
+<h1>FetchPreflist Class</h1>
 <div class="box meta">
 
         <div class="extends">
@@ -145,45 +145,32 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_commands_crdt_updatemap.js.html#l35"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatemap.js:35</code></a>
+            Defined in: <a href="../files/lib_commands_kv_fetchpreflist.js.html#l27"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchpreflist.js:27</code></a>
         </div>
 
-            Module: <a href="../modules/CRDT.html">CRDT</a>
+            Module: <a href="../modules/KV.html">KV</a>
 
 </div>
 
 
 <div class="box intro">
-    <p>Command used to update a Map in Riak.</p>
-<p>As a convenience, a builder method is provided as well as an object with
-a fluent API for constructing the update.</p>
-<pre class="code prettyprint"><code>var mapOp = new UpdateMap.MapOperation();
-mapOp.incrementCounter('counter_1', 50)
-    .addToSet('set_1', 'set_value_1')
-    .setRegister('register_1', new Buffer('register_value_1'))
-    .setFlag('flag_1', true)
-    .map('inner_map')
-        .incrementCounter('counter_1', 50)
-        .addToSet('set_2', 'set_value_2');
+    <p>Command used to fetch an object's preflist from Riak.</p>
+<p>As a convenience, a builder class is provided:</p>
+<pre class="code prettyprint"><code>var fetch = new FetchPreflist.Builder()
+    .withBucketType('myBucketType')
+    .withBucket('myBucket')
+    .withKey('myKey')
+    .withCallback(myCallback)
+    .build();
 </code></pre>
-<p>See <a href="../classes/UpdateMap.MapOperation.html" class="crosslink">UpdateMap.MapOperation</a></p>
-<pre class="code prettyprint"><code>var update = new UpdateMap.Builder()
-          .withBucketType('maps')
-          .withBucket('myBucket')
-          .withKey('map_1')
-          .withMapOperation(mapOp)
-          .withCallback(myCallback)
-          .withReturnBody(true)
-          .build();
-</code></pre>
-<p>See <a href="../classes/UpdateMap.Builder.html" class="crosslink">UpdateMap.Builder</a></p>
+<p>See <a href="../classes/FetchPreflist.Builder.html" class="crosslink">FetchPreflist.Builder</a></p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_UpdateMap" class="method item">
-    <h3 class="name"><code>UpdateMap</code></h3>
+<div id="method_FetchPreflist" class="method item">
+    <h3 class="name"><code>FetchPreflist</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -206,7 +193,7 @@ mapOp.incrementCounter('counter_1', 50)
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_updatemap.js.html#l35"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatemap.js:35</code></a>
+        <a href="../files/lib_commands_kv_fetchpreflist.js.html#l27"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchpreflist.js:27</code></a>
         </p>
 
 
@@ -227,17 +214,18 @@ mapOp.incrementCounter('counter_1', 50)
 
 
                     <div class="param-description">
-                        <p>The options to use for this command.</p>
+                        <p>The options for this command.</p>
 
                     </div>
 
                         <ul class="params-list">
                             <li class="param">
-                                    <code class="param-name">bucketType</code>
+                                    <code class="param-name optional">[bucketType=default]</code>
                                     <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
 
                                 <div class="param-description">
-                                    <p>The bucket type in riak.</p>
+                                    <p>The bucket type in riak. If not supplied 'default' is used.</p>
 
                                 </div>
 
@@ -253,99 +241,11 @@ mapOp.incrementCounter('counter_1', 50)
 
                             </li>
                             <li class="param">
-                                    <code class="param-name">op</code>
-                                    <span class="type">MapOperation</span>
-
-                                <div class="param-description">
-                                    <p>The set of modifications to make to this map.</p>
-
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name optional">[key]</code>
+                                    <code class="param-name">key</code>
                                     <span class="type">String</span>
-                                    <span class="flag optional" title="This parameter is optional.">optional</span>
 
                                 <div class="param-description">
-                                    <p>The key for the counter you want to store. If not supplied Riak will gererate one.</p>
-
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name optional">[context]</code>
-                                    <span class="type">Buffer</span>
-                                    <span class="flag optional" title="This parameter is optional.">optional</span>
-
-                                <div class="param-description">
-                                    <p>The context from a previous fetch. Required for remove operations.</p>
-
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name optional">[w]</code>
-                                    <span class="type">Number</span>
-                                    <span class="flag optional" title="This parameter is optional.">optional</span>
-
-                                <div class="param-description">
-                                    <p>The W value to use.</p>
-
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name optional">[dw]</code>
-                                    <span class="type">Number</span>
-                                    <span class="flag optional" title="This parameter is optional.">optional</span>
-
-                                <div class="param-description">
-                                    <p>The DW value to use.</p>
-
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name optional">[pw]</code>
-                                    <span class="type">Number</span>
-                                    <span class="flag optional" title="This parameter is optional.">optional</span>
-
-                                <div class="param-description">
-                                    <p>The PW value to use.</p>
-
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name optional">[returnBody=true]</code>
-                                    <span class="type">Boolean</span>
-                                    <span class="flag optional" title="This parameter is optional.">optional</span>
-
-                                <div class="param-description">
-                                    <p>Return the map.</p>
-
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name optional">[setsAsBuffers=false]</code>
-                                    <span class="type">Boolean</span>
-                                    <span class="flag optional" title="This parameter is optional.">optional</span>
-
-                                <div class="param-description">
-                                    <p>Return sets as arrays of Buffers rather than strings.</p>
-
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name optional">[timeout]</code>
-                                    <span class="type">Number</span>
-                                    <span class="flag optional" title="This parameter is optional.">optional</span>
-
-                                <div class="param-description">
-                                    <p>Set a timeout for this command.</p>
+                                    <p>The key for the object you want to fetch.</p>
 
                                 </div>
 
@@ -368,7 +268,7 @@ mapOp.incrementCounter('counter_1', 50)
                                     <span class="type">String</span>
 
                                 <div class="param-description">
-                                    <p>An error message. Will be null if no error.</p>
+                                    <p>An error message. Will ne null if no error.</p>
 
                                 </div>
 
@@ -378,33 +278,17 @@ mapOp.incrementCounter('counter_1', 50)
                                     <span class="type">Object</span>
 
                                 <div class="param-description">
-                                    <p>The response from Riak. Will be null if returnBody is not set.</p>
+                                    <p>the response from Riak.</p>
 
                                 </div>
 
                                     <ul class="params-list">
                                         <li class="param">
-                                                <code class="param-name">generatedKey</code>
-                                                <span class="type">String</span>
-
-                                            <div class="param-description">
-                                                If no key was supplied, Riak will generate and return one here.
-                                            </div>
-                                        </li>
-                                        <li class="param">
-                                                <code class="param-name">context</code>
-                                                <span class="type">Buffer</span>
-
-                                            <div class="param-description">
-                                                An opaque context to be used in any subsequent modification of the map.
-                                            </div>
-                                        </li>
-                                        <li class="param">
-                                                <code class="param-name">map</code>
+                                                <code class="param-name">preflist</code>
                                                 <span class="type">Object</span>
 
                                             <div class="param-description">
-                                                The map in Riak, converted to a JS object.
+                                                An array of one or more preflist entries.
                                             </div>
                                         </li>
                                     </ul>

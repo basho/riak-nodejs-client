@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -152,13 +154,14 @@
     <p>Command used to update a Counter in Riak</p>
 <p>As a convenience, a builder class is provided:</p>
 <pre class="code prettyprint"><code>var update = new UpdateCounter.Builder()
-          .withBucketType(&#39;counters&#39;)
-          .withBucket(&#39;myBucket&#39;)
-          .withKey(&#39;counter_1&#39;)
+          .withBucketType('counters')
+          .withBucket('myBucket')
+          .withKey('counter_1')
           .withIncrement(100)
           .withCallback(callback)
           .build();
-</code></pre><p>See <a href="../classes/UpdateCounter.Builder.html" class="crosslink">UpdateCounter.Builder</a></p>
+</code></pre>
+<p>See <a href="../classes/UpdateCounter.Builder.html" class="crosslink">UpdateCounter.Builder</a></p>
 
 </div>
 

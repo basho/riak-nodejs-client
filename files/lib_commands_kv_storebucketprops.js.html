@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -170,15 +172,15 @@ var Joi = require(&#x27;joi&#x27;);
 
 /**
  * Command used to set the properties on a bucket in Riak.
- * 
+ *
  * As a convenience, a builder class is provided:
- * 
+ *
  *     var storeProps = new StoreBucketProps.Builder()
  *                  .withAllowMult(true)
  *                  .build();
- *                  
+ *
  * See {{#crossLink &quot;StoreBucketProps.Builder&quot;}}StoreBucketProps.Builder{{/crossLink}}
- * 
+ *
  * @class StoreBucketProps
  * @constructor
  * @param {Object} options The properties to store
@@ -207,22 +209,22 @@ var Joi = require(&#x27;joi&#x27;);
  * @param {Object[]} [options.postcommit] Array of postcommit hooks
  * @param {Function} callback The callback to be executed when the operation completes.
  * @param {String} callback.err An error message. Will be null if no error.
- * @param {Boolean} callback.response the response from Riak. This will be true. 
+ * @param {Boolean} callback.response the response from Riak. This will be true.
  * @extends CommandBase
  */
 function StoreBucketProps(options, callback) {
     CommandBase.call(this, &#x27;RpbSetBucketReq&#x27;, &#x27;RpbSetBucketResp&#x27;, callback);
-    
+
     var self = this;
     Joi.validate(options, schema, function(err, options) {
-       
+
         if (err) {
             throw err;
         }
-    
+
         self.options = options;
     });
-    
+
     this.remainingTries = 1;
 
 }
@@ -230,14 +232,14 @@ function StoreBucketProps(options, callback) {
 inherits(StoreBucketProps, CommandBase);
 
 StoreBucketProps.prototype.constructPbRequest = function() {
-    
+
     var protobuf = this.getPbReqBuilder();
-    
+
     protobuf.setBucket(new Buffer(this.options.bucket));
     protobuf.setType(new Buffer(this.options.bucketType));
-    
+
     var props = new RpbBucketProps();
-    
+
     props.setNVal(this.options.nVal &gt; 0 ? this.options.nVal : null );
     props.setOldVclock(this.options.oldVClock &gt;= 0 ? this.options.oldVClock : null);
     props.setYoungVclock(this.options.youngVClock &gt;= 0 ? this.options.youngVClock : null);
@@ -249,36 +251,36 @@ StoreBucketProps.prototype.constructPbRequest = function() {
     props.setPw(this.options.pw &gt;= 0 ? this.options.pw : null);
     props.setDw(this.options.dw &gt;= 0 ? this.options.dw : null);
     props.setRw(this.options.rw &gt;= 0 ? this.options.rw : null);
-    
-    
+
+
     props.setBasicQuorum(typeof this.options.basicQuorum === &#x27;boolean&#x27; ? this.options.basicQuorum : null);
     props.setNotfoundOk(typeof this.options.notFoundOk === &#x27;boolean&#x27; ? this.options.notFoundOk : null);
     props.setSearch(typeof this.options.search === &#x27;boolean&#x27; ? this.options.search : null);
     props.setAllowMult(typeof this.options.allowMult === &#x27;boolean&#x27; ? this.options.allowMult : null);
     props.setLastWriteWins(typeof this.options.lastWriteWins === &#x27;boolean&#x27; ? this.options.lastWriteWins : null);
-    
+
     props.setBackend(this.options.backend ? new Buffer(this.options.backend) : null);
     props.setSearchIndex(this.options.searchIndex ? new Buffer(this.options.searchIndex) : null);
-    
+
     if (this.options.precommit) {
         props.setPrecommit(this._convertHooks(this.options.precommit));
     }
-    
+
     if (this.options.postcommit) {
         props.setPostcommit(this._convertHooks(this.options.postcommit));
     }
-    
+
     if (this.options.chashKeyfun) {
         var modfun = new RpbModFun();
         modfun.module = new Buffer(this.options.chashKeyfun.mod);
         modfun.function = new Buffer(this.options.chashKeyfun.fun);
         props.setChashKeyfun(modfun);
     }
-    
+
     protobuf.setProps(props);
-    
+
     return protobuf;
-    
+
 };
 
 StoreBucketProps.prototype._convertHooks = function(hooks) {
@@ -299,12 +301,12 @@ StoreBucketProps.prototype._convertHooks = function(hooks) {
 };
 
 StoreBucketProps.prototype.onSuccess = function(rpbSetBucketResp) {
-    
+
     // There is not response from riak except a code. rpbSetBucketResp
     // will be null upon success.
     this._callback(null, true);
     return true;
-    
+
 };
 
 var schema = Joi.object().keys({
@@ -316,7 +318,6 @@ var schema = Joi.object().keys({
     dw: Joi.number().optional(),
     pw: Joi.number().optional(),
     rw: Joi.number().optional(),
-    callback: Joi.func().strip().optional(),
     notFoundOk: Joi.boolean().optional(),
     nVal: Joi.number().optional(),
     allowMult: Joi.boolean().optional(),
@@ -332,25 +333,25 @@ var schema = Joi.object().keys({
     search : Joi.boolean().optional(),
     searchIndex : Joi.string().optional(),
     chashKeyfun : Joi.object().optional()
-    
+
 });
 
 
 /**
  * A builder for constructing StoreBucketProps instances
- * 
+ *
  * Rather than having to manually construct the __options__ and instantiating
  * a StoreBucketProps directly, this builder may be used.
  *
  *     var storeProps = new StoreBucketProps.Builder()
  *                  .withAllowMult(true)
  *                  .build();
- *                  
+ *
  * @class StoreBucketProps.Builder
- * @constructor 
+ * @constructor
  */
 function Builder() {
-    
+
     this.precommit = [];
     this.postcommit = [];
 }
@@ -410,8 +411,8 @@ Builder.prototype = {
         return this;
     },
     /**
-    * Add a pre-commit hook. 
-    * 
+    * Add a pre-commit hook.
+    *
     * @method addPrecommitHook
     * @param {Object} precommitHook the hook to add.
     * @chainable
@@ -421,8 +422,8 @@ Builder.prototype = {
         return this;
     },
     /**
-    * Add a pre-commit hook. 
-    * 
+    * Add a pre-commit hook.
+    *
     * @method addPostcommitHook
     * @param {Object} postcommitHook the hook to add.
     * @chainable
@@ -472,13 +473,13 @@ Builder.prototype = {
         return this;
     },
     /**
-    * Set the backend used by this bucket. 
+    * Set the backend used by this bucket.
     * Only applies when using
     * riak_kv_multi_backend in Riak.
     * @method withBackend
     * @param {Sring} backend the name of the backend to use.
     * @chainable
-    */ 
+    */
     withBackend : function(backend) {
         this.backend = backend;
         return this;
@@ -555,7 +556,7 @@ Builder.prototype = {
     /**
     * Set the basic_quorum value.
     * The parameter controls whether a read request should return early in
-    * some fail cases. 
+    * some fail cases.
     * E.g. If a quorum of nodes has already
     * returned notfound/error, don&#x27;t wait around for the rest.
     * @method withBasicQuorum
@@ -593,7 +594,7 @@ Builder.prototype = {
         return this;
     },
     /**
-    * Associate a Search Index. 
+    * Associate a Search Index.
     * This only applies if Yokozuna is enabled in
     * Riak v2.0.
     * @method withSearchIndex
@@ -606,7 +607,7 @@ Builder.prototype = {
     },
     /**
      * Set the chash_keyfun value.
-     * 
+     *
      * @method withChashkeyFunction
      * @param {Object} func a object representing the Erlang func to use.
      * @chainable
@@ -620,7 +621,7 @@ Builder.prototype = {
      * @method withCallback
      * @param {Function} callback The callback to be executed when the operation completes.
      * @param {String} callback.err An error message. Will be null if no error.
-     * @param {Boolean} callback.response the response from Riak. This will be true. 
+     * @param {Boolean} callback.response the response from Riak. This will be true.
      * @chainable
      */
     withCallback : function(callback) {
@@ -633,9 +634,11 @@ Builder.prototype = {
      * @return {StoreBucketProps}
      */
     build : function() {
-        return new StoreBucketProps(this, this.callback);
+        var cb = this.callback;
+        delete this.callback;
+        return new StoreBucketProps(this, cb);
     }
-    
+
 };
 
 module.exports = StoreBucketProps;

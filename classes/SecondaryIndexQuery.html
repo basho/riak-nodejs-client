@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -152,267 +154,268 @@
 
 
 <div class="box intro">
-    <p>Command used to perform a secondary index query. </p>
+    <p>Command used to perform a secondary index query.</p>
 <p>As a convenience, a builder class is provided:</p>
 <pre class="code prettyprint"><code>var query = new SecondaryIndexQuery.Builder()
-             .withBucket(&#39;myBucket&#39;)
-             .withIndexName(&#39;email_bin&#39;)
-             .withIndexKey(&#39;roach@basho.com&#39;)
+             .withBucket('myBucket')
+             .withIndexName('email_bin')
+             .withIndexKey('roach@basho.com')
              .withCallback(myCallback)
              .build();
-</code></pre><p>See <a href="../classes/SecondaryIndexQuery.Builder.html" class="crosslink">SecondaryIndexQuery.Builder</a></p>
+</code></pre>
+<p>See <a href="../classes/SecondaryIndexQuery.Builder.html" class="crosslink">SecondaryIndexQuery.Builder</a></p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_SecondaryIndexQuery" class="method item">
-            <h3 class="name"><code>SecondaryIndexQuery</code></h3>
-        
-                <div class="args">
-                    <span class="paren">(</span><ul class="args-list inline commas">
-                        <li class="arg">
-                                <code>options</code>
-                        </li>
-                        <li class="arg">
-                                <code>callback</code>
-                        </li>
-                    </ul><span class="paren">)</span>
-                </div>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l31"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:31</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-                <div class="params">
-                    <h4>Parameters:</h4>
-        
-                    <ul class="params-list">
-                        <li class="param">
-                                <code class="param-name">options</code>
-                                <span class="type">Object</span>
-        
-        
-                            <div class="param-description">
-                                <p>The options for this command.</p>
-        
-                            </div>
-        
-                                <ul class="params-list">
-                                    <li class="param">
-                                            <code class="param-name optional">[bucketType=default]</code>
-                                            <span class="type">String</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>The bucket type in riak. If not supplied &#39;default&#39; is used.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name">bucket</code>
-                                            <span class="type">String</span>
-        
-                                        <div class="param-description">
-                                            <p>The bucket in riak.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name">indexName</code>
-                                            <span class="type">String</span>
-        
-                                        <div class="param-description">
-                                            <p>The secondary index name to query</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[indexKey]</code>
-                                            <span class="type">String | Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>A single index key to query</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[rangeStart]</code>
-                                            <span class="type">String | Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Starting key for a range query</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[rangeEnd]</code>
-                                            <span class="type">String | Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Ending key for a range query</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[returnKeyAndIndex=false]</code>
-                                            <span class="type">Boolean</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Return the index keys along with the object keys</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[maxResults]</code>
-                                            <span class="type">Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Limit the results returned and paginate if necessary</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[continuation]</code>
-                                            <span class="type">Buffer</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>A continuation returned from a previous query that set maxResults. Used for pagination.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[stream=true]</code>
-                                            <span class="type">Boolean</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Whether to stream or accumulate the result before calling callback.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[timeout]</code>
-                                            <span class="type">Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Set a timeout for this operation.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[paginationSort=false]</code>
-                                            <span class="type">Boolean</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>True to sort a non-paginated query.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                </ul>
-                        </li>
-                        <li class="param">
-                                <code class="param-name">callback</code>
-                                <span class="type">Function</span>
-        
-        
-                            <div class="param-description">
-                                <p>the callback to be executed by the command.</p>
-        
-                            </div>
-        
-                                <ul class="params-list">
-                                    <li class="param">
-                                            <code class="param-name">err</code>
-                                            <span class="type">String</span>
-        
-                                        <div class="param-description">
-                                            <p>An error message. Will ne null if no error.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name">response</code>
-                                            <span class="type">Object</span>
-        
-                                        <div class="param-description">
-                                            <p>The response from Riak.</p>
-        
-                                        </div>
-        
-                                            <ul class="params-list">
-                                                <li class="param">
-                                                        <code class="param-name">values</code>
-                                                        <span class="type">Object</span>
-        
-                                                    <div class="param-description">
-                                                        Object keys returned by the query, and optionally the index keys.
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name">done</code>
-                                                        <span class="type">Boolean</span>
-        
-                                                    <div class="param-description">
-                                                        True if you have received all the results.
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name">continuation</code>
-                                                        <span class="type">Buffer</span>
-        
-                                                    <div class="param-description">
-                                                        The continuation if a continuation was returned.
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                    </li>
-                                </ul>
-                        </li>
-                    </ul>
-                </div>
-        
-        
-        
+<div id="method_SecondaryIndexQuery" class="method item">
+    <h3 class="name"><code>SecondaryIndexQuery</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
         </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l31"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:31</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>The options for this command.</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name optional">[bucketType=default]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The bucket type in riak. If not supplied 'default' is used.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">bucket</code>
+                                    <span class="type">String</span>
+
+                                <div class="param-description">
+                                    <p>The bucket in riak.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">indexName</code>
+                                    <span class="type">String</span>
+
+                                <div class="param-description">
+                                    <p>The secondary index name to query</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[indexKey]</code>
+                                    <span class="type">String | Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>A single index key to query</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[rangeStart]</code>
+                                    <span class="type">String | Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Starting key for a range query</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[rangeEnd]</code>
+                                    <span class="type">String | Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Ending key for a range query</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[returnKeyAndIndex=false]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Return the index keys along with the object keys</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[maxResults]</code>
+                                    <span class="type">Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Limit the results returned and paginate if necessary</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[continuation]</code>
+                                    <span class="type">Buffer</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>A continuation returned from a previous query that set maxResults. Used for pagination.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[stream=true]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Whether to stream or accumulate the result before calling callback.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[timeout]</code>
+                                    <span class="type">Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Set a timeout for this operation.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[paginationSort=false]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>True to sort a non-paginated query.</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                        <p>the callback to be executed by the command.</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">err</code>
+                                    <span class="type">String</span>
+
+                                <div class="param-description">
+                                    <p>An error message. Will ne null if no error.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">response</code>
+                                    <span class="type">Object</span>
+
+                                <div class="param-description">
+                                    <p>The response from Riak.</p>
+
+                                </div>
+
+                                    <ul class="params-list">
+                                        <li class="param">
+                                                <code class="param-name">values</code>
+                                                <span class="type">Object</span>
+
+                                            <div class="param-description">
+                                                Object keys returned by the query, and optionally the index keys.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name">done</code>
+                                                <span class="type">Boolean</span>
+
+                                            <div class="param-description">
+                                                True if you have received all the results.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name">continuation</code>
+                                                <span class="type">Buffer</span>
+
+                                            <div class="param-description">
+                                                The continuation if a continuation was returned.
+                                            </div>
+                                        </li>
+                                    </ul>
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -499,9 +502,8 @@
     </div>
 
     <div class="description">
-        <p>Construct and return the Riak protocol buffer message for this command.
-Subclasses must override this method.</p>
-
+        Construct and return the Riak protocol buffer message for this command.
+Subclasses must override this method.
     </div>
 
 
@@ -510,8 +512,7 @@ Subclasses must override this method.</p>
 
             <div class="returns-description">
                         <span class="type">Object</span>:
-                    <p>a protocol buffer message builder</p>
-
+                    a protocol buffer message builder
             </div>
         </div>
 
@@ -544,8 +545,7 @@ Subclasses must override this method.</p>
     </div>
 
     <div class="description">
-        <p>Fires the user&#39;s callback with the arguments passed in.</p>
-
+        Fires the user's callback with the arguments passed in.
     </div>
 
 
@@ -554,8 +554,7 @@ Subclasses must override this method.</p>
 
             <div class="returns-description">
                         <span class="type">Function</span>:
-                    <p>the user supplied callback</p>
-
+                    the user supplied callback
             </div>
         </div>
 
@@ -588,8 +587,7 @@ Subclasses must override this method.</p>
     </div>
 
     <div class="description">
-        <p>Returns the expected response code for this command.</p>
-
+        Returns the expected response code for this command.
     </div>
 
 
@@ -598,8 +596,7 @@ Subclasses must override this method.</p>
 
             <div class="returns-description">
                         <span class="type">Number</span>:
-                    <p>the expected response code for this command.</p>
-
+                    the expected response code for this command.
             </div>
         </div>
 
@@ -632,9 +629,8 @@ Subclasses must override this method.</p>
     </div>
 
     <div class="description">
-        <p>Returns and instance of the protocol buffer message builder for this command.
-This is determined via the pbRequestName passed to the constructor.</p>
-
+        Returns and instance of the protocol buffer message builder for this command.
+This is determined via the pbRequestName passed to the constructor.
     </div>
 
 
@@ -643,8 +639,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
 
             <div class="returns-description">
                         <span class="type">Object</span>:
-                    <p>the builder for the protocol buffer message to be sent for this command</p>
-
+                    the builder for the protocol buffer message to be sent for this command
             </div>
         </div>
 
@@ -677,8 +672,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
     </div>
 
     <div class="description">
-        <p>Returns the encoded protobuf and message header.</p>
-
+        Returns the encoded protobuf and message header.
     </div>
 
 
@@ -687,8 +681,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
 
             <div class="returns-description">
                         <span class="type">Object</span>:
-                    <p>object containing the header and encoded protobuf</p>
-
+                    object containing the header and encoded protobuf
             </div>
         </div>
 
@@ -724,8 +717,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
     </div>
 
     <div class="description">
-        <p>Called by Riaknode if an error occurs executing the command and all retries are exhausted.</p>
-
+        Called by Riaknode if an error occurs executing the command and all retries are exhausted.
     </div>
 
         <div class="params">
@@ -738,8 +730,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
 
 
                     <div class="param-description">
-                        <p>an error message</p>
-
+                        an error message
                     </div>
 
                 </li>
@@ -779,9 +770,8 @@ This is determined via the pbRequestName passed to the constructor.</p>
     </div>
 
     <div class="description">
-        <p>Called by RiakNode when a RpbErrorResp is received and all retries are exhausted.
-Commands must override this method.</p>
-
+        Called by RiakNode when a RpbErrorResp is received and all retries are exhausted.
+Commands must override this method.
     </div>
 
         <div class="params">
@@ -794,8 +784,7 @@ Commands must override this method.</p>
 
 
                     <div class="param-description">
-                        <p>the RpbErrorResp protocol buffer</p>
-
+                        the RpbErrorResp protocol buffer
                     </div>
 
                 </li>
@@ -838,9 +827,8 @@ Commands must override this method.</p>
     </div>
 
     <div class="description">
-        <p>Called by RiakNode when a response is received.
-Subclasses must override this method.</p>
-
+        Called by RiakNode when a response is received.
+Subclasses must override this method.
     </div>
 
         <div class="params">
@@ -853,8 +841,7 @@ Subclasses must override this method.</p>
 
 
                     <div class="param-description">
-                        <p>the protocol buffer received from riak</p>
-
+                        the protocol buffer received from riak
                     </div>
 
                 </li>
@@ -866,8 +853,7 @@ Subclasses must override this method.</p>
 
             <div class="returns-description">
                         <span class="type">Boolean</span>:
-                    <p>true if not streaming or the last response has been received, false otherwise.</p>
-
+                    true if not streaming or the last response has been received, false otherwise.
             </div>
         </div>
 

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -169,17 +171,17 @@ var RpbYokozunaSchema = require(&#x27;../../protobuf/riakprotobuf&#x27;).getProt
 
 /**
  * Command used to store a Yokozuna schema.
- * 
+ *
  * As a convenience, a builder class is provided:
- * 
+ *
  *     var store = StoreSchema.Builder()
  *                  .withSchemaName(&#x27;schema_name&#x27;)
  *                  .withSchema(mySchemaXML)
  *                  .withCallback(callback)
  *                  .build();
- *                  
+ *
  * See {{#crossLink &quot;StoreSchema.Builder&quot;}}StoreSchema.Builder{{/crossLink}}
- * 
+ *
  * @class StoreSchema
  * @constructor
  * @param {Object} options The options for this command
@@ -191,39 +193,39 @@ var RpbYokozunaSchema = require(&#x27;../../protobuf/riakprotobuf&#x27;).getProt
  * @extends CommandBase
  */
 function StoreSchema(options, callback) {
-    
+
     CommandBase.call(this, &#x27;RpbYokozunaSchemaPutReq&#x27; , &#x27;RpbPutResp&#x27;, callback);
     var self = this;
     Joi.validate(options, schema, function(err, options) {
-       
+
         if (err) {
             throw err;
         }
-    
+
         self.options = options;
     });
-    
+
     this.remainingTries = 1;
 
-    
+
 }
 
 inherits(StoreSchema, CommandBase);
 
 StoreSchema.prototype.constructPbRequest = function() {
-  
+
     var protobuf = this.getPbReqBuilder();
     var pbSchema = new RpbYokozunaSchema();
     pbSchema.name = new Buffer(this.options.schemaName);
     pbSchema.content = new Buffer(this.options.schema);
     protobuf.schema = pbSchema;
-    
+
     return protobuf;
-    
+
 };
 
 StoreSchema.prototype.onSuccess = function(rpbPutResp) {
-    
+
     // rpbPutResp will be null (no body)
     this._callback(null, true);
     return true;
@@ -231,29 +233,28 @@ StoreSchema.prototype.onSuccess = function(rpbPutResp) {
 
 var schema = Joi.object().keys({
     schemaName: Joi.string().required(),
-    schema: Joi.string().required(),
-    callback: Joi.func().strip().optional()
+    schema: Joi.string().required()
 });
 
 /**
  * A builder for constructing StoreSchema instances.
- * 
+ *
  * Rather than having to manually construct the __options__ and instantiating
  * a StoreSchema directly, this builder may be used.
- * 
+ *
  *     var store = StoreSchema.Builder()
  *                  .withSchemaName(&#x27;schema_name&#x27;)
  *                  .withSchema(mySchemaXML)
  *                  .withCallback(callback)
  *                  .build();
- *       
+ *
  * @class StoreSchema.Builder
  * @constructor
  */
 function Builder(){}
 
 Builder.prototype = {
-    
+
     /**
      * The name of the schema.
      * @method withSchemaName
@@ -292,7 +293,9 @@ Builder.prototype = {
      * @return {StoreSchema}
      */
     build : function() {
-        return new StoreSchema(this, this.callback);
+        var cb = this.callback;
+        delete this.callback;
+        return new StoreSchema(this, cb);
     }
 };
 

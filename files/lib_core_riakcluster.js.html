@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -177,7 +179,10 @@ var LinkedList = require(&#x27;linkedlist&#x27;);
  * 
  *     {
  *       nodes: [defaultRiakNode],
- *       executionAttempts: 3
+ *       executionAttempts: 3,
+ *       nodeManager: DefaultNodeManager,
+ *       queueCommands: false,
+ *       queueMaxDepth: unlimited
  *     }
  *     
  * The __defaultRiakNode__ is a RiakNode connected to 127.0.0.1:8087 
@@ -242,14 +247,14 @@ RiakCluster.prototype.start = function() {
         logger.debug(&#x27;[RiakCluster] starting.&#x27;);
         
         for (var i = 0; i &lt; this.nodes.length; i++) {
-            this.nodes[i].on(&#x27;stateChange&#x27;, this._onNodeStateChange.bind(this));
-            this.nodes[i].on(&#x27;retryCommand&#x27;, this._onRetryCommand.bind(this));
+            this.nodes[i].on(EVT_SC, this._onNodeStateChange.bind(this));
+            this.nodes[i].on(EVT_RC, this._onRetryCommand.bind(this));
             this.nodes[i].start();
         }
         
         this.state = State.RUNNING;
         logger.debug(&#x27;[RiakCluster] cluster started.&#x27;);
-        this.emit(&#x27;stateChange&#x27;, this.state);
+        this.emit(EVT_SC, this.state);
     }
     
 };
@@ -263,7 +268,7 @@ RiakCluster.prototype.stop = function() {
     
     logger.debug(&#x27;RiakCluster is shutting down&#x27;);
     this.state = State.SHUTTING_DOWN;
-    this.emit(&#x27;stateChange&#x27;, this, this.state);
+    this.emit(EVT_SC, this.state);
     for (var i = 0; i &lt; this.nodes.length; i++) {
         this.nodes[i].stop();
     }
@@ -287,7 +292,7 @@ RiakCluster.prototype._shutdown = function () {
             logger.warn(&#x27;[RiakCluster] There were %d commands in the queue at shutdown&#x27;, 
                 this._commandQueue.length);
         }
-        this.emit(&#x27;stateChange&#x27;, this.state);
+        this.emit(EVT_SC, this.state);
     } else {
         logger.debug(&#x27;[RiakCluster] nodes still running.&#x27;);
 		var self = this;
@@ -327,7 +332,7 @@ RiakCluster.prototype.execute = function(riakCommand, previous) {
                     this.state = State.QUEUEING;
                     setTimeout(this._submitFromQueue.bind(this), 500);
                     logger.info(&#x27;[RiakCluster] queueing commands.&#x27;);
-                    this.emit(&#x27;stateChange&#x27;, this.state);
+                    this.emit(EVT_SC, this.state);
                 }
             }
         } else {
@@ -356,7 +361,7 @@ RiakCluster.prototype._submitFromQueue = function() {
         if (!this._commandQueue.length) {
             this.state = State.RUNNING;
             logger.info(&#x27;[RiakCluster] cleared command queue.&#x27;);
-            this.emit(&#x27;stateChange&#x27;, this.state);
+            this.emit(EVT_SC, this.state);
         }
     }
 };
@@ -367,11 +372,10 @@ RiakCluster.prototype._submitFromQueue = function() {
  * @param {RiakNode} node the (unstarted) RiakNode to add.
  */
 RiakCluster.prototype.addNode = function(node) {
-  
-  node.on(&#x27;stateChange&#x27;, this._onNodeStateChange.bind(this));
-  node.on(&#x27;retryCommand&#x27;, this._onRetryCommand.bind(this));
-  node.start();
-  this.nodes.push(node);
+    node.on(EVT_SC, this._onNodeStateChange.bind(this));
+    node.on(EVT_RC, this._onRetryCommand.bind(this));
+    node.start();
+    this.nodes.push(node);
 };
 
 /**
@@ -412,10 +416,8 @@ RiakCluster.prototype.removeNode = function(node) {
     return false;
 };
 
-
-
 RiakCluster.prototype._onNodeStateChange = function(node, state) {
-    this.emit(&#x27;nodeStateChange&#x27;, node, state);
+    this.emit(EVT_NSC, node, state);
 };
 
 RiakCluster.prototype._onRetryCommand = function(command, lastNode) {
@@ -455,12 +457,16 @@ var State = Object.freeze({ CREATED : 0,
 
 var defaultRiakNode = new RiakNode();
 var defaultExecutionAttempts = 3;
-var defaultNodeManager = new DefaultNodeManager();
+
+function createDefaultNodeManager() {
+    return new DefaultNodeManager();
+}
 
 var schema = Joi.object().keys({
     nodes: Joi.array().min(1).default([defaultRiakNode]),
     executionAttempts: Joi.number().min(1).default(defaultExecutionAttempts),
-    nodeManager: Joi.object().default(defaultNodeManager),
+    nodeManager: Joi.object()
+        .default(createDefaultNodeManager, &#x27;default is a new instance of DefaultNodeManager&#x27;),
     queueCommands: Joi.boolean().default(false),
     queueMaxDepth: Joi.number().default(0)
 });
@@ -480,6 +486,12 @@ var EVT_SC = &#x27;stateChange&#x27;;
  * @param {Number} state - the {{#crossLink &quot;RiakNode/State:property&quot;}}RiakNode.State{{/crossLink}}
  */
 var EVT_NSC = &#x27;nodeStateChange&#x27;;
+
+/**
+ * This event is fired whenever a command fails on a RiakNode and needs to be retried.
+ * RiakCluster is a listener.
+ */
+var EVT_RC = &#x27;retryCommand&#x27;;
 
 /**
  * A Builder for constructing RiakCluster instances.
@@ -507,7 +519,6 @@ Builder.prototype = {
      */
     withRiakNodes : function(nodes) {
         for (var i = 0; i &lt; nodes.length; i++) {
-        
             if (nodes[i] instanceof RiakNode) {
                 this.nodes.push(nodes[i]); 
             }
@@ -575,7 +586,6 @@ Builder.prototype = {
 module.exports = RiakCluster;
 module.exports.Builder = Builder;
 module.exports.State = State;
-
 
     </pre>
 </div>

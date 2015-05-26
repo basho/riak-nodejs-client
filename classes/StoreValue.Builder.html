@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -140,7 +142,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_commands_kv_storevalue.js.html#l209"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:209</code></a>
+            Defined in: <a href="../files/lib_commands_kv_storevalue.js.html#l206"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:206</code></a>
         </div>
 
             Module: <a href="../modules/KV.html">KV</a>
@@ -153,45 +155,45 @@
 <p>Rather than having to manually construct the <strong>options</strong> and instantiating
 a StoreValue directly, this builder may be used.</p>
 <pre class="code prettyprint"><code>var storeValue = new StoreValue.Builder()
-     .withBucket(&#39;myBucket&#39;)
-     .withKey(&#39;myKey&#39;)
+     .withBucket('myBucket')
+     .withKey('myKey')
      .withContent(myObj);
-     .build();
-</code></pre>
+     .build();</code></pre>
+
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_StoreValue.Builder" class="method item">
-            <h3 class="name"><code>StoreValue.Builder</code></h3>
+<div id="method_StoreValue.Builder" class="method item">
+    <h3 class="name"><code>StoreValue.Builder</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_kv_storevalue.js.html#l206"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:206</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
         
-                <span class="paren">()</span>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_commands_kv_storevalue.js.html#l209"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:209</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-        
-        
-        
-        </div>
+    </div>
+
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -297,7 +299,7 @@ a StoreValue directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l423"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:423</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l420"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:420</code></a>
         </p>
 
 
@@ -344,7 +346,7 @@ a StoreValue directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l228"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:228</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l225"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:225</code></a>
         </p>
 
 
@@ -401,7 +403,7 @@ doing so will take precidence over this method.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l240"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:240</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l237"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:237</code></a>
         </p>
 
 
@@ -410,7 +412,7 @@ doing so will take precidence over this method.</p>
 
     <div class="description">
         <p>Set the bucket type.
-If not supplied, &#39;default&#39; is used.
+If not supplied, 'default' is used.
 Note that this can also be provided via RiakObject passed in via withContent() and
 doing so will take precidence over this method.</p>
 
@@ -459,7 +461,7 @@ doing so will take precidence over this method.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l408"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:408</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l405"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:405</code></a>
         </p>
 
 
@@ -562,7 +564,7 @@ doing so will take precidence over this method.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l266"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:266</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l263"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:263</code></a>
         </p>
 
 
@@ -619,7 +621,7 @@ using JSON.stringify()</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l301"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:301</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l298"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:298</code></a>
         </p>
 
 
@@ -676,7 +678,7 @@ If not set the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l382"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:382</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l379"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:379</code></a>
         </p>
 
 
@@ -685,9 +687,9 @@ If not set the bucket default is used.</p>
 
     <div class="description">
         <p>Set the if_none_match flag.</p>
-<p>Setting this to true means store the value only if this 
-bucket/key combination are not already defined. </p>
-<p>Be aware that there are several cases where 
+<p>Setting this to true means store the value only if this
+bucket/key combination are not already defined.</p>
+<p>Be aware that there are several cases where
 this may not actually happen. Use of this option is discouraged.</p>
 
     </div>
@@ -735,7 +737,7 @@ this may not actually happen. Use of this option is discouraged.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l366"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:366</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l363"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:363</code></a>
         </p>
 
 
@@ -744,7 +746,7 @@ this may not actually happen. Use of this option is discouraged.</p>
 
     <div class="description">
         <p>Set the if_not_modified flag.</p>
-<p>Setting this to true means to store the value only if the 
+<p>Setting this to true means to store the value only if the
 supplied vclock matches the one in the database.</p>
 <p>Be aware there are several cases where this may not actually happen.
 Use of this feature is discouraged.</p>
@@ -794,7 +796,7 @@ Use of this feature is discouraged.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l253"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:253</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l250"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:250</code></a>
         </p>
 
 
@@ -852,7 +854,7 @@ doing so will take precidence over this method.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l313"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:313</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l310"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:310</code></a>
         </p>
 
 
@@ -915,7 +917,7 @@ If not set the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l325"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:325</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l322"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:322</code></a>
         </p>
 
 
@@ -924,7 +926,7 @@ If not set the bucket default is used.</p>
 
     <div class="description">
         <p>Return the object after storing (including any siblings).
-If siblings are present, an optional conflictResolver can be 
+If siblings are present, an optional conflictResolver can be
 provided to resolve them.</p>
 
     </div>
@@ -1011,7 +1013,7 @@ provided to resolve them.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l349"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:349</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l346"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:346</code></a>
         </p>
 
 
@@ -1020,8 +1022,8 @@ provided to resolve them.</p>
 
     <div class="description">
         <p>Return the metadata after storing the value.</p>
-<p>Causes Riak to only return the metadata for the object. 
-If siblings are present, an optional conflictResolver can be 
+<p>Causes Riak to only return the metadata for the object.
+If siblings are present, an optional conflictResolver can be
 provided to resolve them.</p>
 
     </div>
@@ -1093,7 +1095,7 @@ provided to resolve them.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l398"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:398</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l395"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:395</code></a>
         </p>
 
 
@@ -1147,7 +1149,7 @@ provided to resolve them.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l278"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:278</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l275"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:275</code></a>
         </p>
 
 
@@ -1156,7 +1158,7 @@ provided to resolve them.</p>
 
     <div class="description">
         <p>Set the vector clock.
-Convenience method if a RiakObject is not supplied as content. 
+Convenience method if a RiakObject is not supplied as content.
 Note that a vclock supplied via RiakObject in withContent() will have precendence over this.</p>
 
     </div>
@@ -1204,7 +1206,7 @@ Note that a vclock supplied via RiakObject in withContent() will have precendenc
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storevalue.js.html#l289"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:289</code></a>
+        <a href="../files/lib_commands_kv_storevalue.js.html#l286"><code>lib&#x2F;commands&#x2F;kv&#x2F;storevalue.js:286</code></a>
         </p>
 
 

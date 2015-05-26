@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -151,43 +153,43 @@
 <div class="box intro">
     <p>A class that encapsulates the metadata and value stored in Riak.</p>
 <p>While you can fetch and store regular JS objects with <a href="../classes/FetchValue.html" class="crosslink">FetchValue</a>
-and <a href="../classes/StoreValue.html" class="crosslink">StoreValue</a>, if you want access to the associated 
-metadata stored in Riak with the value you&#39;ll want to use a RiakObject instead.</p>
+and <a href="../classes/StoreValue.html" class="crosslink">StoreValue</a>, if you want access to the associated
+metadata stored in Riak with the value you'll want to use a RiakObject instead.</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_RiakObject" class="method item">
-            <h3 class="name"><code>RiakObject</code></h3>
+<div id="method_RiakObject" class="method item">
+    <h3 class="name"><code>RiakObject</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_kv_riakobject.js.html#l26"><code>lib&#x2F;commands&#x2F;kv&#x2F;riakobject.js:26</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
         
-                <span class="paren">()</span>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_commands_kv_riakobject.js.html#l26"><code>lib&#x2F;commands&#x2F;kv&#x2F;riakobject.js:26</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-        
-        
-        
-        </div>
+    </div>
+
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -507,7 +509,7 @@ metadata stored in Riak with the value you&#39;ll want to use a RiakObject inste
 
     <div class="description">
         <p>Get the content type.</p>
-<p>Due to Riak&#39;s HTTP API this is represented as a string suitable for
+<p>Due to Riak's HTTP API this is represented as a string suitable for
 a HTTP Content-Type header.</p>
 
     </div>
@@ -1231,7 +1233,7 @@ a HTTP Content-Type header.</p>
 
     <div class="description">
         <p>Set the bucket type.</p>
-<p>If this is not set &#39;default&#39; is used.</p>
+<p>If this is not set 'default' is used.</p>
 
     </div>
 
@@ -1287,9 +1289,9 @@ a HTTP Content-Type header.</p>
 
     <div class="description">
         <p>Set the content type.</p>
-<p>Due to Riak&#39;s HTTP API this is represented as a string suitable for
-a HTTP Content-Type header. </p>
-<p>If not set, the default is &#39;application/json&#39;</p>
+<p>Due to Riak's HTTP API this is represented as a string suitable for
+a HTTP Content-Type header.</p>
+<p>If not set, the default is 'application/json'</p>
 
     </div>
 

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -170,21 +172,21 @@ var RiakObject = require(&#x27;./riakobject&#x27;);
 
 
 /**
- * Command used to perform a secondary index query. 
- * 
+ * Command used to perform a secondary index query.
+ *
  * As a convenience, a builder class is provided:
- * 
+ *
  *     var query = new SecondaryIndexQuery.Builder()
  *                  .withBucket(&#x27;myBucket&#x27;)
  *                  .withIndexName(&#x27;email_bin&#x27;)
  *                  .withIndexKey(&#x27;roach@basho.com&#x27;)
  *                  .withCallback(myCallback)
  *                  .build();
- *                  
+ *
  * See {{#crossLink &quot;SecondaryIndexQuery.Builder&quot;}}SecondaryIndexQuery.Builder{{/crossLink}}
- *                  
+ *
  * @class SecondaryIndexQuery
- * @constructor   
+ * @constructor
  * @param {Object} options The options for this command.
  * @param {String} [options.bucketType=default] The bucket type in riak. If not supplied &#x27;default&#x27; is used.
  * @param {String} options.bucket The bucket in riak.
@@ -208,27 +210,25 @@ var RiakObject = require(&#x27;./riakobject&#x27;);
  */
 function SecondaryIndexQuery(options, callback) {
     CommandBase.call(this, &#x27;RpbIndexReq&#x27;, &#x27;RpbIndexResp&#x27;, callback);
-    
+
     var self = this;
     Joi.validate(options, schema, function(err, options) {
-       
+
         if (err) {
             throw err;
         }
-    
+
         // I tried making this work in the Joi schema and finally gave up. It seems
         // alternatives can&#x27;t work with multiple conditionals.
         if (options.indexKey === null &amp;&amp; (options.rangeStart === null || options.rangeEnd === null) ) {
-            throw (&#x27;either \&#x27;indxKey\&#x27; or \&#x27;rangeStart\&#x27; + \&#x27;rangeEnd\&#x27; are required&#x27;);
-        } 
-    
+            throw (&#x27;either \&#x27;indexKey\&#x27; or \&#x27;rangeStart\&#x27; + \&#x27;rangeEnd\&#x27; are required&#x27;);
+        }
+
         self.options = options;
     });
-    
-    
-    
+
     this.remainingTries = 1;
-    
+
     if (!this.options.stream) {
         this.responses = [];
     }
@@ -237,16 +237,16 @@ function SecondaryIndexQuery(options, callback) {
 inherits(SecondaryIndexQuery, CommandBase);
 
 SecondaryIndexQuery.prototype.constructPbRequest = function() {
-  
+
     var protobuf = this.getPbReqBuilder();
-    // We always stream from Riak. 
+    // We always stream from Riak.
     protobuf.setStream(true);
-    
+
     protobuf.setBucket(new Buffer(this.options.bucket));
     protobuf.setType(new Buffer(this.options.bucketType));
     protobuf.setIndex(new Buffer(this.options.indexName));
     protobuf.setReturnTerms(this.options.returnKeyAndIndex);
-    
+
     if (this.options.indexKey !== null) {
         // _int index requests take ... strings, not numbers
         protobuf.setKey(new Buffer(this.options.indexKey.toString()));
@@ -256,31 +256,31 @@ SecondaryIndexQuery.prototype.constructPbRequest = function() {
         protobuf.setRangeMax(new Buffer(this.options.rangeEnd.toString()));
         protobuf.setQtype(RpbIndexReq.IndexQueryType.range);
     }
-    
+
     if (!this.options.maxResults &amp;&amp; this.options.paginationSort) {
         protobuf.setPaginationSort(this.options.paginationSort);
     }
     protobuf.setMaxResults(this.options.maxResults);
     protobuf.setContinuation(this.options.continuation);
     protobuf.setTimeout(this.options.timeout);
-    
+
     return protobuf;
 };
 
 SecondaryIndexQuery.prototype.onSuccess = function(rpbIndexResp) {
-    
+
     /*
-    * @private 
-    * The 2i API is inconsistent on the Riak side. If it&#x27;s not 
-    * a range query, return_terms is ignored it only returns the 
+    * @private
+    * The 2i API is inconsistent on the Riak side. If it&#x27;s not
+    * a range query, return_terms is ignored it only returns the
     * list of object keys and you have to have
     * preserved the index key if you want to return it to the user
-    * with the results. 
-    * 
+    * with the results.
+    *
     * Also, the $key index queries just ignore return_terms altogether.
     */
-   
-   
+
+
     var i, resultsToReturn;
     if (rpbIndexResp.results.length) {
         // Index keys and object keys were returned
@@ -305,10 +305,10 @@ SecondaryIndexQuery.prototype.onSuccess = function(rpbIndexResp) {
             resultsToReturn[i] = { indexKey: key, objectKey: rpbIndexResp.keys[i].toString(&#x27;utf8&#x27;) };
         }
     }
-    
-    
+
+
     var continuation = rpbIndexResp.continuation;
-    
+
     if (this.options.stream) {
         this._callback(null, { values: resultsToReturn, done: rpbIndexResp.done, continuation: continuation });
     } else {
@@ -317,9 +317,9 @@ SecondaryIndexQuery.prototype.onSuccess = function(rpbIndexResp) {
             this._callback(null, { values: this.responses, done : true, continuation: continuation });
         }
     }
-    
+
     return rpbIndexResp.done;
-    
+
 };
 
 // Explicitly set null on options for protobufs and for conditionals
@@ -333,7 +333,6 @@ var schema = Joi.object().keys({
    returnKeyAndIndex: Joi.boolean().default(null).optional(),
    maxResults: Joi.number().default(null).optional(),
    continuation: Joi.any().default(null).optional(),
-   callback: Joi.func().strip().optional(),
    timeout: Joi.number().default(null).optional(),
    stream: Joi.boolean().default(true).optional(),
    paginationSort: Joi.boolean().default(null).optional()
@@ -342,24 +341,24 @@ var schema = Joi.object().keys({
 
 /**
  * A builder for constructing SecondaryIndexquery instances.
- * 
+ *
  * Rather than having to manually construct the __options__ and instantiating
  * a SecondaryIndexQuery directly, this builder may be used.
- * 
+ *
  *     var query = new SecondaryIndexQuery.Builder()
  *                  .withBucket(&#x27;myBucket&#x27;)
  *                  .withIndexName(&#x27;email_bin&#x27;)
  *                  .withIndexKey(&#x27;roach@basho.com&#x27;)
  *                  .withCallback(myCallback)
  *                  .build();
- *       
+ *
  * @class SecondaryIndexQuery.Builder
  * @constructor
  */
 function Builder() {}
 
 Builder.prototype = {
-    
+
     /**
      * Set the bucket.
      * @method withBucket
@@ -393,7 +392,7 @@ Builder.prototype = {
     },
     /**
      * Set a single secondary index key to use for query.
-     * Note that you can only set a single key, or a range. 
+     * Note that you can only set a single key, or a range.
      * @method withIndexKey
      * @param {String|Number} indexKey the secondary index key.
      * @chainable
@@ -428,13 +427,13 @@ Builder.prototype = {
     },
     /**
      * Set the maximum number of results returned by the query.
-     * 
-     * When asking for large result sets, it is often desirable to ask the 
-     * servers to return chunks of results instead of a firehose. 
-     * You can do so using this method, where maxResults is the number of 
+     *
+     * When asking for large result sets, it is often desirable to ask the
+     * servers to return chunks of results instead of a firehose.
+     * You can do so using this method, where maxResults is the number of
      * results you&#x27;d like to receive.
-     * 
-     * Assuming more keys are available, a continuation value will be included 
+     *
+     * Assuming more keys are available, a continuation value will be included
      * in the results to allow the client to request the next page.
      * @method withMaxResults
      * @param {Number} maxResults the max number of results to return.
@@ -484,11 +483,11 @@ Builder.prototype = {
     /**
      * Stream the results.
      * Setting this to true will cause you callback to be called as the results
-     * are returned from Riak. Set to false the result set will be buffered and 
-     * delevered via a single call to your callback. Note that on large result sets 
+     * are returned from Riak. Set to false the result set will be buffered and
+     * delevered via a single call to your callback. Note that on large result sets
      * this is very memory intensive.
      * @method withStreaming
-     * @param {Boolean} [stream=true] Set whether or not to stream the results 
+     * @param {Boolean} [stream=true] Set whether or not to stream the results
      * @chainable
      */
     withStreaming : function(stream) {
@@ -497,7 +496,7 @@ Builder.prototype = {
     },
     /**
      * Set whether to sort the results of a non-paginated 2i query.
-     * If you are not using pagination (setting withMaxResults()) the 
+     * If you are not using pagination (setting withMaxResults()) the
      * default behavior in Riak is to not sort the result set.
      * Setting this to true will sort the results before returning them.
      * __Note that this is not recommended for queries that could return a large
@@ -516,13 +515,16 @@ Builder.prototype = {
      * @return {SecondaryIndexQuery}
      */
     build : function() {
-        return new SecondaryIndexQuery(this, this.callback);
+        var cb = this.callback;
+        delete this.callback;
+        return new SecondaryIndexQuery(this, cb);
     }
-    
+
 };
 
 module.exports = SecondaryIndexQuery;
 module.exports.Builder = Builder;
+
 
     </pre>
 </div>

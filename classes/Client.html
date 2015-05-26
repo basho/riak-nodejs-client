@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -151,84 +153,87 @@
 <div class="box intro">
     <p>A Class that represents a Riak client.</p>
 <p>The client constructor accepts a <a href="../classes/RiakCluster.html" class="crosslink">RiakCluster</a>, or a list of host[:port] from
-which it will create a RiakCluster using our default configuration. </p>
-<pre class="code prettyprint"><code>var Riak = require(&#39;riak&#39;);
-var client = new Riak.Client([&#39;192.168.1.1:8087&#39;, &#39;192.168.1.2:8087&#39;]);
-</code></pre><p>Two styles of use are supported. Each command you can send to Riak is a 
-class and can be instantiated then executed by the client&#39;s execute() method.
+which it will create a RiakCluster using our default configuration.</p>
+<pre class="code prettyprint"><code>var Riak = require('riak');
+var client = new Riak.Client(['192.168.1.1:8087', '192.168.1.2:8087']);
+</code></pre>
+<p>Two styles of use are supported. Each command you can send to Riak is a
+class and can be instantiated then executed by the client's execute() method.
 In addition, convenience methods are provided directly by the Client class
 that corrispond to each of the commands.</p>
 <pre class="code prettyprint"><code>// Using the builder, but options can also be passed directly to the constructor
 var fetch = new KV.FetchValue.Builder() 
-             .withBucket(&#39;myBucket&#39;)
-             .withKey(&#39;myKey&#39;)
+             .withBucket('myBucket')
+             .withKey('myKey')
              .withCallback(callback)
              .build();
-
+             
 client.execute(fetch);
-</code></pre><p>or</p>
-<pre class="code prettyprint"><code>client.fetchValue({ bucket: &#39;myBucket&#39;, key: &#39;myKey&#39; }, callback);
-</code></pre><p>All command callbacks are the typical node.js function(err, resp) style.</p>
+</code></pre>
+<p>or</p>
+<pre class="code prettyprint"><code>client.fetchValue({ bucket: 'myBucket', key: 'myKey' }, callback);
+</code></pre>
+<p>All command callbacks are the typical node.js function(err, resp) style.</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_Client" class="method item">
-            <h3 class="name"><code>Client</code></h3>
-        
-                <div class="args">
-                    <span class="paren">(</span><ul class="args-list inline commas">
-                        <li class="arg">
-                                <code>cluster</code>
-                        </li>
-                    </ul><span class="paren">)</span>
-                </div>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_client.js.html#l40"><code>lib&#x2F;client.js:40</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-                <div class="params">
-                    <h4>Parameters:</h4>
-        
-                    <ul class="params-list">
-                        <li class="param">
-                                <code class="param-name">cluster</code>
-                                <span class="type">String | <a href="../classes/RiakCluster.html" class="crosslink">RiakCluster</a></span>
-        
-        
-                            <div class="param-description">
-                                <ul>
-        <li>either an array of host[:port] strings or the cluster to use. See <a href="../classes/RiakCluster.html" class="crosslink">RiakCluster</a>.</li>
-        </ul>
-        
-                            </div>
-        
-                        </li>
-                    </ul>
-                </div>
-        
-        
-        
+<div id="method_Client" class="method item">
+    <h3 class="name"><code>Client</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>cluster</code>
+                </li>
+            </ul><span class="paren">)</span>
         </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_client.js.html#l40"><code>lib&#x2F;client.js:40</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">cluster</code>
+                        <span class="type">String | <a href="../classes/RiakCluster.html" class="crosslink">RiakCluster</a></span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>either an array of host[:port] strings or the cluster to use. See <a href="../classes/RiakCluster.html" class="crosslink">RiakCluster</a>.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -1048,7 +1053,7 @@ client.execute(fetch);
     </div>
 
     <div class="description">
-        <p>Get the client&#39;s RiakCluster.</p>
+        <p>Get the client's RiakCluster.</p>
 
     </div>
 
@@ -1503,8 +1508,8 @@ client.execute(fetch);
     <div class="description">
         <p>Shut down the client gracefully.</p>
 <p>This will cause all connections to be closed and any remaining in-flight
-commands to finish. </p>
-<p>The provided callback will be added as a stateChange listener to the client&#39;s
+commands to finish.</p>
+<p>The provided callback will be added as a stateChange listener to the client's
 RiakCluster.</p>
 <p>See: <a href="../classes/RiakCluster.html#event_stateChange" class="crosslink">RiakCluster.stateChange</a></p>
 

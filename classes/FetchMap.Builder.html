@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -140,7 +142,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_commands_crdt_fetchmap.js.html#l137"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:137</code></a>
+            Defined in: <a href="../files/lib_commands_crdt_fetchmap.js.html#l136"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:136</code></a>
         </div>
 
             Module: <a href="../modules/CRDT.html">CRDT</a>
@@ -153,46 +155,46 @@
 <p>Rather than having to manually construct the <strong>options</strong> and instantiating
 a FetchMap directly, this builder may be used.</p>
 <pre class="code prettyprint"><code>var fetch = new FetchMap.Builder()
-                .withBucketType(&#39;myBucketType&#39;)
-                .withBucket(&#39;myBucket&#39;)
-                .withKey(&#39;myKey&#39;)
+                .withBucketType('myBucketType')
+                .withBucket('myBucket')
+                .withKey('myKey')
                 .withCallback(myCallback)
-                .build();
-</code></pre>
+                .build();</code></pre>
+
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_FetchMap.Builder" class="method item">
-            <h3 class="name"><code>FetchMap.Builder</code></h3>
+<div id="method_FetchMap.Builder" class="method item">
+    <h3 class="name"><code>FetchMap.Builder</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_crdt_fetchmap.js.html#l136"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:136</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
         
-                <span class="paren">()</span>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_commands_crdt_fetchmap.js.html#l137"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:137</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-        
-        
-        
-        </div>
+    </div>
+
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -278,7 +280,7 @@ a FetchMap directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchmap.js.html#l272"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:272</code></a>
+        <a href="../files/lib_commands_crdt_fetchmap.js.html#l271"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:271</code></a>
         </p>
 
 
@@ -323,7 +325,7 @@ a FetchMap directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchmap.js.html#l234"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:234</code></a>
+        <a href="../files/lib_commands_crdt_fetchmap.js.html#l233"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:233</code></a>
         </p>
 
 
@@ -333,9 +335,9 @@ a FetchMap directly, this builder may be used.</p>
     <div class="description">
         <p>Set the basic_quorum value.
 The parameter controls whether a read request should return early in
-some fail cases. 
+some fail cases.
 E.g. If a quorum of nodes has already
-returned notfound/error, don&#39;t wait around for the rest.</p>
+returned notfound/error, don't wait around for the rest.</p>
 
     </div>
 
@@ -382,7 +384,7 @@ returned notfound/error, don&#39;t wait around for the rest.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchmap.js.html#l157"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:157</code></a>
+        <a href="../files/lib_commands_crdt_fetchmap.js.html#l156"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:156</code></a>
         </p>
 
 
@@ -437,7 +439,7 @@ returned notfound/error, don&#39;t wait around for the rest.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchmap.js.html#l167"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:167</code></a>
+        <a href="../files/lib_commands_crdt_fetchmap.js.html#l166"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:166</code></a>
         </p>
 
 
@@ -492,7 +494,7 @@ returned notfound/error, don&#39;t wait around for the rest.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchmap.js.html#l258"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:258</code></a>
+        <a href="../files/lib_commands_crdt_fetchmap.js.html#l257"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:257</code></a>
         </p>
 
 
@@ -587,7 +589,7 @@ returned notfound/error, don&#39;t wait around for the rest.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchmap.js.html#l177"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:177</code></a>
+        <a href="../files/lib_commands_crdt_fetchmap.js.html#l176"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:176</code></a>
         </p>
 
 
@@ -642,7 +644,7 @@ returned notfound/error, don&#39;t wait around for the rest.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchmap.js.html#l211"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:211</code></a>
+        <a href="../files/lib_commands_crdt_fetchmap.js.html#l210"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:210</code></a>
         </p>
 
 
@@ -698,7 +700,7 @@ If not set the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchmap.js.html#l200"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:200</code></a>
+        <a href="../files/lib_commands_crdt_fetchmap.js.html#l199"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:199</code></a>
         </p>
 
 
@@ -754,7 +756,7 @@ If not set the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchmap.js.html#l187"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:187</code></a>
+        <a href="../files/lib_commands_crdt_fetchmap.js.html#l186"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:186</code></a>
         </p>
 
 
@@ -764,7 +766,7 @@ If not set the bucket default is used.</p>
     <div class="description">
         <p>Return sets as arrays of Buffers rather than strings.
 By default the contents of sets are converted to strings. Setting this
-to true will cause this not to occur and the raw bytes returned 
+to true will cause this not to occur and the raw bytes returned
 as Buffer objects.</p>
 
     </div>
@@ -812,7 +814,7 @@ as Buffer objects.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchmap.js.html#l248"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:248</code></a>
+        <a href="../files/lib_commands_crdt_fetchmap.js.html#l247"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchmap.js:247</code></a>
         </p>
 
 

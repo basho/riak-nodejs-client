@@ -2,7 +2,7 @@
     "project": {
         "name": "basho-riak-client",
         "description": "Basho's officially supported NodeJS client for Riak",
-        "version": "1.1.0",
+        "version": "1.2.1",
         "url": "https://github.com/basho/riak-nodejs-client/wiki"
     },
     "files": {
@@ -83,6 +83,16 @@
             "classes": {
                 "FetchBucketProps": 1,
                 "FetchBucketProps.Builder": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/commands/kv/fetchpreflist.js": {
+            "name": "lib/commands/kv/fetchpreflist.js",
+            "modules": {},
+            "classes": {
+                "FetchPreflist": 1,
+                "FetchPreflist.Builder": 1
             },
             "fors": {},
             "namespaces": {}
@@ -388,7 +398,7 @@
             "namespaces": {},
             "tag": "main",
             "file": "lib/commands/crdt/updateset.js",
-            "line": 194,
+            "line": 192,
             "description": "Provides all the commands for Riak CRDTs (Conflict-Free Replicated Data Type)",
             "is_constructor": 1,
             "params": [
@@ -487,6 +497,8 @@
                 "DeleteValue.Builder": 1,
                 "FetchBucketProps": 1,
                 "FetchBucketProps.Builder": 1,
+                "FetchPreflist": 1,
+                "FetchPreflist.Builder": 1,
                 "FetchValue": 1,
                 "FetchValue.Builder": 1,
                 "ListBuckets": 1,
@@ -505,7 +517,7 @@
             "namespaces": {},
             "tag": "main",
             "file": "lib/commands/kv/storevalue.js",
-            "line": 209,
+            "line": 206,
             "description": "Provides all the commands for Riak Key-Value operations.",
             "itemtype": "main"
         },
@@ -544,7 +556,7 @@
             "namespaces": {},
             "tag": "main",
             "file": "lib/commands/yokozuna/storeschema.js",
-            "line": 97,
+            "line": 96,
             "description": "Provides all the commands for Riak Search 2.0 (Yokozuna/Solr)",
             "itemtype": "main"
         },
@@ -599,7 +611,7 @@
             "namespace": "",
             "file": "lib/commands/crdt/fetchcounter.js",
             "line": 28,
-            "description": "Command used to fetch a counter value from Riak.\n\nAs a convenience, a builder class is provided:\n    \n    var fetch = new FetchCounter.Builder()\n                    .withBucketType('myBucketType')\n                    .withBucket('myBucket')\n                    .withKey('myKey')\n                    .withCallback(myCallback)\n                    .build();\n                    \n See {{#crossLink \"FetchCounter.Builder\"}}FetchCounter.Builder{{/crossLink}}",
+            "description": "Command used to fetch a counter value from Riak.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = new FetchCounter.Builder()\n                    .withBucketType('myBucketType')\n                    .withBucket('myBucket')\n                    .withKey('myKey')\n                    .withCallback(myCallback)\n                    .build();\n\n See {{#crossLink \"FetchCounter.Builder\"}}FetchCounter.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -697,7 +709,7 @@
             "module": "CRDT",
             "namespace": "",
             "file": "lib/commands/crdt/fetchcounter.js",
-            "line": 125,
+            "line": 124,
             "description": "A builder for constructing FetchCounter instances.\n\nRather than having to manually construct the __options__ and instantiating\na FetchCounter directly, this builder may be used.\n\n    var fetch = new FetchCounter.Builder()\n                     .withBucketType('myBucketType')\n                     .withBucket('myBucket')\n                     .withKey('myKey')\n                     .withCallback(myCallback)\n                     .build();",
             "is_constructor": 1
         },
@@ -713,7 +725,7 @@
             "namespace": "",
             "file": "lib/commands/crdt/fetchmap.js",
             "line": 29,
-            "description": "Command for fetching a map from Riak.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = new FetchMap.Builder()\n                     .withBucketType('myBucketType')\n                     .withBucket('myBucket')\n                     .withKey('myKey')\n                     .withCallback(myCallback)\n                     .build();\n                     \nSee {{#crossLink \"FetchMap.Builder\"}}FetchMap.Builder{{/crossLink}}",
+            "description": "Command for fetching a map from Riak.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = new FetchMap.Builder()\n                     .withBucketType('myBucketType')\n                     .withBucket('myBucket')\n                     .withKey('myKey')\n                     .withCallback(myCallback)\n                     .build();\n\nSee {{#crossLink \"FetchMap.Builder\"}}FetchMap.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -823,7 +835,7 @@
             "module": "CRDT",
             "namespace": "",
             "file": "lib/commands/crdt/fetchmap.js",
-            "line": 137,
+            "line": 136,
             "description": "A builder for constructing FetchMap instances.\n\nRather than having to manually construct the __options__ and instantiating\na FetchMap directly, this builder may be used.\n\n    var fetch = new FetchMap.Builder()\n                    .withBucketType('myBucketType')\n                    .withBucket('myBucket')\n                    .withKey('myKey')\n                    .withCallback(myCallback)\n                    .build();",
             "is_constructor": 1
         },
@@ -839,7 +851,7 @@
             "namespace": "",
             "file": "lib/commands/crdt/fetchset.js",
             "line": 27,
-            "description": "Command used to fetch a set from Riak.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = new FetchSet.Builder()\n                    .withBucketType('myBucketType')\n                    .withBucket('myBucket')\n                    .withKey('myKey')\n                    .withCallback(myCallback)\n                    .build();\n                    \n See {{#crossLink \"FetchSet.Builder\"}}FetchSet.Builder{{/crossLink}}",
+            "description": "Command used to fetch a set from Riak.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = new FetchSet.Builder()\n                    .withBucketType('myBucketType')\n                    .withBucket('myBucket')\n                    .withKey('myKey')\n                    .withCallback(myCallback)\n                    .build();\n\n See {{#crossLink \"FetchSet.Builder\"}}FetchSet.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -949,7 +961,7 @@
             "module": "CRDT",
             "namespace": "",
             "file": "lib/commands/crdt/fetchset.js",
-            "line": 153,
+            "line": 151,
             "description": "A builder for constructing FetchSet instances.\n\nRather than having to manually construct the __options__ and instantiating\na FetchSet directly, this builder may be used.\n\n    var fetch = new FetchSet.Builder()\n                     .withBucketType('myBucketType')\n                     .withBucket('myBucket')\n                     .withKey('myKey')\n                     .withCallback(myCallback)\n                     .build();",
             "is_constructor": 1
         },
@@ -965,7 +977,7 @@
             "namespace": "",
             "file": "lib/commands/crdt/updatecounter.js",
             "line": 30,
-            "description": "Command used to update a Counter in Riak\n\nAs a convenience, a builder class is provided:\n\n    var update = new UpdateCounter.Builder()\n              .withBucketType('counters')\n              .withBucket('myBucket')\n              .withKey('counter_1')\n              .withIncrement(100)\n              .withCallback(callback)\n              .build();\n              \nSee {{#crossLink \"UpdateCounter.Builder\"}}UpdateCounter.Builder{{/crossLink}}"
+            "description": "Command used to update a Counter in Riak\n\nAs a convenience, a builder class is provided:\n\n    var update = new UpdateCounter.Builder()\n              .withBucketType('counters')\n              .withBucket('myBucket')\n              .withKey('counter_1')\n              .withIncrement(100)\n              .withCallback(callback)\n              .build();\n\nSee {{#crossLink \"UpdateCounter.Builder\"}}UpdateCounter.Builder{{/crossLink}}"
         },
         "UpdateCounter.Builder": {
             "name": "UpdateCounter.Builder",
@@ -978,7 +990,7 @@
             "module": "CRDT",
             "namespace": "",
             "file": "lib/commands/crdt/updatecounter.js",
-            "line": 146,
+            "line": 143,
             "description": "A builder for constructing UpdateCounter instances.\n\nRather than having to manually construct the __options__ and instantiating\na UpdateCounter directly, this builder may be used.\n\n    var update = new UpdateCounter.Builder()\n              .withBucketType('counters')\n              .withBucket('myBucket')\n              .withKey('counter_1')\n              .withIncrement(100)\n              .withCallback(callback)\n              .build();",
             "is_constructor": 1
         },
@@ -994,7 +1006,7 @@
             "namespace": "",
             "file": "lib/commands/crdt/updatemap.js",
             "line": 35,
-            "description": "Command used to update a Map in Riak.\n\nAs a convenience, a builder method is provided as well as an object with \na fluent API for constructing the update.\n\n    var mapOp = new UpdateMap.MapOperation();\n    mapOp.incrementCounter('counter_1', 50)\n        .addToSet('set_1', 'set_value_1')\n        .setRegister('register_1', new Buffer('register_value_1'))\n        .setFlag('flag_1', true)\n        .map('inner_map')\n            .incrementCounter('counter_1', 50)\n            .addToSet('set_2', 'set_value_2');\n        \nSee {{#crossLink \"UpdateMap.MapOperation\"}}UpdateMap.MapOperation{{/crossLink}}\n        \n    var update = new UpdateMap.Builder()\n              .withBucketType('maps')\n              .withBucket('myBucket')\n              .withKey('map_1')\n              .withMapOperation(mapOp)\n              .withCallback(myCallback)\n              .withReturnBody(true)\n              .build();\n\nSee {{#crossLink \"UpdateMap.Builder\"}}UpdateMap.Builder{{/crossLink}}",
+            "description": "Command used to update a Map in Riak.\n\nAs a convenience, a builder method is provided as well as an object with\na fluent API for constructing the update.\n\n    var mapOp = new UpdateMap.MapOperation();\n    mapOp.incrementCounter('counter_1', 50)\n        .addToSet('set_1', 'set_value_1')\n        .setRegister('register_1', new Buffer('register_value_1'))\n        .setFlag('flag_1', true)\n        .map('inner_map')\n            .incrementCounter('counter_1', 50)\n            .addToSet('set_2', 'set_value_2');\n\nSee {{#crossLink \"UpdateMap.MapOperation\"}}UpdateMap.MapOperation{{/crossLink}}\n\n    var update = new UpdateMap.Builder()\n              .withBucketType('maps')\n              .withBucket('myBucket')\n              .withKey('map_1')\n              .withMapOperation(mapOp)\n              .withCallback(myCallback)\n              .withReturnBody(true)\n              .build();\n\nSee {{#crossLink \"UpdateMap.Builder\"}}UpdateMap.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -1117,8 +1129,8 @@
             "module": "CRDT",
             "namespace": "",
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 292,
-            "description": "A builder for constructing UpdateMap instances.\n\nRather than having to manually construct the __options__ and instantiating\na UpdateMap directly, this builder may be used.\n\n    var update = new UpdateMap.Builder()\n              .withBucketType('counters')\n              .withBucket('myBucket')\n              .withKey('counter_1')\n              .withMapOperation(mapOp)\n              .withCallback(callback)\n              .build();\n      \nSee {{#crossLink \"UpdateMap.MapOperation\"}}UpdateMap.MapOperation{{/crossLink}}",
+            "line": 294,
+            "description": "A builder for constructing UpdateMap instances.\n\nRather than having to manually construct the __options__ and instantiating\na UpdateMap directly, this builder may be used.\n\n    var update = new UpdateMap.Builder()\n              .withBucketType('counters')\n              .withBucket('myBucket')\n              .withKey('counter_1')\n              .withMapOperation(mapOp)\n              .withCallback(callback)\n              .build();\n\nSee {{#crossLink \"UpdateMap.MapOperation\"}}UpdateMap.MapOperation{{/crossLink}}",
             "is_constructor": 1
         },
         "UpdateMap.MapOperation": {
@@ -1132,7 +1144,7 @@
             "module": "CRDT",
             "namespace": "",
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 462,
+            "line": 466,
             "description": "Class that encapsulates modifications to a Map in Riak.\n\nRather than manually constructing this yourself, a fluent API is provided.\n\n    var mapOp = new UpdateMap.MapOperation();\n    mapOp.incrementCounter('counter_1', 50)\n        .addToSet('set_1', 'set_value_1')\n        .setRegister('register_1', new Buffer('register_value_1'))\n        .setFlag('flag_1', true)\n        .map('inner_map')\n            .incrementCounter('counter_1', 50)\n            .addToSet('set_2', 'set_value_2');",
             "is_constructor": 1
         },
@@ -1148,7 +1160,7 @@
             "namespace": "",
             "file": "lib/commands/crdt/updateset.js",
             "line": 33,
-            "description": "Command used tp update a set in Riak\n\nAs a convenience, a builder class is provided:\n\n       var update = new UpdateSet.Builder()\n              .withBucketType('sets')\n              .withBucket('myBucket')\n              .withKey('set_1')\n              .withAdditions(['this', 'that', 'other'])\n              .withCallback(callback)\n              .build();\n              \nSee {{#crossLink \"UpdateSet.Builder\"}}UpdateSet.Builder{{/crossLink}}",
+            "description": "Command used tp update a set in Riak\n\nAs a convenience, a builder class is provided:\n\n       var update = new UpdateSet.Builder()\n              .withBucketType('sets')\n              .withBucket('myBucket')\n              .withKey('set_1')\n              .withAdditions(['this', 'that', 'other'])\n              .withCallback(callback)\n              .build();\n\nSee {{#crossLink \"UpdateSet.Builder\"}}UpdateSet.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -1278,7 +1290,7 @@
             "module": "CRDT",
             "namespace": "",
             "file": "lib/commands/crdt/updateset.js",
-            "line": 194,
+            "line": 192,
             "description": "A builder for constructing UpdateSet instances.\n\nRather than having to manually construct the __options__ and instantiating\na UpdateSet directly, this builder may be used.\n\n    var update = new UpdateSet.Builder()\n                      .withBucketType('myBucketType')\n                      .withBucket('myBucket')\n                      .withKey('myKey')\n                      .withAdditions(['this', 'that', 'other'])\n                      .withCallback(myCallback)\n                      .build();",
             "is_constructor": 1
         },
@@ -1400,7 +1412,7 @@
             "module": "KV",
             "namespace": "",
             "file": "lib/commands/kv/deletevalue.js",
-            "line": 146,
+            "line": 145,
             "description": "A builder for constructing DeleteValue instances.\n\nRather than having to manually construct the __options__ and instantiating\na DeleteValue directly, this builder may be used.\n\n    var deleteValue = new DeleteValue.Builder()\n         .withBucket('myBucket')\n         .withKey('myKey')\n         .withVClock(vclock)\n         .withCallback(callback)\n         .build();",
             "is_constructor": 1
         },
@@ -1416,7 +1428,7 @@
             "namespace": "",
             "file": "lib/commands/kv/fetchbucketprops.js",
             "line": 27,
-            "description": "Command used to fetch a bucket's properties from Riak.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = new FetchBucketProps.Builder()\n        .withBucketType('my_type')\n        .withBucket('myBucket')\n        .withCallback(myCallback)\n        .build();\n        \nSee {{#crossLink \"FetchBucketProps.Builder\"}}FetchBucketProps.Builder{{/crossLink}}",
+            "description": "Command used to fetch a bucket's properties from Riak.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = new FetchBucketProps.Builder()\n        .withBucketType('my_type')\n        .withBucket('myBucket')\n        .withCallback(myCallback)\n        .build();\n\nSee {{#crossLink \"FetchBucketProps.Builder\"}}FetchBucketProps.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -1469,8 +1481,89 @@
             "module": "KV",
             "namespace": "",
             "file": "lib/commands/kv/fetchbucketprops.js",
-            "line": 171,
+            "line": 170,
             "description": "A builder for constructing GetBucketProps instances\n\nRather than having to manually construct the __options__ and instantiating\na FetchBucketProps directly, this builder may be used.\n\n    var fetch = new FetchBucketProps.Builder()\n        .withBucketType('my_type')\n        .withBucket('myBucket')\n        .withCallback(myCallback)\n        .build();",
+            "is_constructor": 1
+        },
+        "FetchPreflist": {
+            "name": "FetchPreflist",
+            "shortname": "FetchPreflist",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "KV",
+            "namespace": "",
+            "file": "lib/commands/kv/fetchpreflist.js",
+            "line": 27,
+            "description": "Command used to fetch an object's preflist from Riak.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = new FetchPreflist.Builder()\n        .withBucketType('myBucketType')\n        .withBucket('myBucket')\n        .withKey('myKey')\n        .withCallback(myCallback)\n        .build();\n\nSee {{#crossLink \"FetchPreflist.Builder\"}}FetchPreflist.Builder{{/crossLink}}",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The options for this command.",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "bucketType",
+                            "description": "The bucket type in riak. If not supplied 'default' is used.",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "default"
+                        },
+                        {
+                            "name": "bucket",
+                            "description": "The bucket in riak.",
+                            "type": "String"
+                        },
+                        {
+                            "name": "key",
+                            "description": "The key for the object you want to fetch.",
+                            "type": "String"
+                        }
+                    ]
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "An error message. Will ne null if no error.",
+                            "type": "String"
+                        },
+                        {
+                            "name": "response",
+                            "description": "the response from Riak.",
+                            "type": "Object",
+                            "props": [
+                                {
+                                    "name": "preflist",
+                                    "description": "An array of one or more preflist entries.",
+                                    "type": "Object[]"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "extends": "CommandBase"
+        },
+        "FetchPreflist.Builder": {
+            "name": "FetchPreflist.Builder",
+            "shortname": "FetchPreflist.Builder",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "KV",
+            "namespace": "",
+            "file": "lib/commands/kv/fetchpreflist.js",
+            "line": 117,
+            "description": "A builder for constructing FetchPreflist instances.\n\nRather than having to manually construct the __options__ and instantiating\na FetchPreflist directly, this builder may be used.\n\n    var fetchValue = new FetchPreflist.Builder()\n         .withBucketType('myBucketType')\n         .withBucket('myBucket')\n         .withKey('myKey')\n         .build();",
             "is_constructor": 1
         },
         "FetchValue": {
@@ -1485,7 +1578,7 @@
             "namespace": "",
             "file": "lib/commands/kv/fetchvalue.js",
             "line": 29,
-            "description": "Command used to fetch an object from Riak.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = new FetchValue.Builder()\n        .withBucket('myBucket')\n        .withKey('myKey')\n        .withCallback(myCallback)\n        .build();\n     \nSee {{#crossLink \"FetchValue.Builder\"}}FetchValue.Builder{{/crossLink}}",
+            "description": "Command used to fetch an object from Riak.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = new FetchValue.Builder()\n        .withBucket('myBucket')\n        .withKey('myKey')\n        .withCallback(myCallback)\n        .build();\n\nSee {{#crossLink \"FetchValue.Builder\"}}FetchValue.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -1633,7 +1726,7 @@
             "module": "KV",
             "namespace": "",
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 183,
+            "line": 182,
             "description": "A builder for constructing FetchValue instances.\n\nRather than having to manually construct the __options__ and instantiating\na FetchValue directly, this builder may be used.\n\n    var fetchValue = new FetchValue.Builder()\n         .withBucket('myBucket')\n         .withKey('myKey')\n         .build();",
             "is_constructor": 1
         },
@@ -1722,7 +1815,7 @@
             "module": "KV",
             "namespace": "",
             "file": "lib/commands/kv/listbuckets.js",
-            "line": 117,
+            "line": 116,
             "description": "A builder for constructing ListBuckets instances.\n\nRather than having to manually construct the __options__ and instantiating\na ListBuckets directly, this builder may be used.\n\n    var listBuckets = new ListBuckets.Builder()\n                       .withBucketType('myBucketType')\n                       .withCallback(myCallback)\n                       .build();",
             "is_constructor": 1
         },
@@ -1826,7 +1919,7 @@
             "module": "KV",
             "namespace": "",
             "file": "lib/commands/kv/listkeys.js",
-            "line": 123,
+            "line": 122,
             "description": "A builder for constructing ListKeys instances.\n\nRather than having to manually construct the __options__ and instantiating\na ListKeys directly, this builder may be used.\n\n    var listKeys = new ListKeys.Builder()\n                 .withBucketType('myBucketType')\n                 .withBucket('myBucket')\n                 .withCallback(myCallback)\n                 .build();",
             "is_constructor": 1
         },
@@ -1857,7 +1950,7 @@
             "namespace": "",
             "file": "lib/commands/kv/secondaryindexquery.js",
             "line": 31,
-            "description": "Command used to perform a secondary index query. \n\nAs a convenience, a builder class is provided:\n\n    var query = new SecondaryIndexQuery.Builder()\n                 .withBucket('myBucket')\n                 .withIndexName('email_bin')\n                 .withIndexKey('roach@basho.com')\n                 .withCallback(myCallback)\n                 .build();\n                 \nSee {{#crossLink \"SecondaryIndexQuery.Builder\"}}SecondaryIndexQuery.Builder{{/crossLink}}",
+            "description": "Command used to perform a secondary index query.\n\nAs a convenience, a builder class is provided:\n\n    var query = new SecondaryIndexQuery.Builder()\n                 .withBucket('myBucket')\n                 .withIndexName('email_bin')\n                 .withIndexKey('roach@basho.com')\n                 .withCallback(myCallback)\n                 .build();\n\nSee {{#crossLink \"SecondaryIndexQuery.Builder\"}}SecondaryIndexQuery.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -1989,7 +2082,7 @@
             "module": "KV",
             "namespace": "",
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 202,
+            "line": 199,
             "description": "A builder for constructing SecondaryIndexquery instances.\n\nRather than having to manually construct the __options__ and instantiating\na SecondaryIndexQuery directly, this builder may be used.\n\n    var query = new SecondaryIndexQuery.Builder()\n                 .withBucket('myBucket')\n                 .withIndexName('email_bin')\n                 .withIndexKey('roach@basho.com')\n                 .withCallback(myCallback)\n                 .build();",
             "is_constructor": 1
         },
@@ -2005,7 +2098,7 @@
             "namespace": "",
             "file": "lib/commands/kv/storebucketprops.js",
             "line": 30,
-            "description": "Command used to set the properties on a bucket in Riak.\n\nAs a convenience, a builder class is provided:\n\n    var storeProps = new StoreBucketProps.Builder()\n                 .withAllowMult(true)\n                 .build();\n                 \nSee {{#crossLink \"StoreBucketProps.Builder\"}}StoreBucketProps.Builder{{/crossLink}}",
+            "description": "Command used to set the properties on a bucket in Riak.\n\nAs a convenience, a builder class is provided:\n\n    var storeProps = new StoreBucketProps.Builder()\n                 .withAllowMult(true)\n                 .build();\n\nSee {{#crossLink \"StoreBucketProps.Builder\"}}StoreBucketProps.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -2183,7 +2276,7 @@
             "module": "KV",
             "namespace": "",
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 198,
+            "line": 197,
             "description": "A builder for constructing StoreBucketProps instances\n\nRather than having to manually construct the __options__ and instantiating\na StoreBucketProps directly, this builder may be used.\n\n    var storeProps = new StoreBucketProps.Builder()\n                 .withAllowMult(true)\n                 .build();",
             "is_constructor": 1
         },
@@ -2199,7 +2292,7 @@
             "namespace": "",
             "file": "lib/commands/kv/storevalue.js",
             "line": 28,
-            "description": "Command used to store data in Riak.\n\nAs a convenience, a builder class is provided:\n\n     var storeValue = new StoreValue.Builder()\n         .withBucket('myBucket')\n         .withKey('myKey')\n         .withContent(myObj);\n         .build();\n         \nSee {{#crossLink \"StoreValue.Builder\"}}StoreValue.Builder{{/crossLink}}",
+            "description": "Command used to store data in Riak.\n\nAs a convenience, a builder class is provided:\n\n     var storeValue = new StoreValue.Builder()\n         .withBucket('myBucket')\n         .withKey('myKey')\n         .withContent(myObj);\n         .build();\n\nSee {{#crossLink \"StoreValue.Builder\"}}StoreValue.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -2353,7 +2446,7 @@
             "module": "KV",
             "namespace": "",
             "file": "lib/commands/kv/storevalue.js",
-            "line": 209,
+            "line": 206,
             "description": "A builder for constructing StoreValue instances.\n\nRather than having to manually construct the __options__ and instantiating\na StoreValue directly, this builder may be used.\n\n    var storeValue = new StoreValue.Builder()\n         .withBucket('myBucket')\n         .withKey('myKey')\n         .withContent(myObj);\n         .build();",
             "is_constructor": 1
         },
@@ -2369,7 +2462,7 @@
             "namespace": "",
             "file": "lib/commands/mapreduce/mapreduce.js",
             "line": 28,
-            "description": "Command used to perform a Map-Reduce query in Riak.\n\nThe Riak Map-Reduce API uses JSON for its query. \n\nA typical map-reduce query (JSON) will look like:\n\n    {\n      \"inputs\": \"goog\",\n      \"query\": [\n        {\n           \"map\": {\n             \"language\": \"javascript\",\n             \"source\": \"function(value, keyData, arg){ var data = Riak.mapValuesJson(value)[0]; var month = value.key.split('-').slice(0,2).join('-'); var obj = {}; obj[month] = data.High - data.Low; return [ obj ];}\"\n           }\n        },\n        {\n           \"reduce\": {\n             \"language\": \"javascript\",\n             \"source\": \"function(values, arg){ return [ values.reduce(function(acc, item){ for(var month in item){ if(acc[month]) { acc[month] = (acc[month] < item[month]) ? item[month] : acc[month]; } else { acc[month] = item[month]; } } return acc;  }) ];}\",\n             \"keep\": true\n           }\n        }\n      ]\n    }\n\nFor more info see:\n[Loading Data and Running MapReduce](http://docs.basho.com/riak/latest/tutorials/fast-track/Loading-Data-and-Running-MapReduce-Queries/)",
+            "description": "Command used to perform a Map-Reduce query in Riak.\n\nThe Riak Map-Reduce API uses JSON for its query.\n\nA typical map-reduce query (JSON) will look like:\n\n    {\n      \"inputs\": \"goog\",\n      \"query\": [\n        {\n           \"map\": {\n             \"language\": \"javascript\",\n             \"source\": \"function(value, keyData, arg){ var data = Riak.mapValuesJson(value)[0]; var month = value.key.split('-').slice(0,2).join('-'); var obj = {}; obj[month] = data.High - data.Low; return [ obj ];}\"\n           }\n        },\n        {\n           \"reduce\": {\n             \"language\": \"javascript\",\n             \"source\": \"function(values, arg){ return [ values.reduce(function(acc, item){ for(var month in item){ if(acc[month]) { acc[month] = (acc[month] < item[month]) ? item[month] : acc[month]; } else { acc[month] = item[month]; } } return acc;  }) ];}\",\n             \"keep\": true\n           }\n        }\n      ]\n    }\n\nFor more info see:\n[Loading Data and Running MapReduce](http://docs.basho.com/riak/latest/tutorials/fast-track/Loading-Data-and-Running-MapReduce-Queries/)",
             "is_constructor": 1,
             "params": [
                 {
@@ -2433,7 +2526,7 @@
             "namespace": "",
             "file": "lib/commands/yokozuna/deleteindex.js",
             "line": 29,
-            "description": "Command used to Delete a Yokozuna index.\n\nAs a convenience, a builder class is provided:\n\n    var del = DeleteIndex.Builder()\n                 .withIndexName('index_name')\n                 .withCallback(callback)\n                 .build();\n                 \nSee {{#crossLink \"DeleteIndex.Builder\"}}DeleteIndex.Builder{{/crossLink}}",
+            "description": "Command used to Delete a Yokozuna index.\n\nAs a convenience, a builder class is provided:\n\n    var del = DeleteIndex.Builder()\n                 .withIndexName('index_name')\n                 .withCallback(callback)\n                 .build();\n\nSee {{#crossLink \"DeleteIndex.Builder\"}}DeleteIndex.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -2480,8 +2573,8 @@
             "module": "YZ",
             "namespace": "",
             "file": "lib/commands/yokozuna/deleteindex.js",
-            "line": 93,
-            "description": "A builder for constructing DeleteIndex instances.\n \nRather than having to manually construct the __options__ and instantiating\na DeleteIndex directly, this builder may be used.\n\n    var del = DeleteIndex.Builder()\n                 .withIndexName('index_name')\n                 .withCallback(callback)\n                 .build();",
+            "line": 92,
+            "description": "A builder for constructing DeleteIndex instances.\n\nRather than having to manually construct the __options__ and instantiating\na DeleteIndex directly, this builder may be used.\n\n    var del = DeleteIndex.Builder()\n                 .withIndexName('index_name')\n                 .withCallback(callback)\n                 .build();",
             "is_constructor": 1
         },
         "FetchIndex": {
@@ -2496,7 +2589,7 @@
             "namespace": "",
             "file": "lib/commands/yokozuna/fetchindex.js",
             "line": 29,
-            "description": "Command used to fetch a (Yokozuna) index or all indexes.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = FetchIndex.Builder()\n                 .withIndexName('index_name')\n                 .withCallback(callback)\n                 .build();\n                 \nSee {{#crossLink \"FetchIndex.Builder\"}}FetchIndex.Builder{{/crossLink}}",
+            "description": "Command used to fetch a (Yokozuna) index or all indexes.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = FetchIndex.Builder()\n                 .withIndexName('index_name')\n                 .withCallback(callback)\n                 .build();\n\nSee {{#crossLink \"FetchIndex.Builder\"}}FetchIndex.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -2555,7 +2648,7 @@
             "module": "YZ",
             "namespace": "",
             "file": "lib/commands/yokozuna/fetchindex.js",
-            "line": 110,
+            "line": 109,
             "description": "A builder for constructing FetchIndex instances.\n\nRather than having to manually construct the __options__ and instantiating\na FetchIndex directly, this builder may be used.\n\n    var fetch = FetchIndex.Builder()\n                 .withIndexName('index_name')\n                 .withCallback(callback)\n                 .build();",
             "is_constructor": 1
         },
@@ -2571,7 +2664,7 @@
             "namespace": "",
             "file": "lib/commands/yokozuna/fetchschema.js",
             "line": 29,
-            "description": "Command used to fetch a Yokozuna schema.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = FetchSchema.Builder()\n                 .withSchemaName('schema_name')\n                 .withCallback(callback)\n                 .build();\n                 \nSee {{#crossLink \"FetchSchema.Builder\"}}FetchSchema.Builder{{/crossLink}}",
+            "description": "Command used to fetch a Yokozuna schema.\n\nAs a convenience, a builder class is provided:\n\n    var fetch = FetchSchema.Builder()\n                 .withSchemaName('schema_name')\n                 .withCallback(callback)\n                 .build();\n\nSee {{#crossLink \"FetchSchema.Builder\"}}FetchSchema.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -2629,7 +2722,7 @@
             "module": "YZ",
             "namespace": "",
             "file": "lib/commands/yokozuna/fetchschema.js",
-            "line": 100,
+            "line": 99,
             "description": "A builder for constructing FetchSchema instances.\n\nRather than having to manually construct the __options__ and instantiating\na FetchSchema directly, this builder may be used.\n\n    var fetch = FetchSchema.Builder()\n                 .withSchemaName('schema_name')\n                 .withCallback(callback)\n                 .build();",
             "is_constructor": 1
         },
@@ -2645,7 +2738,7 @@
             "namespace": "",
             "file": "lib/commands/yokozuna/search.js",
             "line": 28,
-            "description": "Command used to perform a (Yokozuna) search.\n\nAs a convenience, a builder class is provided:\n\n     var search = new Search.Builder()\n                     .withIndexName(myIndex)\n                     .withQuery(myQuery)\n                     .withNumRows(10)\n                     .withCallback(myCallback)\n                     .build();\n     \nSee {{#crossLink \"Search.Builder\"}}Search.Builder{{/crossLink}}\n\nFor more information on Riak Search (Yokozuna/Solr) see:\n[Using Search](http://docs.basho.com/riak/latest/dev/using/search/)",
+            "description": "Command used to perform a (Yokozuna) search.\n\nAs a convenience, a builder class is provided:\n\n     var search = new Search.Builder()\n                     .withIndexName(myIndex)\n                     .withQuery(myQuery)\n                     .withNumRows(10)\n                     .withCallback(myCallback)\n                     .build();\n\nSee {{#crossLink \"Search.Builder\"}}Search.Builder{{/crossLink}}\n\nFor more information on Riak Search (Yokozuna/Solr) see:\n[Using Search](http://docs.basho.com/riak/latest/dev/using/search/)",
             "is_constructor": 1,
             "params": [
                 {
@@ -2763,7 +2856,7 @@
             "module": "YZ",
             "namespace": "",
             "file": "lib/commands/yokozuna/search.js",
-            "line": 170,
+            "line": 169,
             "description": "A builder for constructing Search instances.\n\nRather than having to manually construct the __options__ and instantiating\na Search directly, this builder may be used.\n\n    var search = new Search.Builder()\n                   .withIndexName(myIndex)\n                   .withQuery(myQuery)\n                   .withNumRows(10)\n                   .withCallback(myCallback)\n                   .build();",
             "is_constructor": 1
         },
@@ -2779,7 +2872,7 @@
             "namespace": "",
             "file": "lib/commands/yokozuna/storeindex.js",
             "line": 28,
-            "description": "Command used to store a Yokozuna index.\n\nAs a convenience, a builder class is provided:\n\n    var store = StoreIndex.Builder()\n                 .withIndexName('index_name')\n                 .withSchemaName('my_schema')\n                 .withCallback(callback)\n                 .build();\n                 \nSee {{#crossLink \"StoreIndex.Builder\"}}StoreIndex.Builder{{/crossLink}}",
+            "description": "Command used to store a Yokozuna index.\n\nAs a convenience, a builder class is provided:\n\n    var store = StoreIndex.Builder()\n                 .withIndexName('index_name')\n                 .withSchemaName('my_schema')\n                 .withCallback(callback)\n                 .build();\n\nSee {{#crossLink \"StoreIndex.Builder\"}}StoreIndex.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -2798,6 +2891,12 @@
                             "type": "String",
                             "optional": true,
                             "optdefault": "_yz_default"
+                        },
+                        {
+                            "name": "timeout",
+                            "description": "Set a timeout for this operation.",
+                            "type": "Number",
+                            "optional": true
                         }
                     ]
                 },
@@ -2832,7 +2931,7 @@
             "module": "YZ",
             "namespace": "",
             "file": "lib/commands/yokozuna/storeindex.js",
-            "line": 100,
+            "line": 101,
             "description": "A builder for constructing StoreIndex instances.\n\nRather than having to manually construct the __options__ and instantiating\na StoreIndex directly, this builder may be used.\n\n    var store = StoreIndex.Builder()\n                 .withIndexName('index_name')\n                 .withSchemaName('my_schema')\n                 .withCallback(callback)\n                 .build();",
             "is_constructor": 1
         },
@@ -2848,7 +2947,7 @@
             "namespace": "",
             "file": "lib/commands/yokozuna/storeschema.js",
             "line": 29,
-            "description": "Command used to store a Yokozuna schema.\n\nAs a convenience, a builder class is provided:\n\n    var store = StoreSchema.Builder()\n                 .withSchemaName('schema_name')\n                 .withSchema(mySchemaXML)\n                 .withCallback(callback)\n                 .build();\n                 \nSee {{#crossLink \"StoreSchema.Builder\"}}StoreSchema.Builder{{/crossLink}}",
+            "description": "Command used to store a Yokozuna schema.\n\nAs a convenience, a builder class is provided:\n\n    var store = StoreSchema.Builder()\n                 .withSchemaName('schema_name')\n                 .withSchema(mySchemaXML)\n                 .withCallback(callback)\n                 .build();\n\nSee {{#crossLink \"StoreSchema.Builder\"}}StoreSchema.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -2899,7 +2998,7 @@
             "module": "YZ",
             "namespace": "",
             "file": "lib/commands/yokozuna/storeschema.js",
-            "line": 97,
+            "line": 96,
             "description": "A builder for constructing StoreSchema instances.\n\nRather than having to manually construct the __options__ and instantiating\na StoreSchema directly, this builder may be used.\n\n    var store = StoreSchema.Builder()\n                 .withSchemaName('schema_name')\n                 .withSchema(mySchemaXML)\n                 .withCallback(callback)\n                 .build();",
             "is_constructor": 1
         },
@@ -3041,7 +3140,7 @@
             "namespace": "",
             "file": "lib/core/riakcluster.js",
             "line": 29,
-            "description": "Provides the RiakCluster class and its Builder.\n\nInstances of this class maintain a set of {{#crossLink \"RiakNode\"}}{{/crossLink}} objects and \nexecutes commands on them.\n\n__options__ is an object with the following defaults:\n\n    {\n      nodes: [defaultRiakNode],\n      executionAttempts: 3\n    }\n    \nThe __defaultRiakNode__ is a RiakNode connected to 127.0.0.1:8087 \n\nAs a convenience a builder class is provided. \n\n    var nodeTemplate = new RiakNode.Builder().withMinConnections(10);\n    var nodeAddys = ['192.168.1.1', '192.168.1.2'];\n    var arrayOfNodes = RiakNode.buildNodes(nodeAddys, nodeTemplate);\n    var myCluster = new RiakCluster.builder().withNodes(arrayOfNodes).build();\n    \nSee {{#crossLink \"RiakCluster.Builder\"}}RiakCluster.Builder{{/crossLink}}",
+            "description": "Provides the RiakCluster class and its Builder.\n\nInstances of this class maintain a set of {{#crossLink \"RiakNode\"}}{{/crossLink}} objects and \nexecutes commands on them.\n\n__options__ is an object with the following defaults:\n\n    {\n      nodes: [defaultRiakNode],\n      executionAttempts: 3,\n      nodeManager: DefaultNodeManager,\n      queueCommands: false,\n      queueMaxDepth: unlimited\n    }\n    \nThe __defaultRiakNode__ is a RiakNode connected to 127.0.0.1:8087 \n\nAs a convenience a builder class is provided. \n\n    var nodeTemplate = new RiakNode.Builder().withMinConnections(10);\n    var nodeAddys = ['192.168.1.1', '192.168.1.2'];\n    var arrayOfNodes = RiakNode.buildNodes(nodeAddys, nodeTemplate);\n    var myCluster = new RiakCluster.builder().withNodes(arrayOfNodes).build();\n    \nSee {{#crossLink \"RiakCluster.Builder\"}}RiakCluster.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -3097,7 +3196,7 @@
             "module": "Core",
             "namespace": "",
             "file": "lib/core/riakcluster.js",
-            "line": 343,
+            "line": 353,
             "description": "A Builder for constructing RiakCluster instances.\n\nRather than having to manually construct the __options__ and instantiating\na RiakCluster directly, this builder may be used.\n\nvar newCluster = new RiakCluster.Builder().withRiakNodes([node1, node2]).build();",
             "is_constructor": 1
         },
@@ -3135,7 +3234,7 @@
             "namespace": "",
             "file": "lib/core/riaknode.js",
             "line": 30,
-            "description": "Provides the RiakNode class and its Builder.\n\nInstances of this class maintain connections to and execute commands on\na Riak node in a Riak cluster.\n\n__options__ is an object with the following defaults:\n\n    { \n      remoteAdddress: '127.0.0.1',\n      remotePort: 8087,\n      maxConnections: 10000,\n      minConnections: 1,\n      idleTimeout: 3000,\n      connectionTimeout: 0\n    }\n    \nAs a convenience a builder class is provided;\n\n    var newNode = new RiakNode.Builder().withMinConnections(10).build(); \n    \nSee {{#crossLink \"RiakNode.Builder\"}}RiakNode.Builder{{/crossLink}}",
+            "description": "Provides the RiakNode class and its Builder.\n\nInstances of this class maintain connections to and execute commands on\na Riak node in a Riak cluster.\n\n__options__ is an object with the following defaults:\n\n    { \n      remoteAdddress: '127.0.0.1',\n      remotePort: 8087,\n      maxConnections: 10000,\n      minConnections: 1,\n      idleTimeout: 3000,\n      connectionTimeout: 0,\n      cork: true\n    }\n    \nAs a convenience a builder class is provided;\n\n    var newNode = new RiakNode.Builder().withMinConnections(10).build(); \n    \nSee {{#crossLink \"RiakNode.Builder\"}}RiakNode.Builder{{/crossLink}}",
             "is_constructor": 1,
             "params": [
                 {
@@ -3245,6 +3344,12 @@
                                     "optional": true
                                 }
                             ]
+                        },
+                        {
+                            "name": "cork",
+                            "description": "Use 'cork' on all sockets. Default is true.",
+                            "type": "Boolean",
+                            "optional": true
                         }
                     ]
                 }
@@ -3261,7 +3366,7 @@
             "module": "Core",
             "namespace": "",
             "file": "lib/core/riaknode.js",
-            "line": 443,
+            "line": 448,
             "description": "A Builder for constructing RiakNode instances.\n\nRather than having to manually construct the __options__ and instantiating\na RiakNode directly, this builder may be used.\n\n     var riakNode = new RiakNode.Builder().withRemotePort(9999).build();",
             "is_constructor": 1
         },
@@ -3314,7 +3419,7 @@
     "classitems": [
         {
             "file": "lib/commands/crdt/fetchcounter.js",
-            "line": 145,
+            "line": 144,
             "description": "Set the bucket.",
             "itemtype": "method",
             "name": "withBucket",
@@ -3331,7 +3436,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchcounter.js",
-            "line": 155,
+            "line": 154,
             "description": "Set the bucket type.\nIf not supplied, 'default' is used.",
             "itemtype": "method",
             "name": "withBucketType",
@@ -3348,7 +3453,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchcounter.js",
-            "line": 166,
+            "line": 165,
             "description": "Set the key.",
             "itemtype": "method",
             "name": "withKey",
@@ -3365,7 +3470,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchcounter.js",
-            "line": 176,
+            "line": 175,
             "description": "Set the R value.\nIf not asSet the bucket default is used.",
             "itemtype": "method",
             "name": "withR",
@@ -3382,7 +3487,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchcounter.js",
-            "line": 187,
+            "line": 186,
             "description": "Set the PR value.\nIf not asSet the bucket default is used.",
             "itemtype": "method",
             "name": "withPr",
@@ -3399,8 +3504,8 @@
         },
         {
             "file": "lib/commands/crdt/fetchcounter.js",
-            "line": 210,
-            "description": "Set the basic_quorum value.\nThe parameter controls whether a read request should return early in\nsome fail cases. \nE.g. If a quorum of nodes has already\nreturned notfound/error, don't wait around for the rest.",
+            "line": 209,
+            "description": "Set the basic_quorum value.\nThe parameter controls whether a read request should return early in\nsome fail cases.\nE.g. If a quorum of nodes has already\nreturned notfound/error, don't wait around for the rest.",
             "itemtype": "method",
             "name": "withBasicQuorum",
             "params": [
@@ -3416,7 +3521,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchcounter.js",
-            "line": 224,
+            "line": 223,
             "description": "Set a timeout for this operation.",
             "itemtype": "method",
             "name": "withTimeout",
@@ -3433,7 +3538,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchcounter.js",
-            "line": 234,
+            "line": 233,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -3474,7 +3579,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchcounter.js",
-            "line": 248,
+            "line": 247,
             "description": "Construct a FetchCounter instance.",
             "itemtype": "method",
             "name": "build",
@@ -3487,7 +3592,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchmap.js",
-            "line": 157,
+            "line": 156,
             "description": "Set the bucket.",
             "itemtype": "method",
             "name": "withBucket",
@@ -3504,7 +3609,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchmap.js",
-            "line": 167,
+            "line": 166,
             "description": "Set the bucket type.",
             "itemtype": "method",
             "name": "withBucketType",
@@ -3521,7 +3626,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchmap.js",
-            "line": 177,
+            "line": 176,
             "description": "Set the key.",
             "itemtype": "method",
             "name": "withKey",
@@ -3538,8 +3643,8 @@
         },
         {
             "file": "lib/commands/crdt/fetchmap.js",
-            "line": 187,
-            "description": "Return sets as arrays of Buffers rather than strings.\nBy default the contents of sets are converted to strings. Setting this\nto true will cause this not to occur and the raw bytes returned \nas Buffer objects.",
+            "line": 186,
+            "description": "Return sets as arrays of Buffers rather than strings.\nBy default the contents of sets are converted to strings. Setting this\nto true will cause this not to occur and the raw bytes returned\nas Buffer objects.",
             "itemtype": "method",
             "name": "withSetsAsBuffers",
             "params": [
@@ -3555,7 +3660,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchmap.js",
-            "line": 200,
+            "line": 199,
             "description": "Set the R value.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withR",
@@ -3572,7 +3677,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchmap.js",
-            "line": 211,
+            "line": 210,
             "description": "Set the PR value.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withPr",
@@ -3589,8 +3694,8 @@
         },
         {
             "file": "lib/commands/crdt/fetchmap.js",
-            "line": 234,
-            "description": "Set the basic_quorum value.\nThe parameter controls whether a read request should return early in\nsome fail cases. \nE.g. If a quorum of nodes has already\nreturned notfound/error, don't wait around for the rest.",
+            "line": 233,
+            "description": "Set the basic_quorum value.\nThe parameter controls whether a read request should return early in\nsome fail cases.\nE.g. If a quorum of nodes has already\nreturned notfound/error, don't wait around for the rest.",
             "itemtype": "method",
             "name": "withBasicQuorum",
             "params": [
@@ -3606,7 +3711,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchmap.js",
-            "line": 248,
+            "line": 247,
             "description": "Set a timeout for this operation.",
             "itemtype": "method",
             "name": "withTimeout",
@@ -3623,7 +3728,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchmap.js",
-            "line": 258,
+            "line": 257,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -3664,7 +3769,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchmap.js",
-            "line": 272,
+            "line": 271,
             "description": "Construct a FetchMap instance.",
             "itemtype": "method",
             "name": "build",
@@ -3677,7 +3782,7 @@
         },
         {
             "file": "lib/commands/crdt/fetchset.js",
-            "line": 172,
+            "line": 170,
             "description": "Construct a SetchSet instance.",
             "itemtype": "method",
             "name": "build",
@@ -3813,7 +3918,7 @@
         {
             "file": "lib/commands/crdt/fetchset.js",
             "line": 241,
-            "description": "Return sets as arrays of Buffers rather than strings.\nBy default the contents of sets are converted to strings. Setting this\nto true will cause this not to occur and the raw bytes returned \nas Buffer objects.",
+            "description": "Return sets as arrays of Buffers rather than strings.\nBy default the contents of sets are converted to strings. Setting this\nto true will cause this not to occur and the raw bytes returned\nas Buffer objects.",
             "itemtype": "method",
             "name": "withSetsAsBuffers",
             "params": [
@@ -3847,7 +3952,7 @@
         {
             "file": "lib/commands/crdt/fetchset.js",
             "line": 261,
-            "description": "Set the basic_quorum value.\nThe parameter controls whether a read request should return early in\nsome fail cases. \nE.g. If a quorum of nodes has already\nreturned notfound/error, don't wait around for the rest.",
+            "description": "Set the basic_quorum value.\nThe parameter controls whether a read request should return early in\nsome fail cases.\nE.g. If a quorum of nodes has already\nreturned notfound/error, don't wait around for the rest.",
             "itemtype": "method",
             "name": "withBasicQuorum",
             "params": [
@@ -3880,7 +3985,7 @@
         },
         {
             "file": "lib/commands/crdt/updatecounter.js",
-            "line": 167,
+            "line": 164,
             "description": "Set the bucket.",
             "itemtype": "method",
             "name": "withBucket",
@@ -3897,7 +4002,7 @@
         },
         {
             "file": "lib/commands/crdt/updatecounter.js",
-            "line": 177,
+            "line": 174,
             "description": "Set the bucket type.",
             "itemtype": "method",
             "name": "withBucketType",
@@ -3914,7 +4019,7 @@
         },
         {
             "file": "lib/commands/crdt/updatecounter.js",
-            "line": 188,
+            "line": 185,
             "description": "Set the key.\nIf not set Riak will generate one.",
             "itemtype": "method",
             "name": "withKey",
@@ -3931,7 +4036,7 @@
         },
         {
             "file": "lib/commands/crdt/updatecounter.js",
-            "line": 199,
+            "line": 196,
             "description": "Set the increment to apply to this counter.\nThis may be negative as well as positive.",
             "itemtype": "method",
             "name": "withIncrement",
@@ -3948,7 +4053,7 @@
         },
         {
             "file": "lib/commands/crdt/updatecounter.js",
-            "line": 210,
+            "line": 207,
             "description": "Set the W value.\nHow many replicas to write to before returning a successful response.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withW",
@@ -3965,7 +4070,7 @@
         },
         {
             "file": "lib/commands/crdt/updatecounter.js",
-            "line": 222,
+            "line": 219,
             "description": "Set the DW value.\nHow many replicas to commit to durable storage before returning a successful response.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withDw",
@@ -3982,7 +4087,7 @@
         },
         {
             "file": "lib/commands/crdt/updatecounter.js",
-            "line": 234,
+            "line": 231,
             "description": "Set the PW value.\nHow many primary nodes must be up when the write is attempted.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withPw",
@@ -3999,7 +4104,7 @@
         },
         {
             "file": "lib/commands/crdt/updatecounter.js",
-            "line": 246,
+            "line": 243,
             "description": "Return the counter after updating.",
             "itemtype": "method",
             "name": "withReturnBody",
@@ -4016,7 +4121,7 @@
         },
         {
             "file": "lib/commands/crdt/updatecounter.js",
-            "line": 256,
+            "line": 253,
             "description": "Set a timeout for this operation.",
             "itemtype": "method",
             "name": "withTimeout",
@@ -4033,7 +4138,7 @@
         },
         {
             "file": "lib/commands/crdt/updatecounter.js",
-            "line": 266,
+            "line": 263,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -4074,7 +4179,7 @@
         },
         {
             "file": "lib/commands/crdt/updatecounter.js",
-            "line": 280,
+            "line": 277,
             "description": "Construct a UpdateCounter instance.",
             "itemtype": "method",
             "name": "build",
@@ -4087,7 +4192,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 315,
+            "line": 317,
             "description": "Set the bucket.",
             "itemtype": "method",
             "name": "withBucket",
@@ -4104,7 +4209,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 325,
+            "line": 327,
             "description": "Set the bucket type.",
             "itemtype": "method",
             "name": "withBucketType",
@@ -4121,7 +4226,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 335,
+            "line": 337,
             "description": "Set the key.\nIf not set, riak will generate and return a key.",
             "itemtype": "method",
             "name": "withKey",
@@ -4138,7 +4243,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 346,
+            "line": 348,
             "description": "Set the modifications to make to this map.",
             "itemtype": "method",
             "name": "withMapOperation",
@@ -4155,7 +4260,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 356,
+            "line": 358,
             "description": "The context returned from a previous fetch of this map.\n__Note:__ this is required when performing any removes.",
             "itemtype": "method",
             "name": "withContext",
@@ -4172,7 +4277,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 367,
+            "line": 369,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -4218,7 +4323,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 382,
+            "line": 384,
             "description": "Set the W value.\nHow many replicas to write to before returning a successful response.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withW",
@@ -4235,7 +4340,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 394,
+            "line": 396,
             "description": "Set the DW value.\nHow many replicas to commit to durable storage before returning a successful response.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withDw",
@@ -4252,7 +4357,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 406,
+            "line": 408,
             "description": "Set the PW value.\nHow many primary nodes must be up when the write is attempted.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withPw",
@@ -4269,7 +4374,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 418,
+            "line": 420,
             "description": "Return the counter after updating.",
             "itemtype": "method",
             "name": "withReturnBody",
@@ -4286,8 +4391,8 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 428,
-            "description": "Return sets as arrays of Buffers rather than strings.\nBy default the contents of sets are converted to strings. Setting this\nto true will cause this not to occur and the raw bytes returned \nas Buffer objects. Note this is only used with the returnBody option.",
+            "line": 430,
+            "description": "Return sets as arrays of Buffers rather than strings.\nBy default the contents of sets are converted to strings. Setting this\nto true will cause this not to occur and the raw bytes returned\nas Buffer objects. Note this is only used with the returnBody option.",
             "itemtype": "method",
             "name": "withSetsAsBuffers",
             "params": [
@@ -4303,7 +4408,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 441,
+            "line": 443,
             "description": "Set a timeout for this operation.",
             "itemtype": "method",
             "name": "withTimeout",
@@ -4320,7 +4425,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 451,
+            "line": 453,
             "description": "Construct an UpdateMap instance.",
             "itemtype": "method",
             "name": "build",
@@ -4333,7 +4438,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 490,
+            "line": 493,
             "description": "Increment (and/or create) a counter inside the map.",
             "itemtype": "method",
             "name": "incrementCounter",
@@ -4355,7 +4460,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 507,
+            "line": 510,
             "description": "Remove a counter from a map.",
             "itemtype": "method",
             "name": "removeCounter",
@@ -4372,7 +4477,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 520,
+            "line": 523,
             "description": "Add a value to a set (and create is necessary) in a map.",
             "itemtype": "method",
             "name": "addToSet",
@@ -4394,7 +4499,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 537,
+            "line": 540,
             "description": "Remove a value from a set in a map.",
             "itemtype": "method",
             "name": "removeFromSet",
@@ -4406,7 +4511,7 @@
                 },
                 {
                     "name": "value",
-                    "description": "the value to add to the set.",
+                    "description": "the value to remove from the set.",
                     "type": "String|Buffer"
                 }
             ],
@@ -4416,7 +4521,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 554,
+            "line": 557,
             "description": "Remove a set from a map.",
             "itemtype": "method",
             "name": "removeSet",
@@ -4433,7 +4538,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 568,
+            "line": 571,
             "description": "Set a register in a map.",
             "itemtype": "method",
             "name": "setRegister",
@@ -4446,7 +4551,7 @@
                 {
                     "name": "value",
                     "description": "the value for the register.",
-                    "type": "Buffer"
+                    "type": "String|Buffer"
                 }
             ],
             "chainable": "}",
@@ -4455,7 +4560,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 585,
+            "line": 588,
             "description": "Remove a register from a map.",
             "itemtype": "method",
             "name": "removeRegister",
@@ -4472,7 +4577,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 598,
+            "line": 601,
             "description": "Set a flag in a map.",
             "itemtype": "method",
             "name": "setFlag",
@@ -4494,7 +4599,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 615,
+            "line": 618,
             "description": "Remove a flag from a map.",
             "itemtype": "method",
             "name": "removeFlag",
@@ -4511,8 +4616,8 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 628,
-            "description": "Access/create a map inside the current one.\nThis adds/accesses a nested map and returns a reference to another\nMapOperation that applies to it. You can then modify the componets of \nthat map;\n\n    mapOp.map('inner_map')\n        .incrementCounter('counter_1', 50)\n        .addToSet('set_2', 'set_value_2');",
+            "line": 631,
+            "description": "Access/create a map inside the current one.\nThis adds/accesses a nested map and returns a reference to another\nMapOperation that applies to it. You can then modify the components of\nthat map;\n\n    mapOp.map('inner_map')\n        .incrementCounter('counter_1', 50)\n        .addToSet('set_2', 'set_value_2');",
             "itemtype": "method",
             "name": "map",
             "params": [
@@ -4528,7 +4633,7 @@
         },
         {
             "file": "lib/commands/crdt/updatemap.js",
-            "line": 652,
+            "line": 655,
             "description": "Remove a map from a map.",
             "itemtype": "method",
             "name": "removeMap",
@@ -4545,7 +4650,7 @@
         },
         {
             "file": "lib/commands/crdt/updateset.js",
-            "line": 214,
+            "line": 212,
             "description": "Construct an UpdateSet instance.",
             "itemtype": "method",
             "name": "build",
@@ -4672,7 +4777,7 @@
         {
             "file": "lib/commands/crdt/updateset.js",
             "line": 275,
-            "description": "Return sets as arrays of Buffers rather than strings.\nBy default the contents of sets are converted to strings. Setting this\nto true will cause this not to occur and the raw bytes returned \nas Buffer objects.",
+            "description": "Return sets as arrays of Buffers rather than strings.\nBy default the contents of sets are converted to strings. Setting this\nto true will cause this not to occur and the raw bytes returned\nas Buffer objects.",
             "itemtype": "method",
             "name": "withSetsAsBuffers",
             "params": [
@@ -4824,7 +4929,7 @@
         },
         {
             "file": "lib/commands/kv/deletevalue.js",
-            "line": 168,
+            "line": 167,
             "description": "Set the bucket.",
             "itemtype": "method",
             "name": "withBucket",
@@ -4841,7 +4946,7 @@
         },
         {
             "file": "lib/commands/kv/deletevalue.js",
-            "line": 178,
+            "line": 177,
             "description": "Set the bucket type.\nIf not supplied, 'default' is used.",
             "itemtype": "method",
             "name": "withBucketType",
@@ -4858,7 +4963,7 @@
         },
         {
             "file": "lib/commands/kv/deletevalue.js",
-            "line": 189,
+            "line": 188,
             "description": "Set the key.",
             "itemtype": "method",
             "name": "withKey",
@@ -4875,7 +4980,7 @@
         },
         {
             "file": "lib/commands/kv/deletevalue.js",
-            "line": 199,
+            "line": 198,
             "description": "Set the R value.\nIf not asSet the bucket default is used.",
             "itemtype": "method",
             "name": "withR",
@@ -4892,7 +4997,7 @@
         },
         {
             "file": "lib/commands/kv/deletevalue.js",
-            "line": 210,
+            "line": 209,
             "description": "Set the PR value.\nIf not asSet the bucket default is used.",
             "itemtype": "method",
             "name": "withPr",
@@ -4909,7 +5014,7 @@
         },
         {
             "file": "lib/commands/kv/deletevalue.js",
-            "line": 221,
+            "line": 220,
             "description": "Set the W value.\nHow many replicas to write to before returning a successful response.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withW",
@@ -4926,7 +5031,7 @@
         },
         {
             "file": "lib/commands/kv/deletevalue.js",
-            "line": 233,
+            "line": 232,
             "description": "Set the DW value.\nHow many replicas to commit to durable storage before returning a successful response.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withDw",
@@ -4943,7 +5048,7 @@
         },
         {
             "file": "lib/commands/kv/deletevalue.js",
-            "line": 245,
+            "line": 244,
             "description": "Set the PW value.\nHow many primary nodes must be up when the write is attempted.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withPw",
@@ -4960,7 +5065,7 @@
         },
         {
             "file": "lib/commands/kv/deletevalue.js",
-            "line": 257,
+            "line": 256,
             "description": "Set the RW value.\nQuorum for both operations (get and put) involved in deleting an object .",
             "itemtype": "method",
             "name": "withRw",
@@ -4977,7 +5082,7 @@
         },
         {
             "file": "lib/commands/kv/deletevalue.js",
-            "line": 268,
+            "line": 267,
             "description": "Set the vector clock.\nIf not set siblings may be created depending on bucket properties.",
             "itemtype": "method",
             "name": "withVClock",
@@ -4993,7 +5098,24 @@
         },
         {
             "file": "lib/commands/kv/deletevalue.js",
-            "line": 288,
+            "line": 277,
+            "description": "Set a timeout for this operation.",
+            "itemtype": "method",
+            "name": "withTimeout",
+            "params": [
+                {
+                    "name": "timeout",
+                    "description": "a timeout in milliseconds.",
+                    "type": "Number"
+                }
+            ],
+            "chainable": 1,
+            "class": "DeleteValue.Builder",
+            "module": "KV"
+        },
+        {
+            "file": "lib/commands/kv/deletevalue.js",
+            "line": 287,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -5022,7 +5144,7 @@
         },
         {
             "file": "lib/commands/kv/deletevalue.js",
-            "line": 300,
+            "line": 299,
             "description": "Construct a DeleteValue command.",
             "itemtype": "method",
             "name": "build",
@@ -5035,7 +5157,7 @@
         },
         {
             "file": "lib/commands/kv/fetchbucketprops.js",
-            "line": 189,
+            "line": 188,
             "description": "Set the bucket.",
             "itemtype": "method",
             "name": "withBucket",
@@ -5052,7 +5174,7 @@
         },
         {
             "file": "lib/commands/kv/fetchbucketprops.js",
-            "line": 199,
+            "line": 198,
             "description": "Set the bucket type.\nIf not supplied, 'default' is used.",
             "itemtype": "method",
             "name": "withBucketType",
@@ -5069,7 +5191,7 @@
         },
         {
             "file": "lib/commands/kv/fetchbucketprops.js",
-            "line": 210,
+            "line": 209,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -5098,7 +5220,7 @@
         },
         {
             "file": "lib/commands/kv/fetchbucketprops.js",
-            "line": 222,
+            "line": 221,
             "description": "Construct a FetchBucketProps instance.",
             "itemtype": "method",
             "name": "build",
@@ -5110,8 +5232,108 @@
             "module": "KV"
         },
         {
+            "file": "lib/commands/kv/fetchpreflist.js",
+            "line": 136,
+            "description": "Set the bucket type.\nIf not supplied, 'default' is used.",
+            "itemtype": "method",
+            "name": "withBucketType",
+            "params": [
+                {
+                    "name": "bucketType",
+                    "description": "the bucket type in riak",
+                    "type": "String"
+                }
+            ],
+            "chainable": 1,
+            "class": "FetchPreflist.Builder",
+            "module": "KV"
+        },
+        {
+            "file": "lib/commands/kv/fetchpreflist.js",
+            "line": 147,
+            "description": "Set the bucket.",
+            "itemtype": "method",
+            "name": "withBucket",
+            "params": [
+                {
+                    "name": "bucket",
+                    "description": "the bucket in Riak",
+                    "type": "String"
+                }
+            ],
+            "chainable": 1,
+            "class": "FetchPreflist.Builder",
+            "module": "KV"
+        },
+        {
+            "file": "lib/commands/kv/fetchpreflist.js",
+            "line": 157,
+            "description": "Set the key.",
+            "itemtype": "method",
+            "name": "withKey",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "the key in riak.",
+                    "type": "String"
+                }
+            ],
+            "chainable": 1,
+            "class": "FetchPreflist.Builder",
+            "module": "KV"
+        },
+        {
+            "file": "lib/commands/kv/fetchpreflist.js",
+            "line": 167,
+            "description": "Set the callback to be executed when the operation completes.",
+            "itemtype": "method",
+            "name": "withCallback",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "The callback to be executed when the operation completes.",
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "An error message. Will ne null if no error.",
+                            "type": "String"
+                        },
+                        {
+                            "name": "response",
+                            "description": "the response from Riak.",
+                            "type": "Object",
+                            "props": [
+                                {
+                                    "name": "preflist",
+                                    "description": "An array of one or more preflist items.",
+                                    "type": "Object[]"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "chainable": 1,
+            "class": "FetchPreflist.Builder",
+            "module": "KV"
+        },
+        {
+            "file": "lib/commands/kv/fetchpreflist.js",
+            "line": 180,
+            "description": "Construct a FetchPreflist command.",
+            "itemtype": "method",
+            "name": "build",
+            "return": {
+                "description": "",
+                "type": "FetchPreflist"
+            },
+            "class": "FetchPreflist.Builder",
+            "module": "KV"
+        },
+        {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 201,
+            "line": 200,
             "description": "Set the bucket.",
             "itemtype": "method",
             "name": "withBucket",
@@ -5128,7 +5350,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 211,
+            "line": 210,
             "description": "Set the bucket type.\nIf not supplied, 'default' is used.",
             "itemtype": "method",
             "name": "withBucketType",
@@ -5145,7 +5367,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 222,
+            "line": 221,
             "description": "Set the key.",
             "itemtype": "method",
             "name": "withKey",
@@ -5162,7 +5384,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 232,
+            "line": 231,
             "description": "Set the R value.\nIf not asSet the bucket default is used.",
             "itemtype": "method",
             "name": "withR",
@@ -5179,7 +5401,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 243,
+            "line": 242,
             "description": "Set the PR value.\nIf not asSet the bucket default is used.",
             "itemtype": "method",
             "name": "withPr",
@@ -5196,7 +5418,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 254,
+            "line": 253,
             "description": "Set the not_found_ok value.\nIf true a vnode returning notfound for a key increments the r tally.\nFalse is higher consistency, true is higher availability.\nIf not asSet the bucket default is used.",
             "itemtype": "method",
             "name": "withNotFoundOk",
@@ -5213,8 +5435,8 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 267,
-            "description": "Set the basic_quorum value.\nThe parameter controls whether a read request should return early in\nsome fail cases. \nE.g. If a quorum of nodes has already\nreturned notfound/error, don't wait around for the rest.",
+            "line": 266,
+            "description": "Set the basic_quorum value.\nThe parameter controls whether a read request should return early in\nsome fail cases.\nE.g. If a quorum of nodes has already\nreturned notfound/error, don't wait around for the rest.",
             "itemtype": "method",
             "name": "withBasicQuorum",
             "params": [
@@ -5230,7 +5452,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 281,
+            "line": 280,
             "description": "Set whether to return tombstones.",
             "itemtype": "method",
             "name": "withReturnDeletedVClock",
@@ -5247,7 +5469,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 291,
+            "line": 290,
             "description": "Return only the metadata.\nCauses Riak to only return the metadata for the object. The value\nwill be asSet to null.",
             "itemtype": "method",
             "name": "withHeadOnly",
@@ -5264,7 +5486,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 303,
+            "line": 302,
             "description": "Do not return the object if the supplied vclock matches.",
             "itemtype": "method",
             "name": "withIfNotModified",
@@ -5281,7 +5503,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 313,
+            "line": 312,
             "description": "Set a timeout for this operation.",
             "itemtype": "method",
             "name": "withTimeout",
@@ -5298,7 +5520,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 324,
+            "line": 323,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -5349,8 +5571,8 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 340,
-            "description": "Provide a conflict resolver to resolve siblings.\nIf siblings are present Riak will return all of them. The provided\nfunction will be used to resolve these to a single response. \n\nIf a conflict resolver is not provided all siblings will be returned.",
+            "line": 339,
+            "description": "Provide a conflict resolver to resolve siblings.\nIf siblings are present Riak will return all of them. The provided\nfunction will be used to resolve these to a single response.\n\nIf a conflict resolver is not provided all siblings will be returned.",
             "itemtype": "method",
             "name": "withConflictResolver",
             "params": [
@@ -5366,8 +5588,8 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 354,
-            "description": "Convert the value stored in Riak to a JS object.\nValues are stored in Riak as bytes. Setting this to true will\nconvert the value to a JS object using JSON.parse() before \npassing them to the conflict resolver.",
+            "line": 353,
+            "description": "Convert the value stored in Riak to a JS object.\nValues are stored in Riak as bytes. Setting this to true will\nconvert the value to a JS object using JSON.parse() before\npassing them to the conflict resolver.",
             "itemtype": "method",
             "name": "withConvertValueToJs",
             "params": [
@@ -5383,7 +5605,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 367,
+            "line": 366,
             "description": "Construct a FetchValue command.",
             "itemtype": "method",
             "name": "build",
@@ -5396,7 +5618,7 @@
         },
         {
             "file": "lib/commands/kv/listbuckets.js",
-            "line": 135,
+            "line": 134,
             "description": "Set the bucket type.\nIf not supplied, 'default' is used.",
             "itemtype": "method",
             "name": "withBucketType",
@@ -5413,8 +5635,8 @@
         },
         {
             "file": "lib/commands/kv/listbuckets.js",
-            "line": 146,
-            "description": "Stream the results.\nSetting this to true will cause you callback to be called as the results\nare returned from Riak. Set to false the result set will be buffered and \ndelevered via a single call to your callback. Note that on large result sets \nthis is very memory intensive.",
+            "line": 145,
+            "description": "Stream the results.\nSetting this to true will cause you callback to be called as the results\nare returned from Riak. Set to false the result set will be buffered and\ndelevered via a single call to your callback. Note that on large result sets\nthis is very memory intensive.",
             "itemtype": "method",
             "name": "withStreaming",
             "params": [
@@ -5432,7 +5654,7 @@
         },
         {
             "file": "lib/commands/kv/listbuckets.js",
-            "line": 160,
+            "line": 159,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -5473,7 +5695,7 @@
         },
         {
             "file": "lib/commands/kv/listbuckets.js",
-            "line": 174,
+            "line": 173,
             "description": "Set a timeout for this operation.",
             "itemtype": "method",
             "name": "withTimeout",
@@ -5490,7 +5712,7 @@
         },
         {
             "file": "lib/commands/kv/listbuckets.js",
-            "line": 184,
+            "line": 183,
             "description": "Construct a ListBuckets instance.",
             "itemtype": "method",
             "name": "build",
@@ -5503,7 +5725,7 @@
         },
         {
             "file": "lib/commands/kv/listkeys.js",
-            "line": 142,
+            "line": 141,
             "description": "Set the bucket.",
             "itemtype": "method",
             "name": "withBucket",
@@ -5520,7 +5742,7 @@
         },
         {
             "file": "lib/commands/kv/listkeys.js",
-            "line": 152,
+            "line": 151,
             "description": "Set the bucket type.\nIf not supplied, 'default' is used.",
             "itemtype": "method",
             "name": "withBucketType",
@@ -5537,8 +5759,8 @@
         },
         {
             "file": "lib/commands/kv/listkeys.js",
-            "line": 163,
-            "description": "Stream the results.\nSetting this to true will cause you callback to be called as the results\nare returned from Riak. Set to false the result set will be buffered and \ndelevered via a single call to your callback. Note that on large result sets \nthis is very memory intensive.",
+            "line": 162,
+            "description": "Stream the results.\nSetting this to true will cause you callback to be called as the results\nare returned from Riak. Set to false the result set will be buffered and\ndelevered via a single call to your callback. Note that on large result sets\nthis is very memory intensive.",
             "itemtype": "method",
             "name": "withStreaming",
             "params": [
@@ -5556,7 +5778,7 @@
         },
         {
             "file": "lib/commands/kv/listkeys.js",
-            "line": 177,
+            "line": 176,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -5607,7 +5829,7 @@
         },
         {
             "file": "lib/commands/kv/listkeys.js",
-            "line": 193,
+            "line": 192,
             "description": "Set a timeout for this operation.",
             "itemtype": "method",
             "name": "withTimeout",
@@ -5624,7 +5846,7 @@
         },
         {
             "file": "lib/commands/kv/listkeys.js",
-            "line": 203,
+            "line": 202,
             "description": "Construct a ListKeys instance.",
             "itemtype": "method",
             "name": "build",
@@ -6078,7 +6300,7 @@
         },
         {
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 222,
+            "line": 219,
             "description": "Set the bucket.",
             "itemtype": "method",
             "name": "withBucket",
@@ -6095,7 +6317,7 @@
         },
         {
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 232,
+            "line": 229,
             "description": "Set the bucket type.\nIf not supplied, 'default' is used.",
             "itemtype": "method",
             "name": "withBucketType",
@@ -6112,7 +6334,7 @@
         },
         {
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 243,
+            "line": 240,
             "description": "Set the index name",
             "itemtype": "method",
             "name": "",
@@ -6129,7 +6351,7 @@
         },
         {
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 253,
+            "line": 250,
             "description": "Set a single secondary index key to use for query.\nNote that you can only set a single key, or a range.",
             "itemtype": "method",
             "name": "withIndexKey",
@@ -6146,7 +6368,7 @@
         },
         {
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 264,
+            "line": 261,
             "description": "Set a range for the query",
             "itemtype": "method",
             "name": "withRange",
@@ -6168,7 +6390,7 @@
         },
         {
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 276,
+            "line": 273,
             "description": "Set whether to return the index keys with the Riak object keys.\nSetting this to true will return both the index key and the Riak\nobject's key. The default is false (only to return the Riak object keys).",
             "itemtype": "method",
             "name": "withReturnKeyAndIndex",
@@ -6185,8 +6407,8 @@
         },
         {
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 288,
-            "description": "Set the maximum number of results returned by the query.\n\nWhen asking for large result sets, it is often desirable to ask the \nservers to return chunks of results instead of a firehose. \nYou can do so using this method, where maxResults is the number of \nresults you'd like to receive.\n\nAssuming more keys are available, a continuation value will be included \nin the results to allow the client to request the next page.",
+            "line": 285,
+            "description": "Set the maximum number of results returned by the query.\n\nWhen asking for large result sets, it is often desirable to ask the\nservers to return chunks of results instead of a firehose.\nYou can do so using this method, where maxResults is the number of\nresults you'd like to receive.\n\nAssuming more keys are available, a continuation value will be included\nin the results to allow the client to request the next page.",
             "itemtype": "method",
             "name": "withMaxResults",
             "params": [
@@ -6202,7 +6424,7 @@
         },
         {
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 306,
+            "line": 303,
             "description": "Set the continuation for this query.\nIf using pagination via maxResults, this will have been returned\nby a previous query.",
             "itemtype": "method",
             "name": "withContinuation",
@@ -6219,7 +6441,7 @@
         },
         {
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 318,
+            "line": 315,
             "description": "Set a timeout for this operation.",
             "itemtype": "method",
             "name": "withTimeout",
@@ -6236,7 +6458,7 @@
         },
         {
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 328,
+            "line": 325,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -6282,8 +6504,8 @@
         },
         {
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 343,
-            "description": "Stream the results.\nSetting this to true will cause you callback to be called as the results\nare returned from Riak. Set to false the result set will be buffered and \ndelevered via a single call to your callback. Note that on large result sets \nthis is very memory intensive.",
+            "line": 340,
+            "description": "Stream the results.\nSetting this to true will cause you callback to be called as the results\nare returned from Riak. Set to false the result set will be buffered and\ndelevered via a single call to your callback. Note that on large result sets\nthis is very memory intensive.",
             "itemtype": "method",
             "name": "withStreaming",
             "params": [
@@ -6301,8 +6523,8 @@
         },
         {
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 357,
-            "description": "Set whether to sort the results of a non-paginated 2i query.\nIf you are not using pagination (setting withMaxResults()) the \ndefault behavior in Riak is to not sort the result set.\nSetting this to true will sort the results before returning them.\n__Note that this is not recommended for queries that could return a large\nresult set; the overhead in Riak is substantial. __",
+            "line": 354,
+            "description": "Set whether to sort the results of a non-paginated 2i query.\nIf you are not using pagination (setting withMaxResults()) the\ndefault behavior in Riak is to not sort the result set.\nSetting this to true will sort the results before returning them.\n__Note that this is not recommended for queries that could return a large\nresult set; the overhead in Riak is substantial. __",
             "itemtype": "method",
             "name": "withPaginationSort",
             "params": [
@@ -6318,7 +6540,7 @@
         },
         {
             "file": "lib/commands/kv/secondaryindexquery.js",
-            "line": 372,
+            "line": 369,
             "description": "Construct a SecondaryIndexQuery instance",
             "itemtype": "method",
             "name": "build",
@@ -6331,7 +6553,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 218,
+            "line": 217,
             "description": "Set the bucket.",
             "itemtype": "method",
             "name": "withBucket",
@@ -6348,7 +6570,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 228,
+            "line": 227,
             "description": "Set the bucket type.\nIf not supplied, 'default' is used.",
             "itemtype": "method",
             "name": "withBucketType",
@@ -6365,7 +6587,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 239,
+            "line": 238,
             "description": "Set the nVal.",
             "itemtype": "method",
             "name": "withNVal",
@@ -6382,7 +6604,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 249,
+            "line": 248,
             "description": "Set the allow_multi value.",
             "itemtype": "method",
             "name": "withAllowMult",
@@ -6399,7 +6621,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 260,
+            "line": 259,
             "description": "Set the last_write_wins value. Unless you really know what you're\ndoing, you probably do not want to set this to true.",
             "itemtype": "method",
             "name": "withLastWriteWins",
@@ -6416,7 +6638,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 271,
+            "line": 270,
             "description": "Add a pre-commit hook.",
             "itemtype": "method",
             "name": "addPrecommitHook",
@@ -6433,7 +6655,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 282,
+            "line": 281,
             "description": "Add a pre-commit hook.",
             "itemtype": "method",
             "name": "addPostcommitHook",
@@ -6450,7 +6672,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 293,
+            "line": 292,
             "description": "Set the old VClock value",
             "itemtype": "method",
             "name": "withOldVClock",
@@ -6467,7 +6689,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 303,
+            "line": 302,
             "description": "Set the young VClock value",
             "itemtype": "method",
             "name": "withYoungVClock",
@@ -6484,7 +6706,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 313,
+            "line": 312,
             "description": "Set the big VClock value.",
             "itemtype": "method",
             "name": "withBigVClock",
@@ -6501,7 +6723,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 323,
+            "line": 322,
             "description": "Set the small VClock value.",
             "itemtype": "method",
             "name": "withSmallVClock",
@@ -6518,8 +6740,8 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 333,
-            "description": "Set the backend used by this bucket. \nOnly applies when using\nriak_kv_multi_backend in Riak.",
+            "line": 332,
+            "description": "Set the backend used by this bucket.\nOnly applies when using\nriak_kv_multi_backend in Riak.",
             "itemtype": "method",
             "name": "withBackend",
             "params": [
@@ -6535,7 +6757,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 345,
+            "line": 344,
             "description": "Set the R value.\nIf not asSet the bucket default is used.",
             "itemtype": "method",
             "name": "withR",
@@ -6552,7 +6774,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 356,
+            "line": 355,
             "description": "Set the PR value.\nIf not asSet the bucket default is used.",
             "itemtype": "method",
             "name": "withPr",
@@ -6569,7 +6791,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 367,
+            "line": 366,
             "description": "Set the W value.\nHow many replicas to write to before returning a successful response.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withW",
@@ -6586,7 +6808,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 379,
+            "line": 378,
             "description": "Set the DW value.\nHow many replicas to commit to durable storage before returning a successful response.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withDw",
@@ -6603,7 +6825,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 391,
+            "line": 390,
             "description": "Set the PW value.\nHow many primary nodes must be up when the write is attempted.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withPw",
@@ -6620,7 +6842,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 403,
+            "line": 402,
             "description": "Set the RW value.\nQuorum for both operations (get and put) involved in deleting an object .",
             "itemtype": "method",
             "name": "withRw",
@@ -6637,8 +6859,8 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 414,
-            "description": "Set the basic_quorum value.\nThe parameter controls whether a read request should return early in\nsome fail cases. \nE.g. If a quorum of nodes has already\nreturned notfound/error, don't wait around for the rest.",
+            "line": 413,
+            "description": "Set the basic_quorum value.\nThe parameter controls whether a read request should return early in\nsome fail cases.\nE.g. If a quorum of nodes has already\nreturned notfound/error, don't wait around for the rest.",
             "itemtype": "method",
             "name": "withBasicQuorum",
             "params": [
@@ -6654,7 +6876,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 428,
+            "line": 427,
             "description": "Set the not_found_ok value.\nIf true a vnode returning notfound for a key increments the r tally.\nFalse is higher consistency, true is higher availability.",
             "itemtype": "method",
             "name": "withNotFoundOk",
@@ -6671,7 +6893,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 440,
+            "line": 439,
             "description": "Enable Legacy Riak Search. Setting this to true causes the search\npre-commit hook to be added.\n\nNote this is only for legacy Riak (&lt; v2.0) Search support.",
             "itemtype": "method",
             "name": "withLegacySearchEnabled",
@@ -6688,8 +6910,8 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 454,
-            "description": "Associate a Search Index. \nThis only applies if Yokozuna is enabled in\nRiak v2.0.",
+            "line": 453,
+            "description": "Associate a Search Index.\nThis only applies if Yokozuna is enabled in\nRiak v2.0.",
             "itemtype": "method",
             "name": "withSearchIndex",
             "params": [
@@ -6705,7 +6927,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 466,
+            "line": 465,
             "description": "Set the chash_keyfun value.",
             "itemtype": "method",
             "name": "withChashkeyFunction",
@@ -6722,7 +6944,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 477,
+            "line": 476,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -6751,7 +6973,7 @@
         },
         {
             "file": "lib/commands/kv/storebucketprops.js",
-            "line": 489,
+            "line": 488,
             "description": "Construct a StoreBucketProps instance.",
             "itemtype": "method",
             "name": "build",
@@ -6764,7 +6986,7 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 228,
+            "line": 225,
             "description": "Set the bucket.\nNote that this can also be provided via RiakObject passed in via withContent() and\ndoing so will take precidence over this method.",
             "itemtype": "method",
             "name": "withBucket",
@@ -6781,7 +7003,7 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 240,
+            "line": 237,
             "description": "Set the bucket type.\nIf not supplied, 'default' is used.\nNote that this can also be provided via RiakObject passed in via withContent() and\ndoing so will take precidence over this method.",
             "itemtype": "method",
             "name": "withBucketType",
@@ -6798,7 +7020,7 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 253,
+            "line": 250,
             "description": "Set the key.\nIf not set, riak will generate and return a key.\nNote that this can also be provided via RiakObject passed in via withContent() and\ndoing so will take precidence over this method.",
             "itemtype": "method",
             "name": "withKey",
@@ -6815,7 +7037,7 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 266,
+            "line": 263,
             "description": "Set the value and its metadata to be stored in Riak.\nIf a JS object is supplied, it will be converted to JSON\nusing JSON.stringify()",
             "itemtype": "method",
             "name": "withContent",
@@ -6832,8 +7054,8 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 278,
-            "description": "Set the vector clock.\nConvenience method if a RiakObject is not supplied as content. \nNote that a vclock supplied via RiakObject in withContent() will have precendence over this.",
+            "line": 275,
+            "description": "Set the vector clock.\nConvenience method if a RiakObject is not supplied as content.\nNote that a vclock supplied via RiakObject in withContent() will have precendence over this.",
             "itemtype": "method",
             "name": "withVClock",
             "params": [
@@ -6848,7 +7070,7 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 289,
+            "line": 286,
             "description": "Set the W value.\nHow many replicas to write to before returning a successful response.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withW",
@@ -6865,7 +7087,7 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 301,
+            "line": 298,
             "description": "Set the DW value.\nHow many replicas to commit to durable storage before returning a successful response.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withDw",
@@ -6882,7 +7104,7 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 313,
+            "line": 310,
             "description": "Set the PW value.\nHow many primary nodes must be up when the write is attempted.\nIf not set the bucket default is used.",
             "itemtype": "method",
             "name": "withPw",
@@ -6899,8 +7121,8 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 325,
-            "description": "Return the object after storing (including any siblings).\nIf siblings are present, an optional conflictResolver can be \nprovided to resolve them.",
+            "line": 322,
+            "description": "Return the object after storing (including any siblings).\nIf siblings are present, an optional conflictResolver can be\nprovided to resolve them.",
             "itemtype": "method",
             "name": "withReturnBody",
             "params": [
@@ -6935,8 +7157,8 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 349,
-            "description": "Return the metadata after storing the value.\n\nCauses Riak to only return the metadata for the object. \nIf siblings are present, an optional conflictResolver can be \nprovided to resolve them.",
+            "line": 346,
+            "description": "Return the metadata after storing the value.\n\nCauses Riak to only return the metadata for the object.\nIf siblings are present, an optional conflictResolver can be\nprovided to resolve them.",
             "itemtype": "method",
             "name": "withReturnHead",
             "params": [
@@ -6965,8 +7187,8 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 366,
-            "description": "Set the if_not_modified flag.\n\nSetting this to true means to store the value only if the \nsupplied vclock matches the one in the database.\n\nBe aware there are several cases where this may not actually happen.\nUse of this feature is discouraged.",
+            "line": 363,
+            "description": "Set the if_not_modified flag.\n\nSetting this to true means to store the value only if the\nsupplied vclock matches the one in the database.\n\nBe aware there are several cases where this may not actually happen.\nUse of this feature is discouraged.",
             "itemtype": "method",
             "name": "withIfNotModified",
             "params": [
@@ -6982,8 +7204,8 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 382,
-            "description": "Set the if_none_match flag.\n\nSetting this to true means store the value only if this \nbucket/key combination are not already defined. \n\nBe aware that there are several cases where \nthis may not actually happen. Use of this option is discouraged.",
+            "line": 379,
+            "description": "Set the if_none_match flag.\n\nSetting this to true means store the value only if this\nbucket/key combination are not already defined.\n\nBe aware that there are several cases where\nthis may not actually happen. Use of this option is discouraged.",
             "itemtype": "method",
             "name": "withIfNoneMatch",
             "params": [
@@ -6999,7 +7221,7 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 398,
+            "line": 395,
             "description": "Set a timeout for this operation.",
             "itemtype": "method",
             "name": "withTimeout",
@@ -7016,7 +7238,7 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 408,
+            "line": 405,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -7062,7 +7284,7 @@
         },
         {
             "file": "lib/commands/kv/storevalue.js",
-            "line": 423,
+            "line": 420,
             "description": "Construct a StoreValue instance.",
             "itemtype": "method",
             "name": "build",
@@ -7075,7 +7297,7 @@
         },
         {
             "file": "lib/commands/yokozuna/deleteindex.js",
-            "line": 111,
+            "line": 110,
             "description": "The name of the index to delete.\nIf one is not supplied, all indexes are returned.",
             "itemtype": "method",
             "name": "withIndexName",
@@ -7092,7 +7314,7 @@
         },
         {
             "file": "lib/commands/yokozuna/deleteindex.js",
-            "line": 122,
+            "line": 121,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -7121,7 +7343,7 @@
         },
         {
             "file": "lib/commands/yokozuna/deleteindex.js",
-            "line": 134,
+            "line": 133,
             "description": "Construct a DeleteIndex instance.",
             "itemtype": "method",
             "name": "build",
@@ -7134,7 +7356,7 @@
         },
         {
             "file": "lib/commands/yokozuna/fetchindex.js",
-            "line": 128,
+            "line": 127,
             "description": "The name of the index to fetch.\nIf one is not supplied, all indexes are returned.",
             "itemtype": "method",
             "name": "withIndexName",
@@ -7151,7 +7373,7 @@
         },
         {
             "file": "lib/commands/yokozuna/fetchindex.js",
-            "line": 139,
+            "line": 138,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -7192,7 +7414,7 @@
         },
         {
             "file": "lib/commands/yokozuna/fetchindex.js",
-            "line": 153,
+            "line": 152,
             "description": "Construct a FetchIndex instance.",
             "itemtype": "method",
             "name": "build",
@@ -7205,7 +7427,7 @@
         },
         {
             "file": "lib/commands/yokozuna/fetchschema.js",
-            "line": 118,
+            "line": 117,
             "description": "The name of the schema to fetch.",
             "itemtype": "method",
             "name": "withSchemaName",
@@ -7222,7 +7444,7 @@
         },
         {
             "file": "lib/commands/yokozuna/fetchschema.js",
-            "line": 128,
+            "line": 127,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -7263,7 +7485,7 @@
         },
         {
             "file": "lib/commands/yokozuna/fetchschema.js",
-            "line": 142,
+            "line": 141,
             "description": "Construct a FetchSchema instance.",
             "itemtype": "method",
             "name": "build",
@@ -7276,7 +7498,7 @@
         },
         {
             "file": "lib/commands/yokozuna/search.js",
-            "line": 190,
+            "line": 189,
             "description": "Set the index name used for this search.",
             "itemtype": "method",
             "name": "withIndexName",
@@ -7293,8 +7515,8 @@
         },
         {
             "file": "lib/commands/yokozuna/search.js",
-            "line": 200,
-            "description": "Set the Solr query string.\nAll distributed Solr queries are supported, which actually \nincludes most of the single-node Solr queries.",
+            "line": 199,
+            "description": "Set the Solr query string.\nAll distributed Solr queries are supported, which actually\nincludes most of the single-node Solr queries.",
             "itemtype": "method",
             "name": "withQuery",
             "params": [
@@ -7310,7 +7532,7 @@
         },
         {
             "file": "lib/commands/yokozuna/search.js",
-            "line": 212,
+            "line": 211,
             "description": "Specify the maximum number of results to return.\nRiak defaults to 10 if this is not set.",
             "itemtype": "method",
             "name": "withNumRows",
@@ -7327,7 +7549,7 @@
         },
         {
             "file": "lib/commands/yokozuna/search.js",
-            "line": 223,
+            "line": 222,
             "description": "Specify the starting result of the query.\nUseful for pagination. The default is 0.",
             "itemtype": "method",
             "name": "withStart",
@@ -7344,7 +7566,7 @@
         },
         {
             "file": "lib/commands/yokozuna/search.js",
-            "line": 234,
+            "line": 233,
             "description": "Sort the results on the specified field name.\nDefault is “none”, which causes the results to be sorted in descending order by score.",
             "itemtype": "method",
             "name": "withSortField",
@@ -7361,7 +7583,7 @@
         },
         {
             "file": "lib/commands/yokozuna/search.js",
-            "line": 245,
+            "line": 244,
             "description": "Filters the search by an additional query scoped to inline fields.",
             "itemtype": "method",
             "name": "withFilterQuery",
@@ -7378,7 +7600,7 @@
         },
         {
             "file": "lib/commands/yokozuna/search.js",
-            "line": 255,
+            "line": 254,
             "description": "Use the provided field as the default.\nOverrides the “default_field” setting in the schema file.",
             "itemtype": "method",
             "name": "withDefaultField",
@@ -7395,7 +7617,7 @@
         },
         {
             "file": "lib/commands/yokozuna/search.js",
-            "line": 266,
+            "line": 265,
             "description": "Set the default operation.\nAllowed settings are either “and” or “or”.\nOverrides the “default_op” setting in the schema file.",
             "itemtype": "method",
             "name": "withDefaultOperation",
@@ -7412,7 +7634,7 @@
         },
         {
             "file": "lib/commands/yokozuna/search.js",
-            "line": 278,
+            "line": 277,
             "description": "Only return the provided fields.\nFilters the results to only contain the provided fields.",
             "itemtype": "method",
             "name": "withReturnFields",
@@ -7429,7 +7651,7 @@
         },
         {
             "file": "lib/commands/yokozuna/search.js",
-            "line": 289,
+            "line": 288,
             "description": "Sorts all of the results by bucket key, or the search score, before the given rows are chosen.\nThis is useful when paginating to ensure the results are returned in a consistent order.",
             "itemtype": "method",
             "name": "withPresort",
@@ -7446,7 +7668,7 @@
         },
         {
             "file": "lib/commands/yokozuna/search.js",
-            "line": 300,
+            "line": 299,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -7492,7 +7714,7 @@
         },
         {
             "file": "lib/commands/yokozuna/search.js",
-            "line": 315,
+            "line": 314,
             "description": "Construct a new Search instance.",
             "itemtype": "method",
             "name": "build",
@@ -7505,7 +7727,7 @@
         },
         {
             "file": "lib/commands/yokozuna/storeindex.js",
-            "line": 119,
+            "line": 120,
             "description": "The name of the index to store.",
             "itemtype": "method",
             "name": "withIndexName",
@@ -7522,7 +7744,7 @@
         },
         {
             "file": "lib/commands/yokozuna/storeindex.js",
-            "line": 129,
+            "line": 130,
             "description": "The name of the schema to use with this index.\nIf not provided the default '_yz_default' will be used.",
             "itemtype": "method",
             "name": "withSchemaName",
@@ -7539,7 +7761,24 @@
         },
         {
             "file": "lib/commands/yokozuna/storeindex.js",
-            "line": 140,
+            "line": 141,
+            "description": "Set a timeout for this operation.",
+            "itemtype": "method",
+            "name": "withTimeout",
+            "params": [
+                {
+                    "name": "timeout",
+                    "description": "a timeout in milliseconds.",
+                    "type": "Number"
+                }
+            ],
+            "chainable": 1,
+            "class": "StoreIndex.Builder",
+            "module": "YZ"
+        },
+        {
+            "file": "lib/commands/yokozuna/storeindex.js",
+            "line": 151,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -7568,7 +7807,7 @@
         },
         {
             "file": "lib/commands/yokozuna/storeindex.js",
-            "line": 152,
+            "line": 163,
             "description": "Construct a StoreIndex instance.",
             "itemtype": "method",
             "name": "build",
@@ -7581,7 +7820,7 @@
         },
         {
             "file": "lib/commands/yokozuna/storeschema.js",
-            "line": 116,
+            "line": 115,
             "description": "The name of the schema.",
             "itemtype": "method",
             "name": "withSchemaName",
@@ -7598,7 +7837,7 @@
         },
         {
             "file": "lib/commands/yokozuna/storeschema.js",
-            "line": 126,
+            "line": 125,
             "description": "The XML that defines this schema",
             "itemtype": "method",
             "name": "withSchema",
@@ -7615,7 +7854,7 @@
         },
         {
             "file": "lib/commands/yokozuna/storeschema.js",
-            "line": 136,
+            "line": 135,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -7644,7 +7883,7 @@
         },
         {
             "file": "lib/commands/yokozuna/storeschema.js",
-            "line": 148,
+            "line": 147,
             "description": "Construct a StoreSchema instance.",
             "itemtype": "method",
             "name": "build",
@@ -7819,7 +8058,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 91,
+            "line": 94,
             "description": "Start this RiakCluster",
             "itemtype": "method",
             "name": "start",
@@ -7828,7 +8067,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 116,
+            "line": 119,
             "description": "Stop this RiakCluster",
             "itemtype": "method",
             "name": "stop",
@@ -7837,7 +8076,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 159,
+            "line": 162,
             "description": "Execute a command on this RiakCluster.\n\nSelects a RiakNode from the cluster and executes the command on it.",
             "itemtype": "method",
             "name": "execute",
@@ -7859,7 +8098,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 223,
+            "line": 226,
             "description": "Add a RiakNode ot this cluster.",
             "itemtype": "method",
             "name": "addNode",
@@ -7875,7 +8114,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 236,
+            "line": 238,
             "description": "Remove a RiakNode from this cluster.\nThe node being removed will also be stopped.",
             "itemtype": "method",
             "name": "removeNode",
@@ -7907,7 +8146,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 327,
+            "line": 331,
             "description": "This event is fired when the state of the RiakCluster changes.\nSee: {{#crossLink \"RiakCluster/State:property\"}}RiakCluster.State{{/crossLink}}",
             "itemtype": "event",
             "name": "stateChange",
@@ -7923,7 +8162,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 335,
+            "line": 339,
             "description": "This event is fired when the state of any RiakNode in the cluster changes.",
             "itemtype": "event",
             "name": "nodeStateChange",
@@ -7944,7 +8183,14 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 361,
+            "line": 347,
+            "description": "This event is fired whenever a command fails on a RiakNode and needs to be retried.\nRiakCluster is a listener.",
+            "class": "RiakCluster",
+            "module": "Core"
+        },
+        {
+            "file": "lib/core/riakcluster.js",
+            "line": 371,
             "description": "The RiakNodes to use.",
             "itemtype": "method",
             "name": "withRiakNodes",
@@ -7964,7 +8210,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 377,
+            "line": 386,
             "description": "Set the number of times a command will be attempted.\nIn the case of a command failing for any reason, it will be retied \non a different node.",
             "itemtype": "method",
             "name": "withExecutionAttempts",
@@ -7984,7 +8230,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 389,
+            "line": 398,
             "description": "Set the NodeManager for this cluster.\n\nIf not provided the {{#crossLink \"DefaultNodeManager\"}}{{/crossLink}} is\nused.",
             "itemtype": "method",
             "name": "withNodeManager",
@@ -8001,7 +8247,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 402,
+            "line": 411,
             "description": "Set whether to queue commands or not if no RiakNodes are available.\n\nIf all nodes are down (health checking) or maxConnections are in use on\nall nodes, the default behavior is to fail commands when submitted. \n\nSetting this option causes the the RiakCluster to queue additional commands\n(FIFO) then send them when nodes/connections become available. \n\nIf maxDepth is supplied the queue is bounded and additional commands \nattempting to be queued will be failed. The default is an unbounded queue.",
             "itemtype": "method",
             "name": "withQueueCommands",
@@ -8020,7 +8266,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 423,
+            "line": 432,
             "description": "Builds a RiakCluster instance.",
             "itemtype": "method",
             "name": "build",
@@ -8033,7 +8279,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 108,
+            "line": 111,
             "description": "Start this RiakNode.",
             "itemtype": "method",
             "name": "start",
@@ -8042,7 +8288,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 161,
+            "line": 165,
             "description": "Stop this RiakNode.",
             "itemtype": "method",
             "name": "stop",
@@ -8051,7 +8297,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 197,
+            "line": 201,
             "description": "Execute a command on this RiakNode.",
             "itemtype": "method",
             "name": "execute",
@@ -8071,7 +8317,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 370,
+            "line": 374,
             "description": "The state of this node.\n\nIf listeneing for stateChange events, a numeric value will be sent that\ncan be compared to:\n\n    RiakNode.State.CREATED\n    RiakNode.State.RUNNING\n    RiakNode.State.HEALTH_CHECKING\n    RiakNode.State.SHUTTING_DOWN\n    RiakNode.State.SHUTDOWN\n\nSee: {{#crossLink \"RiakNode/stateChange:event\"}}stateChange{{/crossLink}}",
             "itemtype": "property",
             "name": "State",
@@ -8083,7 +8329,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 427,
+            "line": 432,
             "description": "This event is fired whenever the state of the RiakNode changes.",
             "itemtype": "event",
             "name": "stateChange",
@@ -8104,7 +8350,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 435,
+            "line": 440,
             "description": "This event is fired whenever a command fails and needs to be retried.",
             "itemtype": "event",
             "name": "retryCommand",
@@ -8125,7 +8371,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 458,
+            "line": 463,
             "description": "Set the remote address for the RiakNode.",
             "itemtype": "method",
             "name": "withRemoteAddress",
@@ -8145,7 +8391,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 469,
+            "line": 474,
             "description": "Set the remote port for this RiakNode.",
             "itemtype": "method",
             "name": "withRemotePort",
@@ -8165,7 +8411,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 480,
+            "line": 485,
             "description": "Set the minimum number of active connections to maintain.\nThese connections are exempt from the idle timeout.",
             "itemtype": "method",
             "name": "withMinConnections",
@@ -8185,7 +8431,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 492,
+            "line": 497,
             "description": "Set the maximum number of connections allowed.",
             "itemtype": "method",
             "name": "withMaxConnections",
@@ -8205,7 +8451,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 503,
+            "line": 508,
             "description": "Set the idle timeout used to reap inactive connections.\nAny connection that has been idle for this amount of time\nbecomes eligible to be closed and discarded excluding the number \nset via __withMinConnections()__.",
             "itemtype": "method",
             "name": "withIdleTimeout",
@@ -8225,7 +8471,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 517,
+            "line": 522,
             "description": "Set the connection timeout used when making new connections.",
             "itemtype": "method",
             "name": "withConnectionTimeout",
@@ -8245,7 +8491,26 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 528,
+            "line": 533,
+            "description": "Set whether to use the cork/uncork socket functions.",
+            "itemtype": "method",
+            "name": "withCork",
+            "params": [
+                {
+                    "name": "cork",
+                    "description": "use cork/uncork. Default is true.",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "true"
+                }
+            ],
+            "chainable": 1,
+            "class": "RiakNode.Builder",
+            "module": "Core"
+        },
+        {
+            "file": "lib/core/riaknode.js",
+            "line": 545,
             "description": "Set the authentication information for connections made by this node.",
             "itemtype": "method",
             "name": "withAuth",
@@ -8316,7 +8581,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 546,
+            "line": 563,
             "description": "Set the command to be used for a health check.\n\nIf this RiakNode performs a health check, a new connection is made and \na command performed. The default is to send a {{#crossLink \"Ping\"}}{{/crossLink}}\ncommand but any command can be used. If it completes successfully the \nhealth check is considered a success.",
             "itemtype": "method",
             "name": "withHealthCheck",
@@ -8333,7 +8598,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 561,
+            "line": 578,
             "description": "Builds a RiakNode instance.",
             "itemtype": "method",
             "name": "build",
@@ -8346,7 +8611,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 572,
+            "line": 589,
             "description": "Static factory for constructing a set of RiakNodes.\n\nTo create a set of RiakNodes with the same options:\n\n     var options = new RiakNode.Builder().withMinConnections(10);  \n     var nodes = RiakNode.buildNodes(['192.168.1.1', '192.168.1.2'], options); \n     \n__options__ can be manually constructed or an instance of the Builder.",
             "static": 1,
             "itemtype": "method",
@@ -8889,6 +9154,10 @@
         {
             "message": "Missing item type\nReceives the array or RiakNode objects from the RiakCluster, chooses one, and executes the command on it.",
             "line": " lib/core/nodemanager.js:38"
+        },
+        {
+            "message": "Missing item type\nThis event is fired whenever a command fails on a RiakNode and needs to be retried.\nRiakCluster is a listener.",
+            "line": " lib/core/riakcluster.js:347"
         }
     ]
 }

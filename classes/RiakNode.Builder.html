@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -140,7 +142,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_core_riaknode.js.html#l443"><code>lib&#x2F;core&#x2F;riaknode.js:443</code></a>
+            Defined in: <a href="../files/lib_core_riaknode.js.html#l448"><code>lib&#x2F;core&#x2F;riaknode.js:448</code></a>
         </div>
 
             Module: <a href="../modules/Core.html">Core</a>
@@ -152,42 +154,42 @@
     <p>A Builder for constructing RiakNode instances.</p>
 <p>Rather than having to manually construct the <strong>options</strong> and instantiating
 a RiakNode directly, this builder may be used.</p>
-<pre class="code prettyprint"><code> var riakNode = new RiakNode.Builder().withRemotePort(9999).build();
-</code></pre>
+<pre class="code prettyprint"><code> var riakNode = new RiakNode.Builder().withRemotePort(9999).build();</code></pre>
+
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_RiakNode.Builder" class="method item">
-            <h3 class="name"><code>RiakNode.Builder</code></h3>
+<div id="method_RiakNode.Builder" class="method item">
+    <h3 class="name"><code>RiakNode.Builder</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_core_riaknode.js.html#l448"><code>lib&#x2F;core&#x2F;riaknode.js:448</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
         
-                <span class="paren">()</span>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_core_riaknode.js.html#l443"><code>lib&#x2F;core&#x2F;riaknode.js:443</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-        
-        
-        
-        </div>
+    </div>
+
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -220,6 +222,10 @@ a RiakNode directly, this builder may be used.</p>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_withConnectionTimeout">withConnectionTimeout</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_withCork">withCork</a>
 
                             </li>
                             <li class="index-item method">
@@ -274,7 +280,7 @@ a RiakNode directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l561"><code>lib&#x2F;core&#x2F;riaknode.js:561</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l578"><code>lib&#x2F;core&#x2F;riaknode.js:578</code></a>
         </p>
 
 
@@ -325,7 +331,7 @@ a RiakNode directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l572"><code>lib&#x2F;core&#x2F;riaknode.js:572</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l589"><code>lib&#x2F;core&#x2F;riaknode.js:589</code></a>
         </p>
 
 
@@ -336,8 +342,9 @@ a RiakNode directly, this builder may be used.</p>
         <p>Static factory for constructing a set of RiakNodes.</p>
 <p>To create a set of RiakNodes with the same options:</p>
 <pre class="code prettyprint"><code> var options = new RiakNode.Builder().withMinConnections(10);  
- var nodes = RiakNode.buildNodes([&#39;192.168.1.1&#39;, &#39;192.168.1.2&#39;], options); 
-</code></pre><p><strong>options</strong> can be manually constructed or an instance of the Builder.</p>
+ var nodes = RiakNode.buildNodes(['192.168.1.1', '192.168.1.2'], options); 
+</code></pre>
+<p><strong>options</strong> can be manually constructed or an instance of the Builder.</p>
 
     </div>
 
@@ -406,7 +413,7 @@ a RiakNode directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l528"><code>lib&#x2F;core&#x2F;riaknode.js:528</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l545"><code>lib&#x2F;core&#x2F;riaknode.js:545</code></a>
         </p>
 
 
@@ -563,7 +570,7 @@ a RiakNode directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l517"><code>lib&#x2F;core&#x2F;riaknode.js:517</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l522"><code>lib&#x2F;core&#x2F;riaknode.js:522</code></a>
         </p>
 
 
@@ -605,6 +612,62 @@ a RiakNode directly, this builder may be used.</p>
 
 
 </div>
+<div id="method_withCork" class="method item">
+    <h3 class="name"><code>withCork</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[cork=true]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_core_riaknode.js.html#l533"><code>lib&#x2F;core&#x2F;riaknode.js:533</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Set whether to use the cork/uncork socket functions.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[cork=true]</code>
+                        <span class="type">Boolean</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>use cork/uncork. Default is true.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_withHealthCheck" class="method item">
     <h3 class="name"><code>withHealthCheck</code></h3>
 
@@ -627,7 +690,7 @@ a RiakNode directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l546"><code>lib&#x2F;core&#x2F;riaknode.js:546</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l563"><code>lib&#x2F;core&#x2F;riaknode.js:563</code></a>
         </p>
 
 
@@ -636,9 +699,9 @@ a RiakNode directly, this builder may be used.</p>
 
     <div class="description">
         <p>Set the command to be used for a health check.</p>
-<p>If this RiakNode performs a health check, a new connection is made and 
+<p>If this RiakNode performs a health check, a new connection is made and
 a command performed. The default is to send a <a href="../classes/Ping.html" class="crosslink">Ping</a>
-command but any command can be used. If it completes successfully the 
+command but any command can be used. If it completes successfully the
 health check is considered a success.</p>
 
     </div>
@@ -690,7 +753,7 @@ health check is considered a success.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l503"><code>lib&#x2F;core&#x2F;riaknode.js:503</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l508"><code>lib&#x2F;core&#x2F;riaknode.js:508</code></a>
         </p>
 
 
@@ -700,7 +763,7 @@ health check is considered a success.</p>
     <div class="description">
         <p>Set the idle timeout used to reap inactive connections.
 Any connection that has been idle for this amount of time
-becomes eligible to be closed and discarded excluding the number 
+becomes eligible to be closed and discarded excluding the number
 set via <strong>withMinConnections()</strong>.</p>
 
     </div>
@@ -759,7 +822,7 @@ set via <strong>withMinConnections()</strong>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l492"><code>lib&#x2F;core&#x2F;riaknode.js:492</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l497"><code>lib&#x2F;core&#x2F;riaknode.js:497</code></a>
         </p>
 
 
@@ -825,7 +888,7 @@ set via <strong>withMinConnections()</strong>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l480"><code>lib&#x2F;core&#x2F;riaknode.js:480</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l485"><code>lib&#x2F;core&#x2F;riaknode.js:485</code></a>
         </p>
 
 
@@ -892,7 +955,7 @@ These connections are exempt from the idle timeout.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l458"><code>lib&#x2F;core&#x2F;riaknode.js:458</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l463"><code>lib&#x2F;core&#x2F;riaknode.js:463</code></a>
         </p>
 
 
@@ -958,7 +1021,7 @@ These connections are exempt from the idle timeout.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l469"><code>lib&#x2F;core&#x2F;riaknode.js:469</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l474"><code>lib&#x2F;core&#x2F;riaknode.js:474</code></a>
         </p>
 
 

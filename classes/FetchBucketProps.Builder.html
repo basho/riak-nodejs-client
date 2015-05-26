@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -140,7 +142,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_commands_kv_fetchbucketprops.js.html#l171"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchbucketprops.js:171</code></a>
+            Defined in: <a href="../files/lib_commands_kv_fetchbucketprops.js.html#l170"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchbucketprops.js:170</code></a>
         </div>
 
             Module: <a href="../modules/KV.html">KV</a>
@@ -153,45 +155,45 @@
 <p>Rather than having to manually construct the <strong>options</strong> and instantiating
 a FetchBucketProps directly, this builder may be used.</p>
 <pre class="code prettyprint"><code>var fetch = new FetchBucketProps.Builder()
-    .withBucketType(&#39;my_type&#39;)
-    .withBucket(&#39;myBucket&#39;)
+    .withBucketType('my_type')
+    .withBucket('myBucket')
     .withCallback(myCallback)
-    .build();
-</code></pre>
+    .build();</code></pre>
+
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_FetchBucketProps.Builder" class="method item">
-            <h3 class="name"><code>FetchBucketProps.Builder</code></h3>
+<div id="method_FetchBucketProps.Builder" class="method item">
+    <h3 class="name"><code>FetchBucketProps.Builder</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_kv_fetchbucketprops.js.html#l170"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchbucketprops.js:170</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
         
-                <span class="paren">()</span>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_commands_kv_fetchbucketprops.js.html#l171"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchbucketprops.js:171</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-        
-        
-        
-        </div>
+    </div>
+
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -253,7 +255,7 @@ a FetchBucketProps directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchbucketprops.js.html#l222"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchbucketprops.js:222</code></a>
+        <a href="../files/lib_commands_kv_fetchbucketprops.js.html#l221"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchbucketprops.js:221</code></a>
         </p>
 
 
@@ -298,7 +300,7 @@ a FetchBucketProps directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchbucketprops.js.html#l189"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchbucketprops.js:189</code></a>
+        <a href="../files/lib_commands_kv_fetchbucketprops.js.html#l188"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchbucketprops.js:188</code></a>
         </p>
 
 
@@ -353,7 +355,7 @@ a FetchBucketProps directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchbucketprops.js.html#l199"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchbucketprops.js:199</code></a>
+        <a href="../files/lib_commands_kv_fetchbucketprops.js.html#l198"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchbucketprops.js:198</code></a>
         </p>
 
 
@@ -362,7 +364,7 @@ a FetchBucketProps directly, this builder may be used.</p>
 
     <div class="description">
         <p>Set the bucket type.
-If not supplied, &#39;default&#39; is used.</p>
+If not supplied, 'default' is used.</p>
 
     </div>
 
@@ -409,7 +411,7 @@ If not supplied, &#39;default&#39; is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchbucketprops.js.html#l210"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchbucketprops.js:210</code></a>
+        <a href="../files/lib_commands_kv_fetchbucketprops.js.html#l209"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchbucketprops.js:209</code></a>
         </p>
 
 

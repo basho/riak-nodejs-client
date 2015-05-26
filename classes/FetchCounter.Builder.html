@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -140,7 +142,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_commands_crdt_fetchcounter.js.html#l125"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:125</code></a>
+            Defined in: <a href="../files/lib_commands_crdt_fetchcounter.js.html#l124"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:124</code></a>
         </div>
 
             Module: <a href="../modules/CRDT.html">CRDT</a>
@@ -153,46 +155,46 @@
 <p>Rather than having to manually construct the <strong>options</strong> and instantiating
 a FetchCounter directly, this builder may be used.</p>
 <pre class="code prettyprint"><code>var fetch = new FetchCounter.Builder()
-                 .withBucketType(&#39;myBucketType&#39;)
-                 .withBucket(&#39;myBucket&#39;)
-                 .withKey(&#39;myKey&#39;)
+                 .withBucketType('myBucketType')
+                 .withBucket('myBucket')
+                 .withKey('myKey')
                  .withCallback(myCallback)
-                 .build();
-</code></pre>
+                 .build();</code></pre>
+
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_FetchCounter.Builder" class="method item">
-            <h3 class="name"><code>FetchCounter.Builder</code></h3>
+<div id="method_FetchCounter.Builder" class="method item">
+    <h3 class="name"><code>FetchCounter.Builder</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l124"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:124</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
         
-                <span class="paren">()</span>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_commands_crdt_fetchcounter.js.html#l125"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:125</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-        
-        
-        
-        </div>
+    </div>
+
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -274,7 +276,7 @@ a FetchCounter directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l248"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:248</code></a>
+        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l247"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:247</code></a>
         </p>
 
 
@@ -319,7 +321,7 @@ a FetchCounter directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l210"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:210</code></a>
+        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l209"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:209</code></a>
         </p>
 
 
@@ -329,9 +331,9 @@ a FetchCounter directly, this builder may be used.</p>
     <div class="description">
         <p>Set the basic_quorum value.
 The parameter controls whether a read request should return early in
-some fail cases. 
+some fail cases.
 E.g. If a quorum of nodes has already
-returned notfound/error, don&#39;t wait around for the rest.</p>
+returned notfound/error, don't wait around for the rest.</p>
 
     </div>
 
@@ -378,7 +380,7 @@ returned notfound/error, don&#39;t wait around for the rest.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l145"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:145</code></a>
+        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l144"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:144</code></a>
         </p>
 
 
@@ -433,7 +435,7 @@ returned notfound/error, don&#39;t wait around for the rest.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l155"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:155</code></a>
+        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l154"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:154</code></a>
         </p>
 
 
@@ -442,7 +444,7 @@ returned notfound/error, don&#39;t wait around for the rest.</p>
 
     <div class="description">
         <p>Set the bucket type.
-If not supplied, &#39;default&#39; is used.</p>
+If not supplied, 'default' is used.</p>
 
     </div>
 
@@ -489,7 +491,7 @@ If not supplied, &#39;default&#39; is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l234"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:234</code></a>
+        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l233"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:233</code></a>
         </p>
 
 
@@ -584,7 +586,7 @@ If not supplied, &#39;default&#39; is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l166"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:166</code></a>
+        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l165"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:165</code></a>
         </p>
 
 
@@ -639,7 +641,7 @@ If not supplied, &#39;default&#39; is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l187"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:187</code></a>
+        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l186"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:186</code></a>
         </p>
 
 
@@ -695,7 +697,7 @@ If not asSet the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l176"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:176</code></a>
+        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l175"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:175</code></a>
         </p>
 
 
@@ -751,7 +753,7 @@ If not asSet the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l224"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:224</code></a>
+        <a href="../files/lib_commands_crdt_fetchcounter.js.html#l223"><code>lib&#x2F;commands&#x2F;crdt&#x2F;fetchcounter.js:223</code></a>
         </p>
 
 

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -140,7 +142,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_commands_kv_deletevalue.js.html#l146"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:146</code></a>
+            Defined in: <a href="../files/lib_commands_kv_deletevalue.js.html#l145"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:145</code></a>
         </div>
 
             Module: <a href="../modules/KV.html">KV</a>
@@ -153,46 +155,46 @@
 <p>Rather than having to manually construct the <strong>options</strong> and instantiating
 a DeleteValue directly, this builder may be used.</p>
 <pre class="code prettyprint"><code>var deleteValue = new DeleteValue.Builder()
-     .withBucket(&#39;myBucket&#39;)
-     .withKey(&#39;myKey&#39;)
+     .withBucket('myBucket')
+     .withKey('myKey')
      .withVClock(vclock)
      .withCallback(callback)
-     .build();
-</code></pre>
+     .build();</code></pre>
+
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_DeleteValue.Builder" class="method item">
-            <h3 class="name"><code>DeleteValue.Builder</code></h3>
+<div id="method_DeleteValue.Builder" class="method item">
+    <h3 class="name"><code>DeleteValue.Builder</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l145"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:145</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
         
-                <span class="paren">()</span>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_commands_kv_deletevalue.js.html#l146"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:146</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-        
-        
-        
-        </div>
+    </div>
+
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -251,6 +253,10 @@ a DeleteValue directly, this builder may be used.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_withTimeout">withTimeout</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_withVClock">withVClock</a>
 
                             </li>
@@ -286,7 +292,7 @@ a DeleteValue directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_deletevalue.js.html#l300"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:300</code></a>
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l299"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:299</code></a>
         </p>
 
 
@@ -333,7 +339,7 @@ a DeleteValue directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_deletevalue.js.html#l168"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:168</code></a>
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l167"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:167</code></a>
         </p>
 
 
@@ -388,7 +394,7 @@ a DeleteValue directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_deletevalue.js.html#l178"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:178</code></a>
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l177"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:177</code></a>
         </p>
 
 
@@ -397,7 +403,7 @@ a DeleteValue directly, this builder may be used.</p>
 
     <div class="description">
         <p>Set the bucket type.
-If not supplied, &#39;default&#39; is used.</p>
+If not supplied, 'default' is used.</p>
 
     </div>
 
@@ -444,7 +450,7 @@ If not supplied, &#39;default&#39; is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_deletevalue.js.html#l288"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:288</code></a>
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l287"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:287</code></a>
         </p>
 
 
@@ -521,7 +527,7 @@ If not supplied, &#39;default&#39; is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_deletevalue.js.html#l233"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:233</code></a>
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l232"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:232</code></a>
         </p>
 
 
@@ -578,7 +584,7 @@ If not set the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_deletevalue.js.html#l189"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:189</code></a>
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l188"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:188</code></a>
         </p>
 
 
@@ -633,7 +639,7 @@ If not set the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_deletevalue.js.html#l210"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:210</code></a>
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l209"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:209</code></a>
         </p>
 
 
@@ -689,7 +695,7 @@ If not asSet the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_deletevalue.js.html#l245"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:245</code></a>
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l244"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:244</code></a>
         </p>
 
 
@@ -746,7 +752,7 @@ If not set the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_deletevalue.js.html#l199"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:199</code></a>
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l198"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:198</code></a>
         </p>
 
 
@@ -802,7 +808,7 @@ If not asSet the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_deletevalue.js.html#l257"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:257</code></a>
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l256"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:256</code></a>
         </p>
 
 
@@ -836,6 +842,61 @@ Quorum for both operations (get and put) involved in deleting an object .</p>
 
 
 </div>
+<div id="method_withTimeout" class="method item">
+    <h3 class="name"><code>withTimeout</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>timeout</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l277"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:277</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Set a timeout for this operation.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">timeout</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>a timeout in milliseconds.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_withVClock" class="method item">
     <h3 class="name"><code>withVClock</code></h3>
 
@@ -857,7 +918,7 @@ Quorum for both operations (get and put) involved in deleting an object .</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_deletevalue.js.html#l268"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:268</code></a>
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l267"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:267</code></a>
         </p>
 
 
@@ -913,7 +974,7 @@ If not set siblings may be created depending on bucket properties.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_deletevalue.js.html#l221"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:221</code></a>
+        <a href="../files/lib_commands_kv_deletevalue.js.html#l220"><code>lib&#x2F;commands&#x2F;kv&#x2F;deletevalue.js:220</code></a>
         </p>
 
 

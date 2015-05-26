@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -154,235 +156,249 @@
 a Riak node in a Riak cluster.</p>
 <p><strong>options</strong> is an object with the following defaults:</p>
 <pre class="code prettyprint"><code>{ 
-  remoteAdddress: &#39;127.0.0.1&#39;,
+  remoteAdddress: '127.0.0.1',
   remotePort: 8087,
   maxConnections: 10000,
   minConnections: 1,
   idleTimeout: 3000,
-  connectionTimeout: 0
+  connectionTimeout: 0,
+  cork: true
 }
-</code></pre><p>As a convenience a builder class is provided;</p>
+</code></pre>
+<p>As a convenience a builder class is provided;</p>
 <pre class="code prettyprint"><code>var newNode = new RiakNode.Builder().withMinConnections(10).build(); 
-</code></pre><p>See <a href="../classes/RiakNode.Builder.html" class="crosslink">RiakNode.Builder</a></p>
+</code></pre>
+<p>See <a href="../classes/RiakNode.Builder.html" class="crosslink">RiakNode.Builder</a></p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_RiakNode" class="method item">
-            <h3 class="name"><code>RiakNode</code></h3>
-        
-                <div class="args">
-                    <span class="paren">(</span><ul class="args-list inline commas">
-                        <li class="arg">
-                                <code>options</code>
-                        </li>
-                    </ul><span class="paren">)</span>
-                </div>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_core_riaknode.js.html#l30"><code>lib&#x2F;core&#x2F;riaknode.js:30</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-                <div class="params">
-                    <h4>Parameters:</h4>
-        
-                    <ul class="params-list">
-                        <li class="param">
-                                <code class="param-name">options</code>
-                                <span class="type">Object</span>
-        
-        
-                            <div class="param-description">
-                                <p>The options for this RiakNode.</p>
-        
-                            </div>
-        
-                                <ul class="params-list">
-                                    <li class="param">
-                                            <code class="param-name optional">[remoteAddress=127.0.0.1]</code>
-                                            <span class="type">String</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>The address for this node. Can also be a FQDN.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[remotePort=8087]</code>
-                                            <span class="type">Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>The port to connect to.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[minConnections=1]</code>
-                                            <span class="type">Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Set the minimum number of active connections to maintain.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[maxConnections=10000]</code>
-                                            <span class="type">Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Set the maximum number of connections allowed.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[idleTimeout=1000]</code>
-                                            <span class="type">Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Set the idle timeout used to reap inactive connections.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[connectionTimeout=0]</code>
-                                            <span class="type">Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Set the connection timeout used when making new connections.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[auth]</code>
-                                            <span class="type">Object</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Set the authentication information for connections made by this node.</p>
-        
-                                        </div>
-        
-                                            <ul class="params-list">
-                                                <li class="param">
-                                                        <code class="param-name">user</code>
-                                                        <span class="type">String</span>
-        
-                                                    <div class="param-description">
-                                                        Riak username.
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name optional">[password]</code>
-                                                        <span class="type">String</span>
-                                                        <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                                    <div class="param-description">
-                                                        Riak password. Not required if using user cert.
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name optional">[pfx]</code>
-                                                        <span class="type">String | Buffer</span>
-                                                        <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                                    <div class="param-description">
-                                                        A string or buffer holding the PFX or PKCS12 encoded private key, certificate and CA certificates.
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name optional">[key]</code>
-                                                        <span class="type">String | Buffer</span>
-                                                        <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                                    <div class="param-description">
-                                                        A string holding the PEM encoded private key.
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name optional">[passphrase]</code>
-                                                        <span class="type">String</span>
-                                                        <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                                    <div class="param-description">
-                                                        A string of passphrase for the private key or pfx.
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name optional">[cert]</code>
-                                                        <span class="type">String | Buffer</span>
-                                                        <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                                    <div class="param-description">
-                                                        A string holding the PEM encoded certificate.
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name optional">[ca]</code>
-                                                        <span class="type">String | String | Buffer</span>
-                                                        <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                                    <div class="param-description">
-                                                        Either a string or list of strings of PEM encoded CA certificates to trust.
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name optional">[crl]</code>
-                                                        <span class="type">String | String | Buffer</span>
-                                                        <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                                    <div class="param-description">
-                                                        Either a string or list of strings of PEM encoded CRLs (Certificate Revocation List).
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name optional">[rejectUnauthorized]</code>
-                                                        <span class="type">Boolean</span>
-                                                        <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                                    <div class="param-description">
-                                                        A boolean indicating whether a server should automatically reject clients with invalid certificates. Only applies to servers with requestCert enabled.
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                    </li>
-                                </ul>
-                        </li>
-                    </ul>
-                </div>
-        
-        
-        
+<div id="method_RiakNode" class="method item">
+    <h3 class="name"><code>RiakNode</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
         </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_core_riaknode.js.html#l30"><code>lib&#x2F;core&#x2F;riaknode.js:30</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>The options for this RiakNode.</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name optional">[remoteAddress=127.0.0.1]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The address for this node. Can also be a FQDN.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[remotePort=8087]</code>
+                                    <span class="type">Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The port to connect to.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[minConnections=1]</code>
+                                    <span class="type">Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Set the minimum number of active connections to maintain.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[maxConnections=10000]</code>
+                                    <span class="type">Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Set the maximum number of connections allowed.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[idleTimeout=1000]</code>
+                                    <span class="type">Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Set the idle timeout used to reap inactive connections.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[connectionTimeout=0]</code>
+                                    <span class="type">Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Set the connection timeout used when making new connections.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[auth]</code>
+                                    <span class="type">Object</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Set the authentication information for connections made by this node.</p>
+
+                                </div>
+
+                                    <ul class="params-list">
+                                        <li class="param">
+                                                <code class="param-name">user</code>
+                                                <span class="type">String</span>
+
+                                            <div class="param-description">
+                                                Riak username.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[password]</code>
+                                                <span class="type">String</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                Riak password. Not required if using user cert.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[pfx]</code>
+                                                <span class="type">String | Buffer</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                A string or buffer holding the PFX or PKCS12 encoded private key, certificate and CA certificates.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[key]</code>
+                                                <span class="type">String | Buffer</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                A string holding the PEM encoded private key.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[passphrase]</code>
+                                                <span class="type">String</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                A string of passphrase for the private key or pfx.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[cert]</code>
+                                                <span class="type">String | Buffer</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                A string holding the PEM encoded certificate.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[ca]</code>
+                                                <span class="type">String | String | Buffer</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                Either a string or list of strings of PEM encoded CA certificates to trust.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[crl]</code>
+                                                <span class="type">String | String | Buffer</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                Either a string or list of strings of PEM encoded CRLs (Certificate Revocation List).
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name optional">[rejectUnauthorized]</code>
+                                                <span class="type">Boolean</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                            <div class="param-description">
+                                                A boolean indicating whether a server should automatically reject clients with invalid certificates. Only applies to servers with requestCert enabled.
+                                            </div>
+                                        </li>
+                                    </ul>
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[cork]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Use 'cork' on all sockets. Default is true.</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -473,7 +489,7 @@ a Riak node in a Riak cluster.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l197"><code>lib&#x2F;core&#x2F;riaknode.js:197</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l201"><code>lib&#x2F;core&#x2F;riaknode.js:201</code></a>
         </p>
 
 
@@ -534,7 +550,7 @@ a Riak node in a Riak cluster.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l108"><code>lib&#x2F;core&#x2F;riaknode.js:108</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l111"><code>lib&#x2F;core&#x2F;riaknode.js:111</code></a>
         </p>
 
 
@@ -565,7 +581,7 @@ a Riak node in a Riak cluster.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l161"><code>lib&#x2F;core&#x2F;riaknode.js:161</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l165"><code>lib&#x2F;core&#x2F;riaknode.js:165</code></a>
         </p>
 
 
@@ -599,7 +615,7 @@ a Riak node in a Riak cluster.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_core_riaknode.js.html#l370"><code>lib&#x2F;core&#x2F;riaknode.js:370</code></a>
+                            <a href="../files/lib_core_riaknode.js.html#l374"><code>lib&#x2F;core&#x2F;riaknode.js:374</code></a>
                             </p>
                     
                     
@@ -614,7 +630,8 @@ a Riak node in a Riak cluster.</p>
                     RiakNode.State.HEALTH_CHECKING
                     RiakNode.State.SHUTTING_DOWN
                     RiakNode.State.SHUTDOWN
-                    </code></pre><p>See: <a href="../classes/RiakNode.html#event_stateChange" class="crosslink">stateChange</a></p>
+                    </code></pre>
+                    <p>See: <a href="../classes/RiakNode.html#event_stateChange" class="crosslink">stateChange</a></p>
                     
                         </div>
                     
@@ -638,7 +655,7 @@ a Riak node in a Riak cluster.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_core_riaknode.js.html#l435"><code>lib&#x2F;core&#x2F;riaknode.js:435</code></a>
+                            <a href="../files/lib_core_riaknode.js.html#l440"><code>lib&#x2F;core&#x2F;riaknode.js:440</code></a>
                             </p>
                     
                     
@@ -695,7 +712,7 @@ a Riak node in a Riak cluster.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_core_riaknode.js.html#l427"><code>lib&#x2F;core&#x2F;riaknode.js:427</code></a>
+                            <a href="../files/lib_core_riaknode.js.html#l432"><code>lib&#x2F;core&#x2F;riaknode.js:432</code></a>
                             </p>
                     
                     

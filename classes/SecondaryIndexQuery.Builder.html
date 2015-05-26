@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -140,7 +142,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l202"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:202</code></a>
+            Defined in: <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l199"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:199</code></a>
         </div>
 
             Module: <a href="../modules/KV.html">KV</a>
@@ -153,46 +155,46 @@
 <p>Rather than having to manually construct the <strong>options</strong> and instantiating
 a SecondaryIndexQuery directly, this builder may be used.</p>
 <pre class="code prettyprint"><code>var query = new SecondaryIndexQuery.Builder()
-             .withBucket(&#39;myBucket&#39;)
-             .withIndexName(&#39;email_bin&#39;)
-             .withIndexKey(&#39;roach@basho.com&#39;)
+             .withBucket('myBucket')
+             .withIndexName('email_bin')
+             .withIndexKey('roach@basho.com')
              .withCallback(myCallback)
-             .build();
-</code></pre>
+             .build();</code></pre>
+
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_SecondaryIndexQuery.Builder" class="method item">
-            <h3 class="name"><code>SecondaryIndexQuery.Builder</code></h3>
+<div id="method_SecondaryIndexQuery.Builder" class="method item">
+    <h3 class="name"><code>SecondaryIndexQuery.Builder</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l199"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:199</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
         
-                <span class="paren">()</span>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l202"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:202</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-        
-        
-        
-        </div>
+    </div>
+
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -290,7 +292,7 @@ a SecondaryIndexQuery directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l372"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:372</code></a>
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l369"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:369</code></a>
         </p>
 
 
@@ -335,7 +337,7 @@ a SecondaryIndexQuery directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l222"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:222</code></a>
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l219"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:219</code></a>
         </p>
 
 
@@ -390,7 +392,7 @@ a SecondaryIndexQuery directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l243"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:243</code></a>
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l240"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:240</code></a>
         </p>
 
 
@@ -445,7 +447,7 @@ a SecondaryIndexQuery directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l232"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:232</code></a>
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l229"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:229</code></a>
         </p>
 
 
@@ -454,7 +456,7 @@ a SecondaryIndexQuery directly, this builder may be used.</p>
 
     <div class="description">
         <p>Set the bucket type.
-If not supplied, &#39;default&#39; is used.</p>
+If not supplied, 'default' is used.</p>
 
     </div>
 
@@ -501,7 +503,7 @@ If not supplied, &#39;default&#39; is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l328"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:328</code></a>
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l325"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:325</code></a>
         </p>
 
 
@@ -604,7 +606,7 @@ If not supplied, &#39;default&#39; is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l306"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:306</code></a>
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l303"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:303</code></a>
         </p>
 
 
@@ -661,7 +663,7 @@ by a previous query.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l253"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:253</code></a>
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l250"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:250</code></a>
         </p>
 
 
@@ -717,7 +719,7 @@ Note that you can only set a single key, or a range.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l288"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:288</code></a>
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l285"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:285</code></a>
         </p>
 
 
@@ -726,11 +728,11 @@ Note that you can only set a single key, or a range.</p>
 
     <div class="description">
         <p>Set the maximum number of results returned by the query.</p>
-<p>When asking for large result sets, it is often desirable to ask the 
-servers to return chunks of results instead of a firehose. 
-You can do so using this method, where maxResults is the number of 
-results you&#39;d like to receive.</p>
-<p>Assuming more keys are available, a continuation value will be included 
+<p>When asking for large result sets, it is often desirable to ask the
+servers to return chunks of results instead of a firehose.
+You can do so using this method, where maxResults is the number of
+results you'd like to receive.</p>
+<p>Assuming more keys are available, a continuation value will be included
 in the results to allow the client to request the next page.</p>
 
     </div>
@@ -778,7 +780,7 @@ in the results to allow the client to request the next page.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l357"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:357</code></a>
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l354"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:354</code></a>
         </p>
 
 
@@ -787,11 +789,11 @@ in the results to allow the client to request the next page.</p>
 
     <div class="description">
         <p>Set whether to sort the results of a non-paginated 2i query.
-If you are not using pagination (setting withMaxResults()) the 
+If you are not using pagination (setting withMaxResults()) the
 default behavior in Riak is to not sort the result set.
 Setting this to true will sort the results before returning them.
-<strong>Note that this is not recommended for queries that could return a large
-result set; the overhead in Riak is substantial. </strong></p>
+__Note that this is not recommended for queries that could return a large
+result set; the overhead in Riak is substantial. __</p>
 
     </div>
 
@@ -841,7 +843,7 @@ result set; the overhead in Riak is substantial. </strong></p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l264"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:264</code></a>
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l261"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:261</code></a>
         </p>
 
 
@@ -907,7 +909,7 @@ result set; the overhead in Riak is substantial. </strong></p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l276"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:276</code></a>
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l273"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:273</code></a>
         </p>
 
 
@@ -917,7 +919,7 @@ result set; the overhead in Riak is substantial. </strong></p>
     <div class="description">
         <p>Set whether to return the index keys with the Riak object keys.
 Setting this to true will return both the index key and the Riak
-object&#39;s key. The default is false (only to return the Riak object keys).</p>
+object's key. The default is false (only to return the Riak object keys).</p>
 
     </div>
 
@@ -964,7 +966,7 @@ object&#39;s key. The default is false (only to return the Riak object keys).</p
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l343"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:343</code></a>
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l340"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:340</code></a>
         </p>
 
 
@@ -974,8 +976,8 @@ object&#39;s key. The default is false (only to return the Riak object keys).</p
     <div class="description">
         <p>Stream the results.
 Setting this to true will cause you callback to be called as the results
-are returned from Riak. Set to false the result set will be buffered and 
-delevered via a single call to your callback. Note that on large result sets 
+are returned from Riak. Set to false the result set will be buffered and
+delevered via a single call to your callback. Note that on large result sets
 this is very memory intensive.</p>
 
     </div>
@@ -1024,7 +1026,7 @@ this is very memory intensive.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l318"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:318</code></a>
+        <a href="../files/lib_commands_kv_secondaryindexquery.js.html#l315"><code>lib&#x2F;commands&#x2F;kv&#x2F;secondaryindexquery.js:315</code></a>
         </p>
 
 

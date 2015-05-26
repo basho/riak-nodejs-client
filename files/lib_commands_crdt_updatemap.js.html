@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -175,10 +177,10 @@ var FetchMap = require(&#x27;./fetchmap&#x27;);
 
 /**
  * Command used to update a Map in Riak.
- * 
- * As a convenience, a builder method is provided as well as an object with 
+ *
+ * As a convenience, a builder method is provided as well as an object with
  * a fluent API for constructing the update.
- * 
+ *
  *     var mapOp = new UpdateMap.MapOperation();
  *     mapOp.incrementCounter(&#x27;counter_1&#x27;, 50)
  *         .addToSet(&#x27;set_1&#x27;, &#x27;set_value_1&#x27;)
@@ -187,9 +189,9 @@ var FetchMap = require(&#x27;./fetchmap&#x27;);
  *         .map(&#x27;inner_map&#x27;)
  *             .incrementCounter(&#x27;counter_1&#x27;, 50)
  *             .addToSet(&#x27;set_2&#x27;, &#x27;set_value_2&#x27;);
- *         
+ *
  * See {{#crossLink &quot;UpdateMap.MapOperation&quot;}}UpdateMap.MapOperation{{/crossLink}}
- *         
+ *
  *     var update = new UpdateMap.Builder()
  *               .withBucketType(&#x27;maps&#x27;)
  *               .withBucket(&#x27;myBucket&#x27;)
@@ -218,63 +220,63 @@ var FetchMap = require(&#x27;./fetchmap&#x27;);
  * @param {String} callback.err An error message. Will be null if no error.
  * @param {Object} callback.response The response from Riak. Will be null if returnBody is not set.
  * @param {String} callback.response.generatedKey If no key was supplied, Riak will generate and return one here.
- * @param {Buffer} callback.response.context An opaque context to be used in any subsequent modification of the map.  
- * @param {Object} callback.response.map The map in Riak, converted to a JS object. 
+ * @param {Buffer} callback.response.context An opaque context to be used in any subsequent modification of the map.
+ * @param {Object} callback.response.map The map in Riak, converted to a JS object.
  * @extends CommandBase
  */
 function UpdateMap(options, callback) {
     CommandBase.call(this, &#x27;DtUpdateReq&#x27;, &#x27;DtUpdateResp&#x27;, callback);
     var self = this;
     Joi.validate(options, schema, function(err, options) {
-       
+
         if (err) {
             throw err;
         }
-        
+
         if (options.op._hasRemoves() &amp;&amp; options.context === null) {
             throw &#x27;When doing any removes a context must be provided.&#x27;;
         }
-    
+
         self.options = options;
-    
+
     });
-    
+
     this.remainingTries = 1;
 }
 
 inherits(UpdateMap, CommandBase);
 
 UpdateMap.prototype.constructPbRequest = function() {
-  
+
     var protobuf = this.getPbReqBuilder();
-    
+
     protobuf.setBucket(new Buffer(this.options.bucket));
     protobuf.setType(new Buffer(this.options.bucketType));
     // key can be null to have Riak generate it.
-    if (this.options.key !== null) {
+    if (this.options.key) {
         protobuf.setKey(new Buffer(this.options.key));
     }
-    
+
     protobuf.setTimeout(this.options.timeout);
     protobuf.setW(this.options.w);
     protobuf.setPw(this.options.pw);
     protobuf.setDw(this.options.dw);
     protobuf.setReturnBody(this.options.returnBody);
-    
+
     protobuf.setContext(this.options.context);
-    
+
     var dtOp = new DtOp();
-    
+
     var pbMapOp = new MapOp();
-    
+
     this._populate(this.options.op, pbMapOp);
-    
+
     dtOp.setMapOp(pbMapOp);
-    
+
     protobuf.setOp(dtOp);
-    
+
     return protobuf;
-    
+
 };
 
 UpdateMap.prototype.onSuccess = function(dtUpdateResp) {
@@ -289,14 +291,22 @@ UpdateMap.prototype.onSuccess = function(dtUpdateResp) {
         response = { generatedKey: key,
                 context: dtUpdateResp.getContext().toBuffer(),
                 map: FetchMap.parsePbResponse(dtUpdateResp.map_value, this.options.setsAsBuffers) };
-        
+
     }
     this._callback(null, response);
     return true;
-    
+
 };
 
 UpdateMap.prototype._populate = function(mapOp, pbMapOp) {
+    function maybeConvertStringToBuffer(value) {
+        var rv = value;
+        if (typeof value === &#x27;string&#x27; || value instanceof String) {
+            rv = new Buffer(value);
+        }
+        return rv;
+    }
+
     var i;
     var field;
     var update;
@@ -332,7 +342,7 @@ UpdateMap.prototype._populate = function(mapOp, pbMapOp) {
             pbMapOp.removes.push(field);
         }
     }
-    
+
     for (i = 0; i &lt; mapOp.counters.increment.length; i++) {
         update = new MapUpdate();
         field = new MapField();
@@ -352,10 +362,7 @@ UpdateMap.prototype._populate = function(mapOp, pbMapOp) {
         field.setType(MapField.MapFieldType.SET);
         setOp = new SetOp();
         for (j = 0; j &lt; mapOp.sets.adds[i].add.length; j++) {
-            v = mapOp.sets.adds[i].add[j];
-            if (typeof v === &#x27;string&#x27;) {
-                v = new Buffer(v);
-            }
+            v = maybeConvertStringToBuffer(mapOp.sets.adds[i].add[j]);
             setOp.adds.push(v);
         }
         update.setField(field);
@@ -369,10 +376,7 @@ UpdateMap.prototype._populate = function(mapOp, pbMapOp) {
         field.setType(MapField.MapFieldType.SET);
         setOp = new SetOp();
         for (j = 0; j &lt; mapOp.sets.removes[i].remove.length; j++) {
-            v = mapOp.sets.removes[i].remove[j];
-            if (typeof v === &#x27;string&#x27;) {
-                v = new Buffer(v);
-            }
+            v = maybeConvertStringToBuffer(mapOp.sets.removes[i].remove[j]);
             setOp.removes.push(v);
         }
         update.setField(field);
@@ -385,9 +389,10 @@ UpdateMap.prototype._populate = function(mapOp, pbMapOp) {
         field.setName(new Buffer(mapOp.registers.set[i].key));
         field.setType(MapField.MapFieldType.REGISTER);
         update.setField(field);
-        update.setRegisterOp(mapOp.registers.set[i].value);
+        v = maybeConvertStringToBuffer(mapOp.registers.set[i].value);
+        update.setRegisterOp(v);
         pbMapOp.updates.push(update);
-    } 
+    }
     for (i = 0; i &lt; mapOp.flags.set.length; i++) {
         update = new MapUpdate();
         field = new MapField();
@@ -400,7 +405,7 @@ UpdateMap.prototype._populate = function(mapOp, pbMapOp) {
             update.setFlagOp(MapUpdate.FlagOp.DISABLE);
         }
         pbMapOp.updates.push(update);
-    } 
+    }
     for (i = 0; i &lt; mapOp.maps.modify.length; i++) {
         update = new MapUpdate();
         field = new MapField();
@@ -418,7 +423,6 @@ var schema = Joi.object().keys({
     bucket: Joi.string().required(),
     bucketType: Joi.string().required(),
     key: Joi.string().optional(),
-    callback: Joi.func().required(),
     op: Joi.object().type(MapOperation).required(),
     w: Joi.number().default(null).optional(),
     dw: Joi.number().default(null).optional(),
@@ -426,16 +430,16 @@ var schema = Joi.object().keys({
     returnBody: Joi.boolean().default(true).optional(),
     setsAsBuffers: Joi.boolean().default(false).optional(),
     timeout: Joi.number().default(null).optional(),
-    context: Joi.binary().default(null).optional()    
+    context: Joi.binary().default(null).optional()
 });
 
 
 /**
  * A builder for constructing UpdateMap instances.
- * 
+ *
  * Rather than having to manually construct the __options__ and instantiating
  * a UpdateMap directly, this builder may be used.
- * 
+ *
  *     var update = new UpdateMap.Builder()
  *               .withBucketType(&#x27;counters&#x27;)
  *               .withBucket(&#x27;myBucket&#x27;)
@@ -443,16 +447,16 @@ var schema = Joi.object().keys({
  *               .withMapOperation(mapOp)
  *               .withCallback(callback)
  *               .build();
- *       
+ *
  * See {{#crossLink &quot;UpdateMap.MapOperation&quot;}}UpdateMap.MapOperation{{/crossLink}}
- *       
+ *
  * @class UpdateMap.Builder
  * @constructor
  */
 function Builder() {}
 
 Builder.prototype = {
-  
+
     /**
      * Set the bucket.
      * @method withBucket
@@ -512,8 +516,8 @@ Builder.prototype = {
      * @param {String} callback.err An error message. Will be null if no error.
      * @param {Object} callback.response The response from Riak. Will be null if returnBody is not set.
      * @param {String} callback.response.generatedKey If no key was supplied, Riak will generate and return one here.
-     * @param {Buffer} callback.response.context An opaque context to be used in any subsequent modification of the map.  
-     * @param {Object} callback.response.map The map in Riak, converted to a JS object. 
+     * @param {Buffer} callback.response.context An opaque context to be used in any subsequent modification of the map.
+     * @param {Object} callback.response.map The map in Riak, converted to a JS object.
      * @chainable
      */
     withCallback : function(callback) {
@@ -559,7 +563,7 @@ Builder.prototype = {
     /**
     * Return the counter after updating.
     * @method withReturnBody
-    * @param {boolean} returnBody true to return the counter. 
+    * @param {boolean} returnBody true to return the counter.
     * @chainable
     */
     withReturnBody: function(returnBody) {
@@ -569,7 +573,7 @@ Builder.prototype = {
     /**
      * Return sets as arrays of Buffers rather than strings.
      * By default the contents of sets are converted to strings. Setting this
-     * to true will cause this not to occur and the raw bytes returned 
+     * to true will cause this not to occur and the raw bytes returned
      * as Buffer objects. Note this is only used with the returnBody option.
      * @method withSetsAsBuffers
      * @param {Boolean} setsAsBuffers true to not convert set contents to strings.
@@ -595,16 +599,18 @@ Builder.prototype = {
      * @return {UpdateMap}
      */
     build : function() {
-        return new UpdateMap(this, this.callback);
+        var cb = this.callback;
+        delete this.callback;
+        return new UpdateMap(this, cb);
     }
-    
+
 };
 
 /**
  * Class that encapsulates modifications to a Map in Riak.
- * 
+ *
  * Rather than manually constructing this yourself, a fluent API is provided.
- * 
+ *
  *     var mapOp = new UpdateMap.MapOperation();
  *     mapOp.incrementCounter(&#x27;counter_1&#x27;, 50)
  *         .addToSet(&#x27;set_1&#x27;, &#x27;set_value_1&#x27;)
@@ -613,12 +619,11 @@ Builder.prototype = {
  *         .map(&#x27;inner_map&#x27;)
  *             .incrementCounter(&#x27;counter_1&#x27;, 50)
  *             .addToSet(&#x27;set_2&#x27;, &#x27;set_value_2&#x27;);
- *             
+ *
  * @class UpdateMap.MapOperation
  * @constructor
  */
 function MapOperation() {
-    
     this.counters = { increment: [], remove : []};
     this.maps = { modify: [], remove: []};
     this.sets = { adds: [], removes: [], remove: []};
@@ -627,12 +632,12 @@ function MapOperation() {
 }
 
 MapOperation.prototype = {
-  
+
     /**
-     * Increment (and/or create) a counter inside the map. 
+     * Increment (and/or create) a counter inside the map.
      * @method incrementCounter
      * @param {String} key the key in the map for this counter.
-     * @param {Number} increment the amount to increment (or decrement if negative) 
+     * @param {Number} increment the amount to increment (or decrement if negative)
      * @chainable
      */
     incrementCounter : function(key, increment) {
@@ -640,7 +645,7 @@ MapOperation.prototype = {
         var op = this._getOp(this.counters.increment, key);
         if (op) {
             op.increment += increment;
-        } else { 
+        } else {
             this.counters.increment.push({key: key, increment: increment});
         }
         return this;
@@ -679,7 +684,7 @@ MapOperation.prototype = {
      * Remove a value from a set in a map.
      * @method removeFromSet
      * @param {String} key the key for the set in the map.
-     * @param {String|Buffer} value the value to add to the set.
+     * @param {String|Buffer} value the value to remove from the set.
      * @chainable
      */
     removeFromSet : function(key, value) {
@@ -710,7 +715,7 @@ MapOperation.prototype = {
      * Set a register in a map.
      * @method setRegister
      * @param {String} key the key for the register in the map.
-     * @param {Buffer} value the value for the register.
+     * @param {String|Buffer} value the value for the register.
      * @chainable}
      */
     setRegister : function(key, value) {
@@ -769,9 +774,9 @@ MapOperation.prototype = {
     /**
      * Access/create a map inside the current one.
      * This adds/accesses a nested map and returns a reference to another
-     * MapOperation that applies to it. You can then modify the componets of 
+     * MapOperation that applies to it. You can then modify the components of
      * that map;
-     * 
+     *
      *     mapOp.map(&#x27;inner_map&#x27;)
      *         .incrementCounter(&#x27;counter_1&#x27;, 50)
      *         .addToSet(&#x27;set_2&#x27;, &#x27;set_value_2&#x27;);
@@ -785,7 +790,7 @@ MapOperation.prototype = {
         if (map) {
             return map;
         } else {
-            map = new MapOperation(this);
+            map = new MapOperation();
             this.maps.modify.push({key: key, map: map});
             return map;
         }
@@ -826,12 +831,12 @@ MapOperation.prototype = {
         return null;
     },
     _hasRemoves : function() {
-        
+
         var nestedHaveRemoves = false;
         for (var i = 0; i &lt; this.maps.modify.length; i++) {
             nestedHaveRemoves |= this.maps.modify[i].map._hasRemoves();
         }
-        
+
         return nestedHaveRemoves ||
                 this.counters.remove.length ||
                 this.maps.remove.length ||
@@ -840,12 +845,13 @@ MapOperation.prototype = {
                 this.registers.remove.length ||
                 this.flags.remove.length;
     }
-    
+
 };
 
 module.exports = UpdateMap;
 module.exports.MapOperation = MapOperation;
 module.exports.Builder = Builder;
+
 
     </pre>
 </div>

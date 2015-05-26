@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -140,7 +142,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_commands_kv_fetchvalue.js.html#l183"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:183</code></a>
+            Defined in: <a href="../files/lib_commands_kv_fetchvalue.js.html#l182"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:182</code></a>
         </div>
 
             Module: <a href="../modules/KV.html">KV</a>
@@ -153,44 +155,44 @@
 <p>Rather than having to manually construct the <strong>options</strong> and instantiating
 a FetchValue directly, this builder may be used.</p>
 <pre class="code prettyprint"><code>var fetchValue = new FetchValue.Builder()
-     .withBucket(&#39;myBucket&#39;)
-     .withKey(&#39;myKey&#39;)
-     .build();
-</code></pre>
+     .withBucket('myBucket')
+     .withKey('myKey')
+     .build();</code></pre>
+
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_FetchValue.Builder" class="method item">
-            <h3 class="name"><code>FetchValue.Builder</code></h3>
+<div id="method_FetchValue.Builder" class="method item">
+    <h3 class="name"><code>FetchValue.Builder</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l182"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:182</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
         
-                <span class="paren">()</span>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_commands_kv_fetchvalue.js.html#l183"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:183</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-        
-        
-        
-        </div>
+    </div>
+
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -296,7 +298,7 @@ a FetchValue directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l367"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:367</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l366"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:366</code></a>
         </p>
 
 
@@ -341,7 +343,7 @@ a FetchValue directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l267"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:267</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l266"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:266</code></a>
         </p>
 
 
@@ -351,9 +353,9 @@ a FetchValue directly, this builder may be used.</p>
     <div class="description">
         <p>Set the basic_quorum value.
 The parameter controls whether a read request should return early in
-some fail cases. 
+some fail cases.
 E.g. If a quorum of nodes has already
-returned notfound/error, don&#39;t wait around for the rest.</p>
+returned notfound/error, don't wait around for the rest.</p>
 
     </div>
 
@@ -400,7 +402,7 @@ returned notfound/error, don&#39;t wait around for the rest.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l201"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:201</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l200"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:200</code></a>
         </p>
 
 
@@ -455,7 +457,7 @@ returned notfound/error, don&#39;t wait around for the rest.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l211"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:211</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l210"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:210</code></a>
         </p>
 
 
@@ -464,7 +466,7 @@ returned notfound/error, don&#39;t wait around for the rest.</p>
 
     <div class="description">
         <p>Set the bucket type.
-If not supplied, &#39;default&#39; is used.</p>
+If not supplied, 'default' is used.</p>
 
     </div>
 
@@ -511,7 +513,7 @@ If not supplied, &#39;default&#39; is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l324"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:324</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l323"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:323</code></a>
         </p>
 
 
@@ -622,7 +624,7 @@ If not supplied, &#39;default&#39; is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l340"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:340</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l339"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:339</code></a>
         </p>
 
 
@@ -632,7 +634,7 @@ If not supplied, &#39;default&#39; is used.</p>
     <div class="description">
         <p>Provide a conflict resolver to resolve siblings.
 If siblings are present Riak will return all of them. The provided
-function will be used to resolve these to a single response. </p>
+function will be used to resolve these to a single response.</p>
 <p>If a conflict resolver is not provided all siblings will be returned.</p>
 
     </div>
@@ -682,7 +684,7 @@ function will be used to resolve these to a single response. </p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l354"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:354</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l353"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:353</code></a>
         </p>
 
 
@@ -692,7 +694,7 @@ function will be used to resolve these to a single response. </p>
     <div class="description">
         <p>Convert the value stored in Riak to a JS object.
 Values are stored in Riak as bytes. Setting this to true will
-convert the value to a JS object using JSON.parse() before 
+convert the value to a JS object using JSON.parse() before
 passing them to the conflict resolver.</p>
 
     </div>
@@ -742,7 +744,7 @@ passing them to the conflict resolver.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l291"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:291</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l290"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:290</code></a>
         </p>
 
 
@@ -799,7 +801,7 @@ will be asSet to null.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l303"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:303</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l302"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:302</code></a>
         </p>
 
 
@@ -854,7 +856,7 @@ will be asSet to null.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l222"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:222</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l221"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:221</code></a>
         </p>
 
 
@@ -909,7 +911,7 @@ will be asSet to null.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l254"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:254</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l253"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:253</code></a>
         </p>
 
 
@@ -967,7 +969,7 @@ If not asSet the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l243"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:243</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l242"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:242</code></a>
         </p>
 
 
@@ -1023,7 +1025,7 @@ If not asSet the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l232"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:232</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l231"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:231</code></a>
         </p>
 
 
@@ -1079,7 +1081,7 @@ If not asSet the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l281"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:281</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l280"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:280</code></a>
         </p>
 
 
@@ -1134,7 +1136,7 @@ If not asSet the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_fetchvalue.js.html#l313"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:313</code></a>
+        <a href="../files/lib_commands_kv_fetchvalue.js.html#l312"><code>lib&#x2F;commands&#x2F;kv&#x2F;fetchvalue.js:312</code></a>
         </p>
 
 

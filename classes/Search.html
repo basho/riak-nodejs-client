@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -160,7 +162,8 @@
                  .withNumRows(10)
                  .withCallback(myCallback)
                  .build();
-</code></pre><p>See <a href="../classes/Search.Builder.html" class="crosslink">Search.Builder</a></p>
+</code></pre>
+<p>See <a href="../classes/Search.Builder.html" class="crosslink">Search.Builder</a></p>
 <p>For more information on Riak Search (Yokozuna/Solr) see:
 <a href="http://docs.basho.com/riak/latest/dev/using/search/">Using Search</a></p>
 
@@ -168,231 +171,231 @@
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_Search" class="method item">
-            <h3 class="name"><code>Search</code></h3>
-        
-                <div class="args">
-                    <span class="paren">(</span><ul class="args-list inline commas">
-                        <li class="arg">
-                                <code>options</code>
-                        </li>
-                        <li class="arg">
-                                <code>callback</code>
-                        </li>
-                    </ul><span class="paren">)</span>
-                </div>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/lib_commands_yokozuna_search.js.html#l28"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:28</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-                <div class="params">
-                    <h4>Parameters:</h4>
-        
-                    <ul class="params-list">
-                        <li class="param">
-                                <code class="param-name">options</code>
-                                <span class="type">Object</span>
-        
-        
-                            <div class="param-description">
-                                <p>The options for this command.</p>
-        
-                            </div>
-        
-                                <ul class="params-list">
-                                    <li class="param">
-                                            <code class="param-name">indexName</code>
-                                            <span class="type">String</span>
-        
-                                        <div class="param-description">
-                                            <p>Set the index name used for this search.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name">q</code>
-                                            <span class="type">String</span>
-        
-                                        <div class="param-description">
-                                            <p>Set the Solr query string.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[maxRows=10]</code>
-                                            <span class="type">Number</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Specify the maximum number of results to return.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[start=0]</code>
-                                            <span class="type">String</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Specify the starting result of the query.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[sortField]</code>
-                                            <span class="type">String</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Sort the results on the specified field name.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[filterQuery]</code>
-                                            <span class="type">String</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Filters the search by an additional query scoped to inline fields.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[defaultField]</code>
-                                            <span class="type">String</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Use the provided field as the default. Overrides the “default_field” setting in the schema file.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[defaultOperation]</code>
-                                            <span class="type">String</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Set the default operation. Allowed settings are either “and” or “or”.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[returnFields]</code>
-                                            <span class="type">String</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Only return the provided fields.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[presort]</code>
-                                            <span class="type">String</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-        
-                                        <div class="param-description">
-                                            <p>Sorts all of the results. Either &quot;key&quot; or &quot;score&quot;.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                </ul>
-                        </li>
-                        <li class="param">
-                                <code class="param-name">callback</code>
-                                <span class="type">Function</span>
-        
-        
-                            <div class="param-description">
-                                <p>The callback to execute when the comman completes.</p>
-        
-                            </div>
-        
-                                <ul class="params-list">
-                                    <li class="param">
-                                            <code class="param-name">err</code>
-                                            <span class="type">String</span>
-        
-                                        <div class="param-description">
-                                            <p>an error message. Will be null if no error.</p>
-        
-                                        </div>
-        
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name">response</code>
-                                            <span class="type">Object</span>
-        
-                                        <div class="param-description">
-                                            <p>the response from Riak (Solr)</p>
-        
-                                        </div>
-        
-                                            <ul class="params-list">
-                                                <li class="param">
-                                                        <code class="param-name">numFound</code>
-                                                        <span class="type">Number</span>
-        
-                                                    <div class="param-description">
-                                                        The number of documents found.
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name">maxScore</code>
-                                                        <span class="type">Number</span>
-        
-                                                    <div class="param-description">
-                                                        The max score value.
-                                                    </div>
-                                                </li>
-                                                <li class="param">
-                                                        <code class="param-name">docs</code>
-                                                        <span class="type">Object</span>
-        
-                                                    <div class="param-description">
-                                                        Array of documents returned from Solr.
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                    </li>
-                                </ul>
-                        </li>
-                    </ul>
-                </div>
-        
-        
-        
+<div id="method_Search" class="method item">
+    <h3 class="name"><code>Search</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
         </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_yokozuna_search.js.html#l28"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:28</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>The options for this command.</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">indexName</code>
+                                    <span class="type">String</span>
+
+                                <div class="param-description">
+                                    <p>Set the index name used for this search.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">q</code>
+                                    <span class="type">String</span>
+
+                                <div class="param-description">
+                                    <p>Set the Solr query string.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[maxRows=10]</code>
+                                    <span class="type">Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Specify the maximum number of results to return.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[start=0]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Specify the starting result of the query.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[sortField]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Sort the results on the specified field name.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[filterQuery]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Filters the search by an additional query scoped to inline fields.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[defaultField]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Use the provided field as the default. Overrides the “default_field” setting in the schema file.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[defaultOperation]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Set the default operation. Allowed settings are either “and” or “or”.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[returnFields]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Only return the provided fields.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[presort]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Sorts all of the results. Either &quot;key&quot; or &quot;score&quot;.</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                        <p>The callback to execute when the comman completes.</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">err</code>
+                                    <span class="type">String</span>
+
+                                <div class="param-description">
+                                    <p>an error message. Will be null if no error.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">response</code>
+                                    <span class="type">Object</span>
+
+                                <div class="param-description">
+                                    <p>the response from Riak (Solr)</p>
+
+                                </div>
+
+                                    <ul class="params-list">
+                                        <li class="param">
+                                                <code class="param-name">numFound</code>
+                                                <span class="type">Number</span>
+
+                                            <div class="param-description">
+                                                The number of documents found.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name">maxScore</code>
+                                                <span class="type">Number</span>
+
+                                            <div class="param-description">
+                                                The max score value.
+                                            </div>
+                                        </li>
+                                        <li class="param">
+                                                <code class="param-name">docs</code>
+                                                <span class="type">Object</span>
+
+                                            <div class="param-description">
+                                                Array of documents returned from Solr.
+                                            </div>
+                                        </li>
+                                    </ul>
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
     </div>
 
 <div id="classdocs" class="tabview">
@@ -479,9 +482,8 @@
     </div>
 
     <div class="description">
-        <p>Construct and return the Riak protocol buffer message for this command.
-Subclasses must override this method.</p>
-
+        Construct and return the Riak protocol buffer message for this command.
+Subclasses must override this method.
     </div>
 
 
@@ -490,8 +492,7 @@ Subclasses must override this method.</p>
 
             <div class="returns-description">
                         <span class="type">Object</span>:
-                    <p>a protocol buffer message builder</p>
-
+                    a protocol buffer message builder
             </div>
         </div>
 
@@ -524,8 +525,7 @@ Subclasses must override this method.</p>
     </div>
 
     <div class="description">
-        <p>Fires the user&#39;s callback with the arguments passed in.</p>
-
+        Fires the user's callback with the arguments passed in.
     </div>
 
 
@@ -534,8 +534,7 @@ Subclasses must override this method.</p>
 
             <div class="returns-description">
                         <span class="type">Function</span>:
-                    <p>the user supplied callback</p>
-
+                    the user supplied callback
             </div>
         </div>
 
@@ -568,8 +567,7 @@ Subclasses must override this method.</p>
     </div>
 
     <div class="description">
-        <p>Returns the expected response code for this command.</p>
-
+        Returns the expected response code for this command.
     </div>
 
 
@@ -578,8 +576,7 @@ Subclasses must override this method.</p>
 
             <div class="returns-description">
                         <span class="type">Number</span>:
-                    <p>the expected response code for this command.</p>
-
+                    the expected response code for this command.
             </div>
         </div>
 
@@ -612,9 +609,8 @@ Subclasses must override this method.</p>
     </div>
 
     <div class="description">
-        <p>Returns and instance of the protocol buffer message builder for this command.
-This is determined via the pbRequestName passed to the constructor.</p>
-
+        Returns and instance of the protocol buffer message builder for this command.
+This is determined via the pbRequestName passed to the constructor.
     </div>
 
 
@@ -623,8 +619,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
 
             <div class="returns-description">
                         <span class="type">Object</span>:
-                    <p>the builder for the protocol buffer message to be sent for this command</p>
-
+                    the builder for the protocol buffer message to be sent for this command
             </div>
         </div>
 
@@ -657,8 +652,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
     </div>
 
     <div class="description">
-        <p>Returns the encoded protobuf and message header.</p>
-
+        Returns the encoded protobuf and message header.
     </div>
 
 
@@ -667,8 +661,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
 
             <div class="returns-description">
                         <span class="type">Object</span>:
-                    <p>object containing the header and encoded protobuf</p>
-
+                    object containing the header and encoded protobuf
             </div>
         </div>
 
@@ -704,8 +697,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
     </div>
 
     <div class="description">
-        <p>Called by Riaknode if an error occurs executing the command and all retries are exhausted.</p>
-
+        Called by Riaknode if an error occurs executing the command and all retries are exhausted.
     </div>
 
         <div class="params">
@@ -718,8 +710,7 @@ This is determined via the pbRequestName passed to the constructor.</p>
 
 
                     <div class="param-description">
-                        <p>an error message</p>
-
+                        an error message
                     </div>
 
                 </li>
@@ -759,9 +750,8 @@ This is determined via the pbRequestName passed to the constructor.</p>
     </div>
 
     <div class="description">
-        <p>Called by RiakNode when a RpbErrorResp is received and all retries are exhausted.
-Commands must override this method.</p>
-
+        Called by RiakNode when a RpbErrorResp is received and all retries are exhausted.
+Commands must override this method.
     </div>
 
         <div class="params">
@@ -774,8 +764,7 @@ Commands must override this method.</p>
 
 
                     <div class="param-description">
-                        <p>the RpbErrorResp protocol buffer</p>
-
+                        the RpbErrorResp protocol buffer
                     </div>
 
                 </li>
@@ -818,9 +807,8 @@ Commands must override this method.</p>
     </div>
 
     <div class="description">
-        <p>Called by RiakNode when a response is received.
-Subclasses must override this method.</p>
-
+        Called by RiakNode when a response is received.
+Subclasses must override this method.
     </div>
 
         <div class="params">
@@ -833,8 +821,7 @@ Subclasses must override this method.</p>
 
 
                     <div class="param-description">
-                        <p>the protocol buffer received from riak</p>
-
+                        the protocol buffer received from riak
                     </div>
 
                 </li>
@@ -846,8 +833,7 @@ Subclasses must override this method.</p>
 
             <div class="returns-description">
                         <span class="type">Boolean</span>:
-                    <p>true if not streaming or the last response has been received, false otherwise.</p>
-
+                    true if not streaming or the last response has been received, false otherwise.
             </div>
         </div>
 

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -168,17 +170,17 @@ var Joi = require(&#x27;joi&#x27;);
 
 /**
  * Command used to store data in Riak.
- * 
+ *
  * As a convenience, a builder class is provided:
- * 
+ *
  *      var storeValue = new StoreValue.Builder()
  *          .withBucket(&#x27;myBucket&#x27;)
  *          .withKey(&#x27;myKey&#x27;)
  *          .withContent(myObj);
  *          .build();
- *          
+ *
  * See {{#crossLink &quot;StoreValue.Builder&quot;}}StoreValue.Builder{{/crossLink}}
- * 
+ *
  * @class StoreValue
  * @constructor
  * @param {Object} options The options for this command.
@@ -210,33 +212,32 @@ function StoreValue(options, callback) {
     CommandBase.call(this, &#x27;RpbPutReq&#x27;, &#x27;RpbPutResp&#x27;, callback);
     var self = this;
     Joi.validate(options, schema, function(err, options) {
-       
+
         if (err) {
             throw err;
         }
-    
+
         self.options = options;
-        
+
         if (!options.bucket &amp;&amp; ((options.value instanceof RiakObject) &amp;&amp; !options.value.bucket)) {
             throw &#x27;Must supply bucket directly or via a RiakObject&#x27;;
         }
-        
+
     });
-    
+
     this.remainingTries = 1;
 }
 
 inherits(StoreValue, CommandBase);
 
 StoreValue.prototype.constructPbRequest = function() {
-    
+
     var protobuf = this.getPbReqBuilder();
-    
-    // RiakObject values take precidence 
+
+    // RiakObject values take precidence
     var value = this.options.value;
-    
+
     if (value instanceof RiakObject) {
-    
         if (value.hasOwnProperty(&#x27;vclock&#x27;)) {
             this.options.vclock = value.vclock;
         }
@@ -252,12 +253,14 @@ StoreValue.prototype.constructPbRequest = function() {
     } else {
         value = new RiakObject().setValue(this.options.value);
     }
-    
+
     protobuf.setBucket(new Buffer(this.options.bucket));
     protobuf.setType(new Buffer(this.options.bucketType));
+
     if (this.options.key) {
         protobuf.setKey(new Buffer(this.options.key));
     }
+
     protobuf.setVclock(this.options.vclock);
     protobuf.setW(this.options.w);
     protobuf.setDw(this.options.dw);
@@ -267,29 +270,26 @@ StoreValue.prototype.constructPbRequest = function() {
     protobuf.setTimeout(this.options.timeout);
     protobuf.setIfNotModified(this.options.ifNotModified);
     protobuf.setIfNoneMatch(this.options.ifNoneMatch);
-    
-    
-    
+
     var rpbContent = RiakObject.populateRpbContentFromRiakObject(value);
-    
     protobuf.setContent(rpbContent);
-    
+
     return protobuf;
-    
+
 };
 
 StoreValue.prototype.onSuccess = function(rpbPutResp) {
-    
+
     // unless returnHead or returnMeta were specified, or if no key was supplied
-    // Riak doesn&#x27;t return any data 
+    // Riak doesn&#x27;t return any data
     var response = {};
     if (rpbPutResp) {
-                
+
         var responseKey = null;
 
         if (rpbPutResp.getKey()) {
             responseKey = rpbPutResp.getKey().toString(&#x27;utf8&#x27;);
-        } 
+        }
 
         var values;
         var vclock = null;
@@ -304,14 +304,14 @@ StoreValue.prototype.onSuccess = function(rpbPutResp) {
                 riakObject.bucket = this.options.bucket;
                 riakObject.bucketType = this.options.bucketType;
                 riakObject.key = responseKey ? responseKey : this.options.key;
-                
+
                 values[i] = riakObject;
             }
-            
+
             if (this.options.conflictResolver) {
                 values = [this.options.conflictResolver(values)];
             }
-            
+
         } else {
             values =[];
         }
@@ -321,17 +321,16 @@ StoreValue.prototype.onSuccess = function(rpbPutResp) {
     } else {
         response = { generatedKey: null, vclock: null, values: [] };
     }
-    
+
     this._callback(null, response);
-    
-    return true;    
+
+    return true;
 };
 
 var schema = Joi.object().keys({
     bucket: Joi.string().optional(),
     bucketType: Joi.string().default(&#x27;default&#x27;),
     key: Joi.string().default(null).optional(),
-    callback: Joi.func().strip().optional(),
     value: Joi.any().required(),
     w: Joi.number().default(null).optional(),
     dw: Joi.number().default(null).optional(),
@@ -349,23 +348,23 @@ var schema = Joi.object().keys({
 
 /**
  * A builder for constructing StoreValue instances.
- * 
+ *
  * Rather than having to manually construct the __options__ and instantiating
  * a StoreValue directly, this builder may be used.
- * 
+ *
  *     var storeValue = new StoreValue.Builder()
  *          .withBucket(&#x27;myBucket&#x27;)
  *          .withKey(&#x27;myKey&#x27;)
  *          .withContent(myObj);
  *          .build();
- *       
+ *
  * @class StoreValue.Builder
  * @constructor
  */
 function Builder() {}
 
 Builder.prototype = {
-    
+
     /**
      * Set the bucket.
      * Note that this can also be provided via RiakObject passed in via withContent() and
@@ -418,7 +417,7 @@ Builder.prototype = {
     },
     /**
      * Set the vector clock.
-     * Convenience method if a RiakObject is not supplied as content. 
+     * Convenience method if a RiakObject is not supplied as content.
      * Note that a vclock supplied via RiakObject in withContent() will have precendence over this.
      * @method withVClock
      * @param {Buffer} vclock a vector clock returned from a previous fetch
@@ -465,10 +464,10 @@ Builder.prototype = {
     },
     /**
     * Return the object after storing (including any siblings).
-    * If siblings are present, an optional conflictResolver can be 
+    * If siblings are present, an optional conflictResolver can be
     * provided to resolve them.
     * @method withReturnBody
-    * @param {boolean} returnBody true to return the object. 
+    * @param {boolean} returnBody true to return the object.
     * @param {boolean} [convertToJs] convert the returned value(s) to JS objects using JSON.parse()
     * @param {Function} [conflictResolver] the conflict resolver
     * @param {RiakObject[]} conflictResolver.riakobjects array of RiakObjects returned by Riak.
@@ -484,19 +483,19 @@ Builder.prototype = {
                 this.conflictResolver = arg;
             }
         }
-        
+
         return this;
     },
     /**
     * Return the metadata after storing the value.
-    * 
-    * Causes Riak to only return the metadata for the object. 
-    * If siblings are present, an optional conflictResolver can be 
+    *
+    * Causes Riak to only return the metadata for the object.
+    * If siblings are present, an optional conflictResolver can be
     * provided to resolve them.
     * @method withReturnHead
     * @param {Function} [conflictResolver] the conflict resolver
     * @param {RiakObject[]} conflictResolver.riakobjects array of RiakObjects returned by Riak.
-    * @param {boolean} returnHead true to return only metadata. 
+    * @param {boolean} returnHead true to return only metadata.
     * @chainable
     */
     withReturnHead : function(returnHead, conflictResolver) {
@@ -507,7 +506,7 @@ Builder.prototype = {
     /**
     * Set the if_not_modified flag.
     *
-    * Setting this to true means to store the value only if the 
+    * Setting this to true means to store the value only if the
     * supplied vclock matches the one in the database.
     *
     * Be aware there are several cases where this may not actually happen.
@@ -522,11 +521,11 @@ Builder.prototype = {
     },
     /**
     * Set the if_none_match flag.
-    * 
-    * Setting this to true means store the value only if this 
-    * bucket/key combination are not already defined. 
-    * 
-    * Be aware that there are several cases where 
+    *
+    * Setting this to true means store the value only if this
+    * bucket/key combination are not already defined.
+    *
+    * Be aware that there are several cases where
     * this may not actually happen. Use of this option is discouraged.
     * @method withIfNoneMatch
     * @param {boolean} ifNoneMatch the if_non-match value.
@@ -567,11 +566,12 @@ Builder.prototype = {
      * @return {StoreValue} a StoreValue instance
      */
     build : function() {
-        return new StoreValue(this, this.callback);
+        var cb = this.callback;
+        delete this.callback;
+        return new StoreValue(this, cb);
     }
-    
-};
 
+};
 
 module.exports = StoreValue;
 module.exports.Builder = Builder;

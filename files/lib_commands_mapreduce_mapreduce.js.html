@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -168,11 +170,11 @@ var Joi = require(&#x27;joi&#x27;);
 
 /**
  * Command used to perform a Map-Reduce query in Riak.
- * 
- * The Riak Map-Reduce API uses JSON for its query. 
- * 
+ *
+ * The Riak Map-Reduce API uses JSON for its query.
+ *
  * A typical map-reduce query (JSON) will look like:
- * 
+ *
  *     {
  *       &quot;inputs&quot;: &quot;goog&quot;,
  *       &quot;query&quot;: [
@@ -191,36 +193,36 @@ var Joi = require(&#x27;joi&#x27;);
  *         }
  *       ]
  *     }
- * 
+ *
  * For more info see:
  * [Loading Data and Running MapReduce](http://docs.basho.com/riak/latest/tutorials/fast-track/Loading-Data-and-Running-MapReduce-Queries/)
- * 
+ *
  * @class MapReduce
  * @constructor
  * @param {String} query The Map-Reduce query. This is a string containing JSON.
- * @param {Function} callback The callback to be executed by this command. 
+ * @param {Function} callback The callback to be executed by this command.
  * @param {String} callback.err An error message. Will be null if no error.
- * @param {Object} callback.response the response from Riak. 
+ * @param {Object} callback.response the response from Riak.
  * @param {Boolean} callback.response.done True if the entire response has been received.
  * @param {Number} callback.response.phase The phase the response is from.
- * @param {Object[]} callback.response.response The results. 
+ * @param {Object[]} callback.response.response The results.
  * @param {Boolean} [stream=true] stream the results or accumulate before calling callback.
  * @extends CommandBase
  */
 function MapReduce(query, callback, stream) {
     CommandBase.call(this, &#x27;RpbMapRedReq&#x27;, &#x27;RpbMapRedResp&#x27;, callback);
-    
+
     var self = this;
-    Joi.validate({ query: query, stream: stream}, schema, function(err, options) {
-       
+    Joi.validate({ query: query, stream: stream }, schema, function(err, options) {
+
         if (err) {
             throw err;
         }
-    
+
         self.query = options.query;
         self.stream = options.stream;
     });
-    
+
     this.remainingTries = 1;
     if (!this.stream) {
         this.response = {};
@@ -230,19 +232,19 @@ function MapReduce(query, callback, stream) {
 inherits(MapReduce, CommandBase);
 
 MapReduce.prototype.constructPbRequest = function() {
-  
+
     var protobuf = this.getPbReqBuilder();
-    
+
     protobuf.setContentType(new Buffer(&#x27;application/json&#x27;));
     protobuf.setRequest(new Buffer(this.query));
-    
+
     return protobuf;
-    
+
 };
 
 MapReduce.prototype.onSuccess = function(rpbMapRedResp) {
-    
-    
+
+
      var done = rpbMapRedResp.done ? true : false;
     // The last message is usually empty with only &#x27;done&#x27; when streaming
     var responseArray = null;
@@ -250,16 +252,16 @@ MapReduce.prototype.onSuccess = function(rpbMapRedResp) {
     if (rpbMapRedResp.getResponse()) {
         responseArray = JSON.parse(rpbMapRedResp.getResponse().toString(&#x27;utf8&#x27;));
         phase = rpbMapRedResp.phase ? rpbMapRedResp.phase : 0;
-    
+
         if (!this.stream) {
             if (!this.response[&#x27;phase_&#x27; + phase]) {
                 this.response[&#x27;phase_&#x27; + phase] = responseArray;
             } else {
                 Array.prototype.push.apply(this.response[&#x27;phase_&#x27; + phase], responseArray);
             }
-        } 
+        }
     }
-    
+
     if (!this.stream) {
         if (done) {
             this.response.done = true;
@@ -268,18 +270,18 @@ MapReduce.prototype.onSuccess = function(rpbMapRedResp) {
     } else {
         this._callback(null, { phase : phase, response: responseArray, done: done});
     }
-    
+
     return done;
-    
+
 };
 
 var schema = Joi.object().keys({
     query: Joi.string().required(),
-    callback: Joi.func().strip().optional(),
     stream: Joi.boolean().default(true).optional()
 });
 
 module.exports = MapReduce;
+
 
     </pre>
 </div>

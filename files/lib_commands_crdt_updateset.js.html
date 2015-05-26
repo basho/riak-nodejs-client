@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -173,9 +175,9 @@ var SetOp = Rpb.getProtoFor(&#x27;SetOp&#x27;);
 
 /**
  * Command used tp update a set in Riak
- * 
+ *
  * As a convenience, a builder class is provided:
- * 
+ *
  *        var update = new UpdateSet.Builder()
  *               .withBucketType(&#x27;sets&#x27;)
  *               .withBucket(&#x27;myBucket&#x27;)
@@ -183,7 +185,7 @@ var SetOp = Rpb.getProtoFor(&#x27;SetOp&#x27;);
  *               .withAdditions([&#x27;this&#x27;, &#x27;that&#x27;, &#x27;other&#x27;])
  *               .withCallback(callback)
  *               .build();
- *               
+ *
  * See {{#crossLink &quot;UpdateSet.Builder&quot;}}UpdateSet.Builder{{/crossLink}}
  * @class UpdateSet
  * @constructor
@@ -204,7 +206,7 @@ var SetOp = Rpb.getProtoFor(&#x27;SetOp&#x27;);
  * @param {String} callback.err An error message. Will ne null if no error.
  * @param {Object} callback.response The response from Riak. will be null if returnBody is not set.
  * @param {String} callback.response.generatedKey If no key was supplied, Riak will generate and return one here.
- * @param {Buffer} callback.response.context An opaque context to be used in any subsequent modification of the set. 
+ * @param {Buffer} callback.response.context An opaque context to be used in any subsequent modification of the set.
  * @param {String[]|Buffer[]} callback.response.values An array holding the values in the set. String by default, Buffers if setsAsBuffers was used.
  * @extends CommandBase
  */
@@ -250,11 +252,11 @@ UpdateSet.prototype.constructPbRequest = function() {
     // namespace
     protobuf.setType(pbuf(this, &#x27;bucketType&#x27;));
     protobuf.setBucket(pbuf(this, &#x27;bucket&#x27;));
-    
+
     if (this.options.key) {
         protobuf.setKey(pbuf(this, &#x27;key&#x27;));
     }
-    
+
     // operation
     var op = new DtOp();
     protobuf.setOp(op);
@@ -278,14 +280,14 @@ UpdateSet.prototype.constructPbRequest = function() {
 
 UpdateSet.prototype.onSuccess = function(dtUpdateResp) {
     var response = null;
-    
+
     // dtUpdateResp will be null if returnBody is not set
     if (dtUpdateResp) {
         var key = null;
         if (dtUpdateResp.getKey()) {
             key = dtUpdateResp.getKey().toString(&#x27;utf8&#x27;);
         }
-        
+
         var valuesToReturn = new Array(dtUpdateResp.set_value.length);
         var i;
         for (i = 0; i &lt; dtUpdateResp.set_value.length; i++) {
@@ -295,7 +297,7 @@ UpdateSet.prototype.onSuccess = function(dtUpdateResp) {
                 valuesToReturn[i] = dtUpdateResp.set_value[i].toString(&#x27;utf8&#x27;);
             }
         }
-        
+
         response = { generatedKey: key,
                 context: dtUpdateResp.getContext() ? dtUpdateResp.getContext().toBuffer() : null,
                 values: valuesToReturn };
@@ -305,8 +307,6 @@ UpdateSet.prototype.onSuccess = function(dtUpdateResp) {
 };
 
 var schema = Joi.object().keys({
-    callback: Joi.func().strip().optional(),
-
     //namespace
     bucket: Joi.string().required(),
     // bucket type is required since default probably shouldn&#x27;t have a
@@ -334,7 +334,7 @@ var schema = Joi.object().keys({
 
 /**
  * A builder for constructing UpdateSet instances.
- * 
+ *
  * Rather than having to manually construct the __options__ and instantiating
  * a UpdateSet directly, this builder may be used.
  *
@@ -358,7 +358,9 @@ Builder.prototype = {
      * @return {UpdateSet}
      */
     build: function() {
-        return new UpdateSet(this, this.callback);
+        var cb = this.callback;
+        delete this.callback;
+        return new UpdateSet(this, cb);
     }
 };
 
@@ -379,7 +381,7 @@ function bb(prop) {
  * @param {String} callback.err An error message. Will ne null if no error.
  * @param {Object} callback.response The response from Riak. will be null if returnBody is not set.
  * @param {String} callback.response.generatedKey If no key was supplied, Riak will generate and return one here.
- * @param {Buffer} callback.response.context An opaque context to be used in any subsequent modification of the set. 
+ * @param {Buffer} callback.response.context An opaque context to be used in any subsequent modification of the set.
  * @param {String[]|Buffer[]} callback.response.values An array holding the values in the set. String by default, Buffers if setsAsBuffers was used.
  */
 bb(&#x27;callback&#x27;);
@@ -416,7 +418,7 @@ bb(&#x27;context&#x27;);
 /**
 * Return sets as arrays of Buffers rather than strings.
 * By default the contents of sets are converted to strings. Setting this
-* to true will cause this not to occur and the raw bytes returned 
+* to true will cause this not to occur and the raw bytes returned
 * as Buffer objects.
 * @method withSetsAsBuffers
 * @param {Boolean} setsAsBuffers true to not convert set contents to strings.
@@ -477,7 +479,7 @@ bb(&#x27;timeout&#x27;);
 /**
  * The values you wish to add to this set.
  * @method withAdditions
- * @param {String[]|Buffer[]} additions The values to add. 
+ * @param {String[]|Buffer[]} additions The values to add.
  * @chainable
  */
 bb(&#x27;additions&#x27;);

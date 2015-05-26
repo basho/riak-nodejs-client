@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -168,58 +170,58 @@ var Joi = require(&#x27;joi&#x27;);
 
 /**
  *  Command used to fetch a counter value from Riak.
- *  
+ *
  *  As a convenience, a builder class is provided:
- *      
+ *
  *      var fetch = new FetchCounter.Builder()
  *                      .withBucketType(&#x27;myBucketType&#x27;)
  *                      .withBucket(&#x27;myBucket&#x27;)
  *                      .withKey(&#x27;myKey&#x27;)
  *                      .withCallback(myCallback)
  *                      .build();
- *                      
+ *
  * See {{#crossLink &quot;FetchCounter.Builder&quot;}}FetchCounter.Builder{{/crossLink}}
- *  
+ *
  * @class FetchCounter
  * @constructor
- * @param {Object} options The options to use for this command. 
+ * @param {Object} options The options to use for this command.
  * @param {String} options.bucketType The bucket type in Riak.
  * @param {String} options.bucket The bucket in Riak.
  * @param {String} options.key The key for the counter you want to fetch.
  * @param {Number} [options.timeout] Set a timeout in Riak for this operation.
- * @param {Number} [options.r] The R value to use for this fetch. 
+ * @param {Number} [options.r] The R value to use for this fetch.
  * @param {Number} [options.pr] The PR value to use for this fetch.
  * @param {Boolean} [options.notFoundOk] If true a vnode returning notfound for a key increments the R tally.
  * @param {Boolean} [options.useBasicQuorum] Controls whether a read request should return early in some fail cases.
  * @param {Function} callback The callback to be executed when the operation completes.
  * @param {String} callback.err An error message. Will be null if no error.
- * @param {Object} callback.response The response from Riak. 
+ * @param {Object} callback.response The response from Riak.
  * @param {Number} callback.response.counterValue The counter value in Riak.
  * @param {Boolean} callback.response.notFound True if there was no counter in Riak.
- * @extends CommandBase 
+ * @extends CommandBase
  */
 function FetchCounter(options, callback) {
     CommandBase.call(this, &#x27;DtFetchReq&#x27;, &#x27;DtFetchResp&#x27;, callback);
-    
+
     var self = this;
     Joi.validate(options, schema, function(err, options) {
-       
+
         if (err) {
             throw err;
         }
-    
+
         self.options = options;
     });
-    
+
     this.remainingTries = 1;
 }
 
 inherits(FetchCounter, CommandBase);
 
 FetchCounter.prototype.constructPbRequest = function() {
-    
+
     var protobuf = this.getPbReqBuilder();
-    
+
     protobuf.setBucket(new Buffer(this.options.bucket));
     protobuf.setType(new Buffer(this.options.bucketType));
     protobuf.setKey(new Buffer(this.options.key));
@@ -228,25 +230,25 @@ FetchCounter.prototype.constructPbRequest = function() {
     protobuf.setBasicQuorum(this.options.basicQuorum);
     protobuf.setNotfoundOk(this.options.notFoundOk);
     protobuf.setTimeout(this.options.timeout);
-    
+
     return protobuf;
-    
+
 };
 
 FetchCounter.prototype.onSuccess = function(dtFetchResp) {
-  
+
     var value = null;
     var notFound = false;
     if (dtFetchResp.getValue()) {
         // sint64 is weird. You either get the zigzag encoding, or
         // you can get the actual number via the bytebuffer.
         value = dtFetchResp.value.counter_value.toNumber();
-        
+
     } else {
         notFound = true;
     }
     this._callback(null, { counterValue: value, notFound: notFound });
-    
+
     return true;
 };
 
@@ -258,31 +260,30 @@ var schema = Joi.object().keys({
    pr: Joi.number().default(null).optional(),
    notFoundOk: Joi.boolean().default(null).optional(),
    basicQuorum: Joi.boolean().default(null).optional(),
-   timeout: Joi.number().default(null).optional(),
-   callback: Joi.func().strip().optional()
+   timeout: Joi.number().default(null).optional()
 });
 
 
 /**
  * A builder for constructing FetchCounter instances.
- * 
+ *
  * Rather than having to manually construct the __options__ and instantiating
  * a FetchCounter directly, this builder may be used.
- * 
+ *
  *     var fetch = new FetchCounter.Builder()
  *                      .withBucketType(&#x27;myBucketType&#x27;)
  *                      .withBucket(&#x27;myBucket&#x27;)
  *                      .withKey(&#x27;myKey&#x27;)
  *                      .withCallback(myCallback)
  *                      .build();
- *       
+ *
  * @class FetchCounter.Builder
  * @constructor
  */
 function Builder() {}
 
 Builder.prototype = {
-  
+
     /**
      * Set the bucket.
      * @method withBucket
@@ -351,7 +352,7 @@ Builder.prototype = {
     /**
     * Set the basic_quorum value.
     * The parameter controls whether a read request should return early in
-    * some fail cases. 
+    * some fail cases.
     * E.g. If a quorum of nodes has already
     * returned notfound/error, don&#x27;t wait around for the rest.
     * @method withBasicQuorum
@@ -392,13 +393,16 @@ Builder.prototype = {
      * @return {FetchCounter}
      */
     build : function() {
-        return new FetchCounter(this, this.callback);
+        var cb = this.callback;
+        delete this.callback;
+        return new FetchCounter(this, cb);
     }
-    
+
 };
 
 module.exports = FetchCounter;
 module.exports.Builder = Builder;
+
     </pre>
 </div>
                     </div>

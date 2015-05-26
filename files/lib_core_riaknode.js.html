@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.1.0</em>
+            <em>API Docs for: 1.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,6 +54,8 @@
                                 <li><a href="../classes/FetchIndex.Builder.html">FetchIndex.Builder</a></li>
                                 <li><a href="../classes/FetchMap.html">FetchMap</a></li>
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
+                                <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
+                                <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
@@ -182,7 +184,8 @@ var Ping = require(&#x27;../commands/ping&#x27;);
  *       maxConnections: 10000,
  *       minConnections: 1,
  *       idleTimeout: 3000,
- *       connectionTimeout: 0
+ *       connectionTimeout: 0,
+ *       cork: true
  *     }
  *     
  * As a convenience a builder class is provided;
@@ -201,6 +204,7 @@ var Ping = require(&#x27;../commands/ping&#x27;);
  * @param {Number} [options.idleTimeout=1000] Set the idle timeout used to reap inactive connections.
  * @param {Number} [options.connectionTimeout=0] Set the connection timeout used when making new connections.
  * @param {Object} [options.auth] Set the authentication information for connections made by this node.
+ * @param {Boolean} [options.cork] Use &#x27;cork&#x27; on all sockets. Default is true.
  * @param {String} options.auth.user Riak username.
  * @param {String} [options.auth.password] Riak password. Not required if using user cert.
  * @param {String|Buffer} [options.auth.pfx] A string or buffer holding the PFX or PKCS12 encoded private key, certificate and CA certificates.
@@ -236,6 +240,7 @@ function RiakNode(options) {
         self.connectionTimeout = options.connectionTimeout;
         self.state = State.CREATED;
         self.auth = options.auth;
+        self.cork = options.cork;
         self.healthCheck = options.healthCheck;
     });
     
@@ -268,7 +273,7 @@ RiakNode.prototype.start = function() {
     
     this.state = State.RUNNING;
 	logger.debug(&#x27;[RiakNode] (%s:%d) started&#x27;, this.remoteAddress, this.remotePort);
-    this.emit(&#x27;stateChange&#x27;, this, this.state);
+    this.emit(EVT_SC, this, this.state);
 };
 
 RiakNode.prototype._createNewConnection = function(postConnectFunc, postFailFunc, healthCheck) {
@@ -279,7 +284,8 @@ RiakNode.prototype._createNewConnection = function(postConnectFunc, postFailFunc
         remotePort : this.remotePort,
         connectionTimeout : this.connectionTimeout,
         auth: this.auth,
-        healthCheck: healthCheck
+        healthCheck: healthCheck,
+        cork: this.cork
     }); 
     
     var self = this;
@@ -309,7 +315,7 @@ RiakNode.prototype.stop = function() {
     clearInterval(this._expireTimer);
     this.state = State.SHUTTING_DOWN;
     logger.debug(&quot;[RiakNode] (%s:%d) shutting down.&quot;, this.remoteAddress, this.remotePort);
-    this.emit(&#x27;stateChange&#x27;, this, this.state);
+    this.emit(EVT_SC, this, this.state);
     this._shutdown();
 };
 
@@ -325,7 +331,7 @@ RiakNode.prototype._shutdown = function() {
     if (this._currentNumConnections === 0) {
         this.state = State.SHUTDOWN;
         logger.debug(&quot;[RiakNode] (%s:%d) shut down.&quot;, this.remoteAddress, this.remotePort);
-        this.emit(&#x27;stateChange&#x27;, this, this.state);
+        this.emit(EVT_SC, this, this.state);
     } else {
         logger.debug(&quot;[RiakNode] (%s:%d); Connections still in use.&quot;, this.remoteAddress, this.remotePort);
         var self = this;
@@ -358,12 +364,12 @@ RiakNode.prototype.execute = function(command) {
                     logger.debug(&quot;[RiakNode] command execution failed on node (%s:%d)&quot;, self.remoteAddress, self.remotePort);
                     if (self.state === State.RUNNING) {
                         self.state = State.HEALTH_CHECKING;
-                        self.emit(&#x27;stateChange&#x27;, self, self.state);
+                        self.emit(EVT_SC, self, self.state);
                         setImmediate(function() { self._healthCheck(); });
                     }
                     command.remainingTries--;
                     if (command.remainingTries) {
-                        self.emit(&#x27;retryCommand&#x27;, command, self);
+                        self.emit(EVT_RC, command, self);
                     } else {
                         command.onError(err);
                     }
@@ -393,7 +399,7 @@ RiakNode.prototype._responseReceived = function(conn, command, code, decoded) {
         logger.debug(&quot;[RiakNode] node (%s:%d): command &#x27;%s&#x27; recevied RpbErrorResp: %s&quot;,
             this.remoteAddress, this.remotePort, command.PbRequestName, decoded.getErrmsg().toString(&#x27;utf8&#x27;));
         if (command.remainingTries) {
-            this.emit(&#x27;retryCommand&#x27;, command, this);
+            this.emit(EVT_RC, command, this);
         } else {
             command.onRiakError(decoded);
         }
@@ -406,7 +412,7 @@ RiakNode.prototype._responseReceived = function(conn, command, code, decoded) {
                         &#x27; received &#x27; + code;
         logger.error(msg);
         if (command.remainingTries) {
-            this.emit(&#x27;retryCommand&#x27;, command, this);
+            this.emit(EVT_RC, command, this);
         } else {
             command.onError(msg);
         }
@@ -448,7 +454,7 @@ RiakNode.prototype._connectionClosed = function(conn) {
         var command = conn.command;
         command.remainingTries--;
         if (command.remainingTries) {
-            this.emit(&#x27;retryCommand&#x27;, command, this);
+            this.emit(EVT_RC, command, this);
         } else {
             command.onError(&quot;Connection closed while executing command&quot;);
         }
@@ -459,7 +465,7 @@ RiakNode.prototype._connectionClosed = function(conn) {
         // the node went down or there&#x27;s a network issue
         if (this.state !== State.HEALTH_CHECKING) {
             this.state = State.HEALTH_CHECKING;
-            this.emit(&#x27;stateChange&#x27;, this, this.state);
+            this.emit(EVT_SC, this, this.state);
             var self = this;
             setImmediate(function() {
                 self._healthCheck();
@@ -483,7 +489,7 @@ RiakNode.prototype._healthCheck = function() {
         self._returnConnectionToPool(newConn);
         self.state = State.RUNNING;
         logger.debug(&quot;RiakNode (%s:%d) healthcheck success&quot;, self.remoteAddress, self.remotePort);
-        self.emit(&#x27;stateChange&#x27;, self, self.state);
+        self.emit(EVT_SC, self, self.state);
     }, function() {
         logger.debug(&quot;RiakNode (%s:%d) failed healthcheck.&quot;, self.remoteAddress, self.remotePort);
         setTimeout(function() { self._healthCheck(); }, 30000);
@@ -549,6 +555,7 @@ var schema = Joi.object().keys({
     idleTimeout: Joi.number().min(1000).default(defaultIdleTimeout),
     connectionTimeout: Joi.number().min(1).default(defaultConnectionTimeout),
     healthCheck: Joi.object().default(defaultHealthCheck),
+    cork: Joi.boolean().default(true),
     auth: Joi.object().optional().keys({
         user: Joi.string().required(),
         password: Joi.string().allow(&#x27;&#x27;),
@@ -663,6 +670,18 @@ Builder.prototype = {
      */
     withConnectionTimeout : function(connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
+        return this;
+    },
+
+    /**
+     * Set whether to use the cork/uncork socket functions.
+     * 
+     * @method withCork
+     * @param {Boolean} [cork=true] use cork/uncork. Default is true.
+     * @chainable
+     */
+    withCork : function(cork) {
+        this.cork = cork;
         return this;
     },
     
