@@ -165,13 +165,13 @@ describe('Search - Integration', function() {
        
         var count = 0;
         var callback = function(err, resp) {
-            assert(!err, err);
-            count++;
-            if (resp.numFound === 0) {
-                if (count < 6) {
+            if (err || resp.numFound === 0) {
+                count++;
+                if (count < 10) {
                     setTimeout(searchme, 2000 * count);
                 } else {
-                    assert.fail('Search failed; ' + resp);
+                    assert(!err, err);
+                    assert.fail('Search failed: ' + resp);
                 }
             } else {
                done();
