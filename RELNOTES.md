@@ -1,6 +1,8 @@
 Release Notes
 =============
 
+* 1.2.2 - Following issues / PRs addressed:
+ * [Allow `NVal` in the `StoreIndex` command](https://github.com/basho/riak-nodejs-client/issues/60)
 * 1.2.1 - Following issues / PRs addressed:
  * [Fix missing `client.js` file](https://github.com/basho/riak-nodejs-client/issues/59)
 * 1.2 - Following issues / PRs addressed:
