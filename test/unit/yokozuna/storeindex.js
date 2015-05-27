@@ -27,6 +27,7 @@ describe('StoreIndex', function() {
             var store = new StoreIndex.Builder()
                     .withIndexName('indexName')
                     .withSchemaName('schemaName')
+                    .withNVal(5)
                     .withTimeout(60000)
                     .withCallback(function(){})
                     .build();
@@ -37,6 +38,7 @@ describe('StoreIndex', function() {
             var index = protobuf.index;
             assert.equal(index.getName().toString('utf8'), 'indexName');
             assert.equal(index.getSchema().toString('utf8'), 'schemaName');
+            assert.equal(index.getNVal(), 5);
             done();
         });
 
