@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.1</em>
+            <em>API Docs for: 1.2.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -187,6 +187,7 @@ var RpbYokozunaIndex = require(&#x27;../../protobuf/riakprotobuf&#x27;).getProto
  * @param {String} options.indexName The name of the index.
  * @param {String} [options.schemaName=_yz_default] The name of the schema for this index.
  * @param {Number} [options.timeout] Set a timeout for this operation.
+ * @param {Number} [options.nVal] The number of replicas.
  * @param {Function} callback The callback to be executed when the operation completes.
  * @param {String} callback.err An error message. Will be null if no error.
  * @param {Boolean} callback.response The operation either succeeds or errors. This will be true.
@@ -214,6 +215,7 @@ StoreIndex.prototype.constructPbRequest = function() {
     var pbIndex = new RpbYokozunaIndex();
 
     pbIndex.setName(new Buffer(this.options.indexName));
+    pbIndex.setNVal(this.options.nVal &gt; 0 ? this.options.nVal : null );
 
     if (this.options.schemaName) {
         pbIndex.setSchema(new Buffer(this.options.schemaName));
@@ -238,7 +240,8 @@ StoreIndex.prototype.onSuccess = function(RpbPutResp) {
 var schema = Joi.object().keys({
     indexName: Joi.string().required(),
     schemaName: Joi.string().default(null).optional(),
-    timeout: Joi.number().default(null).optional()
+    timeout: Joi.number().default(null).optional(),
+    nVal: Joi.number().optional()
 });
 
 /**
@@ -289,6 +292,16 @@ Builder.prototype = {
     */
     withTimeout : function(timeout) {
         this.timeout = timeout;
+        return this;
+    },
+    /**
+    * Set the nVal.
+    * @method withNVal
+    * @param {Number} nVal the number of replicas.
+    * @chainable
+    */
+    withNVal : function(nVal) {
+        this.nVal = nVal;
         return this;
     },
     /**

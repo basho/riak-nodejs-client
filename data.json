@@ -2,7 +2,7 @@
     "project": {
         "name": "basho-riak-client",
         "description": "Basho's officially supported NodeJS client for Riak",
-        "version": "1.2.1",
+        "version": "1.2.2",
         "url": "https://github.com/basho/riak-nodejs-client/wiki"
     },
     "files": {
@@ -2897,6 +2897,12 @@
                             "description": "Set a timeout for this operation.",
                             "type": "Number",
                             "optional": true
+                        },
+                        {
+                            "name": "nVal",
+                            "description": "The number of replicas.",
+                            "type": "Number",
+                            "optional": true
                         }
                     ]
                 },
@@ -2931,7 +2937,7 @@
             "module": "YZ",
             "namespace": "",
             "file": "lib/commands/yokozuna/storeindex.js",
-            "line": 101,
+            "line": 104,
             "description": "A builder for constructing StoreIndex instances.\n\nRather than having to manually construct the __options__ and instantiating\na StoreIndex directly, this builder may be used.\n\n    var store = StoreIndex.Builder()\n                 .withIndexName('index_name')\n                 .withSchemaName('my_schema')\n                 .withCallback(callback)\n                 .build();",
             "is_constructor": 1
         },
@@ -7727,7 +7733,7 @@
         },
         {
             "file": "lib/commands/yokozuna/storeindex.js",
-            "line": 120,
+            "line": 123,
             "description": "The name of the index to store.",
             "itemtype": "method",
             "name": "withIndexName",
@@ -7744,7 +7750,7 @@
         },
         {
             "file": "lib/commands/yokozuna/storeindex.js",
-            "line": 130,
+            "line": 133,
             "description": "The name of the schema to use with this index.\nIf not provided the default '_yz_default' will be used.",
             "itemtype": "method",
             "name": "withSchemaName",
@@ -7761,7 +7767,7 @@
         },
         {
             "file": "lib/commands/yokozuna/storeindex.js",
-            "line": 141,
+            "line": 144,
             "description": "Set a timeout for this operation.",
             "itemtype": "method",
             "name": "withTimeout",
@@ -7778,7 +7784,24 @@
         },
         {
             "file": "lib/commands/yokozuna/storeindex.js",
-            "line": 151,
+            "line": 154,
+            "description": "Set the nVal.",
+            "itemtype": "method",
+            "name": "withNVal",
+            "params": [
+                {
+                    "name": "nVal",
+                    "description": "the number of replicas.",
+                    "type": "Number"
+                }
+            ],
+            "chainable": 1,
+            "class": "StoreIndex.Builder",
+            "module": "YZ"
+        },
+        {
+            "file": "lib/commands/yokozuna/storeindex.js",
+            "line": 164,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -7807,7 +7830,7 @@
         },
         {
             "file": "lib/commands/yokozuna/storeindex.js",
-            "line": 163,
+            "line": 176,
             "description": "Construct a StoreIndex instance.",
             "itemtype": "method",
             "name": "build",
