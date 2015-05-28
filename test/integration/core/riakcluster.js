@@ -123,17 +123,15 @@ describe('RiakCluster - Integration', function() {
            
            var stateMe = function(state) {
                 assert.equal(typeof(state), 'number', 'stateType');
-             
-               if (state === RiakCluster.State.QUEUEING) {
-                   server.listen(1337, '127.0.0.1');
-               }
+                if (state === RiakCluster.State.QUEUEING) {
+                    server.listen(1337, '127.0.0.1');
+                }
             };
             
             cluster.on('stateChange', stateMe);
             cluster.start();
             
             var callMe = function(err, resp) {
-              
                 assert(!err, err);
                 cluster.stop();
                 server.close();
@@ -143,7 +141,6 @@ describe('RiakCluster - Integration', function() {
             var store = new StoreValue({bucket: 'b', value: 'v'}, callMe);
             
             cluster.execute(store);
-            
             
         });
         

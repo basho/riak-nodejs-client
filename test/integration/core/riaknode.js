@@ -21,9 +21,8 @@ var FetchValue = require('../../../lib/commands/kv/fetchvalue');
 var StoreValue = require('../../../lib/commands/kv/storevalue');
 
 var Net = require('net');
-//require('../../debug-log');
 
-describe('RianNode - Integration', function() {
+describe('RiakNode - Integration', function() {
    
     describe('Health checking', function() {
        
@@ -37,7 +36,6 @@ describe('RianNode - Integration', function() {
                 connects++;
                 if (connects === 1) {
                     socket.destroy();
-                    
                 } else {
 
                     socket.on('data' , function(data) {
