@@ -15,8 +15,12 @@
  */
 
 var Riak = require('../lib/client');
+
 var logger = require('winston');
 var rs = require('randomstring');
+
+var bucketType = 'no_siblings';
+var bucket = 'kv_cork_benchmarks';
 
 var strings = [];
 var i = 0;
@@ -24,9 +28,23 @@ for (i = 0; i < 32; ++i) {
     strings[i] = rs.generate((i + 1) * 1024);
 }
 
+var corkNodes = [];
+var noCorkNodes = [];
+for (var i = 17; i <= 47; i += 10) {
+    var port = 10000 + i;
+    corkNodes.push(new Riak.Node({ remoteAddress: 'riak-test', remotePort: port.toString(), cork: true }));
+    noCorkNodes.push(new Riak.Node({ remoteAddress: 'riak-test', remotePort: port.toString(), cork: false }));
+}
+
+var corkCluster = new Riak.Cluster.Builder().withRiakNodes(corkNodes).build();
+var corkClient = new Riak.Client(corkCluster);
+
+var noCorkCluster = new Riak.Cluster.Builder().withRiakNodes(noCorkNodes).build();
+var noCorkClient = new Riak.Client(noCorkCluster);
+
 i = 0;
 
-function getContent(bucketType, bucket) {
+function getContent() {
 
     ++i;
     if (i >= 32 ) {
@@ -45,11 +63,9 @@ function getContent(bucketType, bucket) {
     return robj;
 }
 
-var kv = function (options, deferred) {
+function kv(deferred, useCork) {
 
-    var client = options.client;
-    var bucketType = options.bucketType;
-    var bucket = options.bucket;
+    var client = useCork ? corkClient : noCorkClient;
 
     var f_callback = function(err, resp) {
         if (err) {
@@ -79,7 +95,7 @@ var kv = function (options, deferred) {
         }
     };
 
-    var robj = getContent(bucketType, bucket);
+    var robj = getContent();
 
     logger.debug("[benchmarks/kv] storing: %s", JSON.stringify(robj));
 
@@ -89,6 +105,24 @@ var kv = function (options, deferred) {
             .build();
 
     client.execute(store);
-};
+}
 
-module.exports = kv;
+module.exports = {
+    name: 'KV-Cork',
+    tests: [
+        {
+            name: 'with cork()',
+            defer: true,
+            fn: function (deferred) {
+                kv(deferred, true);
+            }
+        },
+        {
+            name: 'without cork()',
+            defer: true,
+            fn: function (deferred) {
+                kv(deferred, false);
+            }
+        }
+    ]
+};

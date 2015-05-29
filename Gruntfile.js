@@ -6,6 +6,10 @@ module.exports = function(grunt) {
         all: {
             src: ['benchmarks/*.js'],
             dest: 'benchmarks.csv'
+        },
+        qt: {
+            src: ['benchmarks/kv-queue-timeouts.js'],
+            dest: 'qt-benchmarks.csv'
         }
     },
     yuidoc: {
