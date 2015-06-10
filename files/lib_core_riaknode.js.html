@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.2</em>
+            <em>API Docs for: 1.3.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -217,21 +217,21 @@ var Ping = require(&#x27;../commands/ping&#x27;);
  * 
  */
 function RiakNode(options) {
-    
+
     events.EventEmitter.call(this);
-    
+
     var self = this;
-    
+
     if (options === undefined) {
         options = {};
     }
-    
+
     Joi.validate(options, schema, function(err, options) {
-       
+
         if (err) {
             throw err;
         }
-        
+
         self.remoteAddress = options.remoteAddress;
         self.remotePort = options.remotePort;
         self.minConnections = options.minConnections;
@@ -243,10 +243,10 @@ function RiakNode(options) {
         self.cork = options.cork;
         self.healthCheck = options.healthCheck;
     });
-    
+
     this._available = new LinkedList();
     this._currentNumConnections = 0;
-    
+
 }
 
 util.inherits(RiakNode, events.EventEmitter);
@@ -258,26 +258,26 @@ util.inherits(RiakNode, events.EventEmitter);
 RiakNode.prototype.start = function() {
     this._stateCheck([State.CREATED]);
     var self = this;
-   
-	logger.debug(&#x27;[RiakNode] (%s:%s) starting&#x27;, this.remoteAddress, this.remotePort); 
+
+    logger.debug(&#x27;[RiakNode] (%s:%s) starting&#x27;, this.remoteAddress, this.remotePort); 
+
     // Fire up connection pool    
     for (i = 0; i &lt; this.minConnections; i++) {
-        
         this._createNewConnection(this._returnConnectionToPool.bind(this), 
                                     function(){});
     }
-    
+
     this._expireTimer = setInterval(function() {
        self._expireIdleConnections();
     }, 30000);
-    
+
     this.state = State.RUNNING;
-	logger.debug(&#x27;[RiakNode] (%s:%d) started&#x27;, this.remoteAddress, this.remotePort);
+    logger.debug(&#x27;[RiakNode] (%s:%d) started&#x27;, this.remoteAddress, this.remotePort);
     this.emit(EVT_SC, this, this.state);
 };
 
 RiakNode.prototype._createNewConnection = function(postConnectFunc, postFailFunc, healthCheck) {
- 
+
     this._currentNumConnections++; 
     var conn = new RiakConnection({
         remoteAddress : this.remoteAddress,
@@ -287,15 +287,15 @@ RiakNode.prototype._createNewConnection = function(postConnectFunc, postFailFunc
         healthCheck: healthCheck,
         cork: this.cork
     }); 
-    
+
     var self = this;
-    
+
     conn.on(&#x27;connected&#x27;, function(conn) {
         conn.on(&#x27;responseReceived&#x27;, self._responseReceived.bind(self));
         conn.on(&#x27;connectionClosed&#x27;, self._connectionClosed.bind(self));
         postConnectFunc(conn);
     });
-        
+
     conn.on(&#x27;connectFailed&#x27;, function(conn, err){
        self._currentNumConnections--;
        postFailFunc(err);
@@ -311,7 +311,7 @@ RiakNode.prototype._createNewConnection = function(postConnectFunc, postFailFunc
  */
 RiakNode.prototype.stop = function() {
     this._stateCheck([State.RUNNING, State.HEALTH_CHECKING]);
-    
+
     clearInterval(this._expireTimer);
     this.state = State.SHUTTING_DOWN;
     logger.debug(&quot;[RiakNode] (%s:%d) shutting down.&quot;, this.remoteAddress, this.remotePort);
@@ -320,14 +320,14 @@ RiakNode.prototype.stop = function() {
 };
 
 RiakNode.prototype._shutdown = function() {
-    
+
     while (this._available.next()) {
         var conn = this._available.removeCurrent();
         this._currentNumConnections--;
         conn.close();
     }
     this._available.resetCursor();
-    
+
     if (this._currentNumConnections === 0) {
         this.state = State.SHUTDOWN;
         logger.debug(&quot;[RiakNode] (%s:%d) shut down.&quot;, this.remoteAddress, this.remotePort);
@@ -349,7 +349,7 @@ RiakNode.prototype._shutdown = function() {
  */
 RiakNode.prototype.execute = function(command) {
     this._stateCheck([State.RUNNING, State.HEALTH_CHECKING]);
-    
+
     if (this.state === State.RUNNING) {
         var conn = this._available.shift();
         var self = this;
@@ -392,7 +392,7 @@ RiakNode.prototype.execute = function(command) {
 };
 
 RiakNode.prototype._responseReceived = function(conn, command, code, decoded) {
-    
+
     command.remainingTries--;
     if (code === RiakProtobuf.getCodeFor(&#x27;RpbErrorResp&#x27;)) {
         this._returnConnectionToPool(conn);
@@ -428,11 +428,11 @@ RiakNode.prototype._responseReceived = function(conn, command, code, decoded) {
         }
         command.onSuccess(decoded);
     }
-    
+
 };
 
 RiakNode.prototype._returnConnectionToPool = function(conn) {
-    
+
     if (this.state &lt; State.SHUTTING_DOWN) {
         conn.inFlight = false;
         conn.resetBuffer();
@@ -443,7 +443,7 @@ RiakNode.prototype._returnConnectionToPool = function(conn) {
         this._currentNumConnections--;
         conn.close();
     }
-    
+
 };
 
 RiakNode.prototype._connectionClosed = function(conn) {
@@ -459,7 +459,7 @@ RiakNode.prototype._connectionClosed = function(conn) {
             command.onError(&quot;Connection closed while executing command&quot;);
         }
     }
-    
+
     if (this.state !== State.SHUTTING_DOWN) {
         // PB connections don&#x27;t time out. If one disconnects it&#x27;s highly likely
         // the node went down or there&#x27;s a network issue
@@ -481,10 +481,10 @@ RiakNode.prototype._stateCheck = function(allowedStates) {
 };
 
 RiakNode.prototype._healthCheck = function() {
-    
+
     var self = this;
     logger.debug(&quot;RiakNode (%s:%d) running health check&quot;, this.remoteAddress, this.remotePort);
-    
+
     this._createNewConnection(function(newConn) {
         self._returnConnectionToPool(newConn);
         self.state = State.RUNNING;
@@ -492,8 +492,10 @@ RiakNode.prototype._healthCheck = function() {
         self.emit(EVT_SC, self, self.state);
     }, function() {
         logger.debug(&quot;RiakNode (%s:%d) failed healthcheck.&quot;, self.remoteAddress, self.remotePort);
+        // TODO: 30 secs seems too long
         setTimeout(function() { self._healthCheck(); }, 30000);
     }, this.healthCheck);
+
 };
 
 RiakNode.prototype._expireIdleConnections = function() {
@@ -600,9 +602,9 @@ var EVT_RC = &#x27;retryCommand&#x27;;
  * @constructor
  */
 function Builder() {}
-    
+
 Builder.prototype = {
-  
+
     /**
      * Set the remote address for the RiakNode.
      * @method withRemoteAddress
@@ -613,7 +615,7 @@ Builder.prototype = {
         this.remoteAddress = address;
         return this;
     },
-    
+
     /**
      * Set the remote port for this RiakNode.
      * @method withRemotePort
@@ -624,7 +626,7 @@ Builder.prototype = {
         this.remotePort = port;
         return this;
     },
-    
+
     /**
      * Set the minimum number of active connections to maintain.
      * These connections are exempt from the idle timeout.
@@ -636,7 +638,7 @@ Builder.prototype = {
         this.minConnections = minConnections;
         return this;
     },
-    
+
     /**
      * Set the maximum number of connections allowed.
      * @method withMaxConnections
@@ -647,7 +649,7 @@ Builder.prototype = {
         this.maxConnections = maxConnections;
         return this;
     },
-    
+
     /**
      * Set the idle timeout used to reap inactive connections.
      * Any connection that has been idle for this amount of time
@@ -661,7 +663,7 @@ Builder.prototype = {
         this.idleTimeout = idleTimeout;
         return this;
     },
-    
+
     /**
      * Set the connection timeout used when making new connections.
      * @method withConnectionTimeout
@@ -684,7 +686,7 @@ Builder.prototype = {
         this.cork = cork;
         return this;
     },
-    
+
     /**
      * Set the authentication information for connections made by this node.
      * @method withAuth
@@ -726,7 +728,7 @@ Builder.prototype = {
     build : function() {
         return new RiakNode(this);
     }
-    
+
 };
 
 /**
@@ -747,11 +749,11 @@ Builder.prototype = {
  */
 var buildNodes = function(addresses, options) {
     var riakNodes = [];
-    
+
     if (options === undefined) {
         options = {};
     }
-    
+
     for (var i = 0; i &lt; addresses.length; i++) {
         var split = addresses[i].split(&#x27;:&#x27;);
         options.remoteAddress = split[0];
@@ -760,7 +762,7 @@ var buildNodes = function(addresses, options) {
         }
         riakNodes.push(new RiakNode(options));
     }
-    
+
     return riakNodes;
 };
 

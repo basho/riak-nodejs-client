@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.2</em>
+            <em>API Docs for: 1.3.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -197,7 +197,7 @@ var Joi = require(&#x27;joi&#x27;);
  * @param {String} callback.err An error message. Will be null if no error.
  * @param {Object} callback.response The response from Riak.
  * @param {Number} callback.response.counterValue The counter value in Riak.
- * @param {Boolean} callback.response.notFound True if there was no counter in Riak.
+ * @param {Boolean} callback.response.isNotFound True if there was no counter in Riak.
  * @extends CommandBase
  */
 function FetchCounter(options, callback) {
@@ -238,16 +238,17 @@ FetchCounter.prototype.constructPbRequest = function() {
 FetchCounter.prototype.onSuccess = function(dtFetchResp) {
 
     var value = null;
-    var notFound = false;
+    var isNotFound = false;
     if (dtFetchResp.getValue()) {
         // sint64 is weird. You either get the zigzag encoding, or
         // you can get the actual number via the bytebuffer.
         value = dtFetchResp.value.counter_value.toNumber();
 
     } else {
-        notFound = true;
+        isNotFound = true;
     }
-    this._callback(null, { counterValue: value, notFound: notFound });
+    // TODO 2.0 - remove notFound
+    this._callback(null, { counterValue: value, isNotFound: isNotFound, notFound: isNotFound });
 
     return true;
 };
@@ -380,7 +381,7 @@ Builder.prototype = {
      * @param {String} callback.err An error message. Will be null if no error.
      * @param {Object} callback.response The response from Riak
      * @param {Number} callback.response.counterValue The counter value in Riak.
-     * @param {Boolean} callback.response.notFound True if there was no counter in Riak.
+     * @param {Boolean} callback.response.isNotFound True if there was no counter in Riak.
      * @chainable
      */
     withCallback : function(callback) {

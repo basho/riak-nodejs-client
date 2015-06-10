@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.2</em>
+            <em>API Docs for: 1.3.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -184,9 +184,9 @@ var DEFAULT_CONNECTION_TIMEOUT = 30000;
  * @param {Object} options - the options to use.
  */
 function RiakConnection(options) {
-  
+
     events.EventEmitter.call(this);
-    
+
     this.remoteAddress = options.remoteAddress;
     this.remotePort = options.remotePort;
     this.connectionTimeout = options.connectionTimeout;
@@ -198,34 +198,34 @@ function RiakConnection(options) {
     if (options.auth) {
         this.auth = options.auth;
     }
-    
+
     if (options.healthCheck) {
         this.healthCheck = options.healthCheck;
     }
-    
+
     if (options.hasOwnProperty(&#x27;connectionTimeout&#x27;)) {
         this.connectionTimeout = options.connectionTimeout;
     } else {
         this.connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
     }
-    
+
     if (options.hasOwnProperty(&#x27;maxBufferSize&#x27;)) {
         this.maxBufferSize = options.maxBufferSize;
     } else {
         this.maxBufferSize = DEFAULT_MAX_BUFFER;
     }
-    
+
     if (options.hasOwnProperty(&#x27;initBufferSize&#x27;)) {
         this.initBufferSize = options.initBufferSize;
     } else {
         this.initBufferSize = DEFAULT_INIT_BUFFER;
     }
-    
+
     this.inFlight = false; 
     this.lastUsed = Date.now();
-    
+
     this._buffer = null;
-    
+
     this._connection = new net.Socket();
 
     // Note: useful for debugging event-related nonsense
@@ -256,7 +256,7 @@ RiakConnection.prototype._connected = function() {
     this._connection.removeListener(&#x27;error&#x27;, this._boundConnectionError);
     this._connection.on(&#x27;error&#x27;, this._socketError.bind(this));
     this._connection.on(&#x27;close&#x27;, this._connClosed.bind(this));
-    
+
     if (this.auth) {
         // On data, move to next sequence in TLS negotiation
         logger.debug(&#x27;[RiakConnection] StartTls&#x27;);
@@ -286,11 +286,11 @@ RiakConnection.prototype._connectionError = function(err) {
     this._connection.destroy();
     this.emit(&#x27;connectFailed&#x27;, this, err);
 };
-    
+
 RiakConnection.prototype._connectionTimeout = function() {
     this._connectionError(&#x27;RiakConnection Timed out trying to connect&#x27;);
 };
-    
+
 RiakConnection.prototype._socketError = function(err) {
     // This is only called if we have an error after a successful connection
     // log only because close will be called right after
@@ -299,9 +299,9 @@ RiakConnection.prototype._socketError = function(err) {
 
 RiakConnection.prototype._receiveHealthCheck = function(data) {
     logger.debug(&#x27;[RiakConnection]: receive healthcheck response&#x27;);
-    
+
     if (this._ensureExpectedResponse(data, this.healthCheck.PbResponseName)) {
-        
+
         // On data, use the _receiveData function
         this._connection.removeListener(&#x27;data&#x27;, this._boundReceiveHealthCheck);
         this._connection.on(&#x27;data&#x27;, this._receiveData.bind(this));
@@ -311,7 +311,7 @@ RiakConnection.prototype._receiveHealthCheck = function(data) {
 
         logger.debug(&#x27;[RiakConnection] emit connected, healthcheck success&#x27;);
         this.emit(&#x27;connected&#x27;, this);
-        
+
     }
 };
 
@@ -367,7 +367,7 @@ RiakConnection.prototype._receiveAuthResp = function(data) {
 RiakConnection.prototype._receiveData = function(data) {
 
     var protobufArray = this._buildProtobufArray(data);
-    
+
     for (var i = 0; i &lt; protobufArray.length; i++) {
         this.emit(&#x27;responseReceived&#x27;, this, this.command, 
                     protobufArray[i].msgCode, protobufArray[i].protobuf);
@@ -385,7 +385,7 @@ RiakConnection.prototype._ensureExpectedResponse = function(data, msgName) {
 
         var resp = protobufArray[0];
         var code = RiakProtoBuf.getCodeFor(msgName);
-        
+
         if (resp.msgCode === 0) {
             // We received an RpbErrorResp
             err = resp.protobuf.getErrmsg().toString(&#x27;utf8&#x27;);
@@ -393,7 +393,7 @@ RiakConnection.prototype._ensureExpectedResponse = function(data, msgName) {
             err = msgName + &#x27; incorrect response code: &#x27; + resp.msgCode;
         }
     }
-    
+
     if (err) {
         this._connectionError(err);
         return false;
@@ -401,7 +401,7 @@ RiakConnection.prototype._ensureExpectedResponse = function(data, msgName) {
         return true;
     }
 };
-    
+
 RiakConnection.prototype._buildProtobufArray = function(data) {
 
     // Create a new buffer to receive data if needed 
@@ -416,21 +416,21 @@ RiakConnection.prototype._buildProtobufArray = function(data) {
 };
 
 RiakConnection.prototype._getProtobufsFromBuffer = function(protobufArray) {
-    
+
     if (arguments.length === 0) {
         protobufArray = [];
     }
-    
+
     if (this._buffer.remaining() &gt;= 4) {
         this._buffer.mark();
         var messageLength = this._buffer.readInt32();
-        
+
         // See if we have the complete message
         if (this._buffer.remaining() &gt;= messageLength) {
             // We have a complete message from riak
             var slice = this._buffer.slice(undefined, this._buffer.offset + messageLength);
             var code = slice.readUint8();
-            
+
             // Our fun API does some creative things like ... returning only 
             // a code, with 0 bytes following. In those cases we want to set 
             // decoded to null.
@@ -442,7 +442,7 @@ RiakConnection.prototype._getProtobufsFromBuffer = function(protobufArray) {
                 // otherwise, subsequent fetches will clobber data
                 decoded = ResponseProto.decode(slice.toBuffer(true));
             } 
-            
+
             protobufArray[protobufArray.length] = { msgCode : code, protobuf : decoded};
             // skip past message in buffer
             this._buffer.skip(messageLength);
@@ -453,11 +453,11 @@ RiakConnection.prototype._getProtobufsFromBuffer = function(protobufArray) {
             this._buffer.reset();
         }   
     }
-    
+
     // ByteBuffer&#x27;s &#x27;flip()&#x27; effectively clears the buffer which we don&#x27;t
     // want. We want to flip while preserving anything in the buffer and 
     // compact if necessary.
-    
+
     var newOffset = this._buffer.remaining();
     // Compact if necessary
     if (newOffset &gt; 0 &amp;&amp; this._buffer.offset !== 0) {
@@ -465,28 +465,28 @@ RiakConnection.prototype._getProtobufsFromBuffer = function(protobufArray) {
     }
     this._buffer.offset = newOffset;
     this._buffer.limit = this._buffer.capacity();
-    
+
     return protobufArray;
 };
-    
+
 RiakConnection.prototype.resetBuffer = function() {
     if (this._buffer &amp;&amp; this._buffer.capacity() &gt; this.maxBufferSize) {
         this._buffer = null;
     } 
 };
-    
+
 RiakConnection.prototype._connClosed = function(had_error) {
     this._connection.destroy();
     this.emit(&#x27;connectionClosed&#x27;, this);
 };
-    
+
 RiakConnection.prototype.close = function() {
     this.removeAllListeners();
     this._connection.removeAllListeners();
     this._connection.destroy();
     this._buffer = null;
 };
-    
+
 // command includes user callback
 RiakConnection.prototype.execute = function(command) {
 
