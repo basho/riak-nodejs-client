@@ -15,6 +15,7 @@
  */
 
 var RiakCluster = require('../../lib/core/riakcluster');
+var RiakNode = require('../../lib/core/riaknode');
 var assert = require('assert');
 
 describe('RiakCluster', function() {
@@ -23,6 +24,23 @@ describe('RiakCluster', function() {
             var cluster1 = new RiakCluster();
             var cluster2 = new RiakCluster();
             assert.notStrictEqual(cluster1.nodeManager, cluster2.nodeManager);
+            done();
+        });
+    });
+    describe('GitHub issues', function() {
+        it('resolves GitHub Issue 64', function(done) {
+            var nodeTemplate = new RiakNode.Builder().withMinConnections(10);
+            var nodeAddys = ['192.168.1.1:8087', '192.168.1.2:8087'];
+            var arrayOfNodes = RiakNode.buildNodes(nodeAddys, nodeTemplate);
+            var myCluster = new RiakCluster.Builder().withRiakNodes(arrayOfNodes).build();
+            assert.equal(myCluster.nodes.length, 2);
+            myCluster.nodes.forEach(function (n) {
+                n.state = RiakNode.State.RUNNING;
+            });
+            assert(myCluster.removeNode('192.168.1.1:8087'));
+            assert.equal(myCluster.nodes.length, 1);
+            assert.equal(myCluster.nodes[0].remoteAddress, '192.168.1.2');
+            assert.equal(myCluster.nodes[0].remotePort, 8087);
             done();
         });
     });
