@@ -75,7 +75,6 @@ describe('Update and Fetch Map - Integration', function() {
     });
     
     it('Should fetch a map', function(done) {
-       
         var callback = function(err, resp) {
             assert(!err, err);
             assert(resp.context);
@@ -86,17 +85,29 @@ describe('Update and Fetch Map - Integration', function() {
             assert.equal(resp.map.flags.flag_1, true);
             done();
         };
-        
         var fetch = new FetchMap.Builder()
 				.withBucketType(Test.mapBucketType)
                 .withBucket(Test.bucketName)
                 .withKey('map_1')
 				.withCallback(callback)
 				.build();
-
         cluster.execute(fetch);
-
-        
+    });
+    
+    it('Should report isNotFound if a map does not exist', function(done) {
+        var callback = function(err, resp) {
+            assert(!err, err);
+            assert(resp.notFound);
+            assert(resp.isNotFound);
+            done();
+        };
+        var fetch = new FetchMap.Builder()
+				.withBucketType(Test.mapBucketType)
+                .withBucket(Test.bucketName)
+                .withKey('map_notFound')
+				.withCallback(callback)
+				.build();
+        cluster.execute(fetch);
     });
     
     it('Should remove stuff from a map', function(done) {

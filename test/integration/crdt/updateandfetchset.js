@@ -60,25 +60,36 @@ describe('Update and Fetch Set - Integration', function() {
         });
     });
     
-    
     it('Should fetch a set', function(done) {
-       
         var callback = function(err, resp) {
             assert(!err, err);
             assert.equal(resp.values.length, 2);
             assert(resp.context);
             done();
         };
-        
         var fetch = new FetchSet.Builder()
                 .withBucketType(Test.setBucketType)
                 .withBucket(Test.bucketName)
                 .withKey('set_1')
                 .withCallback(callback)
                 .build();
-        
         cluster.execute(fetch);
-        
+    });
+    
+    it('Should report isNotFound if a set does not exist', function(done) {
+        var callback = function(err, resp) {
+            assert(!err, err);
+            assert(resp.notFound);
+            assert(resp.isNotFound);
+            done();
+        };
+        var fetch = new FetchSet.Builder()
+                .withBucketType(Test.setBucketType)
+                .withBucket(Test.bucketName)
+                .withKey('set_notFound')
+                .withCallback(callback)
+                .build();
+        cluster.execute(fetch);
     });
     
     it('Should remove from a set', function(done) {

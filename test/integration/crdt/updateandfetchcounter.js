@@ -57,22 +57,34 @@ describe('Update and Fetch Counter - Integration', function() {
     });
     
     it('Should fetch a counter', function(done) {
-        
         var callback = function(err, resp) {
             assert(!err, err);
             assert.equal(resp.counterValue, 10);
             done();
         };
-        
         var fetch = new FetchCounter.Builder()
             .withKey('counter_1')
             .withBucketType(Test.counterBucketType)
             .withBucket(Test.bucketName)
             .withCallback(callback)
             .build();
-    
         cluster.execute(fetch);
-        
+    });
+    
+    it('Should report isNotFound if a counter does not exist', function(done) {
+        var callback = function(err, resp) {
+            assert(!err, err);
+            assert(resp.notFound);
+            assert(resp.isNotFound);
+            done();
+        };
+        var fetch = new FetchCounter.Builder()
+            .withKey('counter_notFound')
+            .withBucketType(Test.counterBucketType)
+            .withBucket(Test.bucketName)
+            .withCallback(callback)
+            .build();
+        cluster.execute(fetch);
     });
     
     it('Should update a counter', function(done) {
@@ -114,7 +126,5 @@ describe('Update and Fetch Counter - Integration', function() {
         cluster.execute(update);
         
     });
-    
-    
     
 });

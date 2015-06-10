@@ -7,4 +7,4 @@ tags
 *.tgz
 *.log
 *.out
-benchmarks.csv
+*.csv
