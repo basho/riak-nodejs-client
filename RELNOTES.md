@@ -1,6 +1,9 @@
 Release Notes
 =============
 
+* 1.3.0 - Following issues / PRs addressed:
+ * [Small bug in `RiakCluster.removeNode`](https://github.com/basho/riak-nodejs-client/issues/68)
+ * [Not found property should be consistent](https://github.com/basho/riak-nodejs-client/issues/65)
 * 1.2.2 - Following issues / PRs addressed:
  * [Allow `NVal` in the `StoreIndex` command](https://github.com/basho/riak-nodejs-client/issues/60)
 * 1.2.1 - Following issues / PRs addressed:
