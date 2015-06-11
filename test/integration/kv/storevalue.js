@@ -16,6 +16,7 @@
 
 var Test = require('../testparams');
 var StoreValue = require('../../../lib/commands/kv/storevalue');
+var RiakObject = require('../../../lib/commands/kv/riakobject');
 var RiakNode = require('../../../lib/core/riaknode');
 var RiakCluster = require('../../../lib/core/riakcluster');
 var assert = require('assert');
@@ -179,6 +180,40 @@ describe('StoreValue - Integration', function() {
        
    });
    
+   it('Should store a RiakObject and generate a key, returning it', function(done) {
+        var ro = new RiakObject();
+        ro.setBucket(Test.bucketName + '_sv');
+        ro.setContentType('text/plain');
+        ro.setContentEncoding('utf8');
+        ro.setValue('this is a string');
+
+        var callback = function(err, resp) {
+            assert(!err, err);
+            assert(resp.generatedKey);
+
+            var obj = resp.values.shift();
+
+            var val = obj.getValue().toString('utf8');
+            assert.equal(val, 'this is a string');
+
+            var contentType = obj.getContentType().toString('utf8');
+            assert.equal(contentType, 'text/plain');
+
+            var contentEncoding = obj.getContentEncoding().toString('utf8');
+            assert.equal(contentEncoding, 'utf8');
+
+            done();
+        };
+
+        var store = new StoreValue.Builder()
+            .withContent(ro)
+            .withCallback(callback)
+            .withReturnBody(true)
+            .build();
+
+        cluster.execute(store);
+   });
+   
    after(function(done) {
         Test.cleanBucket(cluster, 'default', Test.bucketName + '_sv', function() { 
             Test.cleanBucket(cluster, Test.bucketType, Test.bucketName + '_sv', function() {
@@ -186,7 +221,6 @@ describe('StoreValue - Integration', function() {
                 cluster.stop();
             });
         });
-        
    });
    
 });
