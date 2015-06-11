@@ -26,12 +26,12 @@ var assert = require('assert');
 describe('StoreValue', function() {
     describe('Build', function() {
         it('should build a RpbPutReq correctly', function(done) {
-            
             var value = 'this is a value';
             var riakObject = new RiakObject();
             riakObject.setUserMeta([{key: 'metaKey1', value: 'metaValue1'}]);
             riakObject.addToIndex('email_bin','roach@basho.com');
             riakObject.setContentType('application/json');
+            riakObject.setContentEncoding('gzip');
             riakObject.setValue('this is a value');
             riakObject.setLinks([{bucket: 'b', key: 'k', tag: 't'},
                 {bucket: 'b', key: 'k2', tag: 't2'}]);
@@ -66,33 +66,36 @@ describe('StoreValue', function() {
             assert.equal(protobuf.getReturnHead(), true);
             assert.equal(protobuf.getIfNotModified(), true);
             assert.equal(protobuf.getIfNoneMatch(), true);
-            assert.equal(protobuf.getContent().getValue().toString('utf8'), value);
-            assert.equal(protobuf.getContent().getContentType().toString('utf8'), 'application/json');
-            assert(protobuf.getContent().getIndexes().length === 1);
-            assert.equal(protobuf.getContent().getIndexes()[0].key.toString('utf8'), 'email_bin');
-            assert.equal(protobuf.getContent().getIndexes()[0].value.toString('utf8'), 'roach@basho.com');
-            assert(protobuf.getContent().getUsermeta().length === 1);
-            assert.equal(protobuf.getContent().getUsermeta()[0].key.toString('utf8'), 'metaKey1');
-            assert.equal(protobuf.getContent().getUsermeta()[0].value.toString('utf8'), 'metaValue1');
-            assert.equal(protobuf.getContent().getLinks()[0].bucket.toString('utf8'), 'b');
-            assert.equal(protobuf.getContent().getLinks()[0].key.toString('utf8'), 'k');
-            assert.equal(protobuf.getContent().getLinks()[0].tag.toString('utf8'), 't');
-            assert.equal(protobuf.getContent().getLinks()[1].bucket.toString('utf8'), 'b');
-            assert.equal(protobuf.getContent().getLinks()[1].key.toString('utf8'), 'k2');
-            assert.equal(protobuf.getContent().getLinks()[1].tag.toString('utf8'), 't2');
+
+            var content = protobuf.getContent();
+            assert.equal(content.getValue().toString('utf8'), value);
+            assert.equal(content.getContentType().toString('utf8'), 'application/json');
+            assert.equal(content.getContentEncoding().toString('utf8'), 'gzip');
+            assert(content.getIndexes().length === 1);
+            assert.equal(content.getIndexes()[0].key.toString('utf8'), 'email_bin');
+            assert.equal(content.getIndexes()[0].value.toString('utf8'), 'roach@basho.com');
+            assert(content.getUsermeta().length === 1);
+            assert.equal(content.getUsermeta()[0].key.toString('utf8'), 'metaKey1');
+            assert.equal(content.getUsermeta()[0].value.toString('utf8'), 'metaValue1');
+            assert.equal(content.getLinks()[0].bucket.toString('utf8'), 'b');
+            assert.equal(content.getLinks()[0].key.toString('utf8'), 'k');
+            assert.equal(content.getLinks()[0].tag.toString('utf8'), 't');
+            assert.equal(content.getLinks()[1].bucket.toString('utf8'), 'b');
+            assert.equal(content.getLinks()[1].key.toString('utf8'), 'k2');
+            assert.equal(content.getLinks()[1].tag.toString('utf8'), 't2');
             assert.equal(protobuf.getTimeout(), 20000);
             done();
-            
         });
         
         it('Should take the key, bucket, type and vclock from a RiakObject', function(done) {
-           
             var value = 'this is a value';
             var riakObject = new RiakObject()
                     .setKey('key')
                     .setBucket('bucket_name')
                     .setBucketType('bucket_type')
                     .setVClock(new Buffer('1234'))
+                    .setContentType('text/plain')
+                    .setContentEncoding('utf8')
                     .setValue('this is a value');
             
             var storeCommand = new StoreValue.Builder()
@@ -106,9 +109,12 @@ describe('StoreValue', function() {
             assert.equal(protobuf.getBucket().toString('utf8'), 'bucket_name');
             assert.equal(protobuf.getKey().toString('utf8'), 'key');
             assert.equal(protobuf.getVclock().toString('utf8'), '1234');
-            assert.equal(protobuf.getContent().getValue().toString('utf8'), 'this is a value');
+
+            var content = protobuf.getContent();
+            assert.equal(content.getContentType().toString('utf8'), 'text/plain');
+            assert.equal(content.getContentEncoding().toString('utf8'), 'utf8');
+            assert.equal(content.getValue().toString('utf8'), 'this is a value');
             done();
-            
         });
         
         it('should take a RpbPutResp and call the users callback with the response', function(done) {
@@ -181,7 +187,6 @@ describe('StoreValue', function() {
                .build();
        
             storeCommand.onRiakError(rpbErrorResp);
-           
            
         });
         
