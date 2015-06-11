@@ -1,6 +1,8 @@
 Release Notes
 =============
 
+* 1.4.0 - Following issues / PRs addressed:
+ * [Add "Content Encoding" to `RiakObject`](https://github.com/basho/riak-nodejs-client/pull/71)
 * 1.3.0 - Following issues / PRs addressed:
  * [Small bug in `RiakCluster.removeNode`](https://github.com/basho/riak-nodejs-client/issues/68)
  * [Not found property should be consistent](https://github.com/basho/riak-nodejs-client/issues/65)
