@@ -1,7 +1,7 @@
 {
   "name": "basho-riak-client",
   "description": "Basho's officially supported NodeJS client for Riak",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": "Brian Roach <roach@basho.com>",
   "contributors": [
     "Luke Bakken <luke@bakken.io>",
