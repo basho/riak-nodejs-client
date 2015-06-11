@@ -2,7 +2,7 @@
     "project": {
         "name": "basho-riak-client",
         "description": "Basho's officially supported NodeJS client for Riak",
-        "version": "1.3.0",
+        "version": "1.4.0",
         "url": "https://github.com/basho/riak-nodejs-client/wiki"
     },
     "files": {
@@ -6016,6 +6016,36 @@
         {
             "file": "lib/commands/kv/riakobject.js",
             "line": 145,
+            "description": "Set the content encoding.",
+            "itemtype": "method",
+            "name": "setContentEncoding",
+            "params": [
+                {
+                    "name": "contentEncoding",
+                    "description": "the content encoding",
+                    "type": "String"
+                }
+            ],
+            "chainable": 1,
+            "class": "RiakObject",
+            "module": "KV"
+        },
+        {
+            "file": "lib/commands/kv/riakobject.js",
+            "line": 156,
+            "description": "Get the content encoding",
+            "itemtype": "method",
+            "name": "getContentEncoding",
+            "return": {
+                "description": "the content encoding",
+                "type": "String"
+            },
+            "class": "RiakObject",
+            "module": "KV"
+        },
+        {
+            "file": "lib/commands/kv/riakobject.js",
+            "line": 165,
             "description": "Set the user meta data.\n\nThis is an array of key/value objects.",
             "itemtype": "method",
             "name": "setUserMeta",
@@ -6044,7 +6074,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 159,
+            "line": 179,
             "description": "Determine if any user metadata is present.",
             "itemtype": "method",
             "name": "hasUserMeta",
@@ -6057,7 +6087,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 167,
+            "line": 187,
             "description": "Get the user meta data\n\nThis is an array of key/value objects",
             "itemtype": "method",
             "name": "getUserMeta",
@@ -6070,7 +6100,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 177,
+            "line": 197,
             "description": "Set an index, replacing the existing value if any.",
             "itemtype": "method",
             "name": "setIndex",
@@ -6092,7 +6122,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 191,
+            "line": 211,
             "description": "Determine if any indexes are present.",
             "itemtype": "method",
             "name": "hasIndexes",
@@ -6105,7 +6135,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 199,
+            "line": 219,
             "description": "Get all indexes.",
             "itemtype": "method",
             "name": "getIndexes",
@@ -6118,7 +6148,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 208,
+            "line": 228,
             "description": "Get the keys for an index.",
             "itemtype": "method",
             "name": "getIndex",
@@ -6138,7 +6168,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 221,
+            "line": 241,
             "description": "Add one or more keys to an index.\n\nIf the index does not exist it will be created.",
             "itemtype": "method",
             "name": "addToIndex",
@@ -6161,7 +6191,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 242,
+            "line": 262,
             "description": "Determine if any links are present.\n\nNote that link walking is a deprecated feature in Riak 2.0.\n\nSee: [Link Walking](http://docs.basho.com/riak/latest/dev/using/link-walking/)",
             "itemtype": "method",
             "name": "hasLinks",
@@ -6176,7 +6206,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 255,
+            "line": 275,
             "description": "Get the links.\n\nThis is an array of objects representing links to other objects in Riak.\n\nNote that link walking is a deprecated feature in Riak 2.0.\n\nSee: [Link Walking](http://docs.basho.com/riak/latest/dev/using/link-walking/)",
             "itemtype": "method",
             "name": "getLinks",
@@ -6191,7 +6221,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 270,
+            "line": 290,
             "description": "Set the links.\n\nThis is an array of objects representing links to other objects in Riak.\n\nNote that link walking is a deprecated feature in Riak 2.0.\n\nSee: [Link Walking](http://docs.basho.com/riak/latest/dev/using/link-walking/)",
             "itemtype": "method",
             "name": "setLinks",
@@ -6227,7 +6257,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 290,
+            "line": 310,
             "description": "Set the vector clock.",
             "itemtype": "method",
             "name": "setVClock",
@@ -6244,7 +6274,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 300,
+            "line": 320,
             "description": "Get the vector clock.",
             "itemtype": "method",
             "name": "getVClock",
@@ -6257,7 +6287,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 308,
+            "line": 328,
             "description": "Returns whether or not this RiakObject is marked as being deleted (a tombstone)",
             "itemtype": "method",
             "name": "isTombstone",
@@ -6270,7 +6300,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 316,
+            "line": 336,
             "description": "Returns the last modified time of this RiakObject.\n\nThe timestamp is returned as a (Unix) epoch time.",
             "itemtype": "method",
             "name": "getLastModified",
@@ -6283,7 +6313,7 @@
         },
         {
             "file": "lib/commands/kv/riakobject.js",
-            "line": 415,
+            "line": 438,
             "description": "Creates and returns a RpbContent protobuf from a value and meta.\n\nIf the value is a JS Object it is converted using JSON.stringify().",
             "access": "private",
             "tagname": "",
@@ -9170,6 +9200,10 @@
         }
     ],
     "warnings": [
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/commands/kv/riakobject.js:156"
+        },
         {
             "message": "replacing incorrect tag: returns with return",
             "line": " lib/core/nodemanager.js:38"
