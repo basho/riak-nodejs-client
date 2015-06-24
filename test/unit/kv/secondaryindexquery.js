@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-var SecondaryIndexQuery = require('../../lib/commands/kv/secondaryindexquery');
-var RpbIndexResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbIndexResp');
-var RpbIndexReq = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbIndexReq');
-var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
-var RpbPair = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbPair');
+var rpb = require('../../../lib/protobuf/riakprotobuf');
+var SecondaryIndexQuery = require('../../../lib/commands/kv/secondaryindexquery');
+var RpbIndexResp = rpb.getProtoFor('RpbIndexResp');
+var RpbIndexReq = rpb.getProtoFor('RpbIndexReq');
+var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
+var RpbPair = rpb.getProtoFor('RpbPair');
 var assert = require('assert');
 
 describe('SecondaryIndexQuery', function() {

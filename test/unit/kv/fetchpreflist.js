@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-var FetchPreflist = require('../../lib/commands/kv/fetchpreflist');
-var rpbuf = require('../../lib/protobuf/riakprotobuf');
-var RpbGetBucketKeyPreflistReq = rpbuf.getProtoFor('RpbGetBucketKeyPreflistReq');
-var RpbGetBucketKeyPreflistResp = rpbuf.getProtoFor('RpbGetBucketKeyPreflistResp');
-var RpbBucketKeyPreflistItem = rpbuf.getProtoFor('RpbBucketKeyPreflistItem');
-var RpbErrorResp = rpbuf.getProtoFor('RpbErrorResp');
+var rpb = require('../../../lib/protobuf/riakprotobuf');
+var FetchPreflist = require('../../../lib/commands/kv/fetchpreflist');
+var RpbGetBucketKeyPreflistReq = rpb.getProtoFor('RpbGetBucketKeyPreflistReq');
+var RpbGetBucketKeyPreflistResp = rpb.getProtoFor('RpbGetBucketKeyPreflistResp');
+var RpbBucketKeyPreflistItem = rpb.getProtoFor('RpbBucketKeyPreflistItem');
+var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
 

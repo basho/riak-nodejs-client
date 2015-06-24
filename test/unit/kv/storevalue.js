@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-var StoreValue = require('../../lib/commands/kv/storevalue');
-var RiakObject = require('../../lib/commands/kv/riakobject');
-var RpbPutResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbPutResp');
-var RpbContent = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbContent');
-var RpbPair = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbPair');
-var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
+var rpb = require('../../../lib/protobuf/riakprotobuf');
+var StoreValue = require('../../../lib/commands/kv/storevalue');
+var RiakObject = require('../../../lib/commands/kv/riakobject');
+var RpbPutResp = rpb.getProtoFor('RpbPutResp');
+var RpbContent = rpb.getProtoFor('RpbContent');
+var RpbPair = rpb.getProtoFor('RpbPair');
+var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
 

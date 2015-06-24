@@ -14,68 +14,68 @@
  * limitations under the License.
  */
 
-var ListBuckets = require('../../lib/commands/kv/listbuckets');
-var RpbListBucketsResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbListBucketsResp');
-var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
+var rpb = require('../../../lib/protobuf/riakprotobuf');
+var ListKeys = require('../../../lib/commands/kv/listkeys');
+var RpbListKeysResp = rpb.getProtoFor('RpbListKeysResp');
+var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
 
-describe('ListBuckets', function() {
+describe('ListKeys', function() {
     describe('Build', function() {
-        it('should build a RpbListBucketsReq correctly', function(done) {
+        it('should build a RpbListKeysReq correctly', function(done) {
             
-            var listBuckets = new ListBuckets.Builder()
+            var listKeys = new ListKeys.Builder()
                     .withBucketType('bucket_type')
+                    .withBucket('bucket_name')
                     .withCallback(function(){})
-                    .withTimeout(30000)
                     .build();
             
-            var protobuf = listBuckets.constructPbRequest();
+            var protobuf = listKeys.constructPbRequest();
             
             assert.equal(protobuf.getType().toString('utf8'), 'bucket_type');
-            // We should always be streaming from Riak
-            assert.equal(protobuf.stream, true);
-            assert.equal(protobuf.timeout, 30000);
+            assert.equal(protobuf.getBucket().toString('utf8'), 'bucket_name');
             done();
             
         });
         
-        it('should take multiple RpbListBucketsResp and call the users callback with the response', function(done) {
+        it('should take multiple RpbListKeysResp and call the users callback with the response', function(done) {
            
             var callback = function(err, resp){
-                assert(!err, err);
-                assert.equal(resp.buckets.length, 100);
+                
+                assert.equal(resp.keys.length, 100);
                 assert.equal(resp.done, true);
                 done();
             };
             
-            var listBuckets = new ListBuckets.Builder()
+            var listKeys = new ListKeys.Builder()
                     .withBucketType('bucket_type')
+                    .withBucket('bucket_name')
                     .withStreaming(false)
                     .withCallback(callback)
                     .build();
             
             for (var i = 0; i < 20; i++) {
-                var listBucketsResp = new RpbListBucketsResp();    
+                var listKeysResp = new RpbListKeysResp();    
                 for (var j = 0; j < 5; j++) {
-                    listBucketsResp.buckets.push(new Buffer('bucket'));
+                    listKeysResp.keys.push(new Buffer('key'));
                 }
                 if (i === 19) {
-                    listBucketsResp.done = true;
+                    listKeysResp.done = true;
                 }
-                listBuckets.onSuccess(listBucketsResp);
+                listKeys.onSuccess(listKeysResp);
             }
             
         });
         
-        it('should take multiple RpbListBucketsResp and stream the response', function(done) {
+        it('should take multiple RpbListKeysResp and stream the response', function(done) {
            
             var count = 0;
             var timesCalled = 0;
             var callback = function(err, resp){
                 
                 timesCalled++;
-                count += resp.buckets.length;
+                count += resp.keys.length;
                 if (resp.done) {
                     assert.equal(timesCalled, 20);
                     assert.equal(count, 100);
@@ -84,21 +84,22 @@ describe('ListBuckets', function() {
                 
             };
             
-            var listBuckets = new ListBuckets.Builder()
+            var listKeys = new ListKeys.Builder()
                     .withBucketType('bucket_type')
+                    .withBucket('bucket_name')
                     .withCallback(callback)
                     .build();
             
             
             for (var i = 0; i < 20; i++) {
-                var listBucketsResp = new RpbListBucketsResp();    
+                var listKeysResp = new RpbListKeysResp();    
                 for (var j = 0; j < 5; j++) {
-                    listBucketsResp.buckets.push(new Buffer('bucket'));
+                    listKeysResp.keys.push(new Buffer('key'));
                 }
                 if (i === 19) {
-                    listBucketsResp.done = true;
+                    listKeysResp.done = true;
                 }
-                listBuckets.onSuccess(listBucketsResp);
+                listKeys.onSuccess(listKeysResp);
             }
             
         });
@@ -114,13 +115,14 @@ describe('ListBuckets', function() {
                }
            };
            
-           var listBuckets = new ListBuckets.Builder()
+           var listKeys = new ListKeys.Builder()
                     .withBucketType('bucket_type')
+                    .withBucket('bucket_name')
                     .withStreaming(false)
                     .withCallback(callback)
                     .build();
        
-            listBuckets.onRiakError(rpbErrorResp);
+            listKeys.onRiakError(rpbErrorResp);
            
            
        });

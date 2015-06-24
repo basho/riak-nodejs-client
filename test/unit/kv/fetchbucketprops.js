@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-var FetchBucketProps = require('../../lib/commands/kv/fetchbucketprops');
-var RpbGetBucketResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbGetBucketResp');
-var RpbBucketProps = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbBucketProps');
-var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
-var RpbCommitHook = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbCommitHook');
-var RpbModFun = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbModFun');
+var rpb = require('../../../lib/protobuf/riakprotobuf');
+var FetchBucketProps = require('../../../lib/commands/kv/fetchbucketprops');
+var RpbGetBucketResp = rpb.getProtoFor('RpbGetBucketResp');
+var RpbBucketProps = rpb.getProtoFor('RpbBucketProps');
+var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
+var RpbCommitHook = rpb.getProtoFor('RpbCommitHook');
+var RpbModFun = rpb.getProtoFor('RpbModFun');
 var assert = require('assert');
 
 

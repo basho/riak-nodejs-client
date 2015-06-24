@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-var RiakNode = require('../../lib/core/riaknode');
+var RiakNode = require('../../../lib/core/riaknode');
 var assert = require('assert');
 var joi = require('joi');
 var fs = require('fs');
