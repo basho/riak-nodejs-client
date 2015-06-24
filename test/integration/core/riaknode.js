@@ -57,9 +57,6 @@ describe('RiakNode - Integration', function() {
                 done();
             }, 3000); 
             
-            
-            
-            
             var node = new RiakNode.Builder()
                     .withRemotePort(1337)
                     .withMinConnections(0)
@@ -175,8 +172,6 @@ describe('RiakNode - Integration', function() {
             
             var fetch = new FetchValue({bucket: 'b', key: 'k'}, fetchCb);
             node.execute(fetch);
-            
-            
             
         });
         
