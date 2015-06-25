@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-var RiakConnection = require('../../lib/core/riakconnection');
-var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
-var responseCode = require('../../lib/protobuf/riakprotobuf').getCodeFor('RpbErrorResp');
-
-var RpbGetResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbGetResp');
-var RpbContent = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbContent');
-var rpbGetRespCode = require('../../lib/protobuf/riakprotobuf').getCodeFor('RpbGetResp');
+var rpb = require('../../../lib/protobuf/riakprotobuf');
+var RiakConnection = require('../../../lib/core/riakconnection');
+var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
+var responseCode = rpb.getCodeFor('RpbErrorResp');
+var RpbGetResp = rpb.getProtoFor('RpbGetResp');
+var RpbContent = rpb.getProtoFor('RpbContent');
+var rpbGetRespCode = rpb.getCodeFor('RpbGetResp');
 
 var assert = require('assert');
 var logger = require('winston');

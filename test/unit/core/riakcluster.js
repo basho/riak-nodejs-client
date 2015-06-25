@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-var RiakCluster = require('../../lib/core/riakcluster');
-var RiakNode = require('../../lib/core/riaknode');
+var RiakCluster = require('../../../lib/core/riakcluster');
+var RiakNode = require('../../../lib/core/riaknode');
 var assert = require('assert');
 
 describe('RiakCluster', function() {

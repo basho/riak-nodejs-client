@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-var StoreBucketProps = require('../../lib/commands/kv/storebucketprops');
-var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
-var RpbCommitHook = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbCommitHook');
-var RpbModFun = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbModFun');
+var rpb = require('../../../lib/protobuf/riakprotobuf');
+var StoreBucketProps = require('../../../lib/commands/kv/storebucketprops');
+var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
+var RpbCommitHook = rpb.getProtoFor('RpbCommitHook');
+var RpbModFun = rpb.getProtoFor('RpbModFun');
 var assert = require('assert');
 
 describe('StoreBucketProps', function() {

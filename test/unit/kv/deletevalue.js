@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-var DeleteValue = require('../../lib/commands/kv/deletevalue');
-var RpbDelResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbDelResp');
-var RpbErrorResp = require('../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
+var rpb = require('../../../lib/protobuf/riakprotobuf');
+var DeleteValue = require('../../../lib/commands/kv/deletevalue');
+var RpbDelResp = rpb.getProtoFor('RpbDelResp');
+var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
 

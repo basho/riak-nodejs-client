@@ -118,6 +118,11 @@ describe('Client', function() {
             assert(typeofKvStoreValue === 'function', "typeof(Riak.Commands.KV.StoreValue): " + typeofKvStoreValue);
             done();
         });
+        it('Riak.Commands.KV.FetchPreflist', function(done) {
+            var typeofKvFetchPreflist = typeof(Riak.Commands.KV.FetchPreflist);
+            assert(typeofKvFetchPreflist === 'function', "typeof(Riak.Commands.KV.FetchPreflist): " + typeofKvFetchPreflist);
+            done();
+        });
 
         it('Riak.Commands.CRDT.FetchSet', function(done) {
             var typeofCrdtFetchSet = typeof(Riak.Commands.CRDT.FetchSet);
