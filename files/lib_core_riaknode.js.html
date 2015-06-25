@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.4.0</em>
+            <em>API Docs for: 1.5.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -363,9 +363,7 @@ RiakNode.prototype.execute = function(command) {
                 }, function(err) {
                     logger.debug(&quot;[RiakNode] command execution failed on node (%s:%d)&quot;, self.remoteAddress, self.remotePort);
                     if (self.state === State.RUNNING) {
-                        self.state = State.HEALTH_CHECKING;
-                        self.emit(EVT_SC, self, self.state);
-                        setImmediate(function() { self._healthCheck(); });
+                        self._doHealthCheck();
                     }
                     command.remainingTries--;
                     if (command.remainingTries) {
@@ -464,12 +462,7 @@ RiakNode.prototype._connectionClosed = function(conn) {
         // PB connections don&#x27;t time out. If one disconnects it&#x27;s highly likely
         // the node went down or there&#x27;s a network issue
         if (this.state !== State.HEALTH_CHECKING) {
-            this.state = State.HEALTH_CHECKING;
-            this.emit(EVT_SC, this, this.state);
-            var self = this;
-            setImmediate(function() {
-                self._healthCheck();
-            });
+            this._doHealthCheck();
         }
     }
 };
@@ -478,6 +471,12 @@ RiakNode.prototype._stateCheck = function(allowedStates) {
     if (allowedStates.indexOf(this.state) === -1) {
         throw &quot;RiakNode: Illegal State; required: &quot; + allowedStates + &quot; current: &quot; + this.state; 
     }
+};
+
+RiakNode.prototype._doHealthCheck = function() {
+    this.state = State.HEALTH_CHECKING;
+    this.emit(EVT_SC, this, this.state);
+    setImmediate(this._healthCheck.bind(this));
 };
 
 RiakNode.prototype._healthCheck = function() {
