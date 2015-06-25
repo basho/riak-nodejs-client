@@ -1,6 +1,8 @@
 Release Notes
 =============
 
+* 1.5.0 - Following issues / PRs addressed:
+ * [JSON parse fails when tombstone is returned](https://github.com/basho/riak-nodejs-client/issues/74)
 * 1.4.0 - Following issues / PRs addressed:
  * [Add "Content Encoding" to `RiakObject`](https://github.com/basho/riak-nodejs-client/pull/71)
 * 1.3.0 - Following issues / PRs addressed:
