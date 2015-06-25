@@ -62,3 +62,6 @@ Thank you to all of our contributors!
 
 * [Tim Kennedy](https://github.com/stretchkennedy)
 * [Doug Luce](https://github.com/dougluce) 
+* [Charlie Zhang](https://github.com/charliezhang) 
+* [Colin Hemmings](https://github.com/gonzohunter)
+* [Timothy Stonis](https://github.com/tstonis)
