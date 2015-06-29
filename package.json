@@ -21,7 +21,8 @@
     "nosql",
     "driver",
     "riak-nodejs-client",
-    "client"
+    "client",
+    "basho"
   ],
   "dependencies": {
     "bytebuffer": "~3.5",
