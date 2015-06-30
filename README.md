@@ -65,3 +65,4 @@ Thank you to all of our contributors!
 * [Charlie Zhang](https://github.com/charliezhang) 
 * [Colin Hemmings](https://github.com/gonzohunter)
 * [Timothy Stonis](https://github.com/tstonis)
+* [Aleksandr Popov](https://github.com/mogadanez)
