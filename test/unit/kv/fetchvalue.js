@@ -171,7 +171,7 @@ describe('FetchValue', function() {
                   assert.equal(response.values.length, 1);
                   var riakObject = response.values[0];
                   var parsedValue = riakObject.getValue();
-                  assert.ok(typeof parsedValue == "object")
+                  assert.ok(typeof parsedValue == "object");
                   assert.equal(parsedValue.key, "value");
                   done();
               };
@@ -186,11 +186,11 @@ describe('FetchValue', function() {
 
               fetchCommand.onSuccess(rpbGetResp);
           });
-      })
+      });
 
         describe('when convertToJs provided as "auto"', function(){
 
-        })
+        });
 
 
 
