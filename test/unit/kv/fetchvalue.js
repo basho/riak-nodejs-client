@@ -24,11 +24,40 @@ var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
 
+
+function generateTestRpbContent( value, contentType ){
+    var rpbContent = new RpbContent();
+    rpbContent.setValue(new Buffer(value));
+    rpbContent.setContentType(new Buffer(contentType));
+
+    var pair = new RpbPair();
+    pair.setKey(new Buffer('email_bin'));
+    pair.setValue(new Buffer('roach@basho.com'));
+    rpbContent.indexes.push(pair);
+
+    pair = new RpbPair();
+    pair.setKey(new Buffer('metaKey1'));
+    pair.setValue(new Buffer('metaValue1'));
+    rpbContent.usermeta.push(pair);
+
+    var link = new RpbLink();
+    link.setBucket(new Buffer('b'));
+    link.setKey(new Buffer('k'));
+    link.setTag(new Buffer('t'));
+    rpbContent.links.push(link);
+    link = new RpbLink();
+    link.setBucket(new Buffer('b'));
+    link.setKey(new Buffer('k2'));
+    link.setTag(new Buffer('t2'));
+    rpbContent.links.push(link);
+    return rpbContent;
+}
+
 describe('FetchValue', function() {
 
     describe('Build', function() {
         it('should build a RpbGetReq correctly', function(done) {
-            
+
             var vclock = new Buffer(0);
             var fetchCommand = new FetchValue.Builder()
                .withBucketType('bucket_type')
@@ -44,9 +73,9 @@ describe('FetchValue', function() {
                .withTimeout(20000)
                .withCallback(function(){})
                .build();
-       
+
             var protobuf = fetchCommand.constructPbRequest();
-            
+
             assert.equal(protobuf.getType().toString('utf8'), 'bucket_type');
             assert.equal(protobuf.getBucket().toString('utf8'), 'bucket_name');
             assert.equal(protobuf.getKey().toString('utf8'), 'key');
@@ -59,40 +88,17 @@ describe('FetchValue', function() {
             assert(protobuf.getIfModified().toBuffer() !== null);
             assert.equal(protobuf.getTimeout(), 20000);
             done();
-            
+
         });
-        
+
         it('should take a RpbGetResp and call the users callback with the response', function(done) {
-            
-            var rpbContent = new RpbContent();
-            rpbContent.setValue(new Buffer('this is a value'));
-            rpbContent.setContentType(new Buffer('application/json'));
-            
-            var pair = new RpbPair();
-            pair.setKey(new Buffer('email_bin'));
-            pair.setValue(new Buffer('roach@basho.com'));
-            rpbContent.indexes.push(pair);
-            
-            pair = new RpbPair();
-            pair.setKey(new Buffer('metaKey1'));
-            pair.setValue(new Buffer('metaValue1'));
-            rpbContent.usermeta.push(pair);
-            
-            var link = new RpbLink();
-            link.setBucket(new Buffer('b'));
-            link.setKey(new Buffer('k'));
-            link.setTag(new Buffer('t'));
-            rpbContent.links.push(link);
-            link = new RpbLink();
-            link.setBucket(new Buffer('b'));
-            link.setKey(new Buffer('k2'));
-            link.setTag(new Buffer('t2'));
-            rpbContent.links.push(link);
-            
+
+            var rpbContent = generateTestRpbContent('this is a value', "application/json" );
+
             var rpbGetResp = new RpbGetResp();
             rpbGetResp.setContent(rpbContent);
             rpbGetResp.setVclock(new Buffer('1234'));
-            
+
             var callback = function(err, response) {
                 if (response) {
                     assert.equal(response.values.length, 1);
@@ -116,39 +122,100 @@ describe('FetchValue', function() {
                     done();
                 }
             };
-            
+
             var fetchCommand = new FetchValue.Builder()
                .withBucketType('bucket_type')
                .withBucket('bucket_name')
                .withKey('key')
                .withCallback(callback)
                .build();
-       
+
             fetchCommand.onSuccess(rpbGetResp);
        });
-       
+
+        describe('when convertToJs provided as true', function(){
+
+          it('should take a RpbGetResp and call the users callback with the error when unable to parse', function(done) {
+              var rpbContent = generateTestRpbContent('this is a value', "text/plain" );
+
+              var rpbGetResp = new RpbGetResp();
+              rpbGetResp.setContent(rpbContent);
+              rpbGetResp.setVclock(new Buffer('1234'));
+
+              var callback = function(err, response) {
+                  assert.notEqual(err, null);
+                  assert.equal(response, null);
+                  done();
+              };
+
+              var fetchCommand = new FetchValue.Builder()
+                  .withBucketType('bucket_type')
+                  .withBucket('bucket_name')
+                  .withKey('key')
+                  .withConvertValueToJs( true )
+                  .withCallback(callback)
+                  .build();
+
+              fetchCommand.onSuccess(rpbGetResp);
+          });
+          it('should take a RpbGetResp and call the users callback with the parsed body if can', function(done) {
+              var rpbContent = generateTestRpbContent('{"key":"value"}', "application/json" );
+
+
+              var rpbGetResp = new RpbGetResp();
+              rpbGetResp.setContent(rpbContent);
+              rpbGetResp.setVclock(new Buffer('1234'));
+
+              var callback = function(err, response) {
+                  assert.equal(err, null);
+                  assert.equal(response.values.length, 1);
+                  var riakObject = response.values[0];
+                  var parsedValue = riakObject.getValue();
+                  assert.ok(typeof parsedValue == "object")
+                  assert.equal(parsedValue.key, "value");
+                  done();
+              };
+
+              var fetchCommand = new FetchValue.Builder()
+                  .withBucketType('bucket_type')
+                  .withBucket('bucket_name')
+                  .withKey('key')
+                  .withConvertValueToJs( true )
+                  .withCallback(callback)
+                  .build();
+
+              fetchCommand.onSuccess(rpbGetResp);
+          });
+      })
+
+        describe('when convertToJs provided as "auto"', function(){
+
+        })
+
+
+
        it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
            var rpbErrorResp = new RpbErrorResp();
            rpbErrorResp.setErrmsg(new Buffer('this is an error'));
-           
+
            var callback = function(err, response) {
                if (err) {
                    assert.equal(err,'this is an error');
                    done();
                }
            };
-           
+
            var fetchCommand = new FetchValue.Builder()
                .withBucketType('bucket_type')
                .withBucket('bucket_name')
                .withKey('key')
                .withCallback(callback)
                .build();
-       
+
             fetchCommand.onRiakError(rpbErrorResp);
-           
-           
+
+
        });
-       
+
     });
 });
