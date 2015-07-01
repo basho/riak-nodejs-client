@@ -56,7 +56,21 @@ describe('SecondaryIndexQuery', function() {
             
             
         });
-        
+
+        it('should build a RpbIndexReq correctly for a single _bin key query without string2int conversion', function(done) {
+
+            var siq = new SecondaryIndexQuery.Builder()
+                .withBucket('MyBucket')
+                .withIndexName('test_bin')
+                .withIndexKey('9999999999999999')
+                .withCallback(function(){})
+                .build();
+
+            var protobuf = siq.constructPbRequest();
+            assert.equal(protobuf.getKey().toString('utf8'), '9999999999999999');
+            done();
+        });
+
         it('should build a RpbIndexReq correctly for a range query', function(done) {
             
             var siq = new SecondaryIndexQuery.Builder()
