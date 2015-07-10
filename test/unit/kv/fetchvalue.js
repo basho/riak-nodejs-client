@@ -92,7 +92,7 @@ describe('FetchValue', function() {
 
         it('should take a RpbGetResp and call the users callback with the response', function(done) {
 
-            var rpbContent = generateTestRpbContent('this is a value', "application/json" );
+            var rpbContent = generateTestRpbContent('this is a value', "application/json");
 
             var rpbGetResp = new RpbGetResp();
             rpbGetResp.setContent(rpbContent);
@@ -123,14 +123,42 @@ describe('FetchValue', function() {
             };
 
             var fetchCommand = new FetchValue.Builder()
-               .withBucketType('bucket_type')
-               .withBucket('bucket_name')
-               .withKey('key')
-               .withCallback(callback)
-               .build();
+                .withBucketType('bucket_type')
+                .withBucket('bucket_name')
+                .withKey('key')
+                .withCallback(callback)
+                .build();
 
             fetchCommand.onSuccess(rpbGetResp);
-       });
+        });
+
+        it('should take a RpbGetResp and create a tombstone RiakObject correctly', function(done) {
+
+            var rpbGetResp = new RpbGetResp();
+            rpbGetResp.setUnchanged(true);
+            rpbGetResp.setVclock(new Buffer('1234'));
+
+            var callback = function(err, response) {
+                assert(!err, err);
+                assert(response, 'expected a response!');
+                assert.equal(response.values.length, 1);
+                var riakObject = response.values[0];
+                assert(riakObject.getIsTombstone());
+                assert.equal(riakObject.getBucketType(), 'bucket_type');
+                assert.equal(riakObject.getBucket(), 'bucket_name');
+                assert.equal(riakObject.getKey(), 'key');
+                done();
+            };
+
+            var fetchCommand = new FetchValue.Builder()
+                .withBucketType('bucket_type')
+                .withBucket('bucket_name')
+                .withKey('key')
+                .withCallback(callback)
+                .build();
+
+            fetchCommand.onSuccess(rpbGetResp);
+        });
 
         describe('when convertToJs provided as true', function(){
 

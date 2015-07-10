@@ -23,7 +23,7 @@ var assert = require('assert');
 
 describe('DeleteValue', function() {
     describe('Build', function() {
-        it('should build a RpbGetReq correctly', function(done) {
+        it('should build a RpbDelReq correctly', function(done) {
    
             var deleteValue = new DeleteValue.Builder()
                .withBucketType('bucket_type')
