@@ -93,7 +93,7 @@ describe('StoreBucketProps', function() {
                 
         });
         
-        it('should take a RpbGetBucketResp and call the users callback with the response', function(done) {
+        it('should take a RpbSetBucketResp and call the users callback with the response', function(done) {
            
             // RpbSetBucketResp has no body. Riak just sends back the code so we supply null
             // to the command on success and a simple boolean true is sent to the user callback
