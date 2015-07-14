@@ -21,8 +21,6 @@ var RiakNode = require('../../../lib/core/riaknode');
 var RiakCluster = require('../../../lib/core/riakcluster');
 var assert = require('assert');
 
-
-
 describe('ListBuckets - Integration', function() {
    
     this.timeout(60000);
@@ -44,7 +42,6 @@ describe('ListBuckets - Integration', function() {
         };
         
         for (var i = 0; i < 5; i++) {
-            
             // Will create buckets
             var bucket = Test.bucketName + '_lb' + i;
             var store = new StoreValue.Builder()
@@ -52,29 +49,22 @@ describe('ListBuckets - Integration', function() {
                     .withContent('value')
                     .withCallback(cb)
                     .build();
-            
             cluster.execute(store);
-            
             store = new StoreValue.Builder()
                     .withBucketType(Test.bucketType)
                     .withBucket(bucket)
                     .withContent('value')
                     .withCallback(cb)
                     .build();
-            
             cluster.execute(store);
         }
     });
     
     after(function(done) {
-       
-       
         var num = 0;
         var type = 'default';
         var nukeBucket = function() {
-            
             num++;
-            
             if (num === 6) {
                 if(type === 'default') {
                     type = Test.bucketType;
@@ -88,14 +78,10 @@ describe('ListBuckets - Integration', function() {
                 Test.cleanBucket(cluster, type, Test.bucketName + '_lb' + (num - 1), nukeBucket);
             }
         };
-    
         nukeBucket();
-        
     });
     
     it('should list buckets in the default type', function(done) {
-       
-        
         var callback = function(err, resp) {
             assert(!err, err);
             if (!resp.done) {
@@ -104,18 +90,13 @@ describe('ListBuckets - Integration', function() {
                 done();
             }
         };
-       
         var list = new ListBuckets.Builder()
                 .withCallback(callback)
                 .build();
-        
         cluster.execute(list);
-        
     });
         
     it('should list buckets in a non-default type', function(done) {
-       
-        
         var callback = function(err, resp) {
             assert(!err, err);
             if (!resp.done) {
@@ -124,14 +105,10 @@ describe('ListBuckets - Integration', function() {
                 done();
             }
         };
-       
         var list = new ListBuckets.Builder()
                 .withCallback(callback)
                 .withBucketType(Test.bucketType)
                 .build();
-        
         cluster.execute(list);
-        
     });
-    
 });

@@ -90,7 +90,6 @@ describe('ListBuckets', function() {
                     .withCallback(callback)
                     .build();
             
-            
             for (var i = 0; i < 20; i++) {
                 var listBucketsResp = new RpbListBucketsResp();    
                 for (var j = 0; j < 5; j++) {
