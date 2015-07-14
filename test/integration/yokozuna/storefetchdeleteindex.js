@@ -24,7 +24,6 @@ var RiakCluster = require('../../../lib/core/riakcluster');
 var assert = require('assert');
 
 describe('Update and Fetch Yokozuna index - Integration', function() {
-   
     var cluster;
     this.timeout(30000);
     
@@ -33,47 +32,34 @@ describe('Update and Fetch Yokozuna index - Integration', function() {
         cluster = new RiakCluster({ nodes: nodes});
         cluster.start();
         
-        
         var callback = function(err, resp) {
-          
             assert(!err, err);
             assert(resp);
             done();
-            
         };
     
         var store = new StoreIndex.Builder()
 				.withIndexName('myIndex')
 				.withCallback(callback)
 				.build();
-
         cluster.execute(store);
-
-    
     });
     
     after(function(done) {
-       
         var callback = function(err, resp) {
             assert(!err, err);
             assert(resp);
             cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done();} });
             cluster.stop();
         };
-        
         var del = new DeleteIndex.Builder()
 				.withIndexName('myIndex')
 				.withCallback(callback)
 				.build();
-
         cluster.execute(del);
-
-        
     });
     
-    
     it('Should fetch an index', function(done) {
-       
         var count = 0;
         var callback = function(err, resp) {
             count++;
@@ -94,12 +80,8 @@ describe('Update and Fetch Yokozuna index - Integration', function() {
 				.withIndexName('myIndex')
 				.withCallback(callback)
 				.build();
-
             cluster.execute(fetch);
         };
-        
         fetchme();
-        
     });
-    
 });
