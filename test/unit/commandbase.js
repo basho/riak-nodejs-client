@@ -40,7 +40,7 @@ inherits(TestCommand, CommandBase);
 var schema = Joi.object().keys({
    bucketType: Joi.string().default('default'),
    bucket: Joi.string().required(),
-   key: Joi.string().required()
+   key: Joi.binary().required()
 });
 
 function TestBuilder() {}
