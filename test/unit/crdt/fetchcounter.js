@@ -24,7 +24,6 @@ var assert = require('assert');
 describe('FetchCounter', function() {
     describe('Build', function() {
         it('should build a DtFetchReq correctly', function(done) {
-            
             var fetch = new FetchCounter.Builder()
                 .withBucketType('counters')
                 .withBucket('myBucket')
@@ -48,16 +47,13 @@ describe('FetchCounter', function() {
             assert.equal(protobuf.getBasicQuorum(), true);
             assert.equal(protobuf.getTimeout(), 20000);
             done();
-            
         });
         
         it('should take a DtFetchResp and call the users callback with the response', function(done) {
-            
             var dtFetchResp = new DtFetchResp();
             var dtValue = new DtValue();
             dtValue.setCounterValue(42);
             dtFetchResp.value = dtValue;
-            
             
             var callback = function(err, response) {
                 if (response) {
@@ -74,8 +70,6 @@ describe('FetchCounter', function() {
                 .build();
         
             fetch.onSuccess(dtFetchResp);
-            
-            
         });
         
         it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {

@@ -56,11 +56,10 @@ describe('UpdateCounter', function() {
         });
         
         it('should take a DtUpdateResp and call the users callback with the response', function(done) {
-            
             var dtUpdateResp = new DtUpdateResp();
             dtUpdateResp.setCounterValue(42);
             dtUpdateResp.setKey(new Buffer('NewGeneratedKey'));
-        
+
             var callback = function(err, response) {
                 if (response) {
                     assert.equal(response.counterValue, 42);
@@ -68,8 +67,7 @@ describe('UpdateCounter', function() {
                     done();
                 }
             };
-            
-            
+
             var update = new UpdateCounter.Builder()
                 .withBucketType('counters')
                 .withBucket('myBucket')
@@ -77,10 +75,7 @@ describe('UpdateCounter', function() {
                 .withIncrement(100)
                 .withCallback(callback)
                 .build();
-        
             update.onSuccess(dtUpdateResp);
-        
-            
         });
         
         it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
