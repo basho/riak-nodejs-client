@@ -22,9 +22,12 @@ var StoreValue = require('../../../lib/commands/kv/storevalue');
 var RiakNode = require('../../../lib/core/riaknode');
 var RiakCluster = require('../../../lib/core/riakcluster');
 var assert = require('assert');
+var logger = require('winston');
 
 describe('MapReduce - Integration', function() {
    
+	var mrBucketName = Test.bucketName + '_mr'
+
     var cluster;
     this.timeout(30000);
     
@@ -34,7 +37,6 @@ describe('MapReduce - Integration', function() {
         cluster.start();
         
         var stuffToStore = [
-
             "Alice was beginning to get very tired of sitting by her sister on the " +
                                 "bank, and of having nothing to do: once or twice she had peeped into the " +
                                 "book her sister was reading, but it had no pictures or conversations in " +
@@ -45,25 +47,21 @@ describe('MapReduce - Integration', function() {
                                 "of making a daisy-chain would be worth the trouble of getting up and " +
                                 "picking the daisies, when suddenly a White Rabbit with pink eyes ran " +
                                 "close by her.",
-
             "The rabbit-hole went straight on like a tunnel for some way, and then " +
                                 "dipped suddenly down, so suddenly that Alice had not a moment to think " +
                                 "about stopping herself before she found herself falling down a very deep " +
                                 "well."
-
-
         ];
         
         var count = 0;
         var storeCb = function(err, resp) {
             if (count < 3) {
                 var store = new StoreValue.Builder()
-                    .withBucket(Test.bucketName + '_mr')
+                    .withBucket(mrBucketName)
                     .withKey('p' + count)
                     .withContent(stuffToStore[count])
                     .withCallback(storeCb)	
                     .build();
-
                 count++;
                 cluster.execute(store);
             } else {
@@ -73,43 +71,35 @@ describe('MapReduce - Integration', function() {
 
         storeCb();
     });
-
     
     after(function(done) {
-       Test.cleanBucket(cluster, 'default', Test.bucketName + '_mr', function() {
+       Test.cleanBucket(cluster, 'default', mrBucketName, function() {
             cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done();} });
             cluster.stop();
         }); 
     });
     
     it('Should Map and Reduce', function(done) {
-       
         var callback = function(err, resp) {
-          
+			logger.debug("[TestMapReduce] resp: %s", JSON.stringify(resp))
             assert(!err, err);
             if (resp.done) {
                 done();
             } else {
                 assert(resp.response.length > 0);
             }
-            
         };
        
-        var query = "{\"inputs\":[[\"mr_bucket\",\"p0\"]," +
-            "[\"mr_bucket\",\"p1\"]," +
-            "[\"mr_bucket\",\"p2\"]]," +
+        var query = "{\"inputs\":[[\"" + mrBucketName +"\",\"p0\"]," +
+            "[\"" + mrBucketName + "\",\"p1\"]," +
+            "[\"" + mrBucketName + "\",\"p2\"]]," +
             "\"query\":[{\"map\":{\"language\":\"javascript\",\"source\":\"" +
             "function(v) {var m = v.values[0].data.toLowerCase().match(/\\w*/g); var r = [];" +
             "for(var i in m) {if(m[i] != '') {var o = {};o[m[i]] = 1;r.push(o);}}return r;}" +
             "\"}},{\"reduce\":{\"language\":\"javascript\",\"source\":\"" +
             "function(v) {var r = {};for(var i in v) {for(var w in v[i]) {if(w in r) r[w] += v[i][w];" +
             "else r[w] = v[i][w];}}return [r];}\"}}]}";
-	
 		var mr = new MapReduce(query, callback);
 		cluster.execute(mr);
-        
-        
     });
-
-
 });

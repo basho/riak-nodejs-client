@@ -126,8 +126,6 @@ describe('UpdateMap', function() {
 
             };
 
-            verifyRemoves(mapOp.removes);
-
             var verifyUpdates = function(updates, expectMapUpdate) {
                 var i;
                 var counterIncremented = false;
