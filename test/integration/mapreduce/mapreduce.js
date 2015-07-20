@@ -26,7 +26,7 @@ var logger = require('winston');
 
 describe('MapReduce - Integration', function() {
    
-	var mrBucketName = Test.bucketName + '_mr'
+	var mrBucketName = Test.bucketName + '_mr';
 
     var cluster;
     this.timeout(30000);
@@ -81,7 +81,7 @@ describe('MapReduce - Integration', function() {
     
     it('Should Map and Reduce', function(done) {
         var callback = function(err, resp) {
-			logger.debug("[TestMapReduce] resp: %s", JSON.stringify(resp))
+			logger.debug("[TestMapReduce] resp: %s", JSON.stringify(resp));
             assert(!err, err);
             if (resp.done) {
                 done();
