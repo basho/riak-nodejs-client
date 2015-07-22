@@ -23,6 +23,7 @@ var RpbPair = rpb.getProtoFor('RpbPair');
 var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
+var crypto = require('crypto');
 
 describe('StoreValue', function() {
     describe('Build', function() {
@@ -85,6 +86,21 @@ describe('StoreValue', function() {
             assert.equal(content.getLinks()[1].key.toString('utf8'), 'k2');
             assert.equal(content.getLinks()[1].tag.toString('utf8'), 't2');
             assert.equal(protobuf.getTimeout(), 20000);
+            done();
+        });
+
+        it('should build a RpbPutReq correctly with a binary key', function(done) {
+            var binaryKey = crypto.randomBytes(128);
+            var cmd = new StoreValue.Builder()
+               .withBucketType('bucket_type')
+               .withBucket('bucket_name')
+               .withKey(binaryKey)
+               .withContent('test content')
+               .withCallback(function(){})
+               .build();
+            var protobuf = cmd.constructPbRequest();
+            var keyBuf = protobuf.getKey().toBuffer();
+            assert(binaryKey.equals(keyBuf));
             done();
         });
         

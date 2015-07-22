@@ -66,3 +66,4 @@ Thank you to all of our contributors!
 * [Colin Hemmings](https://github.com/gonzohunter)
 * [Timothy Stonis](https://github.com/tstonis)
 * [Aleksandr Popov](https://github.com/mogadanez)
+* [Josh Yudaken](https://github.com/qix)

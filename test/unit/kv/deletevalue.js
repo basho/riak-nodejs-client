@@ -20,11 +20,11 @@ var RpbDelResp = rpb.getProtoFor('RpbDelResp');
 var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
+var crypto = require('crypto');
 
 describe('DeleteValue', function() {
     describe('Build', function() {
         it('should build a RpbDelReq correctly', function(done) {
-   
             var deleteValue = new DeleteValue.Builder()
                .withBucketType('bucket_type')
                .withBucket('bucket_name')
@@ -54,16 +54,26 @@ describe('DeleteValue', function() {
             assert(protobuf.getVclock().toString('utf8'), '1234');
             assert.equal(protobuf.getTimeout(), 20000);
             done();
-                        
-            
+        });
+
+        it('should build a RpbDelReq correctly with a binary key', function(done) {
+            var binaryKey = crypto.randomBytes(128);
+            var deleteValue = new DeleteValue.Builder()
+               .withBucketType('bucket_type')
+               .withBucket('bucket_name')
+               .withKey(binaryKey)
+               .withCallback(function(){})
+               .build();
+            var protobuf = deleteValue.constructPbRequest();
+            var keyBuf = protobuf.getKey().toBuffer();
+            assert(binaryKey.equals(keyBuf));
+            done();
         });
         
         it('should take a RpbDelResp and call the users callback with the response', function(done) {
-            
             // Riak doesn't actually return a RpbDelResp message - just the code. The core
             // will send null to the command onSuccess and the response sent to the user
             // is simply a boolean true.
-
             var callback = function(err, resp) {
                 assert(resp === true);
                 done();
@@ -77,7 +87,6 @@ describe('DeleteValue', function() {
                 .build();
 
             deleteValue.onSuccess(null);
-            
         });
         
         it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
@@ -100,6 +109,5 @@ describe('DeleteValue', function() {
         
             deleteValue.onRiakError(rpbErrorResp);
         });
-        
     });
 });

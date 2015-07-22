@@ -26,11 +26,9 @@ function TestCommand(options, callback) {
     CommandBase.call(this, 'RpbGetReq', 'RpbGetResp', callback);
     var self = this;
     Joi.validate(options, schema, function(err, options) {
-
         if (err) {
             throw err;
         }
-
         self.options = options;
     });
 }
@@ -40,7 +38,7 @@ inherits(TestCommand, CommandBase);
 var schema = Joi.object().keys({
    bucketType: Joi.string().default('default'),
    bucket: Joi.string().required(),
-   key: Joi.string().required()
+   key: Joi.binary().required()
 });
 
 function TestBuilder() {}
@@ -70,7 +68,6 @@ describe('CommandBase', function() {
     function cb(err, rslt) { }
 
     describe('TestCommand', function() {
-
         it('should use callback passed as ctor argument', function(done) {
             var options = {
                 bucketType: 'maps',
@@ -83,7 +80,6 @@ describe('CommandBase', function() {
                 done();
             });
         });
-
         it('should use callback via Builder', function(done) {
             assert.doesNotThrow(function () {
                 var cmd = new TestBuilder()
@@ -95,7 +91,6 @@ describe('CommandBase', function() {
                 done();
             });
         });
-
         it('should throw when callback not passed to ctor', function(done) {
             var options = {
                 bucketType: 'maps',
@@ -107,7 +102,6 @@ describe('CommandBase', function() {
             });
             done();
         });
-
         it('should throw when callback passed via options', function(done) {
             var options = {
                 bucketType: 'maps',
@@ -120,7 +114,6 @@ describe('CommandBase', function() {
             });
             done();
         });
-
     });
 
     describe('Commands', function() {
@@ -249,6 +242,18 @@ describe('CommandBase', function() {
                     builder_func: function (b) {
                         b.withBucket(default_options.bucket);
                         b.withKey(default_options.key);
+                    }
+                },
+            'KV.FetchPreflist' : {
+                    options : {
+                        bucketType: default_options.bucketType,
+                        bucket: default_options.bucket,
+                        key: default_options.key,
+                        callback: cb
+                    },
+                    builder_func: function (b) {
+                        b.withBucket(default_options.bucket);
+                        b.withKey(default_options.bucket);
                     }
                 },
             'KV.FetchBucketProps' : {
