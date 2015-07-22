@@ -1,6 +1,9 @@
 Release Notes
 =============
 
+* 1.5.1 - Following issues / PRs addressed:
+ * [Fix uncaught exception in defaultnodemanager when nodes are removed](https://github.com/basho/riak-nodejs-client/pull/89)
+ * [Allow binary Riak keys](https://github.com/basho/riak-nodejs-client/pull/87)
 * 1.5.0 - Following issues / PRs addressed:
  * [JSON parse fails when tombstone is returned](https://github.com/basho/riak-nodejs-client/issues/74)
 * 1.4.0 - Following issues / PRs addressed:
