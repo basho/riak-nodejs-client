@@ -22,6 +22,7 @@ var RpbBucketKeyPreflistItem = rpb.getProtoFor('RpbBucketKeyPreflistItem');
 var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
+var crypto = require('crypto');
 
 var bucketType = 'bucket_type_name';
 var bucket = 'bucket_name';
@@ -49,6 +50,20 @@ describe('FetchPreflist', function() {
             assert.equal(protobuf.getBucket().toString('utf8'), bucket);
             assert.equal(protobuf.getKey().toString('utf8'), key);
 
+            done();
+        });
+
+        it('should build a RpbGetBucketKeyPreflistReq correctly with a binary key', function(done) {
+            var binaryKey = crypto.randomBytes(128);
+            var cmd = new FetchPreflist.Builder()
+               .withBucketType('bucket_type')
+               .withBucket('bucket_name')
+               .withKey(binaryKey)
+               .withCallback(function(){})
+               .build();
+            var protobuf = cmd.constructPbRequest();
+            var keyBuf = protobuf.getKey().toBuffer();
+            assert(binaryKey.equals(keyBuf));
             done();
         });
         

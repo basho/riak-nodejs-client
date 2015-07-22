@@ -23,6 +23,7 @@ var RpbLink = rpb.getProtoFor('RpbLink');
 var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
 
 var assert = require('assert');
+var crypto = require('crypto');
 
 function generateTestRpbContent(value, contentType) {
     var rpbContent = new RpbContent();
@@ -56,7 +57,6 @@ describe('FetchValue', function() {
 
     describe('Build', function() {
         it('should build a RpbGetReq correctly', function(done) {
-
             var vclock = new Buffer(0);
             var fetchCommand = new FetchValue.Builder()
                .withBucketType('bucket_type')
@@ -87,7 +87,20 @@ describe('FetchValue', function() {
             assert(protobuf.getIfModified().toBuffer() !== null);
             assert.equal(protobuf.getTimeout(), 20000);
             done();
+        });
 
+        it('should build a RpbGetReq correctly with a binary key', function(done) {
+            var binaryKey = crypto.randomBytes(128);
+            var cmd = new FetchValue.Builder()
+               .withBucketType('bucket_type')
+               .withBucket('bucket_name')
+               .withKey(binaryKey)
+               .withCallback(function(){})
+               .build();
+            var protobuf = cmd.constructPbRequest();
+            var keyBuf = protobuf.getKey().toBuffer();
+            assert(binaryKey.equals(keyBuf));
+            done();
         });
 
         it('should take a RpbGetResp and call the users callback with the response', function(done) {
