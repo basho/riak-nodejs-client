@@ -45,7 +45,7 @@ describe('RiakCluster', function() {
         });
     });
     describe('Test removing node while executing command', function() {
-        it('Test removing node while executing command, should not throw exception', function(done) {
+        it('removing node while executing command should not throw exception', function(done) {
             var nodeTemplate = new RiakNode.Builder().withMinConnections(10);
             var nodeAddys = ['192.168.1.1:8087', '192.168.1.2:8087', '192.168.1.3:8087', '192.168.1.4:8087'];
             var arrayOfNodes = RiakNode.buildNodes(nodeAddys, nodeTemplate);
@@ -66,8 +66,11 @@ describe('RiakCluster', function() {
             assert(myCluster.removeNode('192.168.1.3:8087'));
             assert(myCluster.removeNode('192.168.1.4:8087'));
             assert.equal(myCluster.nodes.length, 2);
+            assert.equal(myCluster.nodeManager._nodeIndex, 2);
             assert.equal(myCluster.nodes[0].remoteAddress, '192.168.1.1');
             assert.equal(myCluster.nodes[0].remotePort, 8087);
+            assert.equal(myCluster.nodes[1].remoteAddress, '192.168.1.2');
+            assert.equal(myCluster.nodes[1].remotePort, 8087);
 
             myCluster.execute(myCluster.nodes, {onError: function() {}});
             assert.equal(myCluster.nodeManager._nodeIndex, 1);
