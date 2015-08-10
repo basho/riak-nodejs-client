@@ -27,8 +27,6 @@ describe('RiakCluster - Integration', function() {
     describe('Node selection', function() {
        
         it('should try all three nodes with the default NodeManager', function(done) {
-           
-           
             var port = 1337;
             var servers = new Array(3);
             var nodes = new Array(3);
@@ -46,12 +44,9 @@ describe('RiakCluster - Integration', function() {
             
             var sockMe = function(socket) {
                 socket.on('data' , function(data) {
-
                     // the fetch got here
                     socket.write(header);
                     socket.write(encoded);
-
-
                     tried++;
                     if (tried === 3) {
                         clearTimeout(errTimeout);
@@ -73,7 +68,6 @@ describe('RiakCluster - Integration', function() {
                     .withRemotePort(port)
                     .withMinConnections(0)
                     .build();
-                
             }
             
             var errTimeout = setTimeout(function () {
@@ -86,10 +80,7 @@ describe('RiakCluster - Integration', function() {
             
             var fetch = new FetchValue({bucket: 'b', key: 'k'}, function(){});
             cluster.execute(fetch);
-            
-            
         });
-        
     });
     
     describe('Command queueing', function() {
