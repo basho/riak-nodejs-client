@@ -68,7 +68,7 @@ describe('FetchValue', function() {
                .withBasicQuorum(true)
                .withReturnDeletedVClock(true)
                .withHeadOnly(true)
-               .withIfNotModified(vclock)
+               .withIfModified(vclock)
                .withTimeout(20000)
                .withCallback(function(){})
                .build();
