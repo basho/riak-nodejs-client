@@ -154,7 +154,7 @@
     <p>A Class that represents a Riak client.</p>
 <p>The client constructor accepts a <a href="../classes/RiakCluster.html" class="crosslink">RiakCluster</a>, or a list of host[:port] from
 which it will create a RiakCluster using our default configuration.</p>
-<pre class="code prettyprint"><code>var Riak = require('riak');
+<pre class="code prettyprint"><code>var Riak = require('basho-riak-client');
 var client = new Riak.Client(['192.168.1.1:8087', '192.168.1.2:8087']);
 </code></pre>
 <p>Two styles of use are supported. Each command you can send to Riak is a
