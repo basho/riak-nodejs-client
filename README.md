@@ -67,3 +67,4 @@ Thank you to all of our contributors!
 * [Timothy Stonis](https://github.com/tstonis)
 * [Aleksandr Popov](https://github.com/mogadanez)
 * [Josh Yudaken](https://github.com/qix)
+* [Gabriel Nicolas Avellaneda](https://github.com/GabrielNicolasAvellaneda)
