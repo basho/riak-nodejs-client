@@ -75,7 +75,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-benchmark');
 
   grunt.registerTask('lint', 'jshint');
-  grunt.registerTask('unit', ['jshint', 'mochaTest:unit']);
+  //grunt.registerTask('unit', ['jshint', 'mochaTest:unit']);
+  grunt.registerTask('unit', function (testSuite) {
+    testSuite = testSuite.trim();
+    if (testSuite !== '') {
+      grunt.config.set('mochaTest.unit.src', ['test/unit/' + testSuite + '/*.js']);
+    }
+    grunt.task.run(['mochaTest:unit']);
+  });
   grunt.registerTask('integration', ['jshint', 'mochaTest:integration']);
   grunt.registerTask('security', ['jshint', 'mochaTest:security']);
   grunt.registerTask('default', ['jshint', 'mochaTest:unit', 'mochaTest:integration']);
