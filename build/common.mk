@@ -12,7 +12,7 @@ lint:
 	$(GRUNT) lint
 
 unit-test:
-	$(GRUNT) unit
+	$(GRUNT) unit:$(SUITE)
 
 integration-test:
 	$(GRUNT) integration
@@ -29,13 +29,13 @@ publish:
 help:
 	@echo ''
 	@echo ' Targets:'
-	@echo '--------------------------------------------------'
-	@echo ' all              - Run everything                '
-	@echo ' lint             - Run jshint                    '
-	@echo ' install-deps     - Install required dependencies '
-	@echo ' test             - Run unit & integration tests  '
-	@echo ' unit-test        - Run unit tests                '
-	@echo ' integration-test - Run integration tests         '
-	@echo ' security-test    - Run security tests            '
-	@echo '--------------------------------------------------'
+	@echo '--------------------------------------------------------------'
+	@echo ' all                          - Run everything                '
+	@echo ' lint                         - Run jshint                    '
+	@echo ' install-deps                 - Install required dependencies '
+	@echo ' test                         - Run unit & integration tests  '
+	@echo ' unit-test [SUITE=suite_name] - Run unit tests                '
+	@echo ' integration-test             - Run integration tests         '
+	@echo ' security-test                - Run security tests            '
+	@echo '--------------------------------------------------------------'
 	@echo ''
