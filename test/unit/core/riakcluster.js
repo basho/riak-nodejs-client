@@ -44,6 +44,21 @@ describe('RiakCluster', function() {
             done();
         });
     });
+    describe('Test getting a node index', function () {
+        it('getting some nodes index', function (done) {
+            var nodeAddrs = ['192.168.1.1:8087', '192.168.1.2:8087', '192.168.1.3:8087'];
+            var arrayOfNodes = RiakNode.buildNodes(nodeAddrs);
+            var myCluster = new RiakCluster.Builder().withRiakNodes(arrayOfNodes).build();
+            var node = arrayOfNodes[0];
+            assert.equal(myCluster.getNodeIndex(node),0);
+            assert.equal(myCluster.getNodeIndex('192.168.1.2'),1);
+            assert.equal(myCluster.getNodeIndex('192.168.1.3:8087'),2);
+            assert.equal(myCluster.getNodeIndex('192.168.1.3:1234'),-1);
+            assert.equal(myCluster.getNodeIndex('192.168.1.11'),-1);
+            done();
+        })
+    });
+
     describe('Test removing node', function() {
         it('removing node while executing command should not throw exception', function(done) {
             var nodeTemplate = new RiakNode.Builder().withMinConnections(10);
