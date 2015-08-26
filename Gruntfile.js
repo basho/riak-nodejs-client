@@ -81,7 +81,7 @@ module.exports = function(grunt) {
     if (testSuite !== '') {
       grunt.config.set('mochaTest.unit.src', ['test/unit/' + testSuite + '/*.js']);
     }
-    grunt.task.run(['mochaTest:unit']);
+    grunt.task.run(['jshint', 'mochaTest:unit']);
   });
   grunt.registerTask('integration', ['jshint', 'mochaTest:integration']);
   grunt.registerTask('security', ['jshint', 'mochaTest:security']);

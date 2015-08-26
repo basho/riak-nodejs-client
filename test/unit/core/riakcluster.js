@@ -56,7 +56,7 @@ describe('RiakCluster', function() {
             assert.equal(myCluster.getNodeIndex('192.168.1.3:1234'),-1);
             assert.equal(myCluster.getNodeIndex('192.168.1.11'),-1);
             done();
-        })
+        });
     });
 
     describe('Test removing node', function() {
@@ -157,6 +157,6 @@ describe('RiakCluster', function() {
             assert.equal(myCluster.nodes[1].remotePort, 8087);
             assert.equal(myCluster.nodes[1].state, RiakNode.State.RUNNING);
             done();
-        })
+        });
     });
 });
