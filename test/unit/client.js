@@ -73,6 +73,18 @@ describe('Client', function() {
             done();
         });
 
+        it('Riak.Commands.TS.StoreValue', function(done) {
+            var typeofTsStoreValue = typeof(Riak.Commands.TS.StoreValue);
+            assert(typeofTsStoreValue === 'function', "typeof(Riak.Commands.TS.StoreValue): " + typeofTsStoreValue);
+            done();
+        });
+
+        it('Riak.Commands.TS.ColumnType', function(done) {
+            var typeofTsColumnType = typeof(Riak.Commands.TS.ColumnType);
+            assert(typeofTsColumnType === 'object', "typeof(Riak.Commands.TS.ColumnType): " + typeofTsColumnType);
+            done();
+        });
+
         it('Riak.Commands.KV.DeleteValue', function(done) {
             var typeofKvDeleteValue = typeof(Riak.Commands.KV.DeleteValue);
             assert(typeofKvDeleteValue === 'function', "typeof(Riak.Commands.KV.DeleteValue): " + typeofKvDeleteValue);

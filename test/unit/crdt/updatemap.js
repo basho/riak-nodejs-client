@@ -224,7 +224,7 @@ describe('UpdateMap', function() {
                 mapField.setType(MapField.MapFieldType.SET);
                 mapField.setName(new Buffer('set_1'));
                 mapEntry.setField(mapField);
-                mapEntry.set_value.push.apply(mapEntry.set_value, [ByteBuffer.fromUTF8('value_1'), ByteBuffer.fromUTF8('value_2')]);
+                Array.prototype.push.apply(mapEntry.set_value, [ByteBuffer.fromUTF8('value_1'), ByteBuffer.fromUTF8('value_2')]);
                 mapEntries.push(mapEntry);
 
                 mapEntry = new MapEntry();
@@ -247,14 +247,14 @@ describe('UpdateMap', function() {
 
             };
 
-            dtUpdateResp.map_value.push.apply(dtUpdateResp.map_value, createMapEntries());
+            Array.prototype.push.apply(dtUpdateResp.map_value, createMapEntries());
 
             var mapEntry = new MapEntry();
             var mapField = new MapField();
             mapField.setType(MapField.MapFieldType.MAP);
             mapField.setName(new Buffer('map_1'));
             mapEntry.setField(mapField);
-            mapEntry.map_value.push.apply(mapEntry.map_value, createMapEntries());
+            Array.prototype.push.apply(mapEntry.map_value, createMapEntries());
 
             dtUpdateResp.map_value.push(mapEntry);
 
