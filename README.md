@@ -32,7 +32,7 @@ git clone --recursive https://github.com/basho/riak-nodejs-client
 # OR:
 
 git clone https://github.com/basho/riak-nodejs-client
-git submodule init --update
+git submodule update --init --recursive
 ```
 
 This repository's maintainers are engineers at Basho and we welcome your contribution to the project! Review the details in [CONTRIBUTING.md](CONTRIBUTING.md) in order to give back to this project.
