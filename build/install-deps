@@ -20,9 +20,9 @@ fi
 if [[ -f /etc/lsb-release ]]
 then
     source /etc/lsb-release
-    if [[ $DISTRIB_CODENAME != 'precise' ]]
+    if [[ $DISTRIB_CODENAME != 'precise' ]] && [[ $DISTRIB_CODENAME != 'trusty' ]]
     then
-        echo '[error] Only tested on Ubuntu 12 precise' 2>&1
+        echo '[error] Only tested on Ubuntu 12 precise and Ubuntu 14 trusty' 2>&1
         exit 1
     fi
 else
