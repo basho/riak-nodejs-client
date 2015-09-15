@@ -84,9 +84,9 @@ describe('RiakCluster - Integration', function() {
     });
     
     describe('Command queueing', function() {
-       
-        it('Should queue commands and retry from the queue', function(done) {
-           
+
+        it('Should queue commands and retry from the queue, respecting queueSubmitInterval', function(done) {
+
            var server = Net.createServer(function(socket) {
               
                socket.on('data', function(data) {
@@ -109,12 +109,15 @@ describe('RiakCluster - Integration', function() {
            
            var cluster = new RiakCluster.Builder()
                    .withRiakNodes([node])
-                   .withQueueCommands()
+                   .withQueueCommands(undefined, 600)
                    .build();
-           
+
+           var queueStart;
+
            var stateMe = function(state) {
                 assert.equal(typeof(state), 'number', 'stateType');
                 if (state === RiakCluster.State.QUEUEING) {
+                    queueStart = Date.now();
                     server.listen(1337, '127.0.0.1');
                 }
             };
@@ -124,6 +127,7 @@ describe('RiakCluster - Integration', function() {
             
             var callMe = function(err, resp) {
                 assert(!err, err);
+                assert(Date.now() - queueStart >= 600, 'queueSubmitInterval respected');
                 cluster.stop();
                 server.close();
                 done();
