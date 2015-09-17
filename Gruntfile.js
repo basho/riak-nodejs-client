@@ -76,9 +76,11 @@ module.exports = function(grunt) {
 
   grunt.registerTask('lint', 'jshint');
   grunt.registerTask('unit', function (testSuite) {
-    testSuite = testSuite.trim();
-    if (testSuite !== '') {
-      grunt.config.set('mochaTest.unit.src', ['test/unit/' + testSuite + '/*.js']);
+    if (testSuite) {
+        testSuite = testSuite.trim();
+        if (testSuite !== '') {
+            grunt.config.set('mochaTest.unit.src', ['test/unit/' + testSuite + '/*.js']);
+        }
     }
     grunt.task.run(['jshint', 'mochaTest:unit']);
   });

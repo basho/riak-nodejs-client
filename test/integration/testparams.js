@@ -33,9 +33,11 @@ module.exports.bucketType = 'leveldb_type';
 
 var riakHost = 'riak-test';
 var riakPort = 10017;
-if (process.env.RIAK_HOST && process.env.RIAK_PORT) {
-    riakHost = process.env.RIAK_HOST;
-    riakPort = process.env.RIAK_PORT;
+if (process.env.RIAK_HOST) {
+    riakHost = String(process.env.RIAK_HOST);
+}
+if (process.env.RIAK_PORT) {
+    riakPort = Number(process.env.RIAK_PORT);
 }
 
 module.exports.nodeAddresses = [ riakHost + ':' + riakPort ];
