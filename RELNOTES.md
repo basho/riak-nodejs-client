@@ -1,6 +1,8 @@
 Release Notes
 =============
 
+* 1.7.0 - Following issues / PRs addressed:
+ * [Implement commands to Get/Set bucket type properties](https://github.com/basho/riak-nodejs-client/pull/98)
 * 1.6.0 - Following issues / PRs addressed:
  * [Some code refactoring](https://github.com/basho/riak-nodejs-client/pull/97)
  * [Parameterize the queue submit interval of RiakCluster](https://github.com/basho/riak-nodejs-client/pull/96)
