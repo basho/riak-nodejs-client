@@ -54,12 +54,15 @@ function errexit
 
 function onexit
 {
-    for tmpfile in $(< $tmpfile_file)
-    do
-        pdebug "removing temp file $tmpfile"
-        rm -f $tmpfile
-    done
-    rm -f $tmpfile_file
+    if [[ -f $tmpfile_file ]]
+    then
+        for tmpfile in $(< $tmpfile_file)
+        do
+            pdebug "removing temp file $tmpfile"
+            rm -f $tmpfile
+        done
+        rm -f $tmpfile_file
+    fi
 }
 
 function gh_publish {
@@ -163,11 +166,14 @@ then
     errexit "'curl' must be in your PATH"
 fi
 
-if [[ $2 == 'republish' ]]
+republish=${2:-''}
+if [[ $republish == 'republish' ]]
 then
     gh_publish
     exit 0
 fi
+
+exit 0
 
 declare -r current_branch="$(git rev-parse --abbrev-ref HEAD)"
 
