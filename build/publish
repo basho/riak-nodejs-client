@@ -173,8 +173,6 @@ then
     exit 0
 fi
 
-exit 0
-
 declare -r current_branch="$(git rev-parse --abbrev-ref HEAD)"
 
 if [[ $debug == 'false' && $current_branch != 'master' ]]
