@@ -13,7 +13,6 @@ if (!assert.deepStrictEqual) {
 }
 
 var logger = require('winston');
-var ByteBuffer = require('bytebuffer');
 var Long = require('long');
 
 var queryText = 'select * from foo where baz = "bat"';
@@ -83,42 +82,38 @@ describe('Query', function() {
                 assert.strictEqual(tsQueryResp.rows.length, rr.length);
 
                 var r0 = rr[0];
-                assert(r0[0] instanceof ByteBuffer);
-                assert(d.bd0.equals(r0[0].toBuffer()));
-
+                assert(r0[0] instanceof Buffer);
+                assert(d.bd0.equals(r0[0]));
                 assert(r0[1].equals(Long.ZERO));
-
                 assert.strictEqual(r0[2], '1.2');
-
                 assert(r0[3] instanceof Long);
                 assert(d.ts0ms.equals(r0[3]));
-
                 assert.strictEqual(r0[4], true);
-
                 assert.deepStrictEqual(r0[5], d.set);
-
                 assert.deepStrictEqual(r0[6], d.map);
-
                 assert(d.ts0ms.equals(r0[7]));
 
                 var r1 = rr[1];
-                assert(r1[0] instanceof ByteBuffer);
-                assert(d.bd1.equals(r1[0].toBuffer()));
-
+                assert(r1[0] instanceof Buffer);
+                assert(d.bd1.equals(r1[0]));
                 assert(r1[1].equals(3));
-
                 assert.strictEqual(r1[2], '4.5');
-
                 assert(r1[3] instanceof Long);
                 assert(d.ts1ms.equals(r1[3]));
-
                 assert.strictEqual(r1[4], false);
-
                 assert.deepStrictEqual(r1[5], d.set);
-
                 assert.deepStrictEqual(r1[6], d.map);
-
                 assert(d.ts1ms.equals(r1[7]));
+
+                var r2 = rr[2];
+                assert.strictEqual(r2[0], null);
+                assert(r2[1].equals(6));
+                assert.strictEqual(r2[2], '7.8');
+                assert.strictEqual(r2[3], null);
+                assert.strictEqual(r2[4], false);
+                assert.deepStrictEqual(r2[5], []);
+                assert.strictEqual(r2[6], null);
+                assert.strictEqual(r2[7], null);
 
                 done();
             };

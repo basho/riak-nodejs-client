@@ -59,7 +59,8 @@ module.exports.map = map;
 
 var rows = [
     [ bd0, 0, 1.2, ts0, true, set, map, ts0ms ],
-    [ bd1, 3, 4.5, ts1, false, set, map, ts1ms ]
+    [ bd1, 3, 4.5, ts1, false, set, map, ts1ms ],
+    [ null, 6, 7.8, null, false, null, undefined, null ]
 ];
 module.exports.rows = rows;
 
@@ -75,32 +76,41 @@ for (var i = 0; i < rows.length; i++) {
     var row = rows[i];
     for (var j = 0; j < row.length; j++) {
         var cell = new TsCell();
+        var val = row[j];
         switch (j) {
             case TS.ColumnType.Binary:
-                cell.setBinaryValue(row[j]);
+                cell.setBinaryValue(val);
                 break;
             case TS.ColumnType.Integer:
-                cell.setIntegerValue(row[j]);
+                cell.setIntegerValue(val);
                 break;
             case TS.ColumnType.Numeric:
-                cell.setNumericValue(new Buffer(row[j].toString()));
+                if (val) {
+                    cell.setNumericValue(new Buffer(val.toString()));
+                }
                 break;
             case TS.ColumnType.Timestamp:
-                cell.setTimestampValue(Long.fromNumber(row[j].getTime()));
+                if (val) {
+                    cell.setTimestampValue(Long.fromNumber(val.getTime()));
+                }
                 break;
             case TS.ColumnType.Boolean:
-                cell.setBooleanValue(row[j]);
+                cell.setBooleanValue(val);
                 break;
             case TS.ColumnType.Set:
-                var setValueToJSON = makeSetValueSerializer(cell);
-                row[j].forEach(setValueToJSON);
+                if (val) {
+                    var setValueToJSON = makeSetValueSerializer(cell);
+                    val.forEach(setValueToJSON);
+                }
                 break;
             case TS.ColumnType.Map:
-                var json = JSON.stringify(row[j]);
-                cell.setMapValue(new Buffer(json));
+                if (val) {
+                    var json = JSON.stringify(val);
+                    cell.setMapValue(new Buffer(json));
+                }
                 break;
             case 7:
-                cell.setTimestampValue(row[j]);
+                cell.setTimestampValue(val);
                 break;
             default:
                 throw new Error('huh?');
