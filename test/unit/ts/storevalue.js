@@ -60,10 +60,9 @@ function validateTsPutReq(protobuf, hasCols) {
 
     var row0 = prows[0];
     var row0cells = row0.getCells();
-    var zero = new Long(0);
 
     assert(d.bd0.equals(row0cells[0].getBinaryValue().toBuffer()));
-    assert(row0cells[1].getIntegerValue().equals(zero));
+    assert(row0cells[1].getIntegerValue().equals(Long.ZERO));
     assert.strictEqual(row0cells[2].getNumericValue().toString('utf8'), '1.2');
     // ts0 is a Date
     var r0c3tsv = row0cells[3].getTimestampValue();
