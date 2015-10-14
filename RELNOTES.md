@@ -1,6 +1,8 @@
 Release Notes
 =============
 
+* 1.8.0 - Following issues / PRs addressed:
+ * [Expose Get/Set bucket type properties on `Client`](https://github.com/basho/riak-nodejs-client/pull/103)
 * 1.7.0 - Following issues / PRs addressed:
  * [Implement commands to Get/Set bucket type properties](https://github.com/basho/riak-nodejs-client/pull/98)
 * 1.6.0 - Following issues / PRs addressed:

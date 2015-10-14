@@ -83,6 +83,11 @@ describe('Client', function() {
             assert(typeofKvFetchBucketProps === 'function', "typeof(Riak.Commands.KV.FetchBucketProps): " + typeofKvFetchBucketProps);
             done();
         });
+        it('Riak.Commands.KV.FetchBucketTypeProps', function(done) {
+            var typeofKvFetchBucketTypeProps = typeof(Riak.Commands.KV.FetchBucketTypeProps);
+            assert(typeofKvFetchBucketTypeProps === 'function', "typeof(Riak.Commands.KV.FetchBucketTypeProps): " + typeofKvFetchBucketTypeProps);
+            done();
+        });
         it('Riak.Commands.KV.FetchValue', function(done) {
             var typeofKvFetchValue = typeof(Riak.Commands.KV.FetchValue);
             assert(typeofKvFetchValue === 'function', "typeof(Riak.Commands.KV.FetchValue): " + typeofKvFetchValue);
@@ -111,6 +116,11 @@ describe('Client', function() {
         it('Riak.Commands.KV.StoreBucketProps', function(done) {
             var typeofKvStoreBucketProps = typeof(Riak.Commands.KV.StoreBucketProps);
             assert(typeofKvStoreBucketProps === 'function', "typeof(Riak.Commands.KV.StoreBucketProps): " + typeofKvStoreBucketProps);
+            done();
+        });
+        it('Riak.Commands.KV.StoreBucketTypeProps', function(done) {
+            var typeofKvStoreBucketTypeProps = typeof(Riak.Commands.KV.StoreBucketTypeProps);
+            assert(typeofKvStoreBucketTypeProps === 'function', "typeof(Riak.Commands.KV.StoreBucketTypeProps): " + typeofKvStoreBucketTypeProps);
             done();
         });
         it('Riak.Commands.KV.StoreValue', function(done) {
