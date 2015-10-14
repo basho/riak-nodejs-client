@@ -1,6 +1,7 @@
 Release Notes
 =============
 
+* 1.8.1 - Re-publish due to `npm publish` error for `1.8.0`.
 * 1.8.0 - Following issues / PRs addressed:
  * [Expose Get/Set bucket type properties on `Client`](https://github.com/basho/riak-nodejs-client/pull/103)
 * 1.7.0 - Following issues / PRs addressed:
