@@ -1,6 +1,13 @@
 Release Notes
 =============
 
+* 1.7.0 - Following issues / PRs addressed:
+ * [Implement commands to Get/Set bucket type properties](https://github.com/basho/riak-nodejs-client/pull/98)
+* 1.6.0 - Following issues / PRs addressed:
+ * [Some code refactoring](https://github.com/basho/riak-nodejs-client/pull/97)
+ * [Parameterize the queue submit interval of RiakCluster](https://github.com/basho/riak-nodejs-client/pull/96)
+ * [Corrected method name in the Builder of RiakCluster](https://github.com/basho/riak-nodejs-client/pull/92)
+ * [Corrected npm package name in documentation example](https://github.com/basho/riak-nodejs-client/pull/90)
 * 1.5.1 - Following issues / PRs addressed:
  * [Fix uncaught exception in defaultnodemanager when nodes are removed](https://github.com/basho/riak-nodejs-client/pull/89)
  * [Allow binary Riak keys](https://github.com/basho/riak-nodejs-client/pull/87)

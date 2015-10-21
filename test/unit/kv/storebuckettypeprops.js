@@ -1,19 +1,32 @@
+/*
+ * Copyright 2015 Basho Technologies, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 var rpb = require('../../../lib/protobuf/riakprotobuf');
-var StoreBucketProps = require('../../../lib/commands/kv/storebucketprops');
+var StoreBucketTypeProps = require('../../../lib/commands/kv/storebuckettypeprops');
 var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
 var RpbCommitHook = rpb.getProtoFor('RpbCommitHook');
 var RpbModFun = rpb.getProtoFor('RpbModFun');
 var assert = require('assert');
 
-describe('StoreBucketProps', function() {
+describe('StoreBucketTypeProps', function() {
     describe('Build', function() {
-        it('should build a RpbSetBucketProps correctly', function(done) {
-            
+        it('should build a RpbSetBucketTypeProps correctly', function(done) {
             var hook = { mod: 'module_name', fun: 'function_name' };
-            
-            var storeProps = new StoreBucketProps.Builder()
+            var storeProps = new StoreBucketTypeProps.Builder()
                 .withBucketType('bucket_type')
-                .withBucket('bucket_name')
                 .withNVal(3)
                 .withAllowMult(true)
                 .withLastWriteWins(true)
@@ -41,7 +54,6 @@ describe('StoreBucketProps', function() {
             var protobuf = storeProps.constructPbRequest();
             var props = protobuf.getProps();
             
-            assert.equal(protobuf.bucket.toString('utf8'), 'bucket_name');
             assert.equal(protobuf.type.toString('utf8'), 'bucket_type');
             assert.equal(props.getNVal(), 3);
             assert.equal(props.getAllowMult(), true);
@@ -73,50 +85,36 @@ describe('StoreBucketProps', function() {
             assert.equal(props.getChashKeyfun().module.toString('utf8'), 'module_name');
             assert.equal(props.getChashKeyfun().function.toString('utf8'), 'function_name');
             done();
-            
-                
         });
         
         it('should take a RpbSetBucketResp and call the users callback with the response', function(done) {
-           
             // RpbSetBucketResp has no body. Riak just sends back the code so we supply null
             // to the command on success and a simple boolean true is sent to the user callback
-            
             var callback = function(err, response) {
                 assert.equal(response, true);
                 done();
             };
-            
-            var storeProps = new StoreBucketProps.Builder()
+            var storeProps = new StoreBucketTypeProps.Builder()
                 .withBucketType('bucket_type')
-                .withBucket('bucket_name')
                 .withCallback(callback)
                 .build();
-        
             storeProps.onSuccess(null);
-            
         });
         
         it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
            var rpbErrorResp = new RpbErrorResp();
            rpbErrorResp.setErrmsg(new Buffer('this is an error'));
-           
            var callback = function(err, response) {
                if (err) {
                    assert.equal(err,'this is an error');
                    done();
                }
            };
-           
-           var storeProps = new StoreBucketProps.Builder()
+           var storeProps = new StoreBucketTypeProps.Builder()
                 .withBucketType('bucket_type')
-                .withBucket('bucket_name')
                 .withCallback(callback)
                 .build();
-        
             storeProps.onRiakError(rpbErrorResp);
-           
         });
     });
 });
-        

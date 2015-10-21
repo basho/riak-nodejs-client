@@ -15,7 +15,8 @@
  */
 
 var rpb = require('../../../lib/protobuf/riakprotobuf');
-var FetchBucketProps = require('../../../lib/commands/kv/fetchbucketprops');
+var FetchBucketTypeProps = require('../../../lib/commands/kv/fetchbuckettypeprops');
+var RpbGetBucketTypeReq = rpb.getProtoFor('RpbGetBucketTypeReq');
 var RpbGetBucketResp = rpb.getProtoFor('RpbGetBucketResp');
 var RpbBucketProps = rpb.getProtoFor('RpbBucketProps');
 var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
@@ -23,40 +24,35 @@ var RpbCommitHook = rpb.getProtoFor('RpbCommitHook');
 var RpbModFun = rpb.getProtoFor('RpbModFun');
 var assert = require('assert');
 
-describe('FetchBucketProps', function() {
+describe('FetchBucketTypeProps', function() {
     describe('Build', function() {
-        it('should build a RpbGetBucketProps correctly', function(done) {
+        it('should build a RpbGetBucketTypeProps correctly', function(done) {
             var bucketType = 'bucket_type';
-            var bucketName = 'bucket_name';
 
             var opts = {
                 bucketType: bucketType,
-                bucket: bucketName,
             };
             var cb = function (err, rslt) {};
-            var fetchProps = new FetchBucketProps(opts, cb);
+            var fetchProps = new FetchBucketTypeProps(opts, cb);
 
             var protobuf = fetchProps.constructPbRequest();
             assert.equal(protobuf.getType().toString('utf8'), bucketType);
-            assert.equal(protobuf.getBucket().toString('utf8'), bucketName);
 
-            var fetchPropsBuilder = new FetchBucketProps.Builder();
+            var fetchPropsBuilder = new FetchBucketTypeProps.Builder();
 
             fetchPropsBuilder.withBucketType(bucketType);
-            fetchPropsBuilder.withBucket(bucketName);
             fetchPropsBuilder.withCallback(cb);
 
             fetchProps = fetchPropsBuilder.build();
 
             protobuf = fetchProps.constructPbRequest();
             assert.equal(protobuf.getType().toString('utf8'), bucketType);
-            assert.equal(protobuf.getBucket().toString('utf8'), bucketName);
             done();
         });
-        
+
         it('should take a RpbGetBucketResp and call the users callback with the response', function(done) {
             var props = new RpbBucketProps();
-            
+
             props.setNVal(3);
             props.setAllowMult(true);
             props.setLastWriteWins(true);
@@ -130,9 +126,8 @@ describe('FetchBucketProps', function() {
                 done();
             };
             
-            var fetchProps = new FetchBucketProps.Builder()
+            var fetchProps = new FetchBucketTypeProps.Builder()
                     .withBucketType('bucket_type')
-                    .withBucket('bucket_name')
                     .withCallback(callback)
                     .build();
             fetchProps.onSuccess(protobuf);
@@ -149,9 +144,8 @@ describe('FetchBucketProps', function() {
                }
            };
            
-           var fetchCommand = new FetchBucketProps.Builder()
+           var fetchCommand = new FetchBucketTypeProps.Builder()
                .withBucketType('bucket_type')
-               .withBucket('bucket_name')
                .withCallback(callback)
                .build();
             fetchCommand.onRiakError(rpbErrorResp);
