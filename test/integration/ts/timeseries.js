@@ -8,7 +8,7 @@ var assert = require('assert');
 var logger = require('winston');
 
 var tableName = 'GeoCheckin';
-var now = Date.now(); // NB: returns millis since Jan 1 1970 UTC
+var now = 1443796900000; // Let's just pretend this is the value of Date.now();
 var fiveMinsInMsec = 5 * 60 * 1000;
 var fiveMinsAgo = now - fiveMinsInMsec;
 var tenMinsAgo = fiveMinsAgo - fiveMinsInMsec;
