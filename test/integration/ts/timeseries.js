@@ -37,7 +37,7 @@ var columns = [
 // floats that end in .0
 // https://github.com/basho/riak_pb/pull/135
 var rows = [
-    [ 'hash1', 'user2', twentyMinsAgo, null, '84.3' ],
+    [ 'hash1', 'user2', twentyMinsAgo, 'cloudy', null ],
     [ 'hash1', 'user2', fifteenMinsAgo, 'rain', '79.0' ],
     [ 'hash1', 'user2', fiveMinsAgo, 'wind', 50.5 ],
     [ 'hash1', 'user2', now, 'snow', 20.1 ]
