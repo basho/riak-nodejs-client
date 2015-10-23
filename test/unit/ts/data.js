@@ -13,7 +13,7 @@ var Long = require('long');
 var columns = [
     { name: 'col_binary',    type: TS.ColumnType.Binary },
     { name: 'col_int',       type: TS.ColumnType.Integer },
-    { name: 'col_numeric',   type: TS.ColumnType.Numeric },
+    { name: 'col_float',   type: TS.ColumnType.Float },
     { name: 'col_timestamp', type: TS.ColumnType.Timestamp },
     { name: 'col_boolean',   type: TS.ColumnType.Boolean },
     { name: 'col_set',       type: TS.ColumnType.Set },
@@ -84,10 +84,8 @@ for (var i = 0; i < rows.length; i++) {
             case TS.ColumnType.Integer:
                 cell.setIntegerValue(val);
                 break;
-            case TS.ColumnType.Numeric:
-                if (val) {
-                    cell.setNumericValue(new Buffer(val.toString()));
-                }
+            case TS.ColumnType.Float:
+                    cell.setDoubleValue(val);
                 break;
             case TS.ColumnType.Timestamp:
                 if (val) {

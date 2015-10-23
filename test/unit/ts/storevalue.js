@@ -31,8 +31,8 @@ function validateTsPutReq(protobuf, hasCols) {
         assert.strictEqual(col1.getType(), TsColumnType.INTEGER);
 
         var col2 = pcols[2];
-        assert.strictEqual(col2.getName().toString('utf8'), 'col_numeric');
-        assert.strictEqual(col2.getType(), TsColumnType.NUMERIC);
+        assert.strictEqual(col2.getName().toString('utf8'), 'col_float');
+        assert.strictEqual(col2.getType(), TsColumnType.FLOAT);
 
         var col3 = pcols[3];
         assert.strictEqual(col3.getName().toString('utf8'), 'col_timestamp');
@@ -63,7 +63,7 @@ function validateTsPutReq(protobuf, hasCols) {
 
     assert(d.bd0.equals(row0cells[0].getBinaryValue().toBuffer()));
     assert(row0cells[1].getIntegerValue().equals(Long.ZERO));
-    assert.strictEqual(row0cells[2].getNumericValue().toString('utf8'), '1.2');
+    assert.strictEqual(row0cells[2].getDoubleValue(), 1.2);
     // ts0 is a Date
     var r0c3tsv = row0cells[3].getTimestampValue();
     assert(d.ts0ms.equals(r0c3tsv));
@@ -94,7 +94,7 @@ function validateTsPutReq(protobuf, hasCols) {
 
     assert(d.bd1.equals(row1cells[0].getBinaryValue().toBuffer()));
     assert(row1cells[1].getIntegerValue().equals(three));
-    assert.strictEqual(row1cells[2].getNumericValue().toString('utf8'), '4.5');
+    assert.strictEqual(row1cells[2].getDoubleValue(), 4.5);
 
     var r1c3tsv = row1cells[3].getTimestampValue();
     assert(d.ts1ms.equals(r1c3tsv));

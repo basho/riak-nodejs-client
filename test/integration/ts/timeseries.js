@@ -30,7 +30,7 @@ var columns = [
     { name: 'user',        type: TS.ColumnType.Binary },
     { name: 'time',        type: TS.ColumnType.Timestamp },
     { name: 'weather',     type: TS.ColumnType.Binary },
-    { name: 'temperature', type: TS.ColumnType.Numeric }
+    { name: 'temperature', type: TS.ColumnType.Float }
 ];
 
 // TODO FUTURE - when this PR is accepted, it will be OK to have
@@ -38,7 +38,7 @@ var columns = [
 // https://github.com/basho/riak_pb/pull/135
 var rows = [
     [ 'hash1', 'user2', twentyMinsAgo, 'cloudy', null ],
-    [ 'hash1', 'user2', fifteenMinsAgo, 'rain', '79.0' ],
+    [ 'hash1', 'user2', fifteenMinsAgo, 'rain', 79.0 ],
     [ 'hash1', 'user2', fiveMinsAgo, 'wind', 50.5 ],
     [ 'hash1', 'user2', now, 'snow', 20.1 ]
 ];
