@@ -30,7 +30,7 @@ var columns = [
     { name: 'user',        type: TS.ColumnType.Binary },
     { name: 'time',        type: TS.ColumnType.Timestamp },
     { name: 'weather',     type: TS.ColumnType.Binary },
-    { name: 'temperature', type: TS.ColumnType.Numeric }
+    { name: 'temperature', type: TS.ColumnType.Float }
 ];
 
 // TODO FUTURE - when this PR is accepted, it will be OK to have

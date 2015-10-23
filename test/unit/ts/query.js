@@ -59,9 +59,9 @@ describe('Query', function() {
                 assert.strictEqual(rc[1].name, 'col_int');
                 assert.strictEqual(rc[1].type, TsColumnType.INTEGER);
                 assert.strictEqual(rc[1].type, TS.ColumnType.Integer);
-                assert.strictEqual(rc[2].name, 'col_numeric');
-                assert.strictEqual(rc[2].type, TsColumnType.NUMERIC);
-                assert.strictEqual(rc[2].type, TS.ColumnType.Numeric);
+                assert.strictEqual(rc[2].name, 'col_float');
+                assert.strictEqual(rc[2].type, TsColumnType.FLOAT);
+                assert.strictEqual(rc[2].type, TS.ColumnType.Float);
                 assert.strictEqual(rc[3].name, 'col_timestamp');
                 assert.strictEqual(rc[3].type, TsColumnType.TIMESTAMP);
                 assert.strictEqual(rc[3].type, TS.ColumnType.Timestamp);
@@ -85,7 +85,7 @@ describe('Query', function() {
                 assert(r0[0] instanceof Buffer);
                 assert(d.bd0.equals(r0[0]));
                 assert(r0[1].equals(Long.ZERO));
-                assert.strictEqual(r0[2], '1.2');
+                assert.strictEqual(r0[2], 1.2);
                 assert(r0[3] instanceof Long);
                 assert(d.ts0ms.equals(r0[3]));
                 assert.strictEqual(r0[4], true);
@@ -97,7 +97,7 @@ describe('Query', function() {
                 assert(r1[0] instanceof Buffer);
                 assert(d.bd1.equals(r1[0]));
                 assert(r1[1].equals(3));
-                assert.strictEqual(r1[2], '4.5');
+                assert.strictEqual(r1[2], 4.5);
                 assert(r1[3] instanceof Long);
                 assert(d.ts1ms.equals(r1[3]));
                 assert.strictEqual(r1[4], false);
@@ -108,7 +108,7 @@ describe('Query', function() {
                 var r2 = rr[2];
                 assert.strictEqual(r2[0], null);
                 assert(r2[1].equals(6));
-                assert.strictEqual(r2[2], '7.8');
+                assert.strictEqual(r2[2], 7.8);
                 assert.strictEqual(r2[3], null);
                 assert.strictEqual(r2[4], false);
                 assert.deepStrictEqual(r2[5], []);
