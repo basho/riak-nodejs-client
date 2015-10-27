@@ -22,7 +22,7 @@ CREATE TABLE GeoCheckin (
     time timestamp not null,
     weather varchar not null,
     temperature float,
-    PRIMARY KEY((quantum(time, 15, m),user), time, user)
+    PRIMARY KEY((quantum(time, 15, m), user), time, user)
 )
 */
 var columns = [
@@ -37,9 +37,9 @@ var columns = [
 // floats that end in .0
 // https://github.com/basho/riak_pb/pull/135
 var rows = [
-    [ 'hash1', 'user2', twentyMinsAgo, 'cloudy', null ],
+    [ 'hash1', 'user2', twentyMinsAgo, 'hurricane', 82.3 ],
     [ 'hash1', 'user2', fifteenMinsAgo, 'rain', 79.0 ],
-    [ 'hash1', 'user2', fiveMinsAgo, 'wind', 50.5 ],
+    [ 'hash1', 'user2', fiveMinsAgo, 'wind', null ],
     [ 'hash1', 'user2', now, 'snow', 20.1 ]
 ];
 
@@ -92,6 +92,12 @@ describe('Timeseries - Integration', function () {
                 assert(!err, err);
                 assert.equal(resp.columns.length, 5);
                 assert.equal(resp.rows.length, 1);
+                r0 = resp.rows[0];
+                assert.equal(r0[0], 'hash1');
+                assert.equal(r0[1], 'user2');
+                assert.equal(r0[2], fiveMinsAgo);
+                assert.equal(r0[3], 'wind');
+                assert(!r0[4], 'expected null value');
                 done();
             };
             var q = new TS.Query.Builder()

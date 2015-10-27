@@ -13,7 +13,7 @@ var Long = require('long');
 var columns = [
     { name: 'col_binary',    type: TS.ColumnType.Binary },
     { name: 'col_int',       type: TS.ColumnType.Integer },
-    { name: 'col_float',   type: TS.ColumnType.Float },
+    { name: 'col_float',     type: TS.ColumnType.Float },
     { name: 'col_timestamp', type: TS.ColumnType.Timestamp },
     { name: 'col_boolean',   type: TS.ColumnType.Boolean },
     { name: 'col_set',       type: TS.ColumnType.Set },
