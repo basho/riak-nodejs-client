@@ -56,27 +56,21 @@ describe('Query', function() {
                 assert.strictEqual(rc[0].name, 'col_binary');
                 assert.strictEqual(rc[0].type, TsColumnType.BINARY);
                 assert.strictEqual(rc[0].type, TS.ColumnType.Binary);
-                assert.strictEqual(rc[1].name, 'col_int');
-                assert.strictEqual(rc[1].type, TsColumnType.INTEGER);
-                assert.strictEqual(rc[1].type, TS.ColumnType.Integer);
-                assert.strictEqual(rc[2].name, 'col_float');
-                assert.strictEqual(rc[2].type, TsColumnType.FLOAT);
-                assert.strictEqual(rc[2].type, TS.ColumnType.Float);
+                assert.strictEqual(rc[1].name, 'col_int64');
+                assert.strictEqual(rc[1].type, TsColumnType.SINT64);
+                assert.strictEqual(rc[1].type, TS.ColumnType.Int64);
+                assert.strictEqual(rc[2].name, 'col_double');
+                assert.strictEqual(rc[2].type, TsColumnType.DOUBLE);
+                assert.strictEqual(rc[2].type, TS.ColumnType.Double);
                 assert.strictEqual(rc[3].name, 'col_timestamp');
                 assert.strictEqual(rc[3].type, TsColumnType.TIMESTAMP);
                 assert.strictEqual(rc[3].type, TS.ColumnType.Timestamp);
                 assert.strictEqual(rc[4].name, 'col_boolean');
                 assert.strictEqual(rc[4].type, TsColumnType.BOOLEAN);
                 assert.strictEqual(rc[4].type, TS.ColumnType.Boolean);
-                assert.strictEqual(rc[5].name, 'col_set');
-                assert.strictEqual(rc[5].type, TsColumnType.SET);
-                assert.strictEqual(rc[5].type, TS.ColumnType.Set);
-                assert.strictEqual(rc[6].name, 'col_map');
-                assert.strictEqual(rc[6].type, TsColumnType.MAP);
-                assert.strictEqual(rc[6].type, TS.ColumnType.Map);
-                assert.strictEqual(rc[7].name, 'col_ms');
-                assert.strictEqual(rc[7].type, TsColumnType.TIMESTAMP);
-                assert.strictEqual(rc[7].type, TS.ColumnType.Timestamp);
+                assert.strictEqual(rc[5].name, 'col_ms');
+                assert.strictEqual(rc[5].type, TsColumnType.TIMESTAMP);
+                assert.strictEqual(rc[5].type, TS.ColumnType.Timestamp);
 
                 var rr = response.rows;
                 assert.strictEqual(tsQueryResp.rows.length, rr.length);
@@ -89,9 +83,7 @@ describe('Query', function() {
                 assert(r0[3] instanceof Long);
                 assert(d.ts0ms.equals(r0[3]));
                 assert.strictEqual(r0[4], true);
-                assert.deepStrictEqual(r0[5], d.set);
-                assert.deepStrictEqual(r0[6], d.map);
-                assert(d.ts0ms.equals(r0[7]));
+                assert(d.ts0ms.equals(r0[5]));
 
                 var r1 = rr[1];
                 assert(r1[0] instanceof Buffer);
@@ -101,9 +93,7 @@ describe('Query', function() {
                 assert(r1[3] instanceof Long);
                 assert(d.ts1ms.equals(r1[3]));
                 assert.strictEqual(r1[4], false);
-                assert.deepStrictEqual(r1[5], d.set);
-                assert.deepStrictEqual(r1[6], d.map);
-                assert(d.ts1ms.equals(r1[7]));
+                assert(d.ts1ms.equals(r1[5]));
 
                 var r2 = rr[2];
                 assert.strictEqual(r2[0], null);
@@ -111,9 +101,7 @@ describe('Query', function() {
                 assert.strictEqual(r2[2], 7.8);
                 assert.strictEqual(r2[3], null);
                 assert.strictEqual(r2[4], false);
-                assert.deepStrictEqual(r2[5], []);
-                assert.strictEqual(r2[6], null);
-                assert.strictEqual(r2[7], null);
+                assert.strictEqual(r2[5], null);
 
                 done();
             };

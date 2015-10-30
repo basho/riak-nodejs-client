@@ -22,7 +22,7 @@ CREATE TABLE GeoCheckin (
     time timestamp not null,
     weather varchar not null,
     temperature float,
-    PRIMARY KEY((quantum(time, 15, m), user), time, user)
+    PRIMARY KEY((geohash, user, quantum(time, 15, m)), geohash, user, time)
 )
 */
 var columns = [
@@ -58,7 +58,7 @@ describe('Timeseries - Integration', function () {
             assert(resp);
             done();
         };
-        var store = new TS.StoreValue.Builder()
+        var store = new TS.Store.Builder()
             .withTable(tableName)
             .withColumns(columns)
             .withRows(rows)

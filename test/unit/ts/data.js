@@ -12,12 +12,10 @@ var Long = require('long');
 
 var columns = [
     { name: 'col_binary',    type: TS.ColumnType.Binary },
-    { name: 'col_int',       type: TS.ColumnType.Integer },
-    { name: 'col_float',     type: TS.ColumnType.Float },
+    { name: 'col_int64',     type: TS.ColumnType.Int64 },
+    { name: 'col_double',    type: TS.ColumnType.Double },
     { name: 'col_timestamp', type: TS.ColumnType.Timestamp },
     { name: 'col_boolean',   type: TS.ColumnType.Boolean },
-    { name: 'col_set',       type: TS.ColumnType.Set },
-    { name: 'col_map',       type: TS.ColumnType.Map },
     { name: 'col_ms',        type: TS.ColumnType.Timestamp }
 ];
 
@@ -46,29 +44,12 @@ var ts1ms = Long.fromNumber(ts1.getTime());
 module.exports.ts1 = ts1;
 module.exports.ts1ms = ts1ms;
 
-var set = ['foo', 'bar', 'baz'];
-module.exports.set = set;
-
-var map = {
-    foo: 'foo',
-    bar: 'bar',
-    baz: 'baz',
-    set: set
-};
-module.exports.map = map;
-
 var rows = [
-    [ bd0, 0, 1.2, ts0, true, set, map, ts0ms ],
-    [ bd1, 3, 4.5, ts1, false, set, map, ts1ms ],
-    [ null, 6, 7.8, null, false, null, undefined, null ]
+    [ bd0, 0, 1.2, ts0, true, ts0ms ],
+    [ bd1, 3, 4.5, ts1, false, ts1ms ],
+    [ null, 6, 7.8, null, false, null ]
 ];
 module.exports.rows = rows;
-
-function makeSetValueSerializer(tsc) {
-    return function (cv) {
-        tsc.set_value.push(new Buffer(JSON.stringify(cv)));
-    };
-}
 
 var rpbrows = [];
 for (var i = 0; i < rows.length; i++) {
@@ -81,11 +62,11 @@ for (var i = 0; i < rows.length; i++) {
             case TS.ColumnType.Binary:
                 cell.setBinaryValue(val);
                 break;
-            case TS.ColumnType.Integer:
-                cell.setIntegerValue(val);
+            case TS.ColumnType.Int64:
+                cell.setSint64Value(val);
                 break;
-            case TS.ColumnType.Float:
-                    cell.setDoubleValue(val);
+            case TS.ColumnType.Double:
+                cell.setDoubleValue(val);
                 break;
             case TS.ColumnType.Timestamp:
                 if (val) {
@@ -95,19 +76,7 @@ for (var i = 0; i < rows.length; i++) {
             case TS.ColumnType.Boolean:
                 cell.setBooleanValue(val);
                 break;
-            case TS.ColumnType.Set:
-                if (val) {
-                    var setValueToJSON = makeSetValueSerializer(cell);
-                    val.forEach(setValueToJSON);
-                }
-                break;
-            case TS.ColumnType.Map:
-                if (val) {
-                    var json = JSON.stringify(val);
-                    cell.setMapValue(new Buffer(json));
-                }
-                break;
-            case 7:
+            case 5:
                 cell.setTimestampValue(val);
                 break;
             default:
@@ -117,6 +86,17 @@ for (var i = 0; i < rows.length; i++) {
     }
     rpbrows.push(tsr);
 }
+
+/*
+for (var i = 0; i < rpbrows.length; i++) {
+    logger.debug("RPBROW", i, ":");
+    var cells = rpbrows[i].getCells();
+    for (var j = 0; j < cells.length; j++) {
+        logger.debug("    CELL", j, ":");
+        logger.debug("        ", JSON.stringify(cells[j]));
+    }
+}
+*/
 
 var tsQueryResp = new TsQueryResp();
 Array.prototype.push.apply(tsQueryResp.columns, rpbcols);

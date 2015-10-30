@@ -124,6 +124,12 @@ describe('CommandBase', function() {
             callback: cb
         };
 
+        var ts_options = {
+            table: 'table',
+            key: [ 'foo', 'bar', 'baz' ],
+            callback: cb
+        };
+
         var default_builder_func = function (b) {
             b.withBucketType(default_options.bucketType);
             b.withBucket(default_options.bucket);
@@ -329,12 +335,46 @@ describe('CommandBase', function() {
                         b.withContent('blargh');
                     }
                 },
+            'TS.Store' : {
+                    options : {
+                        table: ts_options.table,
+                        rows: [ ['foo', 'bar', 'baz'], ['bat', 'bing', 'zing'] ],
+                        callback: cb
+                    },
+                    builder_func : function (b) {
+                        b.withTable(ts_options.table);
+                        b.withRows([ ['foo', 'bar', 'baz'], ['bat', 'bing', 'zing'] ]);
+                    }
+                },
+            'TS.Query' : {
+                    options : {
+                        query: 'select * from baz',
+                        callback: cb
+                    },
+                    builder_func : function (b) {
+                        b.withQuery('select * from baz');
+                    }
+                },
+            'TS.Get' : {
+                    options : ts_options,
+                    builder_func : function (b) {
+                        b.withTable(ts_options.table);
+                        b.withKey(ts_options.key);
+                    }
+                },
+            'TS.Delete' : {
+                    options : ts_options,
+                    builder_func : function (b) {
+                        b.withTable(ts_options.table);
+                        b.withKey(ts_options.key);
+                    }
+                },
         };
 
         it('should throw when callback passed via options', function(done) {
             Object.keys(commands).forEach(function (cmd_name) {
                 var options = commands[cmd_name].options;
-                var eval_str = "new Riak.Commands." + cmd_name + "(options, cb)";
+                var eval_str = "new Riak.Commands." + cmd_name + "(options, cb);";
                 var e_message = null;
                 try {
                     var cmd = eval(eval_str); // jshint ignore:line
@@ -376,4 +416,3 @@ describe('CommandBase', function() {
     });
 
 });
-

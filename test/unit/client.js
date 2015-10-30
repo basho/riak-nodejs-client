@@ -73,9 +73,24 @@ describe('Client', function() {
             done();
         });
 
-        it('Riak.Commands.TS.StoreValue', function(done) {
-            var typeofTsStoreValue = typeof(Riak.Commands.TS.StoreValue);
-            assert(typeofTsStoreValue === 'function', "typeof(Riak.Commands.TS.StoreValue): " + typeofTsStoreValue);
+        it('Riak.Commands.TS.Store', function(done) {
+            var typeofTsStore = typeof(Riak.Commands.TS.Store);
+            assert(typeofTsStore === 'function', "typeof(Riak.Commands.TS.Store): " + typeofTsStore);
+            done();
+        });
+        it('Riak.Commands.TS.Query', function(done) {
+            var typeofTsQuery = typeof(Riak.Commands.TS.Query);
+            assert(typeofTsQuery === 'function', "typeof(Riak.Commands.TS.Query): " + typeofTsQuery);
+            done();
+        });
+        it('Riak.Commands.TS.Get', function(done) {
+            var typeofTsGet = typeof(Riak.Commands.TS.Get);
+            assert(typeofTsGet === 'function', "typeof(Riak.Commands.TS.Get): " + typeofTsGet);
+            done();
+        });
+        it('Riak.Commands.TS.Delete', function(done) {
+            var typeofTsDelete = typeof(Riak.Commands.TS.Delete);
+            assert(typeofTsDelete === 'function', "typeof(Riak.Commands.TS.Delete): " + typeofTsDelete);
             done();
         });
 
