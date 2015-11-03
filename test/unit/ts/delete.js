@@ -17,13 +17,13 @@ var Long = require('long');
 var table = 'test-table';
 var key = [ 'foo', 'bar', 'baz' ];
 
-describe('Get', function() {
+describe('Delete', function() {
 
     this.timeout(250);
 
     describe('Build', function() {
-        it('should build a TsGetReq correctly', function(done) {
-            var cmd = new TS.Get.Builder()
+        it('should build a TsDelReq correctly', function(done) {
+            var cmd = new TS.Delete.Builder()
                .withTable(table)
                .withKey(key)
                .withCallback(function(){})
@@ -40,18 +40,18 @@ describe('Get', function() {
             done();
         });
         
-        it('should take a TsGetResp and call the users callback with the response', function(done) {
+        it('should take a TsDelResp and call the users callback with the response', function(done) {
             var cb = function(err, response) {
                 assert(!err, err);
-                d.validateResponse(response, d.tsGetResp);
+                assert(response);
                 done();
             };
-            var cmd = new TS.Get.Builder()
+            var cmd = new TS.Delete.Builder()
                .withTable(table)
                .withKey(key)
                .withCallback(cb)
                .build();
-            cmd.onSuccess(d.tsGetResp);
+            cmd.onSuccess(d.tsDeleteResp);
         });
         
         it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
@@ -62,7 +62,7 @@ describe('Get', function() {
                 assert.strictEqual(err, 'this is an error');
                 done();
             };
-            var cmd = new TS.Get.Builder()
+            var cmd = new TS.Delete.Builder()
                .withTable(table)
                .withKey(key)
                .withCallback(cb)
