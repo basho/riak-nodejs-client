@@ -1,3 +1,5 @@
+'use strict';
+
 var d = require('./data');
 var TS = require('../../../lib/commands/ts');
 

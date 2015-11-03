@@ -1,4 +1,6 @@
-﻿var TS = require('../../../lib/commands/ts');
+'use strict';
+
+var TS = require('../../../lib/commands/ts');
 
 var rpb = require('../../../lib/protobuf/riakprotobuf');
 var TsColumnDescription = rpb.getProtoFor('TsColumnDescription');

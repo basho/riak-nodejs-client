@@ -1,3 +1,5 @@
+'use strict';
+
 var Test = require('../testparams');
 
 var TS = require('../../../lib/commands/ts');
@@ -92,7 +94,7 @@ describe('Timeseries - Integration', function () {
                 assert(!err, err);
                 assert.equal(resp.columns.length, 5);
                 assert.equal(resp.rows.length, 1);
-                r0 = resp.rows[0];
+                var r0 = resp.rows[0];
                 assert.equal(r0[0], 'hash1');
                 assert.equal(r0[1], 'user2');
                 assert.equal(r0[2], fiveMinsAgo);

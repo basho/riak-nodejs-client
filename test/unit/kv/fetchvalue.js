@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Copyright 2015 Basho Technologies, Inc.
  *
