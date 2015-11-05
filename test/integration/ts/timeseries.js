@@ -44,7 +44,7 @@ function validateResponseRow(got, want) {
 }
 
 describe('Timeseries - Integration', function () {
-    this.timeout(2500);
+    this.timeout(1500);
 
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
