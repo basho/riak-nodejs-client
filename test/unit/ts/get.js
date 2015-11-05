@@ -34,7 +34,7 @@ describe('Get', function() {
             var tscells = protobuf.getKey();
             for (var i = 0; i < key.length; i++) {
                 var tsc = tscells[i];
-                assert.strictEqual(tsc.binary_value.toString('utf8'), key[i]);
+                assert.strictEqual(tsc.varchar_value.toString('utf8'), key[i]);
             }
 
             done();

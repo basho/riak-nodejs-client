@@ -25,8 +25,8 @@ function validateTsPutReq(protobuf, hasCols) {
         assert.strictEqual(pcols.length, d.columns.length);
 
         var col0 = pcols[0];
-        assert.strictEqual(col0.getName().toString('utf8'), 'col_binary');
-        assert.strictEqual(col0.getType(), TsColumnType.BINARY);
+        assert.strictEqual(col0.getName().toString('utf8'), 'col_varchar');
+        assert.strictEqual(col0.getType(), TsColumnType.VARCHAR);
 
         var col1 = pcols[1];
         assert.strictEqual(col1.getName().toString('utf8'), 'col_int64');
@@ -55,7 +55,7 @@ function validateTsPutReq(protobuf, hasCols) {
     var row0 = prows[0];
     var row0cells = row0.getCells();
 
-    assert(d.bd0.equals(row0cells[0].getBinaryValue().toBuffer()));
+    assert(d.bd0.equals(row0cells[0].getVarcharValue().toBuffer()));
     assert(row0cells[1].getSint64Value().equals(Long.ZERO));
     assert.strictEqual(row0cells[2].getDoubleValue(), 1.2);
     // ts0 is a Date
@@ -76,7 +76,7 @@ function validateTsPutReq(protobuf, hasCols) {
     var row1cells = row1.getCells();
     var three = new Long(3);
 
-    assert(d.bd1.equals(row1cells[0].getBinaryValue().toBuffer()));
+    assert(d.bd1.equals(row1cells[0].getVarcharValue().toBuffer()));
     assert(row1cells[1].getSint64Value().equals(three));
     assert.strictEqual(row1cells[2].getDoubleValue(), 4.5);
 

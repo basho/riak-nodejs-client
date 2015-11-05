@@ -16,7 +16,7 @@ var logger = require('winston');
 var Long = require('long');
 
 var columns = [
-    { name: 'col_binary',    type: TS.ColumnType.Binary },
+    { name: 'col_varchar',   type: TS.ColumnType.Varchar },
     { name: 'col_int64',     type: TS.ColumnType.Int64 },
     { name: 'col_double',    type: TS.ColumnType.Double },
     { name: 'col_timestamp', type: TS.ColumnType.Timestamp },
@@ -64,8 +64,8 @@ for (var i = 0; i < rows.length; i++) {
         var cell = new TsCell();
         var val = row[j];
         switch (j) {
-            case TS.ColumnType.Binary:
-                cell.setBinaryValue(val);
+            case TS.ColumnType.Varchar:
+                cell.setVarcharValue(val);
                 break;
             case TS.ColumnType.Int64:
                 cell.setSint64Value(val);
@@ -119,9 +119,9 @@ function validateResponse(actual, expected) {
 
     var rc = actual.columns;
     assert.strictEqual(rc.length, expected.columns.length);
-    assert.strictEqual(rc[0].name, 'col_binary');
-    assert.strictEqual(rc[0].type, TsColumnType.BINARY);
-    assert.strictEqual(rc[0].type, TS.ColumnType.Binary);
+    assert.strictEqual(rc[0].name, 'col_varchar');
+    assert.strictEqual(rc[0].type, TsColumnType.VARCHAR);
+    assert.strictEqual(rc[0].type, TS.ColumnType.Varchar);
     assert.strictEqual(rc[1].name, 'col_int64');
     assert.strictEqual(rc[1].type, TsColumnType.SINT64);
     assert.strictEqual(rc[1].type, TS.ColumnType.Int64);

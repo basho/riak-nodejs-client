@@ -18,10 +18,10 @@ var fifteenMinsAgo = tenMinsAgo - fiveMinsInMsec;
 var twentyMinsAgo = fifteenMinsAgo - fiveMinsInMsec;
 
 var columns = [
-    { name: 'geohash',     type: TS.ColumnType.Binary },
-    { name: 'user',        type: TS.ColumnType.Binary },
+    { name: 'geohash',     type: TS.ColumnType.Varchar },
+    { name: 'user',        type: TS.ColumnType.Varchar },
     { name: 'time',        type: TS.ColumnType.Timestamp },
-    { name: 'weather',     type: TS.ColumnType.Binary },
+    { name: 'weather',     type: TS.ColumnType.Varchar },
     { name: 'temperature', type: TS.ColumnType.Double }
 ];
 
