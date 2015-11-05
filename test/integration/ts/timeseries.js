@@ -17,27 +17,14 @@ var tenMinsAgo = fiveMinsAgo - fiveMinsInMsec;
 var fifteenMinsAgo = tenMinsAgo - fiveMinsInMsec;
 var twentyMinsAgo = fifteenMinsAgo - fiveMinsInMsec;
 
-/*
-CREATE TABLE GeoCheckin (
-    geohash varchar not null,
-    user varchar not null,
-    time timestamp not null,
-    weather varchar not null,
-    temperature float,
-    PRIMARY KEY((geohash, user, quantum(time, 15, m)), geohash, user, time)
-)
-*/
 var columns = [
     { name: 'geohash',     type: TS.ColumnType.Binary },
     { name: 'user',        type: TS.ColumnType.Binary },
     { name: 'time',        type: TS.ColumnType.Timestamp },
     { name: 'weather',     type: TS.ColumnType.Binary },
-    { name: 'temperature', type: TS.ColumnType.Float }
+    { name: 'temperature', type: TS.ColumnType.Double }
 ];
 
-// TODO FUTURE - when this PR is accepted, it will be OK to have
-// floats that end in .0
-// https://github.com/basho/riak_pb/pull/135
 var rows = [
     [ 'hash1', 'user2', twentyMinsAgo, 'hurricane', 82.3 ],
     [ 'hash1', 'user2', fifteenMinsAgo, 'rain', 79.0 ],
@@ -47,8 +34,17 @@ var rows = [
 
 var cluster;
 
+function validateResponseRow(got, want) {
+    assert.equal(got.length, want.length);
+    assert.strictEqual(got[0].toString('utf8'), 'hash1');
+	assert.strictEqual(got[1].toString('utf8'), 'user2');
+	assert(got[2].equals(fiveMinsAgo));
+	assert.strictEqual(got[3].toString('utf8'), 'wind');
+	assert.strictEqual(got[4], null);
+}
+
 describe('Timeseries - Integration', function () {
-    this.timeout(10000);
+    this.timeout(2500);
 
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
@@ -71,8 +67,7 @@ describe('Timeseries - Integration', function () {
 
     describe('Query', function () {
         it('no matches returns no data', function(done) {
-            var queryText = "select * from GeoCheckin where time > 0 and time < 10 and user = 'user1'";
-            logger.debug("query 1", queryText);
+            var queryText = "select * from GeoCheckin where time > 0 and time < 10 and geohash = 'hash1' and user = 'user1'";
             var callback = function(err, resp) {
                 assert(!err, err);
                 assert.equal(resp.columns.length, 0);
@@ -88,18 +83,13 @@ describe('Timeseries - Integration', function () {
         it('some matches returns data', function(done) {
             var queryText = "select * from GeoCheckin where time > " + tenMinsAgo +
                             " and time < " + now +
-                            " and user = 'user2'";
-            logger.debug("query 2", queryText);
+                            " and geohash = 'hash1' and user = 'user2'";
             var callback = function(err, resp) {
                 assert(!err, err);
-                assert.equal(resp.columns.length, 5);
-                assert.equal(resp.rows.length, 1);
-                var r0 = resp.rows[0];
-                assert.equal(r0[0], 'hash1');
-                assert.equal(r0[1], 'user2');
-                assert.equal(r0[2], fiveMinsAgo);
-                assert.equal(r0[3], 'wind');
-                assert(!r0[4], 'expected null value');
+                assert.equal(resp.columns.length, columns.length);
+                var got = resp.rows[0];
+                var want = rows[2];
+                validateResponseRow(got, want);
                 done();
             };
             var q = new TS.Query.Builder()
@@ -107,6 +97,53 @@ describe('Timeseries - Integration', function () {
                 .withCallback(callback)
                 .build();
             cluster.execute(q);
+        });
+    });
+
+    describe('Get', function () {
+        it('returns one row of TS data', function(done) {
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert.equal(resp.columns.length, columns.length);
+                var got = resp.rows[0];
+                var want = rows[2];
+                validateResponseRow(got, want);
+                done();
+            };
+            var key = [ 'hash1', 'user2', fiveMinsAgo ];
+            var cmd = new TS.Get.Builder()
+                .withTable(tableName)
+                .withKey(key)
+                .withCallback(callback)
+                .build();
+            cluster.execute(cmd);
+        });
+    });
+
+    describe('Delete', function () {
+        it('deletes one row of TS data', function(done) {
+            var key = [ 'hash1', 'user2', twentyMinsAgo ];
+            var cb2 = function(err, resp) {
+                assert.strictEqual(err, 'notfound');
+                assert(!resp, 'expected null resp');
+                done();
+            };
+            var cb1 = function(err, resp) {
+                assert(!err, err);
+                assert(resp);
+                var cmd = new TS.Get.Builder()
+                    .withTable(tableName)
+                    .withKey(key)
+                    .withCallback(cb2)
+                    .build();
+                cluster.execute(cmd);
+            };
+            var cmd = new TS.Delete.Builder()
+                .withTable(tableName)
+                .withKey(key)
+                .withCallback(cb1)
+                .build();
+            cluster.execute(cmd);
         });
     });
 
