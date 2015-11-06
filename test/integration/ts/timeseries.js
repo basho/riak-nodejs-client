@@ -124,7 +124,7 @@ describe('Timeseries - Integration', function () {
                 assert(!resp);
                 assert(errdata);
                 assert(errdata.msg, 'expected an error message');
-                assert.strictEqual(errdata.code, 11);
+                assert.strictEqual(errdata.code, 1011);
                 done();
             };
             var key = [ 'hash1', 'user2' ];
@@ -145,7 +145,7 @@ describe('Timeseries - Integration', function () {
                 assert(!resp);
                 assert(errdata);
                 assert.strictEqual(errdata.msg, 'notfound');
-                assert.strictEqual(errdata.code, 10);
+                assert.strictEqual(errdata.code, 1010);
                 done();
             };
             var cb1 = function(err, resp) {
