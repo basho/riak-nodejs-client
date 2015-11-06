@@ -57,9 +57,13 @@ describe('Get', function() {
         it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
            var rpbErrorResp = new RpbErrorResp();
            rpbErrorResp.setErrmsg(new Buffer('this is an error'));
-           var cb = function(err, response) {
+           rpbErrorResp.setErrcode(11);
+           var cb = function(err, response, errdata) {
                 assert(err, !err);
-                assert.strictEqual(err, 'this is an error');
+                assert(!response);
+                assert(errdata, !errdata);
+                assert.strictEqual(errdata.msg, 'this is an error');
+                assert.strictEqual(errdata.code, 11);
                 done();
             };
             var cmd = new TS.Get.Builder()

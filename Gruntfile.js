@@ -18,7 +18,8 @@ module.exports = function(grunt) {
             url: '<%= pkg.homepage %>',
             options: {
                 paths: './lib/',
-                outdir: './docs/'
+                outdir: './docs/',
+                tabtospace: 4
             }
         }
     },

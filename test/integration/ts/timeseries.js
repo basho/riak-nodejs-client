@@ -118,14 +118,34 @@ describe('Timeseries - Integration', function () {
                 .build();
             cluster.execute(cmd);
         });
+        it('returns error for incorrect cell count in key', function(done) {
+            var callback = function(err, resp, errdata) {
+                assert(err);
+                assert(!resp);
+                assert(errdata);
+                assert(errdata.msg, 'expected an error message');
+                assert.strictEqual(errdata.code, 11);
+                done();
+            };
+            var key = [ 'hash1', 'user2' ];
+            var cmd = new TS.Get.Builder()
+                .withTable(tableName)
+                .withKey(key)
+                .withCallback(callback)
+                .build();
+            cluster.execute(cmd);
+        });
     });
 
     describe('Delete', function () {
         it('deletes one row of TS data', function(done) {
             var key = [ 'hash1', 'user2', twentyMinsAgo ];
-            var cb2 = function(err, resp) {
-                assert.strictEqual(err, 'notfound');
-                assert(!resp, 'expected null resp');
+            var cb2 = function(err, resp, errdata) {
+                assert(err);
+                assert(!resp);
+                assert(errdata);
+                assert.strictEqual(errdata.msg, 'notfound');
+                assert.strictEqual(errdata.code, 10);
                 done();
             };
             var cb1 = function(err, resp) {
