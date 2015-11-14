@@ -25,6 +25,7 @@
     "basho"
   ],
   "dependencies": {
+    "async": "^1.5.0",
     "bytebuffer": "~3.5",
     "hashmap": "~2.0",
     "joi": "~6.0",

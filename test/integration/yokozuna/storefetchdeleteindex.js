@@ -30,19 +30,21 @@ describe('Update and Fetch Yokozuna index - Integration', function() {
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
-        cluster.start();
-        
-        var callback = function(err, resp) {
+        cluster.start(function (err, rslt) {
             assert(!err, err);
-            assert(resp);
-            done();
-        };
-    
-        var store = new StoreIndex.Builder()
-				.withIndexName('myIndex')
-				.withCallback(callback)
-				.build();
-        cluster.execute(store);
+            
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert(resp);
+                done();
+            };
+        
+            var store = new StoreIndex.Builder()
+                    .withIndexName('myIndex')
+                    .withCallback(callback)
+                    .build();
+            cluster.execute(store);
+        });
     });
     
     after(function(done) {

@@ -30,34 +30,36 @@ describe('ListBuckets - Integration', function() {
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
-        cluster.start();
-        
-        var count = 0;
-        var cb = function(err, resp) {
+        cluster.start(function (err, rslt) {
             assert(!err, err);
-            count++;
-            if (count === 10) {
-                done();
+            
+            var count = 0;
+            var cb = function(err, resp) {
+                assert(!err, err);
+                count++;
+                if (count === 10) {
+                    done();
+                }
+            };
+            
+            for (var i = 0; i < 5; i++) {
+                // Will create buckets
+                var bucket = Test.bucketName + '_lb' + i;
+                var store = new StoreValue.Builder()
+                        .withBucket(bucket)
+                        .withContent('value')
+                        .withCallback(cb)
+                        .build();
+                cluster.execute(store);
+                store = new StoreValue.Builder()
+                        .withBucketType(Test.bucketType)
+                        .withBucket(bucket)
+                        .withContent('value')
+                        .withCallback(cb)
+                        .build();
+                cluster.execute(store);
             }
-        };
-        
-        for (var i = 0; i < 5; i++) {
-            // Will create buckets
-            var bucket = Test.bucketName + '_lb' + i;
-            var store = new StoreValue.Builder()
-                    .withBucket(bucket)
-                    .withContent('value')
-                    .withCallback(cb)
-                    .build();
-            cluster.execute(store);
-            store = new StoreValue.Builder()
-                    .withBucketType(Test.bucketType)
-                    .withBucket(bucket)
-                    .withContent('value')
-                    .withCallback(cb)
-                    .build();
-            cluster.execute(store);
-        }
+        });
     });
     
     after(function(done) {

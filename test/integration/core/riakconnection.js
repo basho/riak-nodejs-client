@@ -50,9 +50,10 @@ describe('RiakConnection - Integration', function() {
                 clearTimeout(errTimeout);
                 conn.removeAllListeners();
                 assert(true);
-                server.close();
                 conn.close();
-                done();
+                server.close(function () {
+                    done();
+                });
             });
             
             conn.connect();
@@ -77,7 +78,6 @@ describe('RiakConnection - Integration', function() {
             });
             
             conn.connect();
-            
         });
        
         it('should emit on socket closing', function(done) {
@@ -93,7 +93,7 @@ describe('RiakConnection - Integration', function() {
             var net = require('net');
  
             var server = net.createServer(function(socket) {
-                    socket.destroy();
+                socket.destroy();
             });
 
             server.listen(1337, '127.0.0.1');
@@ -101,13 +101,13 @@ describe('RiakConnection - Integration', function() {
             conn.on('connectionClosed', function() {
                 clearTimeout(errTimeout);
                 conn.close();
-                server.close();
-                assert(true);
-                done();
+                server.close(function () {
+                    assert(true);
+                    done();
+                });
             });
             
             conn.connect();
-            
         });
         
         it('should emit on connect timeout', function(done) {
@@ -129,7 +129,6 @@ describe('RiakConnection - Integration', function() {
             });
             
             conn.connect();
-            
         });
         
         it('should emit on healthcheck fail', function(done) {
@@ -145,17 +144,17 @@ describe('RiakConnection - Integration', function() {
            
             
             var server = net.createServer(function(socket) {
-                    var header = new Buffer(5);
-                    header.writeUInt8(0, 4);
-                    
-                    var rpbErr = new RpbErrorResp();
-                    rpbErr.setErrmsg(new Buffer('this is an error'));
-                    rpbErr.setErrcode(0);
-                    var encoded = rpbErr.encode().toBuffer();
-                    
-                    header.writeInt32BE(encoded.length + 1, 0);
-                    socket.write(header);
-                    socket.write(encoded);
+                var header = new Buffer(5);
+                header.writeUInt8(0, 4);
+                
+                var rpbErr = new RpbErrorResp();
+                rpbErr.setErrmsg(new Buffer('this is an error'));
+                rpbErr.setErrcode(0);
+                var encoded = rpbErr.encode().toBuffer();
+                
+                header.writeInt32BE(encoded.length + 1, 0);
+                socket.write(header);
+                socket.write(encoded);
             });
             
             server.listen(1337, '127.0.0.1');
@@ -169,13 +168,13 @@ describe('RiakConnection - Integration', function() {
                 clearTimeout(errTimeout);
                 conn.removeAllListeners();
                 assert(true);
-                server.close();
                 conn.close();
-                done();
+                server.close(function () {
+                    done();
+                });
             });
             
             conn.connect();
-            
         });
         
         it('should emit on healthcheck success', function(done) {
@@ -207,13 +206,13 @@ describe('RiakConnection - Integration', function() {
                 clearTimeout(errTimeout);
                 conn.removeAllListeners();
                 assert(true);
-                server.close();
                 conn.close();
-                done();
+                server.close(function () {
+                    done();
+                });
             });
             
             conn.connect();
-            
         });
     });
 });

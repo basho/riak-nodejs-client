@@ -66,6 +66,21 @@ describe('Client', function() {
             assert(typeofRiakClusterState === 'object', "typeof(Riak.Cluster.State): " + typeofRiakClusterState);
             done();
         });
+        it('Riak.Cluster.DefaultNodeManager', function(done) {
+            var typeofRiakClusterDefaultNodeManager = typeof(Riak.Cluster.DefaultNodeManager);
+            assert(typeofRiakClusterDefaultNodeManager === 'function', "typeof(Riak.Cluster.DefaultNodeManager): " + typeofRiakClusterDefaultNodeManager);
+            done();
+        });
+        it('Riak.Cluster.RoundRobinNodeManager', function(done) {
+            var typeofRiakClusterRoundRobinNodeManager = typeof(Riak.Cluster.RoundRobinNodeManager);
+            assert(typeofRiakClusterRoundRobinNodeManager === 'function', "typeof(Riak.Cluster.RoundRobinNodeManager): " + typeofRiakClusterRoundRobinNodeManager);
+            done();
+        });
+        it('Riak.Cluster.LeastExecutingNodeManager', function(done) {
+            var typeofRiakClusterLeastExecutingNodeManager = typeof(Riak.Cluster.LeastExecutingNodeManager);
+            assert(typeofRiakClusterLeastExecutingNodeManager === 'function', "typeof(Riak.Cluster.LeastExecutingNodeManager): " + typeofRiakClusterLeastExecutingNodeManager);
+            done();
+        });
 
         it('Riak.Commands.Ping', function(done) {
             var typeofCommandsPing = typeof(Riak.Commands.Ping);

@@ -51,10 +51,18 @@ describe('RiakCluster - Integration', function() {
                     if (tried === 3) {
                         clearTimeout(errTimeout);
                         cluster.stop();
-                        for (var j = 0; j < 3; j++) {
-                            servers[j].close();
-                        }
-                        done();
+
+                        var closed = 0;
+                        var onClose = function () {
+                            closed++;
+                            if (closed === 3) {
+                                done();
+                            }
+                        };
+
+                        servers.forEach(function (s) {
+                            s.close(onClose);
+                        });
                     }
                 });
             };
@@ -76,29 +84,25 @@ describe('RiakCluster - Integration', function() {
             }, 3000); 
             
             var cluster = new RiakCluster({nodes: nodes});
-            cluster.start();
-            
-            var fetch = new FetchValue({bucket: 'b', key: 'k'}, function(){});
-            cluster.execute(fetch);
+            cluster.start(function (err, rslt) {
+                assert(!err, err);
+                var fetch = new FetchValue({bucket: 'b', key: 'k'}, function(){});
+                cluster.execute(fetch);
+            });
         });
     });
     
     describe('Command queueing', function() {
 
         it('Should queue commands and retry from the queue, respecting queueSubmitInterval', function(done) {
-
            var server = Net.createServer(function(socket) {
-              
                socket.on('data', function(data) {
-                  
                    // it got here
                    var header = new Buffer(5);
                     header.writeUInt8(12, 4);
                     header.writeInt32BE(1, 0);
                     socket.write(header);
-                   
                });
-               
            });
            
            var storeCheck = new StoreValue({bucket: 'b', value: 'v'}, function(){});
@@ -122,25 +126,23 @@ describe('RiakCluster - Integration', function() {
                 }
             };
             
-            cluster.on('stateChange', stateMe);
-            cluster.start();
-            
             var callMe = function(err, resp) {
                 assert(!err, err);
                 assert(Date.now() - queueStart >= 600, 'queueSubmitInterval respected');
                 cluster.stop();
-                server.close();
-                done();
+                server.close(function () {
+                    done();
+                });
             };
             
-            var store = new StoreValue({bucket: 'b', value: 'v'}, callMe);
-            
-            cluster.execute(store);
-            
+            cluster.on('stateChange', stateMe);
+            cluster.start(function (err, rslt) {
+                var store = new StoreValue({bucket: 'b', value: 'v'}, callMe);
+                cluster.execute(store);
+            });
         });
         
         it('should not queue by default', function(done) {
-            
             var node = new RiakNode.Builder()
                    .withRemotePort(1337)
                    .build();         
@@ -149,18 +151,16 @@ describe('RiakCluster - Integration', function() {
                    .withRiakNodes([node])
                    .build();
 
-            cluster.start();
-
             var callMe = function(err, resp) {
                 assert(err);
                 cluster.stop();
                 done();
             };
 
-            var store = new StoreValue({bucket: 'b', value: 'v'}, callMe);
-
-            cluster.execute(store);
-            
+            cluster.start(function (err, rslt) {
+                var store = new StoreValue({bucket: 'b', value: 'v'}, callMe);
+                cluster.execute(store);
+            });
         });
         
         it ('should not queue if maxDepth is reached', function(done) {
@@ -174,21 +174,17 @@ describe('RiakCluster - Integration', function() {
                    .withQueueCommands(1)
                    .build();
 
-            cluster.start();
-
             var callMe = function(err, resp) {
                 assert(err);
                 cluster.stop();
                 done();
             };
 
-            var store = new StoreValue({bucket: 'b', value: 'v'}, callMe);
-
-            cluster.execute(store);
-            cluster.execute(store);
-            
+            cluster.start(function (err, rslts) {
+                var store = new StoreValue({bucket: 'b', value: 'v'}, callMe);
+                cluster.execute(store);
+                cluster.execute(store);
+            });
         });
-        
     });
-    
 });

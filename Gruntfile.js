@@ -32,7 +32,8 @@ module.exports = function(grunt) {
                 reporter: 'spec',
                 captureFile: 'unit-test-results.txt',
                 quiet: false,
-                clearRequireCache: false
+                clearRequireCache: false,
+                colors: false
             },
             src: ['test/unit/**/*.js']
         },
@@ -41,7 +42,8 @@ module.exports = function(grunt) {
                 reporter: 'spec',
                 captureFile: 'integration-test-results.txt',
                 quiet: false,
-                clearRequireCache: false
+                clearRequireCache: false,
+                colors: false
             },
             src: ['test/integration/**/*.js']
         },
