@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-var Test = require('../testparams');
-var RiakConnection = require('../../../lib/core/riakconnection');
 var assert = require('assert');
 var fs = require('fs');
+var net = require('net');
+
+var Test = require('../testparams');
+var RiakConnection = require('../../../lib/core/riakconnection');
 var Ping = require('../../../lib/commands/ping');
 var RpbErrorResp = require('../../../lib/protobuf/riakprotobuf').getProtoFor('RpbErrorResp');
 
@@ -28,41 +30,38 @@ describe('RiakConnection - Integration', function() {
         this.timeout(5000);
         
         it('should emit on connection success', function(done) {
+            var port = Test.getPort();
             var conn = new RiakConnection({
                 remoteAddress : "127.0.0.1",
-                remotePort : 1337,
+                remotePort : port,
                 connectionTimeout : 30000
             });
-            var errTimeout = setTimeout(function () {
-                assert(false, 'Event never fired');
-                done();
-            }, 1000); 
-            
-            var net = require('net');
- 
             var server = net.createServer(function(socket) {
                     // no op
             });
 
-            server.listen(1337, '127.0.0.1');
-            
-            conn.on('connected', function() {
-                clearTimeout(errTimeout);
-                conn.removeAllListeners();
-                assert(true);
-                conn.close();
-                server.close(function () {
+            server.listen(port, '127.0.0.1', function () {
+                var errTimeout = setTimeout(function () {
+                    assert(false, 'Event never fired');
                     done();
+                }, 1000); 
+                conn.on('connected', function() {
+                    clearTimeout(errTimeout);
+                    conn.removeAllListeners();
+                    assert(true);
+                    conn.close();
+                    server.close(function () {
+                        done();
+                    });
                 });
+                conn.connect();
             });
-            
-            conn.connect();
-
         });
         
         it('should emit on connection fail', function(done) {
+            var port = Test.getPort();
             var conn = new RiakConnection({ remoteAddress : "127.0.0.1",
-                                            remotePort : 65535, // NB: using 0 causes an exception
+                                            remotePort : port,
                                             connectionTimeout : 1000
                                           });
             var errTimeout = setTimeout(function () {
@@ -76,43 +75,41 @@ describe('RiakConnection - Integration', function() {
                 assert(true);
                 done();
             });
-            
             conn.connect();
         });
        
         it('should emit on socket closing', function(done) {
+            var port = Test.getPort();
             var conn = new RiakConnection({ remoteAddress : "127.0.0.1",
-                                            remotePort : 1337,
+                                            remotePort : port,
                                             connectionTimeout : 30000
                                           });
-            var errTimeout = setTimeout(function () {
-                assert(false, 'Event never fired');
-                done();
-            }, 2000);
-            
-            var net = require('net');
- 
+
             var server = net.createServer(function(socket) {
                 socket.destroy();
             });
 
-            server.listen(1337, '127.0.0.1');
-            
-            conn.on('connectionClosed', function() {
-                clearTimeout(errTimeout);
-                conn.close();
-                server.close(function () {
-                    assert(true);
+            server.listen(port, '127.0.0.1', function () {
+                var errTimeout = setTimeout(function () {
+                    assert(false, 'Event never fired');
                     done();
+                }, 2000);
+                conn.on('connectionClosed', function() {
+                    clearTimeout(errTimeout);
+                    conn.close();
+                    server.close(function () {
+                        assert(true);
+                        done();
+                    });
                 });
+                conn.connect();
             });
-            
-            conn.connect();
         });
         
         it('should emit on connect timeout', function(done) {
+            var port = Test.getPort();
             var conn = new RiakConnection({ remoteAddress : "5.5.5.5",
-                                            remotePort : 1337,
+                                            remotePort : port,
                                             connectionTimeout : 1500
                                           });
                                           
@@ -127,21 +124,18 @@ describe('RiakConnection - Integration', function() {
                 assert(true);
                 done();
             });
-            
             conn.connect();
         });
         
         it('should emit on healthcheck fail', function(done) {
-           
+            var port = Test.getPort();
+
             var conn = new RiakConnection({
                 remoteAddress : "127.0.0.1",
-                remotePort : 1337,
+                remotePort : port,
                 connectionTimeout : 30000,
                 healthCheck: new Ping(function(){})
             });
-            
-            var net = require('net');
-           
             
             var server = net.createServer(function(socket) {
                 var header = new Buffer(5);
@@ -157,62 +151,57 @@ describe('RiakConnection - Integration', function() {
                 socket.write(encoded);
             });
             
-            server.listen(1337, '127.0.0.1');
-            
-            var errTimeout = setTimeout(function () {
-                assert(false, 'Event never fired');
-                done();
-            }, 30000); 
-            
-            conn.on('connectFailed', function() {
-                clearTimeout(errTimeout);
-                conn.removeAllListeners();
-                assert(true);
-                conn.close();
-                server.close(function () {
+            server.listen(port, '127.0.0.1', function () {
+                var errTimeout = setTimeout(function () {
+                    assert(false, 'Event never fired');
                     done();
+                }, 30000); 
+                
+                conn.on('connectFailed', function() {
+                    clearTimeout(errTimeout);
+                    conn.removeAllListeners();
+                    assert(true);
+                    conn.close();
+                    server.close(function () {
+                        done();
+                    });
                 });
+                conn.connect();
             });
-            
-            conn.connect();
         });
         
         it('should emit on healthcheck success', function(done) {
            
             var conn = new RiakConnection({
                 remoteAddress : "127.0.0.1",
-                remotePort : 1337,
+                remotePort : 2341,
                 connectionTimeout : 30000,
                 healthCheck: new Ping(function(){})
             });
-            var errTimeout = setTimeout(function () {
-                assert(false, 'Event never fired');
-                done();
-            }, 1000); 
-            
-            var net = require('net');
-           
-            
+
             var server = net.createServer(function(socket) {
-                    var header = new Buffer(5);
-                    header.writeUInt8(2, 4);
-                    header.writeInt32BE(1, 0);
-                    socket.write(header);
+                var header = new Buffer(5);
+                header.writeUInt8(2, 4);
+                header.writeInt32BE(1, 0);
+                socket.write(header);
             });
             
-            server.listen(1337, '127.0.0.1');
-            
-            conn.on('connected', function() {
-                clearTimeout(errTimeout);
-                conn.removeAllListeners();
-                assert(true);
-                conn.close();
-                server.close(function () {
+            server.listen(2341, '127.0.0.1', function() {
+                var errTimeout = setTimeout(function () {
+                    assert(false, 'Event never fired');
                     done();
+                }, 1000); 
+                conn.on('connected', function() {
+                    clearTimeout(errTimeout);
+                    conn.removeAllListeners();
+                    assert(true);
+                    conn.close();
+                    server.close(function () {
+                        done();
+                    });
                 });
+                conn.connect();
             });
-            
-            conn.connect();
         });
     });
 });
