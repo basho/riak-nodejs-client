@@ -30,8 +30,10 @@ describe('Store and Fetch Bucket props - Integration', function() {
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
-        cluster.start();
-        done();
+        cluster.start(function (err, rslt) {
+            assert(!err, err);
+            done();
+        });
     });
     
     after(function(done) {

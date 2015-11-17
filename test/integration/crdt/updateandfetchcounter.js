@@ -29,24 +29,21 @@ describe('Update and Fetch Counter - Integration', function() {
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
-        cluster.start();
-        
-        var callback = function(err, resp) {
+        cluster.start(function (err, rslt) {
             assert(!err, err);
-            done();
-        };
-        
-        // This ... tests updating a new counter
-        var update = new UpdateCounter.Builder()
-                .withBucketType(Test.counterBucketType)
-                .withBucket(Test.bucketName)
-                .withKey('counter_1')
-                .withIncrement(10)
-                .withCallback(callback)
-                .build();
-        
-        cluster.execute(update);
-        
+            var callback = function(err, resp) {
+                assert(!err, err);
+                done();
+            };
+            var update = new UpdateCounter.Builder()
+                    .withBucketType(Test.counterBucketType)
+                    .withBucket(Test.bucketName)
+                    .withKey('counter_1')
+                    .withIncrement(10)
+                    .withCallback(callback)
+                    .build();
+            cluster.execute(update);
+        });
     });
     
     after(function(done) {

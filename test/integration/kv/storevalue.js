@@ -31,7 +31,10 @@ describe('StoreValue - Integration', function() {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
         cluster.start();
-        done();
+        cluster.start(function (err, rslt) {
+            assert(!err, err);
+            done();
+        });
     });
    
     it('Should store a (String) value in Riak (default type) and return it', function(done) {

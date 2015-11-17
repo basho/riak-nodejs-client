@@ -29,59 +29,60 @@ describe('FetchValue - Integration', function() {
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
-        cluster.start();
-        
-        var count = 0;
-        var cb = function(err, resp) {
+        cluster.start(function (err, rslt) {
             assert(!err, err);
-            count++;
-            if (count === 5) {
-                done();
-            }
-        };
-        
-        var store = new StoreValue.Builder()
-               .withBucket(Test.bucketName)
-               .withKey('my_key1')
-               .withContent('this is a value in Riak')
-               .withCallback(cb)
-               .build();
-       
-        cluster.execute(store);
-
-        var myObject = { field1: 'field1_value', field2: 'field2_value', field3: 7 };
-
-        store = new StoreValue.Builder()
-                .withBucket(Test.bucketName)
-                .withKey('my_key2')
-                .withContent(myObject)
-                .withCallback(cb)
-                .build();
-
-        cluster.execute(store);
-
-        var i;
-        for (i = 0; i < 2; i++) {
-            store = new StoreValue.Builder()
-                .withBucket(Test.bucketName)
-                .withBucketType(Test.bucketType)
-                .withKey('my_key2')
-                .withContent('this is a value in Riak')
-                .withCallback(cb)
-                .build();
+            var count = 0;
+            var cb = function(err, resp) {
+                assert(!err, err);
+                count++;
+                if (count === 5) {
+                    done();
+                }
+            };
             
-            cluster.execute(store);
-       }
-
-        store = new StoreValue.Builder()
+            var store = new StoreValue.Builder()
                 .withBucket(Test.bucketName)
-                .withBucketType(Test.bucketType)
                 .withKey('my_key1')
                 .withContent('this is a value in Riak')
                 .withCallback(cb)
                 .build();
+        
+            cluster.execute(store);
 
-        cluster.execute(store);
+            var myObject = { field1: 'field1_value', field2: 'field2_value', field3: 7 };
+
+            store = new StoreValue.Builder()
+                    .withBucket(Test.bucketName)
+                    .withKey('my_key2')
+                    .withContent(myObject)
+                    .withCallback(cb)
+                    .build();
+
+            cluster.execute(store);
+
+            var i;
+            for (i = 0; i < 2; i++) {
+                store = new StoreValue.Builder()
+                    .withBucket(Test.bucketName)
+                    .withBucketType(Test.bucketType)
+                    .withKey('my_key2')
+                    .withContent('this is a value in Riak')
+                    .withCallback(cb)
+                    .build();
+                
+                cluster.execute(store);
+            }
+
+            store = new StoreValue.Builder()
+                    .withBucket(Test.bucketName)
+                    .withBucketType(Test.bucketType)
+                    .withKey('my_key1')
+                    .withContent('this is a value in Riak')
+                    .withCallback(cb)
+                    .build();
+
+            cluster.execute(store);
+        });
     });
     
     after(function(done) {

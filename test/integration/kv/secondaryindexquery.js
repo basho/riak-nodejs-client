@@ -31,73 +31,71 @@ describe('Secondary Index Query - Integration', function() {
        
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
-        cluster.start();
+        cluster.start(function (err, rslt) {
+            assert(!err, err);
+            
+            var count = 0;
+            var storeCb = function(err, response) {
+                count++;
+                if (count === 100) {
+                    done();
+                }
+            };
         
-        var count = 0;
-        var storeCb = function(err, response) {
+            for (var i = 0; i < 25; i++) {
+                var ro = new RiakObject();
+                ro.addToIndex('id_int', i);
+                ro.setValue('this is a value');
+                var store = new StoreValue.Builder()
+                        .withBucketType(Test.bucketType)
+                        .withBucket(Test.bucketName)
+                        .withContent(ro)
+                        .withKey('key' + i)
+                        .withCallback(storeCb)
+                        .build();
 
-            count++;
-            if (count === 100) {
-                done();
+                cluster.execute(store);
+                
+                ro = new RiakObject();
+                ro.addToIndex('email_bin', 'email' + i);
+                ro.setValue('this is a value');
+                store = new StoreValue.Builder()
+                        .withBucketType(Test.bucketType)
+                        .withBucket(Test.bucketName)
+                        .withContent(ro)
+                        .withKey('key_' + i)
+                        .withCallback(storeCb)
+                        .build();
+
+                cluster.execute(store);
+                
+                ro = new RiakObject();
+                ro.addToIndex('id_int', i);
+                ro.setValue('this is a value');
+                store = new StoreValue.Builder()
+                        .withBucketType(Test.bucketType)
+                        .withBucket(Test.bucketName)
+                        .withContent(ro)
+                        .withKey('key' + i)
+                        .withCallback(storeCb)
+                        .build();
+
+                cluster.execute(store);
+                
+                ro = new RiakObject();
+                ro.addToIndex('email_bin', 'email' + i);
+                ro.setValue('this is a value');
+                store = new StoreValue.Builder()
+                        .withBucketType(Test.bucketType)
+                        .withBucket(Test.bucketName)
+                        .withContent(ro)
+                        .withKey('key_' + i)
+                        .withCallback(storeCb)
+                        .build();
+
+                cluster.execute(store);
             }
-        };
-    
-    
-        for (var i = 0; i < 25; i++) {
-            var ro = new RiakObject();
-            ro.addToIndex('id_int', i);
-            ro.setValue('this is a value');
-            var store = new StoreValue.Builder()
-                    .withBucketType(Test.bucketType)
-                    .withBucket(Test.bucketName)
-                    .withContent(ro)
-                    .withKey('key' + i)
-                    .withCallback(storeCb)
-                    .build();
-
-            cluster.execute(store);
-            
-            ro = new RiakObject();
-            ro.addToIndex('email_bin', 'email' + i);
-            ro.setValue('this is a value');
-            store = new StoreValue.Builder()
-                    .withBucketType(Test.bucketType)
-                    .withBucket(Test.bucketName)
-                    .withContent(ro)
-                    .withKey('key_' + i)
-                    .withCallback(storeCb)
-                    .build();
-
-            cluster.execute(store);
-            
-            ro = new RiakObject();
-            ro.addToIndex('id_int', i);
-            ro.setValue('this is a value');
-            store = new StoreValue.Builder()
-                    .withBucketType(Test.bucketType)
-                    .withBucket(Test.bucketName)
-                    .withContent(ro)
-                    .withKey('key' + i)
-                    .withCallback(storeCb)
-                    .build();
-
-            cluster.execute(store);
-            
-            ro = new RiakObject();
-            ro.addToIndex('email_bin', 'email' + i);
-            ro.setValue('this is a value');
-            store = new StoreValue.Builder()
-                    .withBucketType(Test.bucketType)
-                    .withBucket(Test.bucketName)
-                    .withContent(ro)
-                    .withKey('key_' + i)
-                    .withCallback(storeCb)
-                    .build();
-
-            cluster.execute(store);
-            
-        }
-
+        });
     });
     
     after(function(done) {

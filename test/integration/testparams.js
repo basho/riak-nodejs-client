@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
-var ListKeys = require('../../lib/commands/kv/listkeys');
-var DeleteValue = require('../../lib/commands/kv/deletevalue');
 var assert = require('assert');
 var logger = require('winston');
+
+var DeleteValue = require('../../lib/commands/kv/deletevalue');
+var ListKeys = require('../../lib/commands/kv/listkeys');
+
+var port = 2999;
+module.exports.getPort = function () {
+    port++;
+    return port;
+};
 
 module.exports.bucketName = 'riak_index_tests';
 
