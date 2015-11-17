@@ -1,19 +1,3 @@
-/*
- * Copyright 2015 Basho Technologies, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 var assert = require('assert');
 var async = require('async');
 var net = require('net');
@@ -56,21 +40,20 @@ describe('RiakCluster - Integration', function() {
                     tried++;
                     if (tried === nodeCount) {
                         clearTimeout(errTimeout);
-                        cluster.on('stateChange', function(state) {
-                            if (state === RiakCluster.State.SHUTDOWN) {
-                                var closed = 0;
-                                var onClose = function () {
-                                    closed++;
-                                    if (closed === nodeCount) {
-                                        done();
-                                    }
-                                };
-                                servers.forEach(function (s) {
-                                    s.close(onClose);
-                                });
-                            }
+                        cluster.stop(function (err, rslt) {
+                            assert(!err);
+                            assert.equal(rslt, RiakCluster.State.SHUTDOWN);
+                            var closed = 0;
+                            var onClose = function () {
+                                closed++;
+                                if (closed === nodeCount) {
+                                    done();
+                                }
+                            };
+                            servers.forEach(function (s) {
+                                s.close(onClose);
+                            });
                         });
-                        cluster.stop();
                     }
                 });
             };
@@ -146,14 +129,11 @@ describe('RiakCluster - Integration', function() {
             var callMe = function(err, resp) {
                 assert(!err, err);
                 assert(Date.now() - queueStart >= 600, 'queueSubmitInterval respected');
-                cluster.on('stateChange', function(state) {
-                    if (state === RiakCluster.State.SHUTDOWN) {
-                        server.close(function () {
-                            done();
-                        });
-                    }
+                cluster.stop(function (err, rslt) {
+                    assert(!err);
+                    assert.equal(rslt, RiakCluster.State.SHUTDOWN);
+                    done();
                 });
-                cluster.stop();
             };
             
             cluster.on('stateChange', stateMe);
@@ -176,12 +156,11 @@ describe('RiakCluster - Integration', function() {
 
             var callMe = function(err, resp) {
                 assert(err);
-                cluster.on('stateChange', function(state) {
-                    if (state === RiakCluster.State.SHUTDOWN) {
-                        done();
-                    }
+                cluster.stop(function (err, rslt) {
+                    assert(!err);
+                    assert.equal(rslt, RiakCluster.State.SHUTDOWN);
+                    done();
                 });
-                cluster.stop();
             };
 
             cluster.start(function (err, rslt) {
@@ -203,12 +182,11 @@ describe('RiakCluster - Integration', function() {
 
             var callMe = function(err, resp) {
                 assert(err);
-                cluster.on('stateChange', function(state) {
-                    if (state === RiakCluster.State.SHUTDOWN) {
-                        done();
-                    }
+                cluster.stop(function (err, rslt) {
+                    assert(!err);
+                    assert.equal(rslt, RiakCluster.State.SHUTDOWN);
+                    done();
                 });
-                cluster.stop();
             };
 
             cluster.start(function (err, rslts) {
