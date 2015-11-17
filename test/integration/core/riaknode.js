@@ -9,12 +9,8 @@ var FetchValue = require('../../../lib/commands/kv/fetchvalue');
 var StoreValue = require('../../../lib/commands/kv/storevalue');
 
 describe('RiakNode - Integration', function() {
-   
     describe('Command execution', function() {
-        this.timeout(5000);
-
         it('should increment execution count', function(done) {
-          
             var port = Test.getPort();
             var header = new Buffer(5);
             header.writeUInt8(2, 4);
@@ -34,9 +30,12 @@ describe('RiakNode - Integration', function() {
                         assert(!err, err);
                         assert(resp, 'ping should return true!');
                         if (pingCount == 4) {
-                            node.stop();
-                            server.close(function () {
-                                done();
+                            node.stop(function (err, rslt) {
+                                assert(!err);
+                                assert.equal(rslt, RiakNode.State.SHUTDOWN);
+                                server.close(function () {
+                                    done();
+                                });
                             });
                         }
                     };
@@ -69,27 +68,20 @@ describe('RiakNode - Integration', function() {
     });
 
     describe('Health checking', function() {
-        this.timeout(5000);
-       
         it('should recover using the default Ping check', function(done) {
-          
             var port = Test.getPort();
             var connects = 0;
             var server = net.createServer(function(socket) {
-              
                 connects++;
                 if (connects === 1) {
                     socket.destroy();
                 } else {
-
                     socket.on('data' , function(data) {
-
                         // the ping got here
                         var header = new Buffer(5);
                         header.writeUInt8(2, 4);
                         header.writeInt32BE(1, 0);
                         socket.write(header);
-
                     });
                 }
             });
@@ -108,7 +100,6 @@ describe('RiakNode - Integration', function() {
                 var heathChecking = false;
                 var healthChecked = false;
                 var verifyCb = function(node, state) {
-                
                     switch(state) {
                         case RiakNode.State.HEALTH_CHECKING:
                             heathChecking = true;
@@ -119,26 +110,25 @@ describe('RiakNode - Integration', function() {
                         default:
                             break;
                     }
-                    
                     if (heathChecking && healthChecked) {
                         clearTimeout(errTimeout);
                         node.removeAllListeners();
-                        node.stop();
-                        server.close(function () {
-                            done();
+                        node.stop(function (err, rslt) {
+                            assert(!err);
+                            assert.equal(rslt, RiakNode.State.SHUTDOWN);
+                            server.close(function () {
+                                done();
+                            });
                         });
                     }
                 };
                 
                 node.start(function (err, rslt) {
                     assert(!err, err);
-
                     node.on('stateChange', verifyCb);
-                    
                     var fetchCb = function(err, resp) {
                         assert(err);
                     };
-                    
                     var fetch = new FetchValue({bucket: 'b', key: 'k'}, fetchCb);
                     node.execute(fetch);
                 });
@@ -146,7 +136,6 @@ describe('RiakNode - Integration', function() {
         });
         
         it('should recover using StoreValue as a check', function(done) {
-          
             var port = Test.getPort();
             var connects = 0;
             var server = net.createServer(function(socket) {
@@ -154,7 +143,6 @@ describe('RiakNode - Integration', function() {
                 connects++;
                 if (connects === 1) {
                     socket.destroy();
-                    
                 } else {
                     socket.on('data' , function(data) {
                         // the StoreValue got here
@@ -183,7 +171,6 @@ describe('RiakNode - Integration', function() {
                 var heathChecking = false;
                 var healthChecked = false;
                 var verifyCb = function(node, state) {
-                
                     switch(state) {
                         case RiakNode.State.HEALTH_CHECKING:
                             heathChecking = true;
@@ -198,22 +185,22 @@ describe('RiakNode - Integration', function() {
                     if (heathChecking && healthChecked) {
                         clearTimeout(errTimeout);
                         node.removeAllListeners();
-                        node.stop();
-                        server.close(function () {
-                            done();
+                        node.stop(function (err, rslt) {
+                            assert(!err);
+                            assert.equal(rslt, RiakNode.State.SHUTDOWN);
+                            server.close(function () {
+                                done();
+                            });
                         });
                     }
                 };
                 
                 node.start(function (err, rslt) {
                     assert(!err, err);
-
                     node.on('stateChange', verifyCb);
-                    
                     var fetchCb = function(err, resp) {
                         assert(err);
                     };
-                    
                     var fetch = new FetchValue({bucket: 'b', key: 'k'}, fetchCb);
                     node.execute(fetch);
                 });
