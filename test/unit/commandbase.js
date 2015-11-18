@@ -1,18 +1,4 @@
-﻿/*
- * Copyright 2015 Basho Technologies, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+'use strict';
 
 var assert = require('assert');
 var logger = require('winston');
@@ -121,6 +107,12 @@ describe('CommandBase', function() {
             bucketType: 'baz',
             bucket: 'foo',
             key: 'bar',
+            callback: cb
+        };
+
+        var ts_options = {
+            table: 'table',
+            key: [ 'foo', 'bar', 'baz' ],
             callback: cb
         };
 
@@ -329,12 +321,46 @@ describe('CommandBase', function() {
                         b.withContent('blargh');
                     }
                 },
+            'TS.Store' : {
+                    options : {
+                        table: ts_options.table,
+                        rows: [ ['foo', 'bar', 'baz'], ['bat', 'bing', 'zing'] ],
+                        callback: cb
+                    },
+                    builder_func : function (b) {
+                        b.withTable(ts_options.table);
+                        b.withRows([ ['foo', 'bar', 'baz'], ['bat', 'bing', 'zing'] ]);
+                    }
+                },
+            'TS.Query' : {
+                    options : {
+                        query: 'select * from baz',
+                        callback: cb
+                    },
+                    builder_func : function (b) {
+                        b.withQuery('select * from baz');
+                    }
+                },
+            'TS.Get' : {
+                    options : ts_options,
+                    builder_func : function (b) {
+                        b.withTable(ts_options.table);
+                        b.withKey(ts_options.key);
+                    }
+                },
+            'TS.Delete' : {
+                    options : ts_options,
+                    builder_func : function (b) {
+                        b.withTable(ts_options.table);
+                        b.withKey(ts_options.key);
+                    }
+                },
         };
 
         it('should throw when callback passed via options', function(done) {
             Object.keys(commands).forEach(function (cmd_name) {
                 var options = commands[cmd_name].options;
-                var eval_str = "new Riak.Commands." + cmd_name + "(options, cb)";
+                var eval_str = "new Riak.Commands." + cmd_name + "(options, cb);";
                 var e_message = null;
                 try {
                     var cmd = eval(eval_str); // jshint ignore:line
@@ -376,4 +402,3 @@ describe('CommandBase', function() {
     });
 
 });
-

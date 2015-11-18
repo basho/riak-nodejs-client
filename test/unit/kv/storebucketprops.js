@@ -1,3 +1,5 @@
+'use strict';
+
 var rpb = require('../../../lib/protobuf/riakprotobuf');
 var StoreBucketProps = require('../../../lib/commands/kv/storebucketprops');
 var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');

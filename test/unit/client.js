@@ -1,18 +1,4 @@
-/*
- * Copyright 2014 Basho Technologies, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+'use strict';
 
 var Riak = require('../../index.js');
 var assert = require('assert');
@@ -88,9 +74,24 @@ describe('Client', function() {
             done();
         });
 
-        it('Riak.Commands.TS.StoreValue', function(done) {
-            var typeofTsStoreValue = typeof(Riak.Commands.TS.StoreValue);
-            assert(typeofTsStoreValue === 'function', "typeof(Riak.Commands.TS.StoreValue): " + typeofTsStoreValue);
+        it('Riak.Commands.TS.Store', function(done) {
+            var typeofTsStore = typeof(Riak.Commands.TS.Store);
+            assert(typeofTsStore === 'function', "typeof(Riak.Commands.TS.Store): " + typeofTsStore);
+            done();
+        });
+        it('Riak.Commands.TS.Query', function(done) {
+            var typeofTsQuery = typeof(Riak.Commands.TS.Query);
+            assert(typeofTsQuery === 'function', "typeof(Riak.Commands.TS.Query): " + typeofTsQuery);
+            done();
+        });
+        it('Riak.Commands.TS.Get', function(done) {
+            var typeofTsGet = typeof(Riak.Commands.TS.Get);
+            assert(typeofTsGet === 'function', "typeof(Riak.Commands.TS.Get): " + typeofTsGet);
+            done();
+        });
+        it('Riak.Commands.TS.Delete', function(done) {
+            var typeofTsDelete = typeof(Riak.Commands.TS.Delete);
+            assert(typeofTsDelete === 'function', "typeof(Riak.Commands.TS.Delete): " + typeofTsDelete);
             done();
         });
 
