@@ -49,7 +49,17 @@ module.exports = function(grunt) {
                 clearRequireCache: false,
                 colors: false
             },
-            src: ['test/integration/**/*.js']
+            src: ['test/integration/core/*.js', 'test/integration/crdt/*.js', 'test/integration/kv/*.js', 'test/integration/mapreduce/*.js', 'test/integration/yokozuna/*.js']
+        },
+        timeseries: {
+            options: {
+                reporter: 'spec',
+                captureFile: 'integration-test-results.txt',
+                quiet: false,
+                clearRequireCache: false,
+                colors: false
+            },
+            src: ['test/integration/ts/*.js']
         },
         security: {
             options: {
