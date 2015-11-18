@@ -69,3 +69,4 @@ Thank you to all of our contributors!
 * [Josh Yudaken](https://github.com/qix)
 * [Gabriel Nicolas Avellaneda](https://github.com/GabrielNicolasAvellaneda)
 * [Iain Proctor](https://github.com/iproctor)
+* [Brian Edgerton](https://github.com/brianedgerton)

@@ -33,8 +33,10 @@ describe('FetchPreflist - Integration', function() {
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
-        cluster.start();
-        done();
+        cluster.start(function (err, rslt) {
+            assert(!err, err);
+            done();
+        });
     });
 
     it('Should fetch a preflist from Riak (default type)', function(done) {

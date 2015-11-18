@@ -6,7 +6,8 @@ branches:
 language: node_js
 
 node_js:
-  - "node"
+  - "stable"
+  - "0.12"
 
 script:
     - make unit-test

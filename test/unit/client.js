@@ -66,6 +66,21 @@ describe('Client', function() {
             assert(typeofRiakClusterState === 'object', "typeof(Riak.Cluster.State): " + typeofRiakClusterState);
             done();
         });
+        it('Riak.Cluster.DefaultNodeManager', function(done) {
+            var typeofRiakClusterDefaultNodeManager = typeof(Riak.Cluster.DefaultNodeManager);
+            assert(typeofRiakClusterDefaultNodeManager === 'function', "typeof(Riak.Cluster.DefaultNodeManager): " + typeofRiakClusterDefaultNodeManager);
+            done();
+        });
+        it('Riak.Cluster.RoundRobinNodeManager', function(done) {
+            var typeofRiakClusterRoundRobinNodeManager = typeof(Riak.Cluster.RoundRobinNodeManager);
+            assert(typeofRiakClusterRoundRobinNodeManager === 'function', "typeof(Riak.Cluster.RoundRobinNodeManager): " + typeofRiakClusterRoundRobinNodeManager);
+            done();
+        });
+        it('Riak.Cluster.LeastExecutingNodeManager', function(done) {
+            var typeofRiakClusterLeastExecutingNodeManager = typeof(Riak.Cluster.LeastExecutingNodeManager);
+            assert(typeofRiakClusterLeastExecutingNodeManager === 'function', "typeof(Riak.Cluster.LeastExecutingNodeManager): " + typeofRiakClusterLeastExecutingNodeManager);
+            done();
+        });
 
         it('Riak.Commands.Ping', function(done) {
             var typeofCommandsPing = typeof(Riak.Commands.Ping);
@@ -93,6 +108,11 @@ describe('Client', function() {
         it('Riak.Commands.KV.FetchBucketProps', function(done) {
             var typeofKvFetchBucketProps = typeof(Riak.Commands.KV.FetchBucketProps);
             assert(typeofKvFetchBucketProps === 'function', "typeof(Riak.Commands.KV.FetchBucketProps): " + typeofKvFetchBucketProps);
+            done();
+        });
+        it('Riak.Commands.KV.FetchBucketTypeProps', function(done) {
+            var typeofKvFetchBucketTypeProps = typeof(Riak.Commands.KV.FetchBucketTypeProps);
+            assert(typeofKvFetchBucketTypeProps === 'function', "typeof(Riak.Commands.KV.FetchBucketTypeProps): " + typeofKvFetchBucketTypeProps);
             done();
         });
         it('Riak.Commands.KV.FetchValue', function(done) {
@@ -123,6 +143,11 @@ describe('Client', function() {
         it('Riak.Commands.KV.StoreBucketProps', function(done) {
             var typeofKvStoreBucketProps = typeof(Riak.Commands.KV.StoreBucketProps);
             assert(typeofKvStoreBucketProps === 'function', "typeof(Riak.Commands.KV.StoreBucketProps): " + typeofKvStoreBucketProps);
+            done();
+        });
+        it('Riak.Commands.KV.StoreBucketTypeProps', function(done) {
+            var typeofKvStoreBucketTypeProps = typeof(Riak.Commands.KV.StoreBucketTypeProps);
+            assert(typeofKvStoreBucketTypeProps === 'function', "typeof(Riak.Commands.KV.StoreBucketTypeProps): " + typeofKvStoreBucketTypeProps);
             done();
         });
         it('Riak.Commands.KV.StoreValue', function(done) {

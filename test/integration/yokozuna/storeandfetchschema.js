@@ -30,23 +30,23 @@ describe('Update and Fetch Yokozuna schema - Integration', function() {
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
-        cluster.start();
-       
-        var callback = function(err, resp) {
+        cluster.start(function (err, rslt) {
             assert(!err, err);
-            assert(resp.content);
-            defaultSchema = resp.content;
-            done();
-        };
         
-        var fetch = new FetchSchema.Builder()
-				.withSchemaName('_yz_default')
-				.withCallback(callback)
-				.build();
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert(resp.content);
+                defaultSchema = resp.content;
+                done();
+            };
+            
+            var fetch = new FetchSchema.Builder()
+                    .withSchemaName('_yz_default')
+                    .withCallback(callback)
+                    .build();
 
-        cluster.execute(fetch);
-
-        
+            cluster.execute(fetch);
+        });
     });
     
     after(function(done) {

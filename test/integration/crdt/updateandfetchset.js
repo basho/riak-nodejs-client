@@ -30,27 +30,26 @@ describe('Update and Fetch Set - Integration', function() {
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
-        cluster.start();
-        
-        var callback = function(err, resp) {
+        cluster.start(function (err, rslt) {
             assert(!err, err);
-            assert.equal(resp.values.length, 2);
-            assert(resp.context);
-            context = resp.context;
-            done();
-        };
-        
-        // This ... tests updating a new set
-        var update = new UpdateSet.Builder()
-                .withBucketType(Test.setBucketType)
-                .withBucket(Test.bucketName)
-                .withKey('set_1')
-                .withAdditions(['this', 'that'])
-                .withCallback(callback)
-                .build();
-        
-        cluster.execute(update);
-        
+
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert.equal(resp.values.length, 2);
+                assert(resp.context);
+                context = resp.context;
+                done();
+            };
+            
+            var update = new UpdateSet.Builder()
+                    .withBucketType(Test.setBucketType)
+                    .withBucket(Test.bucketName)
+                    .withKey('set_1')
+                    .withAdditions(['this', 'that'])
+                    .withCallback(callback)
+                    .build();
+            cluster.execute(update);
+        });
     });
     
     after(function(done) {

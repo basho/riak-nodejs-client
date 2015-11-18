@@ -30,41 +30,42 @@ describe('Update and Fetch Map - Integration', function() {
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
-        cluster.start();
-
-        var callback = function(err, resp) {
+        cluster.start(function (err, rslt) {
             assert(!err, err);
-            assert(resp.context);
-            context = resp.context;
-            done();
-        };
 
-        var mapOp = new UpdateMap.MapOperation();
-           
-        mapOp.incrementCounter('counter_1', 50)
-            .addToSet('set_1', 'value_1')
-            .setRegister('register_1', new Buffer('register_value_1'))
-            .setFlag('flag_1', true);
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert(resp.context);
+                context = resp.context;
+                done();
+            };
 
-        mapOp.map('map_2').incrementCounter('counter_1', 50)
-            .addToSet('set_1', 'value_1')
-            .setRegister('register_1', new Buffer('register_value_1'))
-            .setFlag('flag_1', true)
-            .map('map_3');
+            var mapOp = new UpdateMap.MapOperation();
+            
+            mapOp.incrementCounter('counter_1', 50)
+                .addToSet('set_1', 'value_1')
+                .setRegister('register_1', new Buffer('register_value_1'))
+                .setFlag('flag_1', true);
+
+            mapOp.map('map_2').incrementCounter('counter_1', 50)
+                .addToSet('set_1', 'value_1')
+                .setRegister('register_1', new Buffer('register_value_1'))
+                .setFlag('flag_1', true)
+                .map('map_3');
 
 
-        var update = new UpdateMap.Builder()
-            .withBucketType(Test.mapBucketType)
-            .withBucket(Test.bucketName)
-            .withKey('map_1')
-            .withMapOperation(mapOp)
-            .withCallback(callback)
-            .withReturnBody(true)
-            .withTimeout(20000)
-            .build();
+            var update = new UpdateMap.Builder()
+                .withBucketType(Test.mapBucketType)
+                .withBucket(Test.bucketName)
+                .withKey('map_1')
+                .withMapOperation(mapOp)
+                .withCallback(callback)
+                .withReturnBody(true)
+                .withTimeout(20000)
+                .build();
 
-        cluster.execute(update);
-
+            cluster.execute(update);
+        });
     });
     
     after(function(done) {

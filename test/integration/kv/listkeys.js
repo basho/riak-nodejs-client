@@ -32,28 +32,30 @@ describe('ListKeys - Integration', function() {
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
-        cluster.start();
-        
-        var count = 0;
-        var cb = function(err, resp) {
+        cluster.start(function (err, rslt) {
             assert(!err, err);
-            count++;
-            if (count === totalKeyCount) {
-                done();
+            
+            var count = 0;
+            var cb = function(err, resp) {
+                assert(!err, err);
+                count++;
+                if (count === totalKeyCount) {
+                    done();
+                }
+            };
+            
+            for (var i = 0; i < totalKeyCount; i++) {
+                // Will create keys
+                var key = listKeysPrefix + i;
+                var store = new StoreValue.Builder()
+                        .withBucket(Test.bucketName)
+                        .withKey(key)
+                        .withContent('value')
+                        .withCallback(cb)
+                        .build();
+                cluster.execute(store);
             }
-        };
-        
-        for (var i = 0; i < totalKeyCount; i++) {
-            // Will create keys
-            var key = listKeysPrefix + i;
-            var store = new StoreValue.Builder()
-                    .withBucket(Test.bucketName)
-                    .withKey(key)
-                    .withContent('value')
-                    .withCallback(cb)
-                    .build();
-            cluster.execute(store);
-        }
+        });
     });
 
     after(function(done) {
