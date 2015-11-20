@@ -320,41 +320,7 @@ describe('CommandBase', function() {
                         b.withKey(default_options.key);
                         b.withContent('blargh');
                     }
-                },
-            'TS.Store' : {
-                    options : {
-                        table: ts_options.table,
-                        rows: [ ['foo', 'bar', 'baz'], ['bat', 'bing', 'zing'] ],
-                        callback: cb
-                    },
-                    builder_func : function (b) {
-                        b.withTable(ts_options.table);
-                        b.withRows([ ['foo', 'bar', 'baz'], ['bat', 'bing', 'zing'] ]);
-                    }
-                },
-            'TS.Query' : {
-                    options : {
-                        query: 'select * from baz',
-                        callback: cb
-                    },
-                    builder_func : function (b) {
-                        b.withQuery('select * from baz');
-                    }
-                },
-            'TS.Get' : {
-                    options : ts_options,
-                    builder_func : function (b) {
-                        b.withTable(ts_options.table);
-                        b.withKey(ts_options.key);
-                    }
-                },
-            'TS.Delete' : {
-                    options : ts_options,
-                    builder_func : function (b) {
-                        b.withTable(ts_options.table);
-                        b.withKey(ts_options.key);
-                    }
-                },
+                }
         };
 
         it('should throw when callback passed via options', function(done) {
