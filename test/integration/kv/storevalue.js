@@ -16,7 +16,6 @@ describe('StoreValue - Integration', function() {
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
-        cluster.start();
         cluster.start(function (err, rslt) {
             assert(!err, err);
             done();
