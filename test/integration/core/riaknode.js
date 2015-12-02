@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('assert');
 var logger = require('winston');
 var net = require('net');

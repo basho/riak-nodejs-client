@@ -1,18 +1,4 @@
-/*
- * Copyright 2015 Basho Technologies, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+'use strict';
 
 var FetchMap = require('../../../lib/commands/crdt/fetchmap');
 var MapField = require('../../../lib/protobuf/riakprotobuf').getProtoFor('MapField');
@@ -80,7 +66,7 @@ describe('FetchMap', function() {
                 mapField.setType(MapField.MapFieldType.SET);
                 mapField.setName(new Buffer('set_1'));
                 mapEntry.setField(mapField);
-                mapEntry.set_value.push.apply(mapEntry.set_value, [ByteBuffer.fromUTF8('value_1'), ByteBuffer.fromUTF8('value_2')]);
+                Array.prototype.push.apply(mapEntry.set_value, [ByteBuffer.fromUTF8('value_1'), ByteBuffer.fromUTF8('value_2')]);
                 mapEntries.push(mapEntry);
                 
                 mapEntry = new MapEntry();
@@ -103,14 +89,14 @@ describe('FetchMap', function() {
 
             };
             
-            dtValue.map_value.push.apply(dtValue.map_value, createMapEntries());
+            Array.prototype.push.apply(dtValue.map_value, createMapEntries());
             
             var mapEntry = new MapEntry();
             var mapField = new MapField();
             mapField.setType(MapField.MapFieldType.MAP);
             mapField.setName(new Buffer('map_1'));
             mapEntry.setField(mapField);
-            mapEntry.map_value.push.apply(mapEntry.map_value, createMapEntries());
+            Array.prototype.push.apply(mapEntry.map_value, createMapEntries());
             
             dtValue.map_value.push(mapEntry);
             

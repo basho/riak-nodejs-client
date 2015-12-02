@@ -1,18 +1,4 @@
-/*
- * Copyright 2015 Basho Technologies, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+'use strict';
 
 var Test = require('../testparams');
 var StoreValue = require('../../../lib/commands/kv/storevalue');
@@ -23,12 +9,10 @@ var RiakCluster = require('../../../lib/core/riakcluster');
 var assert = require('assert');
 
 describe('Secondary Index Query - Integration', function() {
-   
     var cluster;
     this.timeout(10000);
     
     before(function(done) {
-       
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
         cluster.start(function (err, rslt) {
@@ -105,11 +89,9 @@ describe('Secondary Index Query - Integration', function() {
                 cluster.stop();
             });
         });
-        
    });
    
    it('Should perform a _int query against the default type', function(done) {
-      
         var count = 0;
         var callback = function(err, response) {
             assert(!err, err);
@@ -119,7 +101,6 @@ describe('Secondary Index Query - Integration', function() {
                 done();
             }
         };
-        
         var siq = new SecondaryIndexQuery.Builder()
 					.withBucket(Test.bucketName)
                     .withBucketType(Test.bucketType)
@@ -128,13 +109,10 @@ describe('Secondary Index Query - Integration', function() {
 					.withCallback(callback)
 					.withReturnKeyAndIndex(true)
 					.build();
-
 		cluster.execute(siq);
-       
    });
    
    it('Should perform a _int query against a non-default type', function(done) {
-      
         var count = 0;
         var callback = function(err, response) {
             assert(!err, err);
@@ -144,7 +122,6 @@ describe('Secondary Index Query - Integration', function() {
                 done();
             }
         };
-        
         var siq = new SecondaryIndexQuery.Builder()
 					.withBucket(Test.bucketName)
                     .withBucketType(Test.bucketType)
@@ -153,13 +130,10 @@ describe('Secondary Index Query - Integration', function() {
 					.withCallback(callback)
 					.withReturnKeyAndIndex(true)
 					.build();
-
 		cluster.execute(siq);
-       
    });
    
    it('Should perform a _bin query against the default type', function(done) {
-      
         var count = 0;
         var callback = function(err, response) {
             assert(!err, err);
@@ -169,7 +143,6 @@ describe('Secondary Index Query - Integration', function() {
                 done();
             }
         };
-        
         var siq = new SecondaryIndexQuery.Builder()
 					.withBucket(Test.bucketName)
                     .withBucketType(Test.bucketType)
@@ -178,13 +151,10 @@ describe('Secondary Index Query - Integration', function() {
 					.withCallback(callback)
 					.withReturnKeyAndIndex(true)
 					.build();
-
 		cluster.execute(siq);
-       
    });
    
    it('Should perform a _bin query against a non-default type', function(done) {
-      
         var count = 0;
         var callback = function(err, response) {
             assert(!err, err);
@@ -194,7 +164,6 @@ describe('Secondary Index Query - Integration', function() {
                 done();
             }
         };
-        
         var siq = new SecondaryIndexQuery.Builder()
 					.withBucket(Test.bucketName)
                     .withBucketType(Test.bucketType)
@@ -203,13 +172,10 @@ describe('Secondary Index Query - Integration', function() {
 					.withCallback(callback)
 					.withReturnKeyAndIndex(true)
 					.build();
-
 		cluster.execute(siq);
-       
    });
    
    it('Should set a coninuation on a paginated query', function(done) {
-      
        var count = 0;
         var callback = function(err, response) {
             assert(!err, err);
@@ -220,7 +186,6 @@ describe('Secondary Index Query - Integration', function() {
                 done();
             }
         };
-        
         var siq = new SecondaryIndexQuery.Builder()
 					.withBucket(Test.bucketName)
                     .withBucketType(Test.bucketType)
@@ -230,10 +195,6 @@ describe('Secondary Index Query - Integration', function() {
 					.withCallback(callback)
 					.withReturnKeyAndIndex(true)
 					.build();
-
 		cluster.execute(siq);
-       
    });
-    
 });
-
