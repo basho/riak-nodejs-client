@@ -49,20 +49,20 @@ describe('Timeseries - Integration', function () {
     before(function(done) {
         var nodes = RiakNode.buildNodes(Test.nodeAddresses);
         cluster = new RiakCluster({ nodes: nodes});
-        cluster.start();
-
-        var callback = function(err, resp) {
-            assert(!err, err);
-            assert(resp);
-            done();
-        };
-        var store = new TS.Store.Builder()
-            .withTable(tableName)
-            .withColumns(columns)
-            .withRows(rows)
-            .withCallback(callback)
-            .build();
-        cluster.execute(store);
+        cluster.start(function (err, rslt) {
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert(resp);
+                done();
+            };
+            var store = new TS.Store.Builder()
+                .withTable(tableName)
+                .withColumns(columns)
+                .withRows(rows)
+                .withCallback(callback)
+                .build();
+            cluster.execute(store);
+        });
     });
 
     describe('Query', function () {
@@ -118,6 +118,21 @@ describe('Timeseries - Integration', function () {
                 .build();
             cluster.execute(cmd);
         });
+        it('does not error when key does not exist', function(done) {
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert.equal(resp.columns.length, 0);
+                assert.equal(resp.rows.length, 0);
+                done();
+            };
+            var key = [ 'hash-foo', 'user-bar', fiveMinsAgo ];
+            var cmd = new TS.Get.Builder()
+                .withTable(tableName)
+                .withKey(key)
+                .withCallback(callback)
+                .build();
+            cluster.execute(cmd);
+        });
         it('returns error for incorrect cell count in key', function(done) {
             var callback = function(err, resp, errdata) {
                 assert(err);
@@ -141,11 +156,9 @@ describe('Timeseries - Integration', function () {
         it('deletes one row of TS data', function(done) {
             var key = [ 'hash1', 'user2', twentyMinsAgo ];
             var cb2 = function(err, resp, errdata) {
-                assert(err);
-                assert(!resp);
-                assert(errdata);
-                assert.strictEqual(errdata.msg, 'notfound');
-                assert.strictEqual(errdata.code, 1010);
+                assert(!err, err);
+                assert.equal(resp.columns.length, 0);
+                assert.equal(resp.rows.length, 0);
                 done();
             };
             var cb1 = function(err, resp) {
