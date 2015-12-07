@@ -355,6 +355,15 @@ describe('CommandBase', function() {
                         b.withKey(ts_options.key);
                     }
                 },
+            'TS.ListKeys' : {
+                    options : {
+                        table: ts_options.table,
+                        callback: cb
+                    },
+                    builder_func: function (b) {
+                        b.withTable(ts_options.table);
+                    }
+                },
         };
 
         it('should throw when callback passed via options', function(done) {
@@ -398,7 +407,5 @@ describe('CommandBase', function() {
             });
             done();
         });
-
     });
-
 });

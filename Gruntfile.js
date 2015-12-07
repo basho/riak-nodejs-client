@@ -59,7 +59,7 @@ module.exports = function(grunt) {
                 clearRequireCache: false,
                 colors: false
             },
-            src: ['test/integration/ts/*.js']
+            src: ['test/unit/ts/*.js', 'test/integration/ts/*.js']
         },
         security: {
             options: {
@@ -101,6 +101,7 @@ module.exports = function(grunt) {
     grunt.task.run(['jshint', 'mochaTest:unit']);
   });
   grunt.registerTask('integration', ['jshint', 'mochaTest:integration']);
+  grunt.registerTask('timeseries', ['jshint', 'mochaTest:timeseries']);
   grunt.registerTask('security', ['jshint', 'mochaTest:security']);
   grunt.registerTask('default', ['jshint', 'mochaTest:unit', 'mochaTest:integration']);
   grunt.registerTask('docs', 'yuidoc');
