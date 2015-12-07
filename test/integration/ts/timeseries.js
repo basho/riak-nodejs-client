@@ -100,6 +100,48 @@ describe('Timeseries - Integration', function () {
         });
     });
 
+    describe('ListKeys', function () {
+        it('returns all TS keys - no streaming', function(done) {
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert.equal(resp.keys.length, rows.length);
+                resp.keys.forEach(function (key) {
+                    assert.equal(key.length, 3);
+                    assert.equal(key[0], 'hash1');
+                    assert.equal(key[1], 'user2');
+                    // TODO RTS-311 assert(key[2] instanceof Date);
+                });
+                done();
+            };
+            var key = [ 'hash1', 'user2', fiveMinsAgo ];
+            var cmd = new TS.ListKeys.Builder()
+                .withTable(tableName)
+                .withStreaming(false)
+                .withCallback(callback)
+                .build();
+            cluster.execute(cmd);
+        });
+
+        it('returns all TS keys - streaming', function(done) {
+            var allKeys = [];
+            var callback = function(err, resp) {
+                assert(!err, err);
+                Array.prototype.push.apply(allKeys, resp.keys);
+                if (resp.done) {
+                    assert.equal(allKeys.length, rows.length);
+                    done();
+                }
+            };
+            var key = [ 'hash1', 'user2', fiveMinsAgo ];
+            var cmd = new TS.ListKeys.Builder()
+                .withTable(tableName)
+                .withStreaming(true)
+                .withCallback(callback)
+                .build();
+            cluster.execute(cmd);
+        });
+    });
+
     describe('Get', function () {
         it('returns one row of TS data', function(done) {
             var callback = function(err, resp) {
