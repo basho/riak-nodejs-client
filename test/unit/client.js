@@ -74,6 +74,33 @@ describe('Client', function() {
             done();
         });
 
+        it('Riak.Commands.TS.Store', function(done) {
+            var typeofTsStore = typeof(Riak.Commands.TS.Store);
+            assert(typeofTsStore === 'function', "typeof(Riak.Commands.TS.Store): " + typeofTsStore);
+            done();
+        });
+        it('Riak.Commands.TS.Query', function(done) {
+            var typeofTsQuery = typeof(Riak.Commands.TS.Query);
+            assert(typeofTsQuery === 'function', "typeof(Riak.Commands.TS.Query): " + typeofTsQuery);
+            done();
+        });
+        it('Riak.Commands.TS.Get', function(done) {
+            var typeofTsGet = typeof(Riak.Commands.TS.Get);
+            assert(typeofTsGet === 'function', "typeof(Riak.Commands.TS.Get): " + typeofTsGet);
+            done();
+        });
+        it('Riak.Commands.TS.Delete', function(done) {
+            var typeofTsDelete = typeof(Riak.Commands.TS.Delete);
+            assert(typeofTsDelete === 'function', "typeof(Riak.Commands.TS.Delete): " + typeofTsDelete);
+            done();
+        });
+
+        it('Riak.Commands.TS.ColumnType', function(done) {
+            var typeofTsColumnType = typeof(Riak.Commands.TS.ColumnType);
+            assert(typeofTsColumnType === 'object', "typeof(Riak.Commands.TS.ColumnType): " + typeofTsColumnType);
+            done();
+        });
+
         it('Riak.Commands.KV.DeleteValue', function(done) {
             var typeofKvDeleteValue = typeof(Riak.Commands.KV.DeleteValue);
             assert(typeofKvDeleteValue === 'function', "typeof(Riak.Commands.KV.DeleteValue): " + typeofKvDeleteValue);

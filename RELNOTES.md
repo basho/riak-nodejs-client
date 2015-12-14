@@ -1,6 +1,16 @@
 Release Notes
 =============
 
+* 1.9.0 - Following issues / PRs addressed:
+ * [Time Series support](https://github.com/basho/riak-nodejs-client/pull/116)
+ * [Update module dependencies](https://github.com/basho/riak-nodejs-client/issues/115)
+ * [`RiakCluster` update nodes](https://github.com/basho/riak-nodejs-client/issues/114)
+ * [Miscellaneous improvements](https://github.com/basho/riak-nodejs-client/issues/113)
+ * [Fix timeout in TLS](https://github.com/basho/riak-nodejs-client/issues/112)
+ * [Non-Time Series improvements](https://github.com/basho/riak-nodejs-client/issues/111)
+ * [Add callbacks to `stop()` methods](https://github.com/basho/riak-nodejs-client/issues/110)
+ * [Smarter node manager](https://github.com/basho/riak-nodejs-client/issues/110)
+ * [Use correct cipher list](https://github.com/basho/riak-nodejs-client/issues/104)
 * 1.8.1 - Re-publish due to `npm publish` error for `1.8.0`.
 * 1.8.0 - Following issues / PRs addressed:
  * [Expose Get/Set bucket type properties on `Client`](https://github.com/basho/riak-nodejs-client/pull/103)
