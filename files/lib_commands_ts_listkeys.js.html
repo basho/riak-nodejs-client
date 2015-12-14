@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>DefaultNodeManager - basho-riak-client</title>
+    <title>lib/commands/ts/listkeys.js - basho-riak-client</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.5.0</em>
+            <em>API Docs for: 1.9.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -39,15 +39,20 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/AuthReq.html">AuthReq</a></li>
+                                <li><a href="../classes/ByKeyBase.html">ByKeyBase</a></li>
+                                <li><a href="../classes/ByKeyBase.Builder.html">ByKeyBase.Builder</a></li>
                                 <li><a href="../classes/Client.html">Client</a></li>
                                 <li><a href="../classes/CommandBase.html">CommandBase</a></li>
-                                <li><a href="../classes/DefaultNodeManager.html">DefaultNodeManager</a></li>
+                                <li><a href="../classes/Delete.html">Delete</a></li>
+                                <li><a href="../classes/Delete.Builder.html">Delete.Builder</a></li>
                                 <li><a href="../classes/DeleteIndex.html">DeleteIndex</a></li>
                                 <li><a href="../classes/DeleteIndex.Builder.html">DeleteIndex.Builder</a></li>
                                 <li><a href="../classes/DeleteValue.html">DeleteValue</a></li>
                                 <li><a href="../classes/DeleteValue.Builder.html">DeleteValue.Builder</a></li>
                                 <li><a href="../classes/FetchBucketProps.html">FetchBucketProps</a></li>
                                 <li><a href="../classes/FetchBucketProps.Builder.html">FetchBucketProps.Builder</a></li>
+                                <li><a href="../classes/FetchBucketTypeProps.html">FetchBucketTypeProps</a></li>
+                                <li><a href="../classes/FetchBucketTypeProps.Builder.html">FetchBucketTypeProps.Builder</a></li>
                                 <li><a href="../classes/FetchCounter.html">FetchCounter</a></li>
                                 <li><a href="../classes/FetchCounter.Builder.html">FetchCounter.Builder</a></li>
                                 <li><a href="../classes/FetchIndex.html">FetchIndex</a></li>
@@ -56,12 +61,16 @@
                                 <li><a href="../classes/FetchMap.Builder.html">FetchMap.Builder</a></li>
                                 <li><a href="../classes/FetchPreflist.html">FetchPreflist</a></li>
                                 <li><a href="../classes/FetchPreflist.Builder.html">FetchPreflist.Builder</a></li>
+                                <li><a href="../classes/FetchPropsBase.html">FetchPropsBase</a></li>
                                 <li><a href="../classes/FetchSchema.html">FetchSchema</a></li>
                                 <li><a href="../classes/FetchSchema.Builder.html">FetchSchema.Builder</a></li>
                                 <li><a href="../classes/FetchSet.html">FetchSet</a></li>
                                 <li><a href="../classes/FetchSet.Builder.html">FetchSet.Builder</a></li>
                                 <li><a href="../classes/FetchValue.html">FetchValue</a></li>
                                 <li><a href="../classes/FetchValue.Builder.html">FetchValue.Builder</a></li>
+                                <li><a href="../classes/Get.html">Get</a></li>
+                                <li><a href="../classes/Get.Builder.html">Get.Builder</a></li>
+                                <li><a href="../classes/LeastExecutingNodeManager.html">LeastExecutingNodeManager</a></li>
                                 <li><a href="../classes/ListBuckets.html">ListBuckets</a></li>
                                 <li><a href="../classes/ListBuckets.Builder.html">ListBuckets.Builder</a></li>
                                 <li><a href="../classes/ListKeys.html">ListKeys</a></li>
@@ -69,21 +78,29 @@
                                 <li><a href="../classes/MapReduce.html">MapReduce</a></li>
                                 <li><a href="../classes/NodeManager.html">NodeManager</a></li>
                                 <li><a href="../classes/Ping.html">Ping</a></li>
+                                <li><a href="../classes/Query.html">Query</a></li>
+                                <li><a href="../classes/Query.Builder.html">Query.Builder</a></li>
                                 <li><a href="../classes/RiakCluster.html">RiakCluster</a></li>
                                 <li><a href="../classes/RiakCluster.Builder.html">RiakCluster.Builder</a></li>
                                 <li><a href="../classes/RiakConnection.html">RiakConnection</a></li>
                                 <li><a href="../classes/RiakNode.html">RiakNode</a></li>
                                 <li><a href="../classes/RiakNode.Builder.html">RiakNode.Builder</a></li>
                                 <li><a href="../classes/RiakObject.html">RiakObject</a></li>
+                                <li><a href="../classes/RoundRobinNodeManager.html">RoundRobinNodeManager</a></li>
                                 <li><a href="../classes/Search.html">Search</a></li>
                                 <li><a href="../classes/Search.Builder.html">Search.Builder</a></li>
                                 <li><a href="../classes/SecondaryIndexQuery.html">SecondaryIndexQuery</a></li>
                                 <li><a href="../classes/SecondaryIndexQuery.Builder.html">SecondaryIndexQuery.Builder</a></li>
                                 <li><a href="../classes/StartTls.html">StartTls</a></li>
+                                <li><a href="../classes/Store.html">Store</a></li>
+                                <li><a href="../classes/Store.Builder.html">Store.Builder</a></li>
                                 <li><a href="../classes/StoreBucketProps.html">StoreBucketProps</a></li>
                                 <li><a href="../classes/StoreBucketProps.Builder.html">StoreBucketProps.Builder</a></li>
+                                <li><a href="../classes/StoreBucketTypeProps.html">StoreBucketTypeProps</a></li>
+                                <li><a href="../classes/StoreBucketTypeProps.Builder.html">StoreBucketTypeProps.Builder</a></li>
                                 <li><a href="../classes/StoreIndex.html">StoreIndex</a></li>
                                 <li><a href="../classes/StoreIndex.Builder.html">StoreIndex.Builder</a></li>
+                                <li><a href="../classes/StorePropsBase.html">StorePropsBase</a></li>
                                 <li><a href="../classes/StoreSchema.html">StoreSchema</a></li>
                                 <li><a href="../classes/StoreSchema.Builder.html">StoreSchema.Builder</a></li>
                                 <li><a href="../classes/StoreValue.html">StoreValue</a></li>
@@ -97,12 +114,14 @@
                                 <li><a href="../classes/UpdateSet.Builder.html">UpdateSet.Builder</a></li>
                             </ul>
                 
+                
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/Client.html">Client</a></li>
                                 <li><a href="../modules/Core.html">Core</a></li>
                                 <li><a href="../modules/CRDT.html">CRDT</a></li>
                                 <li><a href="../modules/KV.html">KV</a></li>
                                 <li><a href="../modules/MR.html">MR</a></li>
+                                <li><a href="../modules/TS.html">TS</a></li>
                                 <li><a href="../modules/YZ.html">YZ</a></li>
                             </ul>
                         </div>
@@ -137,81 +156,186 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>DefaultNodeManager Class</h1>
-<div class="box meta">
+<h1 class="file-heading">File: lib/commands/ts/listkeys.js</h1>
 
-        <div class="extends">
-            Extends <a href="../classes/NodeManager.html" class="crosslink">NodeManager</a>
-        </div>
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x27;use strict&#x27;;
 
-        <div class="foundat">
-            Defined in: <a href="../files/lib_core_defaultnodemanager.js.html#l25"><code>lib&#x2F;core&#x2F;defaultnodemanager.js:25</code></a>
-        </div>
+var inherits = require(&#x27;util&#x27;).inherits;
+var Joi = require(&#x27;joi&#x27;);
 
-            Module: <a href="../modules/Core.html">Core</a>
+var CommandBase = require(&#x27;../commandbase&#x27;);
+var tsutils = require(&#x27;./utils&#x27;);
 
-</div>
+/**
+ * Provides the ListKeys class, its builder, and its response.
+ * @module TS
+ */
 
+/**
+ * Command used to list keys in a table.
+ *
+ * As a convenience, a builder class is provided;
+ *
+ *     var listKeys = new ListKeys.Builder()
+ *                  .withTable(&#x27;myTable&#x27;)
+ *                  .withCallback(myCallback)
+ *                  .build();
+ *
+ * See {{#crossLink &quot;ListKeys.Builder&quot;}}ListKeys.Builder{{/crossLink}}
+ * @class ListKeys
+ * @constructor
+ * @param {Object} options The options for this command
+ * @param {String} options.table The table in Riak TS.
+ * @param {Boolean} [options.stream=true] Whether to stream or accumulate the result before calling callback.
+ * @param {Number} [options.timeout] Set a timeout for this operation.
+ * @param {Function} callback The callback to be executed when the operation completes.
+ * @param {String} callback.err An error message. Will be null if no error.
+ * @param {Object} callback.response the keys returned from Riak.
+ * @param {Boolean} callback.response.done True if you have received all the keys.
+ * @param {String[]} callback.response.keys The array of keys.
+ * @param {Object} callback.data additional error data. Will be null if no error.
+ * @extends CommandBase
+ */
+function ListKeys(options, callback) {
+    CommandBase.call(this, &#x27;TsListKeysReq&#x27;, &#x27;TsListKeysResp&#x27;, callback);
+    var self = this;
+    Joi.validate(options, schema, function (err, options) {
+        if (err) {
+            throw err;
+        }
+        self.options = options;
+    });
+    if (!this.options.stream) {
+        this.keys = [];
+    }
+}
 
-<div class="box intro">
-    <p>The default NodeManager used by RiakCluster.</p>
-<p>This NodeManager does a round-robin selection of RiakNodes.</p>
+inherits(ListKeys, CommandBase);
 
-</div>
+ListKeys.prototype.constructPbRequest = function () {
+    var protobuf = this.getPbReqBuilder();
+    protobuf.setTable(new Buffer(this.options.table));
+    protobuf.setTimeout(this.options.timeout);
+    return protobuf;
+};
 
-    <div class="constructor">
-        <h2>Constructor</h2>
-<div id="method_DefaultNodeManager" class="method item">
-    <h3 class="name"><code>DefaultNodeManager</code></h3>
+ListKeys.prototype.onSuccess = function (rpbTsListKeysResp) {
+    var keysToSend = new Array(rpbTsListKeysResp.keys.length);
+    if (rpbTsListKeysResp.keys.length) {
+        for (var i = 0; i &lt; rpbTsListKeysResp.keys.length; i++) {
+            var tsrow = rpbTsListKeysResp.keys[i];
+            var keycells = tsutils.convertTsRow(tsrow);
+            keysToSend[i] = keycells;
+        }
+    }
 
-        <span class="paren">()</span>
+    if (this.options.stream) {
+        this._callback(null, {
+            table: this.options.table, keys: keysToSend, done: rpbTsListKeysResp.done
+        });
+    } else {
+        Array.prototype.push.apply(this.keys, keysToSend);
+        if (rpbTsListKeysResp.done) {
+            this._callback(null, {
+                table: this.options.table, keys: this.keys, done: rpbTsListKeysResp.done
+            });
+        }
+    }
 
+    return rpbTsListKeysResp.done;
+};
 
+var schema = Joi.object().keys({
+   table: Joi.string().required(),
+   stream : Joi.boolean().default(true),
+   timeout: Joi.number().default(null)
+});
 
+/**
+ * A builder for constructing ListKeys instances.
+ *
+ * Rather than having to manually construct the __options__ and instantiating
+ * a ListKeys directly, this builder may be used.
+ *
+ *     var listKeys = new ListKeys.Builder()
+ *                  .withTable(&#x27;table&#x27;)
+ *                  .withCallback(myCallback)
+ *                  .build();
+ *
+ * @class ListKeys.Builder
+ * @constructor
+ */
+function Builder() {}
 
+Builder.prototype = {
 
+    /**
+     * Set the table.
+     * @method withTable
+     * @param {String} table The table in Riak TS
+     * @chainable
+     */
+    withTable : function (table) {
+        this.table = table;
+        return this;
+    },
+    /**
+     * Stream the results.
+     * Setting this to true will cause you callback to be called as the results
+     * are returned from Riak TS. Set to false the result set will be buffered and
+     * delevered via a single call to your callback. Note that on large result sets
+     * this is very memory intensive.
+     * @method withStreaming
+     * @param {Boolean} [stream=true] Set whether or not to stream the results
+     * @chainable
+     */
+    withStreaming : function (stream) {
+        this.stream = stream;
+        return this;
+    },
+    /**
+     * Set the callback to be executed when the operation completes.
+     * @method withCallback
+     * @param {Function} callback The callback to be executed when the operation completes.
+     * @param {String} callback.err An error message. Will be null if no error.
+     * @param {Object} callback.response the keys returned from Riak.
+     * @param {Boolean} callback.response.done True if you have received all the keys.
+     * @param {String} callback.response.table The table the keys are from.
+     * @param {String[]} callback.response.keys The array of keys.
+     * @chainable
+     */
+    withCallback : function (callback) {
+        this.callback = callback;
+        return this;
+    },
+    /**
+    * Set a timeout for this operation.
+    * @method withTimeout
+    * @param {Number} timeout a timeout in milliseconds.
+    * @chainable
+    */
+    withTimeout : function (timeout) {
+        this.timeout = timeout;
+        return this;
+    },
+    /**
+     * Construct a ListKeys instance.
+     * @method build
+     * @return {ListKeys}
+     */
+    build : function () {
+        var cb = this.callback;
+        delete this.callback;
+        return new ListKeys(this, cb);
+    }
+};
 
+module.exports = ListKeys;
+module.exports.Builder = Builder;
 
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/lib_core_defaultnodemanager.js.html#l25"><code>lib&#x2F;core&#x2F;defaultnodemanager.js:25</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-    </div>
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-
-
-
-        </div>
-
-
-
-
-    </div>
+    </pre>
 </div>
                     </div>
                 </div>

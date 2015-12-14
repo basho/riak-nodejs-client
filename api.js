@@ -2,15 +2,20 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
         "AuthReq",
+        "ByKeyBase",
+        "ByKeyBase.Builder",
         "Client",
         "CommandBase",
-        "DefaultNodeManager",
+        "Delete",
+        "Delete.Builder",
         "DeleteIndex",
         "DeleteIndex.Builder",
         "DeleteValue",
         "DeleteValue.Builder",
         "FetchBucketProps",
         "FetchBucketProps.Builder",
+        "FetchBucketTypeProps",
+        "FetchBucketTypeProps.Builder",
         "FetchCounter",
         "FetchCounter.Builder",
         "FetchIndex",
@@ -19,12 +24,16 @@ YUI.add("yuidoc-meta", function(Y) {
         "FetchMap.Builder",
         "FetchPreflist",
         "FetchPreflist.Builder",
+        "FetchPropsBase",
         "FetchSchema",
         "FetchSchema.Builder",
         "FetchSet",
         "FetchSet.Builder",
         "FetchValue",
         "FetchValue.Builder",
+        "Get",
+        "Get.Builder",
+        "LeastExecutingNodeManager",
         "ListBuckets",
         "ListBuckets.Builder",
         "ListKeys",
@@ -32,21 +41,29 @@ YUI.add("yuidoc-meta", function(Y) {
         "MapReduce",
         "NodeManager",
         "Ping",
+        "Query",
+        "Query.Builder",
         "RiakCluster",
         "RiakCluster.Builder",
         "RiakConnection",
         "RiakNode",
         "RiakNode.Builder",
         "RiakObject",
+        "RoundRobinNodeManager",
         "Search",
         "Search.Builder",
         "SecondaryIndexQuery",
         "SecondaryIndexQuery.Builder",
         "StartTls",
+        "Store",
+        "Store.Builder",
         "StoreBucketProps",
         "StoreBucketProps.Builder",
+        "StoreBucketTypeProps",
+        "StoreBucketTypeProps.Builder",
         "StoreIndex",
         "StoreIndex.Builder",
+        "StorePropsBase",
         "StoreSchema",
         "StoreSchema.Builder",
         "StoreValue",
@@ -65,6 +82,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Core",
         "KV",
         "MR",
+        "TS",
         "YZ"
     ],
     "allModules": [
@@ -94,10 +112,16 @@ YUI.add("yuidoc-meta", function(Y) {
             "description": "Provides the commands for Riak Map-Reduce"
         },
         {
+            "displayName": "TS",
+            "name": "TS",
+            "description": "Provides all the commands for Riak Timeseries operations."
+        },
+        {
             "displayName": "YZ",
             "name": "YZ",
             "description": "Provides all the commands for Riak Search 2.0 (Yokozuna/Solr)"
         }
-    ]
+    ],
+    "elements": []
 } };
 });
