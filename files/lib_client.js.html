@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.9.0</em>
+            <em>API Docs for: 1.9.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -162,6 +162,8 @@
     <pre class="code prettyprint linenums">
 &#x27;use strict&#x27;;
 
+var logger = require(&#x27;winston&#x27;);
+
 // Core modules
 var Core = require(&#x27;./core/core&#x27;);
 
@@ -220,19 +222,31 @@ var TS = require(&#x27;./commands/ts&#x27;);
  * @class Client
  * @constructor
  * @param {String[]|RiakCluster} cluster - either an array of host[:port] strings or the cluster to use. See {{#crossLink &quot;RiakCluster&quot;}}{{/crossLink}}.
- * @param {Function} [callback] - called when cluster is started.
+ * @param {Function} [callback] - called when cluster is started (optional)
  */
-function Client(callback) {
-    if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Core.RiakCluster) {
+function Client() {
+    if (arguments.length === 0) {
+        throw new Error(&#x27;an array of IP|fqdn[:port] or an instance of RiakCluser is required&#x27;);
+    }
+
+    if (arguments[0] instanceof Core.RiakCluster) {
         this.cluster = arguments[0];
-        this.cluster.start(callback);
-    } else if (arguments.length) {
+    } else if (Array.isArray(arguments[0])) {
         var nodes = Core.RiakNode.buildNodes(arguments[0]);
         this.cluster = new Core.RiakCluster({ nodes: nodes});
-        this.cluster.start(callback);
     } else {
         throw new Error(&#x27;an array of IP|fqdn[:port] or an instance of RiakCluser is required&#x27;);
     }
+
+    var callback = function (err, rslts) {
+        logger.debug(&#x27;[Client] cluster is started.&#x27;);
+    };
+
+    if (arguments.length === 2 &amp;&amp; typeof arguments[1] === &#x27;function&#x27;) {
+        callback = arguments[1];
+    }
+
+    this.cluster.start(callback);
 }
 
 /**
@@ -252,6 +266,21 @@ function Client(callback) {
 Client.prototype.shutdown = function(callback) {
     this.cluster.on(&#x27;stateChange&#x27;, callback);
     this.cluster.stop();
+};
+
+/**
+ * Stop the client gracefully.
+ * 
+ * This will cause all connections to be closed and any remaining in-flight
+ * commands to finish. 
+ * 
+ * The provided callback will be called when the client is completely stopped.
+ * 
+ * @method shutdown
+ * @param {Function} callback - will be called when client is stopped.
+ */
+Client.prototype.stop = function(callback) {
+    this.cluster.stop(callback);
 };
 
 /**

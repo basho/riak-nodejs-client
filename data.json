@@ -2,7 +2,7 @@
     "project": {
         "name": "basho-riak-client",
         "description": "Basho's officially supported NodeJS client for Riak",
-        "version": "1.9.0",
+        "version": "1.9.1",
         "url": "https://github.com/basho/riak-nodejs-client/wiki"
     },
     "files": {
@@ -749,7 +749,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "lib/client.js",
-            "line": 29,
+            "line": 31,
             "description": "Provides the Client class"
         }
     },
@@ -4168,7 +4168,7 @@
             "module": "Core",
             "namespace": "",
             "file": "lib/core/riakcluster.js",
-            "line": 405,
+            "line": 403,
             "description": "A Builder for constructing RiakCluster instances.\n\nRather than having to manually construct the __options__ and instantiating\na RiakCluster directly, this builder may be used.\n\nvar newCluster = new RiakCluster.Builder().withRiakNodes([node1, node2]).build();",
             "is_constructor": 1
         },
@@ -4392,7 +4392,7 @@
             "module": "Client",
             "namespace": "",
             "file": "lib/client.js",
-            "line": 29,
+            "line": 31,
             "description": "A Class that represents a Riak client.\n\nThe client constructor accepts a {{#crossLink \"RiakCluster\"}}{{/crossLink}}, or a list of host[:port] from\nwhich it will create a RiakCluster using our default configuration. \n\n    var Riak = require('basho-riak-client');\n    var client = new Riak.Client(['192.168.1.1:8087', '192.168.1.2:8087']);\n\nTwo styles of use are supported. Each command you can send to Riak is a \nclass and can be instantiated then executed by the client's execute() method.\nIn addition, convenience methods are provided directly by the Client class\nthat corrispond to each of the commands.\n\n    // Using the builder, but options can also be passed directly to the constructor\n    var fetch = new KV.FetchValue.Builder() \n                 .withBucket('myBucket')\n                 .withKey('myKey')\n                 .withCallback(callback)\n                 .build();\n                 \n    client.execute(fetch);\n    \nor\n\n    client.fetchValue({ bucket: 'myBucket', key: 'myKey' }, callback);\n    \nAll command callbacks are the typical node.js function(err, resp) style.",
             "is_constructor": 1,
             "params": [
@@ -4403,7 +4403,7 @@
                 },
                 {
                     "name": "callback",
-                    "description": "- called when cluster is started.",
+                    "description": "- called when cluster is started (optional)",
                     "type": "Function",
                     "optional": true
                 }
@@ -9513,7 +9513,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 84,
+            "line": 82,
             "description": "Start this RiakCluster",
             "itemtype": "method",
             "name": "start",
@@ -9530,7 +9530,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 120,
+            "line": 118,
             "description": "Stop this RiakCluster",
             "params": [
                 {
@@ -9546,7 +9546,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 199,
+            "line": 197,
             "description": "Execute a command on this RiakCluster.\n\nSelects a RiakNode from the cluster and executes the command on it.",
             "itemtype": "method",
             "name": "execute",
@@ -9568,7 +9568,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 272,
+            "line": 270,
             "description": "Add a RiakNode to this cluster.",
             "itemtype": "method",
             "name": "addNode",
@@ -9584,7 +9584,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 284,
+            "line": 282,
             "description": "Get a RiakNode index from this cluster.",
             "itemtype": "method",
             "name": "getNodeIndex",
@@ -9604,7 +9604,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 310,
+            "line": 308,
             "description": "Remove a RiakNode from this cluster.\nThe node being removed will also be stopped.",
             "itemtype": "method",
             "name": "removeNode",
@@ -9624,7 +9624,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 342,
+            "line": 340,
             "description": "The state of this cluster.\n\nIf listening for stateChange events, a numeric value will be sent that\ncan be compared to:\n\n    RiakCluster.State.CREATED\n    RiakCluster.State.RUNNING\n    RiakCluster.State.SHUTTING_DOWN\n    RiakCluster.State.SHUTDOWN\n\nSee: {{#crossLink \"RiakCluster/stateChange:event\"}}stateChange{{/crossLink}}",
             "itemtype": "property",
             "name": "State",
@@ -9636,7 +9636,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 383,
+            "line": 381,
             "description": "This event is fired when the state of the RiakCluster changes.\nSee: {{#crossLink \"RiakCluster/State:property\"}}RiakCluster.State{{/crossLink}}",
             "itemtype": "event",
             "name": "stateChange",
@@ -9652,7 +9652,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 391,
+            "line": 389,
             "description": "This event is fired when the state of any RiakNode in the cluster changes.",
             "itemtype": "event",
             "name": "nodeStateChange",
@@ -9673,14 +9673,14 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 399,
+            "line": 397,
             "description": "This event is fired whenever a command fails on a RiakNode and needs to be retried.\nRiakCluster is a listener.",
             "class": "RiakCluster",
             "module": "Core"
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 421,
+            "line": 419,
             "description": "The RiakNodes to use.",
             "itemtype": "method",
             "name": "withRiakNodes",
@@ -9700,7 +9700,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 435,
+            "line": 433,
             "description": "Set the number of times a command will be attempted.\nIn the case of a command failing for any reason, it will be retried \non a different node.",
             "itemtype": "method",
             "name": "withExecutionAttempts",
@@ -9720,7 +9720,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 447,
+            "line": 445,
             "description": "Set the NodeManager for this cluster.\n\nIf not provided the {{#crossLink \"RoundRobinNodeManager\"}}{{/crossLink}} is\nused.",
             "itemtype": "method",
             "name": "withNodeManager",
@@ -9737,7 +9737,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 460,
+            "line": 458,
             "description": "Set whether to queue commands or not if no RiakNodes are available.\n\nIf all nodes are down (health checking) or maxConnections are in use on\nall nodes, the default behavior is to fail commands when submitted. \n\nSetting this option causes the the RiakCluster to queue additional commands\n(FIFO) then send them when nodes/connections become available. \n\nIf maxDepth is supplied the queue is bounded and additional commands \nattempting to be queued will be failed. The default is an unbounded queue.",
             "itemtype": "method",
             "name": "withQueueCommands",
@@ -9763,7 +9763,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 483,
+            "line": 481,
             "description": "Builds a RiakCluster instance.",
             "itemtype": "method",
             "name": "build",
@@ -10149,7 +10149,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 76,
+            "line": 90,
             "description": "Shut down the client gracefully.\n\nThis will cause all connections to be closed and any remaining in-flight\ncommands to finish. \n\nThe provided callback will be added as a stateChange listener to the client's\nRiakCluster.\n\nSee: {{#crossLink \"RiakCluster/stateChange:event\"}}RiakCluster.stateChange{{/crossLink}}",
             "itemtype": "method",
             "name": "shutdown",
@@ -10165,7 +10165,23 @@
         },
         {
             "file": "lib/client.js",
-            "line": 95,
+            "line": 109,
+            "description": "Stop the client gracefully.\n\nThis will cause all connections to be closed and any remaining in-flight\ncommands to finish. \n\nThe provided callback will be called when the client is completely stopped.",
+            "itemtype": "method",
+            "name": "shutdown",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "- will be called when client is stopped.",
+                    "type": "Function"
+                }
+            ],
+            "class": "Client",
+            "module": "Client"
+        },
+        {
+            "file": "lib/client.js",
+            "line": 124,
             "description": "Get the client's RiakCluster.",
             "itemtype": "method",
             "name": "getRiakCluster",
@@ -10178,7 +10194,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 109,
+            "line": 138,
             "description": "See {{#crossLink \"RiakCluster/execute:method\"}}RiakCluster#execute{{/crossLink}}",
             "itemtype": "method",
             "name": "execute",
@@ -10194,7 +10210,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 118,
+            "line": 147,
             "description": "See {{#crossLink \"Ping\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "ping",
@@ -10210,7 +10226,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 128,
+            "line": 157,
             "description": "See {{#crossLink \"DeleteValue\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "deleteValue",
@@ -10231,7 +10247,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 139,
+            "line": 168,
             "description": "See {{#crossLink \"FetchBucketProps\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchBucketProps",
@@ -10252,7 +10268,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 150,
+            "line": 179,
             "description": "See {{#crossLink \"FetchBucketTypeProps\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchBucketTypeProps",
@@ -10273,7 +10289,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 161,
+            "line": 190,
             "description": "See {{#crossLink \"FetchValue\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchValue",
@@ -10294,7 +10310,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 172,
+            "line": 201,
             "description": "See {{#crossLink \"FetchPreflist\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchPreflist",
@@ -10315,7 +10331,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 183,
+            "line": 212,
             "description": "See {{#crossLink \"ListBuckets\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "ListBuckets",
@@ -10336,7 +10352,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 194,
+            "line": 223,
             "description": "See {{#crossLink \"ListKeys\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "listKeys",
@@ -10357,7 +10373,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 205,
+            "line": 234,
             "description": "See {{#crossLink \"SecondaryIndexQuery\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "secondaryIndexQuery",
@@ -10378,7 +10394,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 216,
+            "line": 245,
             "description": "See {{#crossLink \"StoreBucketProps\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeBucketProps",
@@ -10399,7 +10415,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 227,
+            "line": 256,
             "description": "See {{#crossLink \"StoreBucketTypeProps\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeBucketTypeProps",
@@ -10420,7 +10436,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 238,
+            "line": 267,
             "description": "See {{#crossLink \"StoreValue\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeValue",
@@ -10441,7 +10457,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 253,
+            "line": 282,
             "description": "See {{#crossLink \"FetchCounter\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchCounter",
@@ -10462,7 +10478,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 264,
+            "line": 293,
             "description": "See {{#crossLink \"UpdateCounter\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "updateCounter",
@@ -10483,7 +10499,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 275,
+            "line": 304,
             "description": "See {{#crossLink \"FetchSet\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchSet",
@@ -10504,7 +10520,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 286,
+            "line": 315,
             "description": "See {{#crossLink \"UpdateSet\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "updateSet",
@@ -10525,7 +10541,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 297,
+            "line": 326,
             "description": "See {{#crossLink \"FetchMap\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchMap",
@@ -10546,7 +10562,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 308,
+            "line": 337,
             "description": "See {{#crossLink \"UpdateMap\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "updateMap",
@@ -10567,7 +10583,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 323,
+            "line": 352,
             "description": "See {{#crossLink \"DeleteIndex\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "deleteIndex",
@@ -10588,7 +10604,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 334,
+            "line": 363,
             "description": "See {{#crossLink \"FetchIndex\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchIndex",
@@ -10609,7 +10625,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 345,
+            "line": 374,
             "description": "See {{#crossLink \"FetchSchema\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchSchema",
@@ -10630,7 +10646,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 356,
+            "line": 385,
             "description": "See {{#crossLink \"Search\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "search",
@@ -10651,7 +10667,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 367,
+            "line": 396,
             "description": "See {{#crossLink \"StoreIndex\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeIndex",
@@ -10672,7 +10688,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 378,
+            "line": 407,
             "description": "See {{#crossLink \"StoreSchema\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeSchema",
@@ -10693,7 +10709,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 393,
+            "line": 422,
             "description": "See {{#crossLink \"MapReduce\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "mapReduce",
@@ -10721,7 +10737,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 410,
+            "line": 439,
             "description": "See {{#crossLink \"Store\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "tsStore",
@@ -10742,7 +10758,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 422,
+            "line": 451,
             "description": "See {{#crossLink \"Query\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "tsQuery",
@@ -10763,7 +10779,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 434,
+            "line": 463,
             "description": "See {{#crossLink \"Get\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "tsGet",
@@ -10784,7 +10800,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 446,
+            "line": 475,
             "description": "See {{#crossLink \"Delete\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "tsDelete",
@@ -10805,7 +10821,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 458,
+            "line": 487,
             "description": "See {{#crossLink \"ListKeys\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "tsListKeys",
@@ -10852,7 +10868,7 @@
         },
         {
             "message": "Missing item type\nThis event is fired whenever a command fails on a RiakNode and needs to be retried.\nRiakCluster is a listener.",
-            "line": " lib/core/riakcluster.js:399"
+            "line": " lib/core/riakcluster.js:397"
         }
     ]
 }

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.9.0</em>
+            <em>API Docs for: 1.9.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -215,7 +215,6 @@ var RoundRobinNodeManager = require(&#x27;./roundrobinnodemanager&#x27;);
  *
  */
 function RiakCluster(options) {
-
     events.EventEmitter.call(this);
     var self = this;
 
@@ -238,7 +237,6 @@ function RiakCluster(options) {
     });
 
     this._commandQueue = new LinkedList();
-
 }
 
 util.inherits(RiakCluster, events.EventEmitter);
@@ -286,7 +284,7 @@ function makeStartNodeFunc(cluster, node) {
  */
 RiakCluster.prototype.stop = function(callback) {
     this._stateCheck([State.RUNNING, State.QUEUEING]);
-    logger.debug(&#x27;RiakCluster is shutting down&#x27;);
+    logger.debug(&#x27;[RiakCluster] shutting down&#x27;);
     this.state = State.SHUTTING_DOWN;
     this.emit(EVT_SC, this.state);
     var funcs = [];
