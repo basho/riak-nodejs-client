@@ -10168,7 +10168,7 @@
             "line": 109,
             "description": "Stop the client gracefully.\n\nThis will cause all connections to be closed and any remaining in-flight\ncommands to finish. \n\nThe provided callback will be called when the client is completely stopped.",
             "itemtype": "method",
-            "name": "shutdown",
+            "name": "stop",
             "params": [
                 {
                     "name": "callback",
