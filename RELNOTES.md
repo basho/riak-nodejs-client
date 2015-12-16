@@ -1,6 +1,9 @@
 Release Notes
 =============
 
+* 1.9.1 - Following issues / PRs addressed:
+ * [Issue with starting `Client` object](https://github.com/basho/riak-nodejs-client/issues/118)
+ * [PR for issue with starting `Client` object](https://github.com/basho/riak-nodejs-client/issues/119)
 * 1.9.0 - Following issues / PRs addressed:
  * [Time Series support](https://github.com/basho/riak-nodejs-client/pull/116)
  * [Update module dependencies](https://github.com/basho/riak-nodejs-client/issues/115)
