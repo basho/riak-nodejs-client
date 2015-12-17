@@ -25,14 +25,20 @@ describe('RiakNode - Integration', function() {
             });
 
             var lcb = function () {
-                var scb = function () {
+                var node = new RiakNode.Builder()
+                    .withRemotePort(port)
+                    .withMinConnections(8)
+                    .build();
+
+                var scb = function (err, n) {
+                    assert(Object.is(node, n));
                     var pingCount = 0;
                     var cb = function(err, resp) {
                         pingCount++;
                         assert(!err, err);
                         assert(resp, 'ping should return true!');
                         if (pingCount == 4) {
-                            node.stop(function (err, rslt) {
+                            n.stop(function (err, rslt) {
                                 assert(!err);
                                 assert.equal(rslt, RiakNode.State.SHUTDOWN);
                                 server.close(function () {
@@ -58,10 +64,6 @@ describe('RiakNode - Integration', function() {
                     assert.equal(node.executeCount, 4);
                 };
 
-                var node = new RiakNode.Builder()
-                    .withRemotePort(port)
-                    .withMinConnections(8)
-                    .build();
                 node.start(scb);
             };
             
@@ -125,7 +127,8 @@ describe('RiakNode - Integration', function() {
                     }
                 };
                 
-                node.start(function (err, rslt) {
+                node.start(function (err, n) {
+                    assert(Object.is(node, n));
                     assert(!err, err);
                     node.on('stateChange', verifyCb);
                     var fetchCb = function(err, resp) {
@@ -197,7 +200,8 @@ describe('RiakNode - Integration', function() {
                     }
                 };
                 
-                node.start(function (err, rslt) {
+                node.start(function (err, n) {
+                    assert(Object.is(node, n));
                     assert(!err, err);
                     node.on('stateChange', verifyCb);
                     var fetchCb = function(err, resp) {

@@ -47,7 +47,8 @@ describe('Client', function() {
     it('Riak.Client uses list of strings with callback', function(done) {
         startServer(function (port, server) {
             var addr = host + ':' + port;
-            var c = new Riak.Client([addr, addr], function (err, rslts) {
+            var c = new Riak.Client([addr, addr], function (err, client) {
+                assert(Object.is(c, client));
                 c.stop(function (err, rslt) {
                     assert(!err, err);
                     server.close(function () {
@@ -93,9 +94,10 @@ describe('Client', function() {
                 nodes: [ node ]
             };
             var cl = new Riak.Cluster(copts);
-            var c = new Riak.Client(cl, function (err, rslts) {
+            var c = new Riak.Client(cl, function (err, client) {
+                assert(Object.is(c, client));
                 assert(!err, err);
-                c.stop(function (err, rslt) {
+                client.stop(function (err, rslt) {
                     assert(!err);
                     assert.equal(rslt, Riak.Cluster.State.SHUTDOWN);
                     server.close(function () {
