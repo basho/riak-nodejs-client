@@ -113,7 +113,6 @@ describe('Timeseries - Integration', function () {
                 });
                 done();
             };
-            var key = [ 'hash1', 'user2', fiveMinsAgo ];
             var cmd = new TS.ListKeys.Builder()
                 .withTable(tableName)
                 .withStreaming(false)
@@ -132,7 +131,6 @@ describe('Timeseries - Integration', function () {
                     done();
                 }
             };
-            var key = [ 'hash1', 'user2', fiveMinsAgo ];
             var cmd = new TS.ListKeys.Builder()
                 .withTable(tableName)
                 .withStreaming(true)
