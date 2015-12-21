@@ -83,7 +83,8 @@ describe('RiakCluster - Integration', function() {
                 }, 3000); 
                 
                 cluster = new RiakCluster({nodes: nodes});
-                cluster.start(function (err, rslt) {
+                cluster.start(function (err, c) {
+                    assert(Object.is(cluster, c));
                     assert(!err, err);
                     var fetch = new FetchValue({bucket: 'b', key: 'k'}, function(){});
                     cluster.execute(fetch);
@@ -139,7 +140,8 @@ describe('RiakCluster - Integration', function() {
             };
             
             cluster.on('stateChange', stateMe);
-            cluster.start(function (err, rslt) {
+            cluster.start(function (err, c) {
+                assert(Object.is(cluster, c));
                 assert(err);
                 var store = new StoreValue({bucket: 'b', value: 'v'}, callMe);
                 cluster.execute(store);
@@ -165,7 +167,8 @@ describe('RiakCluster - Integration', function() {
                 });
             };
 
-            cluster.start(function (err, rslt) {
+            cluster.start(function (err, c) {
+                assert(Object.is(cluster, c));
                 var store = new StoreValue({bucket: 'b', value: 'v'}, callMe);
                 cluster.execute(store);
             });
@@ -191,7 +194,8 @@ describe('RiakCluster - Integration', function() {
                 });
             };
 
-            cluster.start(function (err, rslts) {
+            cluster.start(function (err, c) {
+                assert(Object.is(cluster, c));
                 var store = new StoreValue({bucket: 'b', value: 'v'}, callMe);
                 cluster.execute(store);
                 cluster.execute(store);
