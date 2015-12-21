@@ -2,7 +2,7 @@
     "project": {
         "name": "basho-riak-client",
         "description": "Basho's officially supported NodeJS client for Riak",
-        "version": "1.9.1",
+        "version": "2.0.0",
         "url": "https://github.com/basho/riak-nodejs-client/wiki"
     },
     "files": {
@@ -2044,7 +2044,7 @@
             "module": "KV",
             "namespace": "",
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 170,
+            "line": 169,
             "description": "A builder for constructing FetchValue instances.\n\nRather than having to manually construct the __options__ and instantiating\na FetchValue directly, this builder may be used.\n\n    var fetchValue = new FetchValue.Builder()\n         .withBucket('myBucket')\n         .withKey('myKey')\n         .build();",
             "is_constructor": 1
         },
@@ -4168,7 +4168,7 @@
             "module": "Core",
             "namespace": "",
             "file": "lib/core/riakcluster.js",
-            "line": 403,
+            "line": 407,
             "description": "A Builder for constructing RiakCluster instances.\n\nRather than having to manually construct the __options__ and instantiating\na RiakCluster directly, this builder may be used.\n\nvar newCluster = new RiakCluster.Builder().withRiakNodes([node1, node2]).build();",
             "is_constructor": 1
         },
@@ -4338,7 +4338,7 @@
             "module": "Core",
             "namespace": "",
             "file": "lib/core/riaknode.js",
-            "line": 482,
+            "line": 497,
             "description": "A Builder for constructing RiakNode instances.\n\nRather than having to manually construct the __options__ and instantiating\na RiakNode directly, this builder may be used.\n\n     var riakNode = new RiakNode.Builder().withRemotePort(9999).build();",
             "is_constructor": 1
         },
@@ -4405,7 +4405,27 @@
                     "name": "callback",
                     "description": "- called when cluster is started (optional)",
                     "type": "Function",
-                    "optional": true
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "- set to an error if one occurrs during start.",
+                            "type": "Object",
+                            "optional": true
+                        },
+                        {
+                            "name": "client",
+                            "description": "- the client object.",
+                            "type": "Object",
+                            "optional": true
+                        },
+                        {
+                            "name": "cluster",
+                            "description": "- the cluster object.",
+                            "type": "Object",
+                            "optional": true
+                        }
+                    ]
                 }
             ]
         }
@@ -6341,7 +6361,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 188,
+            "line": 187,
             "description": "Set the bucket.",
             "itemtype": "method",
             "name": "withBucket",
@@ -6358,7 +6378,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 198,
+            "line": 197,
             "description": "Set the bucket type.\nIf not supplied, 'default' is used.",
             "itemtype": "method",
             "name": "withBucketType",
@@ -6375,7 +6395,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 209,
+            "line": 208,
             "description": "Set the key.",
             "itemtype": "method",
             "name": "withKey",
@@ -6392,7 +6412,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 219,
+            "line": 218,
             "description": "Set the R value.\nIf not asSet the bucket default is used.",
             "itemtype": "method",
             "name": "withR",
@@ -6409,7 +6429,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 230,
+            "line": 229,
             "description": "Set the PR value.\nIf not asSet the bucket default is used.",
             "itemtype": "method",
             "name": "withPr",
@@ -6426,7 +6446,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 241,
+            "line": 240,
             "description": "Set the not_found_ok value.\nIf true a vnode returning notfound for a key increments the r tally.\nFalse is higher consistency, true is higher availability.\nIf not asSet the bucket default is used.",
             "itemtype": "method",
             "name": "withNotFoundOk",
@@ -6443,7 +6463,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 254,
+            "line": 253,
             "description": "Set the basic_quorum value.\nThe parameter controls whether a read request should return early in\nsome fail cases.\nE.g. If a quorum of nodes has already\nreturned notfound/error, don't wait around for the rest.",
             "itemtype": "method",
             "name": "withBasicQuorum",
@@ -6460,7 +6480,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 268,
+            "line": 267,
             "description": "Set whether to return tombstones.",
             "itemtype": "method",
             "name": "withReturnDeletedVClock",
@@ -6477,7 +6497,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 278,
+            "line": 277,
             "description": "Return only the metadata.\nCauses Riak to only return the metadata for the object. The value\nwill be asSet to null.",
             "itemtype": "method",
             "name": "withHeadOnly",
@@ -6494,7 +6514,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 290,
+            "line": 289,
             "description": "Return the object if the supplied vclock does not match.",
             "itemtype": "method",
             "name": "withIfModified",
@@ -6511,7 +6531,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 300,
+            "line": 299,
             "description": "Set a timeout for this operation.",
             "itemtype": "method",
             "name": "withTimeout",
@@ -6528,7 +6548,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 311,
+            "line": 310,
             "description": "Set the callback to be executed when the operation completes.",
             "itemtype": "method",
             "name": "withCallback",
@@ -6579,7 +6599,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 327,
+            "line": 326,
             "description": "Provide a conflict resolver to resolve siblings.\nIf siblings are present Riak will return all of them. The provided\nfunction will be used to resolve these to a single response.\n\nIf a conflict resolver is not provided all siblings will be returned.",
             "itemtype": "method",
             "name": "withConflictResolver",
@@ -6596,7 +6616,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 341,
+            "line": 340,
             "description": "Convert the value stored in Riak to a JS object.\nValues are stored in Riak as bytes. Setting this to true will\nconvert the value to a JS object using JSON.parse() before\npassing them to the conflict resolver.",
             "itemtype": "method",
             "name": "withConvertValueToJs",
@@ -6613,7 +6633,7 @@
         },
         {
             "file": "lib/commands/kv/fetchvalue.js",
-            "line": 354,
+            "line": 353,
             "description": "Construct a FetchValue command.",
             "itemtype": "method",
             "name": "build",
@@ -9522,7 +9542,21 @@
                     "name": "callback",
                     "description": "- a callback for when cluster is started.",
                     "type": "Function",
-                    "optional": true
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "- will be set to an error if one occurred.",
+                            "type": "Object",
+                            "optional": true
+                        },
+                        {
+                            "name": "cluster",
+                            "description": "- will be set to the cluster object.",
+                            "type": "Object",
+                            "optional": true
+                        }
+                    ]
                 }
             ],
             "class": "RiakCluster",
@@ -9530,23 +9564,37 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 118,
+            "line": 120,
             "description": "Stop this RiakCluster",
+            "itemtype": "method",
+            "name": "stop",
             "params": [
                 {
                     "name": "callback",
                     "description": "- called when cluster completely stopped.",
-                    "type": "Function"
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "- set to an error if one occurrs during start.",
+                            "type": "Object",
+                            "optional": true
+                        },
+                        {
+                            "name": "state",
+                            "description": "- the state of the cluster at shutdown.",
+                            "type": "Object",
+                            "optional": true
+                        }
+                    ]
                 }
             ],
-            "itemtype": "method",
-            "name": "stop",
             "class": "RiakCluster",
             "module": "Core"
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 197,
+            "line": 205,
             "description": "Execute a command on this RiakCluster.\n\nSelects a RiakNode from the cluster and executes the command on it.",
             "itemtype": "method",
             "name": "execute",
@@ -9568,7 +9616,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 270,
+            "line": 274,
             "description": "Add a RiakNode to this cluster.",
             "itemtype": "method",
             "name": "addNode",
@@ -9584,7 +9632,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 282,
+            "line": 286,
             "description": "Get a RiakNode index from this cluster.",
             "itemtype": "method",
             "name": "getNodeIndex",
@@ -9604,7 +9652,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 308,
+            "line": 312,
             "description": "Remove a RiakNode from this cluster.\nThe node being removed will also be stopped.",
             "itemtype": "method",
             "name": "removeNode",
@@ -9624,7 +9672,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 340,
+            "line": 344,
             "description": "The state of this cluster.\n\nIf listening for stateChange events, a numeric value will be sent that\ncan be compared to:\n\n    RiakCluster.State.CREATED\n    RiakCluster.State.RUNNING\n    RiakCluster.State.SHUTTING_DOWN\n    RiakCluster.State.SHUTDOWN\n\nSee: {{#crossLink \"RiakCluster/stateChange:event\"}}stateChange{{/crossLink}}",
             "itemtype": "property",
             "name": "State",
@@ -9636,7 +9684,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 381,
+            "line": 385,
             "description": "This event is fired when the state of the RiakCluster changes.\nSee: {{#crossLink \"RiakCluster/State:property\"}}RiakCluster.State{{/crossLink}}",
             "itemtype": "event",
             "name": "stateChange",
@@ -9652,7 +9700,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 389,
+            "line": 393,
             "description": "This event is fired when the state of any RiakNode in the cluster changes.",
             "itemtype": "event",
             "name": "nodeStateChange",
@@ -9673,14 +9721,14 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 397,
+            "line": 401,
             "description": "This event is fired whenever a command fails on a RiakNode and needs to be retried.\nRiakCluster is a listener.",
             "class": "RiakCluster",
             "module": "Core"
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 419,
+            "line": 423,
             "description": "The RiakNodes to use.",
             "itemtype": "method",
             "name": "withRiakNodes",
@@ -9700,7 +9748,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 433,
+            "line": 437,
             "description": "Set the number of times a command will be attempted.\nIn the case of a command failing for any reason, it will be retried \non a different node.",
             "itemtype": "method",
             "name": "withExecutionAttempts",
@@ -9720,7 +9768,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 445,
+            "line": 449,
             "description": "Set the NodeManager for this cluster.\n\nIf not provided the {{#crossLink \"RoundRobinNodeManager\"}}{{/crossLink}} is\nused.",
             "itemtype": "method",
             "name": "withNodeManager",
@@ -9737,7 +9785,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 458,
+            "line": 462,
             "description": "Set whether to queue commands or not if no RiakNodes are available.\n\nIf all nodes are down (health checking) or maxConnections are in use on\nall nodes, the default behavior is to fail commands when submitted. \n\nSetting this option causes the the RiakCluster to queue additional commands\n(FIFO) then send them when nodes/connections become available. \n\nIf maxDepth is supplied the queue is bounded and additional commands \nattempting to be queued will be failed. The default is an unbounded queue.",
             "itemtype": "method",
             "name": "withQueueCommands",
@@ -9763,7 +9811,7 @@
         },
         {
             "file": "lib/core/riakcluster.js",
-            "line": 481,
+            "line": 485,
             "description": "Builds a RiakCluster instance.",
             "itemtype": "method",
             "name": "build",
@@ -9792,7 +9840,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 179,
+            "line": 178,
             "description": "Stop this RiakNode.",
             "params": [
                 {
@@ -9808,7 +9856,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 218,
+            "line": 231,
             "description": "Execute a command on this RiakNode.",
             "itemtype": "method",
             "name": "execute",
@@ -9828,7 +9876,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 408,
+            "line": 423,
             "description": "The state of this node.\n\nIf listeneing for stateChange events, a numeric value will be sent that\ncan be compared to:\n\n    RiakNode.State.CREATED\n    RiakNode.State.RUNNING\n    RiakNode.State.HEALTH_CHECKING\n    RiakNode.State.SHUTTING_DOWN\n    RiakNode.State.SHUTDOWN\n\nSee: {{#crossLink \"RiakNode/stateChange:event\"}}stateChange{{/crossLink}}",
             "itemtype": "property",
             "name": "State",
@@ -9840,7 +9888,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 466,
+            "line": 481,
             "description": "This event is fired whenever the state of the RiakNode changes.",
             "itemtype": "event",
             "name": "stateChange",
@@ -9861,7 +9909,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 474,
+            "line": 489,
             "description": "This event is fired whenever a command fails and needs to be retried.",
             "itemtype": "event",
             "name": "retryCommand",
@@ -9882,7 +9930,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 497,
+            "line": 512,
             "description": "Set the remote address for the RiakNode.",
             "itemtype": "method",
             "name": "withRemoteAddress",
@@ -9902,7 +9950,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 508,
+            "line": 523,
             "description": "Set the remote port for this RiakNode.",
             "itemtype": "method",
             "name": "withRemotePort",
@@ -9922,7 +9970,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 519,
+            "line": 534,
             "description": "Set the minimum number of active connections to maintain.\nThese connections are exempt from the idle timeout.",
             "itemtype": "method",
             "name": "withMinConnections",
@@ -9942,7 +9990,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 531,
+            "line": 546,
             "description": "Set the maximum number of connections allowed.",
             "itemtype": "method",
             "name": "withMaxConnections",
@@ -9962,7 +10010,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 542,
+            "line": 557,
             "description": "Set the idle timeout used to reap inactive connections.\nAny connection that has been idle for this amount of time\nbecomes eligible to be closed and discarded excluding the number\nset via __withMinConnections()__.",
             "itemtype": "method",
             "name": "withIdleTimeout",
@@ -9982,7 +10030,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 556,
+            "line": 571,
             "description": "Set the connection timeout used when making new connections.",
             "itemtype": "method",
             "name": "withConnectionTimeout",
@@ -10002,7 +10050,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 567,
+            "line": 582,
             "description": "Set whether to use the cork/uncork socket functions.",
             "itemtype": "method",
             "name": "withCork",
@@ -10021,7 +10069,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 579,
+            "line": 594,
             "description": "Set the authentication information for connections made by this node.",
             "itemtype": "method",
             "name": "withAuth",
@@ -10092,7 +10140,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 597,
+            "line": 612,
             "description": "Set the command to be used for a health check.\n\nIf this RiakNode performs a health check, a new connection is made and\na command performed. The default is to send a {{#crossLink \"Ping\"}}{{/crossLink}}\ncommand but any command can be used. If it completes successfully the\nhealth check is considered a success.",
             "itemtype": "method",
             "name": "withHealthCheck",
@@ -10109,7 +10157,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 612,
+            "line": 627,
             "description": "Builds a RiakNode instance.",
             "itemtype": "method",
             "name": "build",
@@ -10122,7 +10170,7 @@
         },
         {
             "file": "lib/core/riaknode.js",
-            "line": 623,
+            "line": 638,
             "description": "Static factory for constructing a set of RiakNodes.\n\nTo create a set of RiakNodes with the same options:\n\n     var options = new RiakNode.Builder().withMinConnections(10);\n     var nodes = RiakNode.buildNodes(['192.168.1.1', '192.168.1.2'], options);\n\n__options__ can be manually constructed or an instance of the Builder.",
             "static": 1,
             "itemtype": "method",
@@ -10149,7 +10197,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 90,
+            "line": 96,
             "description": "Shut down the client gracefully.\n\nThis will cause all connections to be closed and any remaining in-flight\ncommands to finish. \n\nThe provided callback will be added as a stateChange listener to the client's\nRiakCluster.\n\nSee: {{#crossLink \"RiakCluster/stateChange:event\"}}RiakCluster.stateChange{{/crossLink}}",
             "itemtype": "method",
             "name": "shutdown",
@@ -10165,7 +10213,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 109,
+            "line": 116,
             "description": "Stop the client gracefully.\n\nThis will cause all connections to be closed and any remaining in-flight\ncommands to finish. \n\nThe provided callback will be called when the client is completely stopped.",
             "itemtype": "method",
             "name": "stop",
@@ -10173,7 +10221,21 @@
                 {
                     "name": "callback",
                     "description": "- will be called when client is stopped.",
-                    "type": "Function"
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "- set to an error if one occurrs during stop.",
+                            "type": "Object",
+                            "optional": true
+                        },
+                        {
+                            "name": "state",
+                            "description": "- the state of the cluster at shutdown.",
+                            "type": "Object",
+                            "optional": true
+                        }
+                    ]
                 }
             ],
             "class": "Client",
@@ -10181,7 +10243,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 124,
+            "line": 134,
             "description": "Get the client's RiakCluster.",
             "itemtype": "method",
             "name": "getRiakCluster",
@@ -10194,7 +10256,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 138,
+            "line": 148,
             "description": "See {{#crossLink \"RiakCluster/execute:method\"}}RiakCluster#execute{{/crossLink}}",
             "itemtype": "method",
             "name": "execute",
@@ -10210,7 +10272,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 147,
+            "line": 157,
             "description": "See {{#crossLink \"Ping\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "ping",
@@ -10226,7 +10288,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 157,
+            "line": 167,
             "description": "See {{#crossLink \"DeleteValue\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "deleteValue",
@@ -10247,7 +10309,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 168,
+            "line": 178,
             "description": "See {{#crossLink \"FetchBucketProps\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchBucketProps",
@@ -10268,7 +10330,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 179,
+            "line": 189,
             "description": "See {{#crossLink \"FetchBucketTypeProps\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchBucketTypeProps",
@@ -10289,7 +10351,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 190,
+            "line": 200,
             "description": "See {{#crossLink \"FetchValue\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchValue",
@@ -10310,7 +10372,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 201,
+            "line": 211,
             "description": "See {{#crossLink \"FetchPreflist\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchPreflist",
@@ -10331,7 +10393,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 212,
+            "line": 222,
             "description": "See {{#crossLink \"ListBuckets\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "ListBuckets",
@@ -10352,7 +10414,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 223,
+            "line": 233,
             "description": "See {{#crossLink \"ListKeys\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "listKeys",
@@ -10373,7 +10435,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 234,
+            "line": 244,
             "description": "See {{#crossLink \"SecondaryIndexQuery\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "secondaryIndexQuery",
@@ -10394,7 +10456,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 245,
+            "line": 255,
             "description": "See {{#crossLink \"StoreBucketProps\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeBucketProps",
@@ -10415,7 +10477,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 256,
+            "line": 266,
             "description": "See {{#crossLink \"StoreBucketTypeProps\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeBucketTypeProps",
@@ -10436,7 +10498,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 267,
+            "line": 277,
             "description": "See {{#crossLink \"StoreValue\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeValue",
@@ -10457,7 +10519,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 282,
+            "line": 292,
             "description": "See {{#crossLink \"FetchCounter\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchCounter",
@@ -10478,7 +10540,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 293,
+            "line": 303,
             "description": "See {{#crossLink \"UpdateCounter\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "updateCounter",
@@ -10499,7 +10561,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 304,
+            "line": 314,
             "description": "See {{#crossLink \"FetchSet\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchSet",
@@ -10520,7 +10582,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 315,
+            "line": 325,
             "description": "See {{#crossLink \"UpdateSet\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "updateSet",
@@ -10541,7 +10603,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 326,
+            "line": 336,
             "description": "See {{#crossLink \"FetchMap\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchMap",
@@ -10562,7 +10624,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 337,
+            "line": 347,
             "description": "See {{#crossLink \"UpdateMap\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "updateMap",
@@ -10583,7 +10645,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 352,
+            "line": 362,
             "description": "See {{#crossLink \"DeleteIndex\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "deleteIndex",
@@ -10604,7 +10666,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 363,
+            "line": 373,
             "description": "See {{#crossLink \"FetchIndex\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchIndex",
@@ -10625,7 +10687,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 374,
+            "line": 384,
             "description": "See {{#crossLink \"FetchSchema\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "fetchSchema",
@@ -10646,7 +10708,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 385,
+            "line": 395,
             "description": "See {{#crossLink \"Search\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "search",
@@ -10667,7 +10729,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 396,
+            "line": 406,
             "description": "See {{#crossLink \"StoreIndex\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeIndex",
@@ -10688,7 +10750,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 407,
+            "line": 417,
             "description": "See {{#crossLink \"StoreSchema\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "storeSchema",
@@ -10709,7 +10771,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 422,
+            "line": 432,
             "description": "See {{#crossLink \"MapReduce\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "mapReduce",
@@ -10737,7 +10799,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 439,
+            "line": 449,
             "description": "See {{#crossLink \"Store\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "tsStore",
@@ -10758,7 +10820,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 451,
+            "line": 461,
             "description": "See {{#crossLink \"Query\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "tsQuery",
@@ -10779,7 +10841,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 463,
+            "line": 473,
             "description": "See {{#crossLink \"Get\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "tsGet",
@@ -10800,7 +10862,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 475,
+            "line": 485,
             "description": "See {{#crossLink \"Delete\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "tsDelete",
@@ -10821,7 +10883,7 @@
         },
         {
             "file": "lib/client.js",
-            "line": 487,
+            "line": 497,
             "description": "See {{#crossLink \"ListKeys\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "tsListKeys",
@@ -10868,7 +10930,7 @@
         },
         {
             "message": "Missing item type\nThis event is fired whenever a command fails on a RiakNode and needs to be retried.\nRiakCluster is a listener.",
-            "line": " lib/core/riakcluster.js:397"
+            "line": " lib/core/riakcluster.js:401"
         }
     ]
 }

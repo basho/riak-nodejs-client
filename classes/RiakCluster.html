@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.9.1</em>
+            <em>API Docs for: 2.0.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -416,7 +416,7 @@ var myCluster = new RiakCluster.Builder().withRiakNodes(arrayOfNodes).build();
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riakcluster.js.html#l270"><code>lib&#x2F;core&#x2F;riakcluster.js:270</code></a>
+        <a href="../files/lib_core_riakcluster.js.html#l274"><code>lib&#x2F;core&#x2F;riakcluster.js:274</code></a>
         </p>
 
 
@@ -473,7 +473,7 @@ var myCluster = new RiakCluster.Builder().withRiakNodes(arrayOfNodes).build();
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riakcluster.js.html#l197"><code>lib&#x2F;core&#x2F;riakcluster.js:197</code></a>
+        <a href="../files/lib_core_riakcluster.js.html#l205"><code>lib&#x2F;core&#x2F;riakcluster.js:205</code></a>
         </p>
 
 
@@ -545,7 +545,7 @@ var myCluster = new RiakCluster.Builder().withRiakNodes(arrayOfNodes).build();
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riakcluster.js.html#l282"><code>lib&#x2F;core&#x2F;riakcluster.js:282</code></a>
+        <a href="../files/lib_core_riakcluster.js.html#l286"><code>lib&#x2F;core&#x2F;riakcluster.js:286</code></a>
         </p>
 
 
@@ -615,7 +615,7 @@ var myCluster = new RiakCluster.Builder().withRiakNodes(arrayOfNodes).build();
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riakcluster.js.html#l308"><code>lib&#x2F;core&#x2F;riakcluster.js:308</code></a>
+        <a href="../files/lib_core_riakcluster.js.html#l312"><code>lib&#x2F;core&#x2F;riakcluster.js:312</code></a>
         </p>
 
 
@@ -712,6 +712,34 @@ The node being removed will also be stopped.</p>
 
                     </div>
 
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name optional">[err]</code>
+                                    <span class="type">Object</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>will be set to an error if one occurred.</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[cluster]</code>
+                                    <span class="type">Object</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>will be set to the cluster object.</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                        </ul>
                 </li>
             </ul>
         </div>
@@ -740,7 +768,7 @@ The node being removed will also be stopped.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riakcluster.js.html#l118"><code>lib&#x2F;core&#x2F;riakcluster.js:118</code></a>
+        <a href="../files/lib_core_riakcluster.js.html#l120"><code>lib&#x2F;core&#x2F;riakcluster.js:120</code></a>
         </p>
 
 
@@ -768,6 +796,34 @@ The node being removed will also be stopped.</p>
 
                     </div>
 
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name optional">[err]</code>
+                                    <span class="type">Object</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>set to an error if one occurrs during start.</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[state]</code>
+                                    <span class="type">Object</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>the state of the cluster at shutdown.</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                        </ul>
                 </li>
             </ul>
         </div>
@@ -793,7 +849,7 @@ The node being removed will also be stopped.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riakcluster.js.html#l340"><code>lib&#x2F;core&#x2F;riakcluster.js:340</code></a>
+        <a href="../files/lib_core_riakcluster.js.html#l344"><code>lib&#x2F;core&#x2F;riakcluster.js:344</code></a>
         </p>
 
 
@@ -832,7 +888,7 @@ RiakCluster.State.SHUTDOWN
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_core_riakcluster.js.html#l389"><code>lib&#x2F;core&#x2F;riakcluster.js:389</code></a>
+                            <a href="../files/lib_core_riakcluster.js.html#l393"><code>lib&#x2F;core&#x2F;riakcluster.js:393</code></a>
                             </p>
                     
                     
@@ -889,7 +945,7 @@ RiakCluster.State.SHUTDOWN
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_core_riakcluster.js.html#l381"><code>lib&#x2F;core&#x2F;riakcluster.js:381</code></a>
+                            <a href="../files/lib_core_riakcluster.js.html#l385"><code>lib&#x2F;core&#x2F;riakcluster.js:385</code></a>
                             </p>
                     
                     

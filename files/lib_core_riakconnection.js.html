@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.9.1</em>
+            <em>API Docs for: 2.0.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -189,7 +189,6 @@ var DEFAULT_CONNECTION_TIMEOUT = 30000;
  * @param {Object} options - the options to use.
  */
 function RiakConnection(options) {
-
     events.EventEmitter.call(this);
 
     this.remoteAddress = options.remoteAddress;
@@ -306,7 +305,6 @@ RiakConnection.prototype._receiveHealthCheck = function(data) {
     logger.debug(&#x27;[RiakConnection]: receive healthcheck response&#x27;);
 
     if (this._ensureExpectedResponse(data, this.healthCheck.PbResponseName)) {
-
         // On data, use the _receiveData function
         this._connection.removeListener(&#x27;data&#x27;, this._boundReceiveHealthCheck);
         this._connection.on(&#x27;data&#x27;, this._receiveData.bind(this));
@@ -316,12 +314,10 @@ RiakConnection.prototype._receiveHealthCheck = function(data) {
 
         logger.debug(&#x27;[RiakConnection] emit connected, healthcheck success&#x27;);
         this.emit(&#x27;connected&#x27;, this);
-
     }
 };
 
 RiakConnection.prototype._receiveStartTls = function(data) {
-
     logger.debug(&quot;[RiakConnection]: receive StartTls response&quot;);
 
     if (this._ensureExpectedResponse(data, &#x27;RpbStartTls&#x27;)) {
@@ -349,11 +345,9 @@ RiakConnection.prototype._receiveStartTls = function(data) {
         var command = new AuthReq(auth_options, function(){});
         this.execute(command);
     }
-
 };
 
 RiakConnection.prototype._receiveAuthResp = function(data) {
-
     if (this._ensureExpectedResponse(data, &#x27;RpbAuthResp&#x27;)) {
 
         // On data, use the _receiveData function
@@ -366,22 +360,18 @@ RiakConnection.prototype._receiveAuthResp = function(data) {
         logger.debug(&#x27;[RiakConnection] emit connected, with-auth&#x27;);
         this.emit(&#x27;connected&#x27;, this);
     }
-
 };
 
 RiakConnection.prototype._receiveData = function(data) {
-
     var protobufArray = this._buildProtobufArray(data);
 
     for (var i = 0; i &lt; protobufArray.length; i++) {
         this.emit(&#x27;responseReceived&#x27;, this, this.command, 
                     protobufArray[i].msgCode, protobufArray[i].protobuf);
     }
-
 };
 
 RiakConnection.prototype._ensureExpectedResponse = function(data, msgName) {
-
     var protobufArray = this._buildProtobufArray(data);
     var err;
     if (protobufArray.length === 0) {
@@ -408,7 +398,6 @@ RiakConnection.prototype._ensureExpectedResponse = function(data, msgName) {
 };
 
 RiakConnection.prototype._buildProtobufArray = function(data) {
-
     // Create a new buffer to receive data if needed 
     if (this._buffer === null) {
         this._buffer = new ByteBuffer(this.initBufferSize);
@@ -417,11 +406,9 @@ RiakConnection.prototype._buildProtobufArray = function(data) {
     this._buffer.append(data);
     this._buffer.flip();
     return this._getProtobufsFromBuffer();
-
 };
 
 RiakConnection.prototype._getProtobufsFromBuffer = function(protobufArray) {
-
     if (arguments.length === 0) {
         protobufArray = [];
     }
@@ -494,7 +481,6 @@ RiakConnection.prototype.close = function() {
 
 // command includes user callback
 RiakConnection.prototype.execute = function(command) {
-
     this.command = command;
 
     if (this.inFlight === true) {

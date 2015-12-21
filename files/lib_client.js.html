@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.9.1</em>
+            <em>API Docs for: 2.0.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -223,6 +223,9 @@ var TS = require(&#x27;./commands/ts&#x27;);
  * @constructor
  * @param {String[]|RiakCluster} cluster - either an array of host[:port] strings or the cluster to use. See {{#crossLink &quot;RiakCluster&quot;}}{{/crossLink}}.
  * @param {Function} [callback] - called when cluster is started (optional)
+ * @param {Object} [callback.err] - set to an error if one occurrs during start.
+ * @param {Object} [callback.client] - the client object.
+ * @param {Object} [callback.cluster] - the cluster object.
  */
 function Client() {
     if (arguments.length === 0) {
@@ -238,7 +241,7 @@ function Client() {
         throw new Error(&#x27;an array of IP|fqdn[:port] or an instance of RiakCluser is required&#x27;);
     }
 
-    var callback = function (err, rslts) {
+    var callback = function (err, client, cluster) {
         logger.debug(&#x27;[Client] cluster is started.&#x27;);
     };
 
@@ -246,7 +249,10 @@ function Client() {
         callback = arguments[1];
     }
 
-    this.cluster.start(callback);
+    var self = this;
+    this.cluster.start(function (err, cluster) {
+        callback(err, self, cluster);
+    });
 }
 
 /**
@@ -264,6 +270,7 @@ function Client() {
  * @param {Function} callback - will be registered as a stateChange listener on the RiakCluster.
  */
 Client.prototype.shutdown = function(callback) {
+    logger.debug(&#x27;[Client] shutting down cluster.&#x27;);
     this.cluster.on(&#x27;stateChange&#x27;, callback);
     this.cluster.stop();
 };
@@ -278,8 +285,11 @@ Client.prototype.shutdown = function(callback) {
  * 
  * @method stop
  * @param {Function} callback - will be called when client is stopped.
+ * @param {Object} [callback.err] - set to an error if one occurrs during stop.
+ * @param {Object} [callback.state] - the state of the cluster at shutdown.
  */
 Client.prototype.stop = function(callback) {
+    logger.debug(&#x27;[Client] stopping cluster.&#x27;);
     this.cluster.stop(callback);
 };
 
