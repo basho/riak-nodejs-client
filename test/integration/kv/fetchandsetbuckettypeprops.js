@@ -47,22 +47,34 @@ describe('Store and Fetch Bucket props - Integration', function() {
         });
     
         it('Should store bucket props for a non-default bucket type', function(done) {
-            var cb2 = function(err, resp) {
+            var cb3 = function(err, resp) {
                 assert(!err, err);
                 done();
             };
-            var cb1 = function(err, resp) {
+            var cb2 = function(err, resp) {
                 assert(!err, err);
+                assert.strictEqual(resp.allowMult, false);
+                assert.strictEqual(resp.nVal, 4);
                 var store = new StoreBucketTypeProps.Builder()
                         .withBucketType(Test.bucketType)
                         .withAllowMult(true)
-                        .withCallback(cb2)
+                        .withNVal(3)
+                        .withCallback(cb3)
                         .build();
                 cluster.execute(store);
+            };
+            var cb1 = function(err, resp) {
+                assert(!err, err);
+                var fetch = new FetchBucketTypeProps.Builder()
+                    .withBucketType(Test.bucketType)
+                    .withCallback(cb2)
+                    .build();
+                cluster.execute(fetch);
             };
             var store = new StoreBucketTypeProps.Builder()
                     .withBucketType(Test.bucketType)
                     .withAllowMult(false)
+                    .withNVal(4)
                     .withCallback(cb1)
                     .build();
             cluster.execute(store);
