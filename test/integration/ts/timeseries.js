@@ -67,6 +67,20 @@ describe('Timeseries - Integration', function () {
     });
 
     describe('Query', function () {
+        it('can describe a timeseries table', function(done) {
+            var queryText = 'DESCRIBE GeoCheckin';
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert.equal(resp.columns.length, 5);
+                assert.equal(resp.rows.length, 5);
+                done();
+            };
+            var q = new TS.Query.Builder()
+                .withQuery(queryText)
+                .withCallback(callback)
+                .build();
+            cluster.execute(q);
+        });
         it('can create a new timeseries table', function(done) {
             var tmp = rs.generate(32);
             var queryText = 'CREATE TABLE ' + tmp +
