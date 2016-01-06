@@ -79,6 +79,11 @@ describe('Client', function() {
             assert(typeofTsStore === 'function', "typeof(Riak.Commands.TS.Store): " + typeofTsStore);
             done();
         });
+        it('Riak.Commands.TS.Describe', function(done) {
+            var typeofTsDescribe = typeof(Riak.Commands.TS.Describe);
+            assert(typeofTsDescribe === 'function', "typeof(Riak.Commands.TS.Describe): " + typeofTsDescribe);
+            done();
+        });
         it('Riak.Commands.TS.Query', function(done) {
             var typeofTsQuery = typeof(Riak.Commands.TS.Query);
             assert(typeofTsQuery === 'function', "typeof(Riak.Commands.TS.Query): " + typeofTsQuery);

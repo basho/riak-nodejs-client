@@ -172,6 +172,22 @@ describe('Timeseries - Integration', function () {
         });
     });
 
+    describe('Describe', function () {
+        it('returns timeseries table description', function(done) {
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert.equal(resp.columns.length, 5);
+                assert.equal(resp.rows.length, 5);
+                done();
+            };
+            var cmd = new TS.Describe.Builder()
+                .withTable(tableName)
+                .withCallback(callback)
+                .build();
+            cluster.execute(cmd);
+        });
+    });
+
     describe('Get', function () {
         it('returns one row of TS data', function(done) {
             var callback = function(err, resp) {
