@@ -10,7 +10,7 @@ describe('Joi', function() {
         var self = this;
         Joi.validate(cb, schema, function(err, value) {
             if (err) {
-                throw 'callback is required and must be a function.';
+                throw new Error('callback is required and must be a function.');
             }
             assert.strictEqual(value, cb);
             done();
