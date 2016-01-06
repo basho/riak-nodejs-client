@@ -90,7 +90,23 @@ describe('StoreValue', function() {
             done();
         });
         
-        it('Should take the key, bucket, type and vclock from a RiakObject', function(done) {
+        it('should require a bucket from options or RiakObject', function(done) {
+            var b = new StoreValue.Builder()
+                .withContent('test content')
+                .withCallback(function(){});
+            assert.throws(
+                function () {
+                    b.build();
+                },
+                function (err) {
+                    assert.strictEqual(err.message, 'Must supply bucket directly or via a RiakObject');
+                    return true;
+                }
+            );
+            done();
+        });
+
+        it('should take the key, bucket, type and vclock from a RiakObject', function(done) {
             var value = 'this is a value';
             var riakObject = new RiakObject()
                     .setKey('key')

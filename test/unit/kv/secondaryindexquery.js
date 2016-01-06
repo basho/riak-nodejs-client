@@ -11,7 +11,6 @@ var assert = require('assert');
 describe('SecondaryIndexQuery', function() {
     describe('Build', function() {
         it('should build a RpbIndexReq correctly for a single key query', function(done) {
-            
             var siq = new SecondaryIndexQuery.Builder()
                     .withBucket('MyBucket')
                     .withIndexName('email_bin')
@@ -39,8 +38,6 @@ describe('SecondaryIndexQuery', function() {
             assert.equal(protobuf.getQtype(), RpbIndexReq.IndexQueryType.eq);
             assert.equal(protobuf.getMaxResults(), 20);
             done();
-            
-            
         });
 
         it('should build a RpbIndexReq correctly for a single _bin key query without string2int conversion', function(done) {
@@ -69,7 +66,6 @@ describe('SecondaryIndexQuery', function() {
         });
 
         it('should build a RpbIndexReq correctly for a range query', function(done) {
-            
             var siq = new SecondaryIndexQuery.Builder()
                     .withBucket('MyBucket')
                     .withIndexName('id_int')
@@ -101,7 +97,6 @@ describe('SecondaryIndexQuery', function() {
         });
         
         it('maxResults should override paginationSort', function(done) {
-            
             var siq = new SecondaryIndexQuery.Builder()
                     .withBucket('MyBucket')
                     .withIndexName('id_int')
@@ -127,26 +122,27 @@ describe('SecondaryIndexQuery', function() {
             
             assert.equal(protobuf.getPaginationSort(), true);
             done();
-            
         });
         
         it('requires either an indexKey or rangeStart + rangeEnd', function(done) {
-           
            assert.throws(
-                function() { var siq = new SecondaryIndexQuery.Builder()
-                            .withBucket('MyBucket')
-                            .withIndexName('id_int')
-                            .withCallback(function(){})
-                            .build();
+                function() {
+                    var siq = new SecondaryIndexQuery.Builder()
+                        .withBucket('MyBucket')
+                        .withIndexName('id_int')
+                        .withCallback(function(){})
+                        .build();
                 },
-                'either \'indxKey\' or \'rangeStart\' + \'rangeEnd\' are required'
+                function (err) {
+                    assert.strictEqual(err.message,
+                        "either 'indexKey' or 'rangeStart' + 'rangeEnd' are required");
+                    return true;
+                }
             );
             done();
-            
         });
         
         it('indexKey overrides range if both supplied', function(done) {
-           
             var siq = new SecondaryIndexQuery.Builder()
                     .withBucket('MyBucket')
                     .withIndexName('id_int')
@@ -162,13 +158,10 @@ describe('SecondaryIndexQuery', function() {
             assert.equal(protobuf.getRangeMax(), null);
             assert.equal(protobuf.getQtype(), RpbIndexReq.IndexQueryType.eq);
             done();
-            
         });
         
         it('should take multiple RpbIndexResp with just object keys and call the users callback with the response', function(done) {
-            
             var callback = function(err, response) {
-                
                 assert.equal(response.values.length, 100);
                 assert.equal(response.values[0].indexKey, null);
                 assert.equal(response.values[0].objectKey, 'object_key');
@@ -199,9 +192,7 @@ describe('SecondaryIndexQuery', function() {
         });
         
         it('should take multiple RpbIndexResp with term/key pairs and call the users callback with the response', function(done) {
-            
             var callback = function(err, response) {
-                
                 assert.equal(response.values.length, 100);
                 assert.equal(response.values[0].indexKey, 'index_key');
                 assert.equal(response.values[0].objectKey, 'object_key');
@@ -236,11 +227,9 @@ describe('SecondaryIndexQuery', function() {
         });
         
         it('should take multiple RpbIndexResp with just object keys and stream the response', function(done) {
-            
             var count = 0;
             var timesCalled = 0;
             var callback = function(err, response) {
-                
                 timesCalled++;
                 count += response.values.length;
                 
@@ -278,7 +267,6 @@ describe('SecondaryIndexQuery', function() {
         });
         
         it('should take multiple RpbIndexResp with term/key pairs and stream the response', function(done) {
-            
             var count = 0;
             var timesCalled = 0;
             var callback = function(err, response) {
@@ -343,10 +331,6 @@ describe('SecondaryIndexQuery', function() {
                     .build();
             
             siq.onRiakError(rpbErrorResp);
-           
-           
        });
-        
     });
 });
-    
