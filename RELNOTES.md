@@ -6,10 +6,10 @@ Release Notes
  used when using the *Riak Node.js Client*. These functions will be called when
  your `Riak.Client` or `Riak.Cluster` objects are fully started or stopped.
  * [Improve `start` and `stop` callbacks](https://github.com/basho/riak-nodejs-client/pull/120)
-* 1.9.1 - Following issues / PRs addressed:
+* 1.9.1 - DEPRECATED RELEASE - DO NOT USE / Following issues / PRs addressed:
  * [Issue with starting `Client` object](https://github.com/basho/riak-nodejs-client/issues/118)
  * [PR for issue with starting `Client` object](https://github.com/basho/riak-nodejs-client/issues/119)
-* 1.9.0 - Following issues / PRs addressed:
+* 1.9.0 - DEPRECATED RELEASE - DO NOT USE / Following issues / PRs addressed:
  * [Time Series support](https://github.com/basho/riak-nodejs-client/pull/116)
  * [Update module dependencies](https://github.com/basho/riak-nodejs-client/issues/115)
  * [`RiakCluster` update nodes](https://github.com/basho/riak-nodejs-client/issues/114)
