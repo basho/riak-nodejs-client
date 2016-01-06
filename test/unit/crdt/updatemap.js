@@ -12,11 +12,8 @@ var assert = require('assert');
 var logger = require('winston');
 
 describe('UpdateMap', function() {
-
     describe('UpdateMap', function() {
-
         it('should build a DtUpdateReq correctly', function(done) {
-
            var mapOp = new UpdateMap.MapOperation();
 
             mapOp.incrementCounter('counter_1', 50)
@@ -109,7 +106,6 @@ describe('UpdateMap', function() {
                 assert(registerRemoved);
                 assert(flagRemoved);
                 assert(mapRemoved);
-
             };
 
             var verifyUpdates = function(updates, expectMapUpdate) {
@@ -174,7 +170,6 @@ describe('UpdateMap', function() {
                 }
 
                 return mapUpdate;
-
             };
 
             verifyRemoves(mapOp.removes);
@@ -182,14 +177,51 @@ describe('UpdateMap', function() {
             verifyRemoves(innerMapUpdate.map_op.removes);
             verifyUpdates(innerMapUpdate.map_op.updates, false);
 
-            // perform happy dance
-
             done();
+        });
 
+        it('should require context for any remove operations', function(done) {
+           var mapOp = new UpdateMap.MapOperation();
+            mapOp.incrementCounter('counter_1', 50)
+                .removeCounter('counter_2')
+                .addToSet('set_1', 'set_value_1')
+                .removeFromSet('set_2', 'set_value_2')
+                .removeSet('set_3')
+                .setRegister('register_1', new Buffer('register_value_1'))
+                .removeRegister('register_2')
+                .setFlag('flag_1', true)
+                .removeFlag('flag_2')
+                .removeMap('map_3');
+            mapOp.map('map_2').incrementCounter('counter_1', 50)
+                .removeCounter('counter_2')
+                .addToSet('set_1', new Buffer('set_value_1'))
+                .removeFromSet('set_2', new Buffer('set_value_2'))
+                .removeSet('set_3')
+                .setRegister('register_1', new Buffer('register_value_1'))
+                .removeRegister('register_2')
+                .setFlag('flag_1', true)
+                .removeFlag('flag_2')
+                .removeMap('map_3');
+            var b = new UpdateMap.Builder()
+                .withBucketType('maps')
+                .withBucket('myBucket')
+                .withKey('map_1')
+                .withMapOperation(mapOp)
+                .withCallback(function(){});
+            assert.throws(
+                function () {
+                    b.build();
+                },
+                function (err) {
+                    assert.strictEqual(err.message,
+                        'When doing any removes a context must be provided.');
+                    return true;
+                }
+            );
+            done();
         });
 
         it('should take a DtUpdateResp and call the users callback with the response', function(done) {
-
             var dtUpdateResp = new DtUpdateResp();
             dtUpdateResp.setKey(new Buffer('riak_generated_key'));
             dtUpdateResp.setContext(new Buffer('1234'));
@@ -230,7 +262,6 @@ describe('UpdateMap', function() {
                 mapEntries.push(mapEntry);
 
                 return mapEntries;
-
             };
 
             Array.prototype.push.apply(dtUpdateResp.map_value, createMapEntries());
@@ -274,7 +305,6 @@ describe('UpdateMap', function() {
                 .build();
 
             update.onSuccess(dtUpdateResp);
-
         });
 
         it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
@@ -303,9 +333,7 @@ describe('UpdateMap', function() {
     });
 
     describe('MapOperation', function() {
-
         it('should add counter increments', function(done) {
-
             var op = new UpdateMap.MapOperation();
 
             op.incrementCounter('counter_1', 5);
@@ -321,7 +349,6 @@ describe('UpdateMap', function() {
         });
 
         it('should invalidate counter increment on remove', function(done) {
-
             var op = new UpdateMap.MapOperation();
 
             op.incrementCounter('counter_1', 5);
@@ -332,7 +359,6 @@ describe('UpdateMap', function() {
             assert.equal(op.counters.remove[0], 'counter_1');
             assert(op._hasRemoves());
             done();
-
         });
 
         it('should invalidate counter remove on increment', function(done) {
@@ -344,11 +370,9 @@ describe('UpdateMap', function() {
             assert.equal(op.counters.increment[0].key, 'counter_1');
             assert.equal(op.counters.increment[0].increment, 5);
             done();
-
         });
 
         it('should add set adds', function(done) {
-
             var op = new UpdateMap.MapOperation();
 
             op.addToSet('set_1', 'value_1');
@@ -363,11 +387,9 @@ describe('UpdateMap', function() {
             assert.equal(op.sets.adds[1].key, 'set_2');
             assert.equal(op.sets.adds[1].add[0], 'value_1');
             done();
-
         });
 
         it('should add set removes', function(done) {
-
             var op = new UpdateMap.MapOperation();
 
             op.removeFromSet('set_1', 'value_1');
@@ -383,11 +405,9 @@ describe('UpdateMap', function() {
             assert.equal(op.sets.removes[1].remove[0], 'value_1');
             assert(op._hasRemoves());
             done();
-
         });
 
         it('should invalidate adding to a set on a remove set', function(done) {
-
            var op = new UpdateMap.MapOperation();
 
            op.addToSet('set_1', 'value_1');
@@ -402,11 +422,9 @@ describe('UpdateMap', function() {
            assert.equal(op.sets.remove[1], 'set_3');
            assert(op._hasRemoves());
            done();
-
         });
 
         it('should invalidate removing from a set on a remove set', function(done) {
-
            var op = new UpdateMap.MapOperation();
 
            op.removeFromSet('set_1', 'value_1');
@@ -421,11 +439,9 @@ describe('UpdateMap', function() {
            assert.equal(op.sets.remove[1], 'set_3');
            assert(op._hasRemoves());
            done();
-
         });
 
         it('should invalidate removing a set on an add to set', function(done) {
-
             var op = new UpdateMap.MapOperation();
 
             op.removeSet('set_1');
@@ -438,11 +454,9 @@ describe('UpdateMap', function() {
             assert(op._hasRemoves());
 
             done();
-
         });
 
         it('should invalidate removing a set on a remove from set', function(done) {
-
             var op = new UpdateMap.MapOperation();
 
             op.removeSet('set_1');
@@ -455,11 +469,9 @@ describe('UpdateMap', function() {
             assert(op._hasRemoves());
 
             done();
-
         });
 
         it('should add registers', function(done) {
-
            var op = new UpdateMap.MapOperation();
 
            op.setRegister('register_1', new Buffer('value_1'));
@@ -475,11 +487,9 @@ describe('UpdateMap', function() {
            assert.equal(op.registers.set[0].key, 'register_1');
            assert.equal(op.registers.set[0].value.toString('utf8'), 'value_3');
            done();
-
         });
 
         it('should invalidate register sets on removes', function(done) {
-
             var op = new UpdateMap.MapOperation();
 
             op.setRegister('register_1', new Buffer('value_1'));
@@ -494,11 +504,9 @@ describe('UpdateMap', function() {
             assert.equal(op.registers.remove[0], 'register_1');
             assert(op._hasRemoves());
             done();
-
         });
 
         if('should invalidate register removes on register sets', function(done) {
-
             var op = new UpdateMap.MapOperation();
             op.removeRegister('register_1');
             op.removeRegister('register_2');
@@ -512,11 +520,9 @@ describe('UpdateMap', function() {
             assert.equal(op.registers.remove[0], 'register_2');
             assert(op._hasRemoves());
             done();
-
         });
 
         it('should set flags', function(done) {
-
             var op = new UpdateMap.MapOperation();
 
             op.setFlag('flag_1', true);
@@ -532,11 +538,9 @@ describe('UpdateMap', function() {
             assert.equal(op.flags.set.length, 2);
             assert.equal(op.flags.set[0].state, false);
             done();
-
         });
 
         it('should invalidate a flag set on a flag remove', function(done) {
-
             var op = new UpdateMap.MapOperation();
 
             op.setFlag('flag_1', true);
@@ -548,11 +552,9 @@ describe('UpdateMap', function() {
             assert.equal(op.flags.remove[0], 'flag_2');
             assert(op._hasRemoves());
             done();
-
         });
 
         it('should invalidate a remove flag on a set flag', function(done) {
-
             var op = new UpdateMap.MapOperation();
 
             op.removeFlag('flag_1');
@@ -564,11 +566,9 @@ describe('UpdateMap', function() {
             assert.equal(op.flags.set.length, 1);
             assert(op._hasRemoves());
             done();
-
         });
 
         it('should nest maps', function(done) {
-
             var op = new UpdateMap.MapOperation();
             op.map('map_1')
                     .setFlag('some_flag', true)
@@ -585,11 +585,9 @@ describe('UpdateMap', function() {
             assert.equal(op.maps.modify[0].map.registers.remove.length, 1);
             assert(op._hasRemoves());
             done();
-
         });
 
         it('should detect removes in deeply nested maps', function(done) {
-
             var op = new UpdateMap.MapOperation();
             var map_1 = op.map('map_1');
             map_1.incrementCounter('counter_1', 5);
@@ -621,7 +619,6 @@ describe('UpdateMap', function() {
             assert(op._hasRemoves());
 
             done();
-
         });
 
         it('should invalidate a map modify on a map remove', function(done) {
@@ -634,11 +631,9 @@ describe('UpdateMap', function() {
             assert(op._hasRemoves());
             assert.equal(op.maps.remove[0], 'map_1');
             done();
-
         });
 
         it('should invalidate a map remove on a map modify', function(done) {
-
             var op = new UpdateMap.MapOperation();
             op.removeMap('map_1');
             op.removeMap('map_2');
@@ -648,9 +643,6 @@ describe('UpdateMap', function() {
             assert.equal(op.maps.modify.length, 1);
             assert(op._hasRemoves());
             done();
-
         });
-
     });
 });
-
