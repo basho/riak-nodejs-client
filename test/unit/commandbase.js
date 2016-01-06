@@ -332,6 +332,15 @@ describe('CommandBase', function() {
                         b.withRows([ ['foo', 'bar', 'baz'], ['bat', 'bing', 'zing'] ]);
                     }
                 },
+            'TS.Describe' : {
+                    options : {
+                        table: ts_options.table,
+                        callback: cb
+                    },
+                    builder_func : function (b) {
+                        b.withTable(ts_options.table);
+                    }
+                },
             'TS.Query' : {
                     options : {
                         query: 'select * from baz',

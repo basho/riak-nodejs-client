@@ -8,6 +8,7 @@ var RiakCluster = require('../../../lib/core/riakcluster');
 
 var assert = require('assert');
 var logger = require('winston');
+var rs = require('randomstring');
 
 var tableName = 'GeoCheckin';
 var now = 1443796900000; // Let's just pretend this is the value of Date.now();
@@ -66,6 +67,37 @@ describe('Timeseries - Integration', function () {
     });
 
     describe('Query', function () {
+        it('can describe a timeseries table', function(done) {
+            var queryText = 'DESCRIBE GeoCheckin';
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert.equal(resp.columns.length, 5);
+                assert.equal(resp.rows.length, 5);
+                done();
+            };
+            var q = new TS.Query.Builder()
+                .withQuery(queryText)
+                .withCallback(callback)
+                .build();
+            cluster.execute(q);
+        });
+        it('can create a new timeseries table', function(done) {
+            var tmp = rs.generate(32);
+            var queryText = 'CREATE TABLE ' + tmp +
+                '(geohash varchar not null, user varchar not null, time timestamp not null, weather varchar not null, temperature double, ' +
+                'PRIMARY KEY((geohash, user, quantum(time, 15, m)), geohash, user, time))';
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert.equal(resp.columns.length, 0);
+                assert.equal(resp.rows.length, 0);
+                done();
+            };
+            var q = new TS.Query.Builder()
+                .withQuery(queryText)
+                .withCallback(callback)
+                .build();
+            cluster.execute(q);
+        });
         it('no matches returns no data', function(done) {
             var queryText = "select * from GeoCheckin where time > 0 and time < 10 and geohash = 'hash1' and user = 'user1'";
             var callback = function(err, resp) {
@@ -134,6 +166,22 @@ describe('Timeseries - Integration', function () {
             var cmd = new TS.ListKeys.Builder()
                 .withTable(tableName)
                 .withStreaming(true)
+                .withCallback(callback)
+                .build();
+            cluster.execute(cmd);
+        });
+    });
+
+    describe('Describe', function () {
+        it('returns timeseries table description', function(done) {
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert.equal(resp.columns.length, 5);
+                assert.equal(resp.rows.length, 5);
+                done();
+            };
+            var cmd = new TS.Describe.Builder()
+                .withTable(tableName)
                 .withCallback(callback)
                 .build();
             cluster.execute(cmd);
