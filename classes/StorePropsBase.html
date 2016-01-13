@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.0.0</em>
+            <em>API Docs for: 2.1.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -49,6 +49,8 @@
                                 <li><a href="../classes/DeleteIndex.Builder.html">DeleteIndex.Builder</a></li>
                                 <li><a href="../classes/DeleteValue.html">DeleteValue</a></li>
                                 <li><a href="../classes/DeleteValue.Builder.html">DeleteValue.Builder</a></li>
+                                <li><a href="../classes/Describe.html">Describe</a></li>
+                                <li><a href="../classes/Describe.Builder.html">Describe.Builder</a></li>
                                 <li><a href="../classes/FetchBucketProps.html">FetchBucketProps</a></li>
                                 <li><a href="../classes/FetchBucketProps.Builder.html">FetchBucketProps.Builder</a></li>
                                 <li><a href="../classes/FetchBucketTypeProps.html">FetchBucketTypeProps</a></li>
@@ -747,7 +749,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l227"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:227</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l221"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:221</code></a>
         </p>
 
 
@@ -802,7 +804,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l215"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:215</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l209"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:209</code></a>
         </p>
 
 
@@ -854,7 +856,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CommandBase.html#method_constructPbRequest">CommandBase</a>:
-        <a href="../files/lib_commands_commandbase.js.html#l115"><code>lib&#x2F;commands&#x2F;commandbase.js:115</code></a>
+        <a href="../files/lib_commands_commandbase.js.html#l125"><code>lib&#x2F;commands&#x2F;commandbase.js:125</code></a>
         </p>
 
 
@@ -897,7 +899,7 @@ Subclasses must override this method.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CommandBase.html#method_getCallback">CommandBase</a>:
-        <a href="../files/lib_commands_commandbase.js.html#l55"><code>lib&#x2F;commands&#x2F;commandbase.js:55</code></a>
+        <a href="../files/lib_commands_commandbase.js.html#l65"><code>lib&#x2F;commands&#x2F;commandbase.js:65</code></a>
         </p>
 
 
@@ -939,7 +941,7 @@ Subclasses must override this method.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CommandBase.html#method_getExpectedResponseCode">CommandBase</a>:
-        <a href="../files/lib_commands_commandbase.js.html#l65"><code>lib&#x2F;commands&#x2F;commandbase.js:65</code></a>
+        <a href="../files/lib_commands_commandbase.js.html#l75"><code>lib&#x2F;commands&#x2F;commandbase.js:75</code></a>
         </p>
 
 
@@ -981,7 +983,7 @@ Subclasses must override this method.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CommandBase.html#method_getPbReqBuilder">CommandBase</a>:
-        <a href="../files/lib_commands_commandbase.js.html#l98"><code>lib&#x2F;commands&#x2F;commandbase.js:98</code></a>
+        <a href="../files/lib_commands_commandbase.js.html#l108"><code>lib&#x2F;commands&#x2F;commandbase.js:108</code></a>
         </p>
 
 
@@ -1024,7 +1026,7 @@ This is determined via the pbRequestName passed to the constructor.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CommandBase.html#method_getRiakMessage">CommandBase</a>:
-        <a href="../files/lib_commands_commandbase.js.html#l75"><code>lib&#x2F;commands&#x2F;commandbase.js:75</code></a>
+        <a href="../files/lib_commands_commandbase.js.html#l85"><code>lib&#x2F;commands&#x2F;commandbase.js:85</code></a>
         </p>
 
 
@@ -1072,7 +1074,7 @@ This is determined via the pbRequestName passed to the constructor.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CommandBase.html#method_onError">CommandBase</a>:
-        <a href="../files/lib_commands_commandbase.js.html#l151"><code>lib&#x2F;commands&#x2F;commandbase.js:151</code></a>
+        <a href="../files/lib_commands_commandbase.js.html#l161"><code>lib&#x2F;commands&#x2F;commandbase.js:161</code></a>
         </p>
 
 
@@ -1135,7 +1137,7 @@ This is determined via the pbRequestName passed to the constructor.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CommandBase.html#method_onRiakError">CommandBase</a>:
-        <a href="../files/lib_commands_commandbase.js.html#l138"><code>lib&#x2F;commands&#x2F;commandbase.js:138</code></a>
+        <a href="../files/lib_commands_commandbase.js.html#l148"><code>lib&#x2F;commands&#x2F;commandbase.js:148</code></a>
         </p>
 
 
@@ -1192,7 +1194,7 @@ Commands may override this method.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CommandBase.html#method_onSuccess">CommandBase</a>:
-        <a href="../files/lib_commands_commandbase.js.html#l126"><code>lib&#x2F;commands&#x2F;commandbase.js:126</code></a>
+        <a href="../files/lib_commands_commandbase.js.html#l136"><code>lib&#x2F;commands&#x2F;commandbase.js:136</code></a>
         </p>
 
 
@@ -1254,7 +1256,7 @@ Subclasses must override this method.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l191"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:191</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l185"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:185</code></a>
         </p>
 
 
@@ -1309,7 +1311,7 @@ Subclasses must override this method.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l283"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:283</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l277"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:277</code></a>
         </p>
 
 
@@ -1366,7 +1368,7 @@ riak_kv_multi_backend in Riak.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l371"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:371</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l365"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:365</code></a>
         </p>
 
 
@@ -1425,7 +1427,7 @@ returned notfound/error, don't wait around for the rest.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l261"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:261</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l255"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:255</code></a>
         </p>
 
 
@@ -1480,7 +1482,7 @@ returned notfound/error, don't wait around for the rest.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l168"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:168</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l162"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:162</code></a>
         </p>
 
 
@@ -1536,7 +1538,7 @@ If not supplied, 'default' is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l439"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:439</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l433"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:433</code></a>
         </p>
 
 
@@ -1613,7 +1615,7 @@ If not supplied, 'default' is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l427"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:427</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l421"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:421</code></a>
         </p>
 
 
@@ -1668,7 +1670,7 @@ If not supplied, 'default' is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l333"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:333</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l327"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:327</code></a>
         </p>
 
 
@@ -1725,7 +1727,7 @@ If not set the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l203"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:203</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l197"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:197</code></a>
         </p>
 
 
@@ -1781,7 +1783,7 @@ doing, you probably do not want to set this to true.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l399"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:399</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l393"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:393</code></a>
         </p>
 
 
@@ -1839,7 +1841,7 @@ Riak Search.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l386"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:386</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l380"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:380</code></a>
         </p>
 
 
@@ -1896,7 +1898,7 @@ False is higher consistency, true is higher availability.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l180"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:180</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l174"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:174</code></a>
         </p>
 
 
@@ -1951,7 +1953,7 @@ False is higher consistency, true is higher availability.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l239"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:239</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l233"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:233</code></a>
         </p>
 
 
@@ -2006,7 +2008,7 @@ False is higher consistency, true is higher availability.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l308"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:308</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l302"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:302</code></a>
         </p>
 
 
@@ -2062,7 +2064,7 @@ If not asSet the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l346"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:346</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l340"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:340</code></a>
         </p>
 
 
@@ -2119,7 +2121,7 @@ If not set the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l296"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:296</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l290"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:290</code></a>
         </p>
 
 
@@ -2175,7 +2177,7 @@ If not asSet the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l359"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:359</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l353"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:353</code></a>
         </p>
 
 
@@ -2231,7 +2233,7 @@ Quorum for both operations (get and put) involved in deleting an object .</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l414"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:414</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l408"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:408</code></a>
         </p>
 
 
@@ -2288,7 +2290,7 @@ Riak v2.0.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l272"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:272</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l266"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:266</code></a>
         </p>
 
 
@@ -2343,7 +2345,7 @@ Riak v2.0.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l320"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:320</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l314"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:314</code></a>
         </p>
 
 
@@ -2400,7 +2402,7 @@ If not set the bucket default is used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_kv_storepropsbase.js.html#l250"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:250</code></a>
+        <a href="../files/lib_commands_kv_storepropsbase.js.html#l244"><code>lib&#x2F;commands&#x2F;kv&#x2F;storepropsbase.js:244</code></a>
         </p>
 
 

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.0.0</em>
+            <em>API Docs for: 2.1.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -49,6 +49,8 @@
                                 <li><a href="../classes/DeleteIndex.Builder.html">DeleteIndex.Builder</a></li>
                                 <li><a href="../classes/DeleteValue.html">DeleteValue</a></li>
                                 <li><a href="../classes/DeleteValue.Builder.html">DeleteValue.Builder</a></li>
+                                <li><a href="../classes/Describe.html">Describe</a></li>
+                                <li><a href="../classes/Describe.Builder.html">Describe.Builder</a></li>
                                 <li><a href="../classes/FetchBucketProps.html">FetchBucketProps</a></li>
                                 <li><a href="../classes/FetchBucketProps.Builder.html">FetchBucketProps.Builder</a></li>
                                 <li><a href="../classes/FetchBucketTypeProps.html">FetchBucketTypeProps</a></li>
@@ -185,23 +187,15 @@ var logger = require(&#x27;winston&#x27;);
  * @extends CommandBase
  */
 function AuthReq(options, callback) {
-
     CommandBase.call(this, &#x27;RpbAuthReq&#x27;, &#x27;RpbAuthResp&#x27;, callback);
-
-    var self = this;
-    Joi.validate(options, schema, function(err, options) {
-        if (err) {
-            throw err;
-        }
-        self.user = options.user;
-        self.password = options.password;
-    });
+    this.validateOptions(options, schema);
+    this.user = this.options.user;
+    this.password = this.options.password;
 }
 
 inherits(AuthReq, CommandBase);
 
 AuthReq.prototype.constructPbRequest = function() {
-
     var protobuf = this.getPbReqBuilder();
 
     protobuf.setUser(new Buffer(this.user));
@@ -224,7 +218,6 @@ var schema = Joi.object().keys({
 });
 
 module.exports = AuthReq;
-
 
     </pre>
 </div>

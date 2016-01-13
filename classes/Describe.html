@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>FetchIndex - basho-riak-client</title>
+    <title>Describe - basho-riak-client</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -158,38 +158,38 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>FetchIndex Class</h1>
+<h1>Describe Class</h1>
 <div class="box meta">
 
         <div class="extends">
-            Extends <a href="../classes/CommandBase.html" class="crosslink">CommandBase</a>
+            Extends <a href="../classes/Query.html" class="crosslink">Query</a>
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_commands_yokozuna_fetchindex.js.html#l12"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;fetchindex.js:12</code></a>
+            Defined in: <a href="../files/lib_commands_ts_describe.js.html#l14"><code>lib&#x2F;commands&#x2F;ts&#x2F;describe.js:14</code></a>
         </div>
 
-            Module: <a href="../modules/YZ.html">YZ</a>
+            Module: <a href="../modules/TS.html">TS</a>
 
 </div>
 
 
 <div class="box intro">
-    <p>Command used to fetch a (Yokozuna) index or all indexes.</p>
+    <p>Command used to get a timeseries table's description.</p>
 <p>As a convenience, a builder class is provided:</p>
-<pre class="code prettyprint"><code>var fetch = FetchIndex.Builder()
-             .withIndexName('index_name')
-             .withCallback(callback)
-             .build();
+<pre class="code prettyprint"><code> var storeValue = new Describe.Builder()
+     .withTable('GeoCheckin')
+     .withCallback(callback)
+     .build();
 </code></pre>
-<p>See <a href="../classes/FetchIndex.Builder.html" class="crosslink">FetchIndex.Builder</a></p>
+<p>See <a href="../classes/Describe.Builder.html" class="crosslink">Describe.Builder</a></p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_FetchIndex" class="method item">
-    <h3 class="name"><code>FetchIndex</code></h3>
+<div id="method_Describe" class="method item">
+    <h3 class="name"><code>Describe</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -212,7 +212,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_fetchindex.js.html#l12"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;fetchindex.js:12</code></a>
+        <a href="../files/lib_commands_ts_describe.js.html#l14"><code>lib&#x2F;commands&#x2F;ts&#x2F;describe.js:14</code></a>
         </p>
 
 
@@ -233,18 +233,17 @@
 
 
                     <div class="param-description">
-                        <p>the options for this command</p>
+                        <p>The options for this command.</p>
 
                     </div>
 
                         <ul class="params-list">
                             <li class="param">
-                                    <code class="param-name optional">[indexName]</code>
+                                    <code class="param-name">table</code>
                                     <span class="type">String</span>
-                                    <span class="flag optional" title="This parameter is optional.">optional</span>
 
                                 <div class="param-description">
-                                    <p>the name of a specific index to fetch. If not supplied, all are returned.</p>
+                                    <p>The timeseries table in Riak.</p>
 
                                 </div>
 
@@ -257,7 +256,7 @@
 
 
                     <div class="param-description">
-                        <p>the callback to be executed when the operation completes.</p>
+                        <p>The allback to be executed when the operation completes.</p>
 
                     </div>
 
@@ -267,7 +266,7 @@
                                     <span class="type">String</span>
 
                                 <div class="param-description">
-                                    <p>error message</p>
+                                    <p>An error message. Will be null if no error.</p>
 
                                 </div>
 
@@ -277,25 +276,25 @@
                                     <span class="type">Object</span>
 
                                 <div class="param-description">
-                                    <p>array of indexes.</p>
+                                    <p>Object containing timeseries table metadata.</p>
 
                                 </div>
 
                                     <ul class="params-list">
                                         <li class="param">
-                                                <code class="param-name">indexName</code>
-                                                <span class="type">String</span>
+                                                <code class="param-name">columns</code>
+                                                <span class="type">Object</span>
 
                                             <div class="param-description">
-                                                The name of the index.
+                                                Timeseries table metadata columns.
                                             </div>
                                         </li>
                                         <li class="param">
-                                                <code class="param-name">schemaName</code>
-                                                <span class="type">String</span>
+                                                <code class="param-name">rows</code>
+                                                <span class="type">Object</span>
 
                                             <div class="param-description">
-                                                The schema for the index.
+                                                Timeseries table metadata rows.
                                             </div>
                                         </li>
                                     </ul>

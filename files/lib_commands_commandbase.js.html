@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.0.0</em>
+            <em>API Docs for: 2.1.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -49,6 +49,8 @@
                                 <li><a href="../classes/DeleteIndex.Builder.html">DeleteIndex.Builder</a></li>
                                 <li><a href="../classes/DeleteValue.html">DeleteValue</a></li>
                                 <li><a href="../classes/DeleteValue.Builder.html">DeleteValue.Builder</a></li>
+                                <li><a href="../classes/Describe.html">Describe</a></li>
+                                <li><a href="../classes/Describe.Builder.html">Describe.Builder</a></li>
                                 <li><a href="../classes/FetchBucketProps.html">FetchBucketProps</a></li>
                                 <li><a href="../classes/FetchBucketProps.Builder.html">FetchBucketProps.Builder</a></li>
                                 <li><a href="../classes/FetchBucketTypeProps.html">FetchBucketTypeProps</a></li>
@@ -199,7 +201,7 @@ function CommandBase(pbRequestName, pbResponseName, callback) {
     var self = this;
     Joi.validate(callback, schema, function(err, option) {
        if (err) {
-           throw &#x27;callback is required and must be a function.&#x27;;
+           throw new Error(&#x27;callback is required and must be a function.&#x27;);
        }
        self.callback = callback;
     });
@@ -212,6 +214,16 @@ function CommandBase(pbRequestName, pbResponseName, callback) {
     // This is to facilitate debugging what pb messages this Command represents
     this.PbRequestName = pbRequestName;
     this.PbResponseName = pbResponseName;
+
+    this.validateOptions = function (options, schema, joi_opts) {
+        var self = this;
+        Joi.validate(options, schema, joi_opts, function(err, options) {
+            if (err) {
+                throw err;
+            }
+            self.options = options;
+        });
+    };
 }
 
 /**
@@ -282,7 +294,7 @@ CommandBase.prototype.getPbReqBuilder = function() {
  * @return {Object} a protocol buffer message builder
  */
 CommandBase.prototype.constructPbRequest = function() {
-    throw &#x27;Not supported yet!&#x27;;
+    throw new Error(&#x27;Not supported yet!&#x27;);
 };
 
 /**
@@ -294,7 +306,7 @@ CommandBase.prototype.constructPbRequest = function() {
  * @return {Boolean} true if not streaming or the last response has been received, false otherwise.
  */
 CommandBase.prototype.onSuccess = function(pbResponseMessage) {
-    throw &#x27;Not supported yet!&#x27;;
+    throw new Error(&#x27;Not supported yet!&#x27;);
 };
 
 /**

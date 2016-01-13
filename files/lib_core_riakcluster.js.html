@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.0.0</em>
+            <em>API Docs for: 2.1.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -49,6 +49,8 @@
                                 <li><a href="../classes/DeleteIndex.Builder.html">DeleteIndex.Builder</a></li>
                                 <li><a href="../classes/DeleteValue.html">DeleteValue</a></li>
                                 <li><a href="../classes/DeleteValue.Builder.html">DeleteValue.Builder</a></li>
+                                <li><a href="../classes/Describe.html">Describe</a></li>
+                                <li><a href="../classes/Describe.Builder.html">Describe.Builder</a></li>
                                 <li><a href="../classes/FetchBucketProps.html">FetchBucketProps</a></li>
                                 <li><a href="../classes/FetchBucketProps.Builder.html">FetchBucketProps.Builder</a></li>
                                 <li><a href="../classes/FetchBucketTypeProps.html">FetchBucketTypeProps</a></li>
@@ -226,7 +228,6 @@ function RiakCluster(options) {
         if (err) {
             throw err;
         }
-
         self.nodes = options.nodes;
         self.executionAttempts = options.executionAttempts;
         self.state = State.CREATED;
@@ -499,7 +500,7 @@ RiakCluster.prototype._onRetryCommand = function(command, lastNode) {
 
 RiakCluster.prototype._stateCheck = function(allowedStates) {
     if (allowedStates.indexOf(this.state) === -1) {
-        throw &#x27;RiakCluster: Illegal State; required: &#x27; + allowedStates + &#x27; current: &#x27; + this.state; 
+        throw new Error(&#x27;RiakCluster: Illegal State; required: &#x27; + allowedStates + &#x27; current: &#x27; + this.state);
     }
 };
 

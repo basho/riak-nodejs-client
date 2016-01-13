@@ -12,6 +12,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "DeleteIndex.Builder",
         "DeleteValue",
         "DeleteValue.Builder",
+        "Describe",
+        "Describe.Builder",
         "FetchBucketProps",
         "FetchBucketProps.Builder",
         "FetchBucketTypeProps",
