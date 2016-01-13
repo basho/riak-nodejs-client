@@ -1,6 +1,9 @@
 Release Notes
 =============
 
+* 2.1.0 - Following issues / PRs addressed:
+ * [Refactor Joi validation](https://github.com/basho/riak-nodejs-client/pull/124)
+ * [Add `Describe` command for Timeseries](https://github.com/basho/riak-nodejs-client/pull/123)
 * 2.0.0 - Following issues / PRs addressed:
  * _NB_: Please ensure that the `.start()` and `.stop()` callback arguments are
  used when using the *Riak Node.js Client*. These functions will be called when
