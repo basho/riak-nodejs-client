@@ -55,7 +55,7 @@ function kv(deferred, useCork) {
 
     var f_callback = function(err, resp) {
         if (err) {
-            logger.error("[benchmarks/kv] %s", err);
+            logger.error('[benchmarks/kv]', err);
             throw new Error(err);
         } else {
             var robj = resp.values.shift();
@@ -67,7 +67,7 @@ function kv(deferred, useCork) {
 
     var s_callback = function(err, resp) {
         if (err) {
-            logger.error("[benchmarks/kv] %s", err);
+            logger.error('[benchmarks/kv]', err);
             throw new Error(err);
         } else {
             var fetch = new Riak.Commands.KV.FetchValue.Builder()

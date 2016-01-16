@@ -384,7 +384,7 @@ describe('CommandBase', function() {
                     var cmd = eval(eval_str); // jshint ignore:line
                 } catch (e) {
                     if (e.message !== '"callback" is not allowed') {
-                        logger.error("%s ctor threw: %s", cmd_name, e.message);
+                        logger.error('%s ctor threw:', cmd_name, e);
                         throw e;
                     }
                 }
@@ -409,7 +409,7 @@ describe('CommandBase', function() {
                 try {
                     cmd = builder.build();
                 } catch (e) {
-                    logger.error("%s builder.build() threw: %s", cmd_name, e.message);
+                    logger.error('%s builder.build() threw:', cmd_name, e);
                     throw e;
                 }
                 assert(cmd.callback == cb);
