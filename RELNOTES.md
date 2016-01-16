@@ -2,6 +2,8 @@ Release Notes
 =============
 
 * 2.1.1 - Following issues / PRs addressed:
+ * [Use well-known cipher list](https://github.com/basho/riak-nodejs-client/issues/126)
+ * [Cipher list incompatible with Riak Security](https://github.com/basho/riak-nodejs-client/issues/104)
  * [Update `maxConnections` documentation](https://github.com/basho/riak-nodejs-client/issues/122)
 * 2.1.0 - Following issues / PRs addressed:
  * [Refactor Joi validation](https://github.com/basho/riak-nodejs-client/pull/124)
