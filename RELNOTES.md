@@ -1,6 +1,8 @@
 Release Notes
 =============
 
+* 2.1.1 - Following issues / PRs addressed:
+ * [Update `maxConnections` documentation](https://github.com/basho/riak-nodejs-client/issues/122)
 * 2.1.0 - Following issues / PRs addressed:
  * [Refactor Joi validation](https://github.com/basho/riak-nodejs-client/pull/124)
  * [Add `Describe` command for Timeseries](https://github.com/basho/riak-nodejs-client/pull/123)
