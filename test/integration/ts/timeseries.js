@@ -11,7 +11,8 @@ var logger = require('winston');
 var rs = require('randomstring');
 
 var tableName = 'GeoCheckin';
-var now = 1443796900000; // Let's just pretend this is the value of Date.now();
+// NB: ends with 987ms to test ms resolution
+var now = 1443796900987;
 var fiveMinsInMsec = 5 * 60 * 1000;
 var fiveMinsAgo = now - fiveMinsInMsec;
 var tenMinsAgo = fiveMinsAgo - fiveMinsInMsec;
