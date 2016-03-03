@@ -96,9 +96,6 @@ function validateTsPutReq(protobuf, hasCols) {
 }
 
 describe('Store', function() {
-
-    this.timeout(250);
-
     describe('General', function() {
         it('should convert a date to a Long', function(done) {
             var date = new Date();

@@ -1,6 +1,7 @@
 'use strict';
 
 var assert = require('assert');
+var async = require('async');
 var logger = require('winston');
 var net = require('net');
 
@@ -10,9 +11,9 @@ var Ping = require('../../../lib/commands/ping');
 var FetchValue = require('../../../lib/commands/kv/fetchvalue');
 var StoreValue = require('../../../lib/commands/kv/storevalue');
 
-describe('RiakNode - Integration', function() {
-    describe('Command execution', function() {
-        it('should increment execution count', function(done) {
+describe('integration-core-riaknode', function() {
+    describe('command-execution', function() {
+        it('increments-execution-count', function(done) {
             var port = Test.getPort();
             var header = new Buffer(5);
             header.writeUInt8(2, 4);
@@ -71,14 +72,17 @@ describe('RiakNode - Integration', function() {
         });
     });
 
-    describe('Health checking', function() {
-        it('should recover using the default Ping check', function(done) {
+    describe('health-check', function() {
+        it('recovers-using-default-check', function(done) {
+            var socketClosed = false;
+            var sawPing = false;
             var port = Test.getPort();
             var connects = 0;
             var server = net.createServer(function(socket) {
                 connects++;
                 if (connects === 1) {
                     socket.destroy();
+                    socketClosed = true;
                 } else {
                     socket.on('data' , function(data) {
                         // the ping got here
@@ -86,21 +90,17 @@ describe('RiakNode - Integration', function() {
                         header.writeUInt8(2, 4);
                         header.writeInt32BE(1, 0);
                         socket.write(header);
+                        sawPing = true;
                     });
                 }
             });
             
             server.listen(port, '127.0.0.1', function () {
-                var errTimeout = setTimeout(function () {
-                    assert(false, 'Event never fired');
-                    done();
-                }, 3000); 
-                
                 var node = new RiakNode.Builder()
                         .withRemotePort(port)
                         .withMinConnections(0)
+                        .withMaxConnections(1)
                         .build();
-                
                 var heathChecking = false;
                 var healthChecked = false;
                 var verifyCb = function(node, state) {
@@ -115,10 +115,11 @@ describe('RiakNode - Integration', function() {
                             break;
                     }
                     if (heathChecking && healthChecked) {
-                        clearTimeout(errTimeout);
                         node.removeAllListeners();
                         node.stop(function (err, rslt) {
                             assert(!err);
+                            assert(socketClosed);
+                            assert(sawPing);
                             assert.equal(rslt, RiakNode.State.SHUTDOWN);
                             server.close(function () {
                                 done();
@@ -144,7 +145,6 @@ describe('RiakNode - Integration', function() {
             var port = Test.getPort();
             var connects = 0;
             var server = net.createServer(function(socket) {
-              
                 connects++;
                 if (connects === 1) {
                     socket.destroy();
@@ -160,19 +160,12 @@ describe('RiakNode - Integration', function() {
             });
             
             server.listen(port, '127.0.0.1', function () {
-                var errTimeout = setTimeout(function () {
-                    assert(false, 'Event never fired');
-                    done();
-                }, 3000); 
-                
                 var storeCheck = new StoreValue({bucket: 'b', value: 'v'}, function(){});
-                
                 var node = new RiakNode.Builder()
                         .withRemotePort(port)
                         .withMinConnections(0)
                         .withHealthCheck(storeCheck)
                         .build();
-                
                 var heathChecking = false;
                 var healthChecked = false;
                 var verifyCb = function(node, state) {
@@ -188,7 +181,6 @@ describe('RiakNode - Integration', function() {
                     }
                     
                     if (heathChecking && healthChecked) {
-                        clearTimeout(errTimeout);
                         node.removeAllListeners();
                         node.stop(function (err, rslt) {
                             assert(!err);

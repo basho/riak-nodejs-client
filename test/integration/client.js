@@ -27,8 +27,8 @@ function startServer(cb) {
     });
 }
 
-describe('Client', function() {
-    it('Riak.Client uses list of strings without callback', function(done) {
+describe('integration-client', function() {
+    it('array-of-addrs-without-callback', function(done) {
         startServer(function (port, server) {
             var addr = host + ':' + port;
             var c = new Riak.Client([addr]);
@@ -44,7 +44,7 @@ describe('Client', function() {
         });
     });
 
-    it('Riak.Client uses list of strings with callback', function(done) {
+    it('array-of-addrs-with-callback', function(done) {
         startServer(function (port, server) {
             var addr = host + ':' + port;
             var c = new Riak.Client([addr, addr], function (err, client) {
@@ -59,7 +59,7 @@ describe('Client', function() {
         });
     });
 
-    it('Riak.Client uses RiakCluster without callback', function(done) {
+    it('RiakCluster-without-callback', function(done) {
         startServer(function (port, server) {
             var nopts = {
                 remoteAddress: host,
@@ -83,7 +83,7 @@ describe('Client', function() {
         });
     });
 
-    it('Riak.Client uses RiakCluster and callback arguments', function(done) {
+    it('RiakCluster-with-callback', function(done) {
         startServer(function (port, server) {
             var nopts = {
                 remoteAddress: host,
@@ -108,4 +108,3 @@ describe('Client', function() {
         });
     });
 });
-

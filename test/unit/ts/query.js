@@ -17,9 +17,6 @@ var Long = require('long');
 var queryText = 'select * from foo where baz = "bat"';
 
 describe('Query', function() {
-
-    this.timeout(250);
-
     describe('Build', function() {
         it('should build a TsQueryReq correctly', function(done) {
             var queryCommand = new TS.Query.Builder()

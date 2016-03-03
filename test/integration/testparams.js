@@ -12,7 +12,7 @@ module.exports.getPort = function () {
     return port;
 };
 
-module.exports.bucketName = 'riak_index_tests';
+module.exports.bucketName = 'riak-nodejs-client';
 
 /**
 * Bucket type
@@ -22,7 +22,7 @@ module.exports.bucketName = 'riak_index_tests';
 * riak-admin bucket-type create leveldb_type '{"props":{"backend":"leveldb_backend"}}'
 * riak-admin bucket-type activate leveldb_type
 */
-module.exports.bucketType = 'leveldb_type';
+module.exports.bucketType = 'plain';
 
 var riakHost = 'riak-test';
 var riakPort = 10017;
