@@ -32,7 +32,7 @@
     "linkedlist": "~1.0",
     "long": "^2.3.0",
     "protobufjs": "~3.8",
-    "winston": "~0.9"
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "benchmark": "^1.0.0",

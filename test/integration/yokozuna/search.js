@@ -14,8 +14,7 @@ var RiakCluster = require('../../../lib/core/riakcluster');
 var assert = require('assert');
 var logger = require('winston');
 
-describe('Search - Integration', function() {
-   
+describe('integration-yokozuna-search', function() {
     var cluster;
     this.timeout(30000);
     
@@ -34,11 +33,9 @@ describe('Search - Integration', function() {
                     .withIndexName('myIndex')
                     .withCallback(callback)
                     .build();
-
             cluster.execute(store);
 
             var prepSearch = function() {
-            
                 var stuffToStore = [
 
                     "{ \"content_s\":\"Alice was beginning to get very tired of sitting by her sister on the " +
@@ -67,28 +64,22 @@ describe('Search - Integration', function() {
                             .withContent(stuffToStore[count])
                             .withCallback(storeCb)	
                             .build();
-
                         count++;
                         cluster.execute(store);
                     } else {
                         done();
                     }
                 };
-                
                 storeCb();
-
             };
 
             var setOnBucket = function () {
-                
                 var store = new StoreProps.Builder()
                     .withBucket(Test.bucketName + '_search')
                     .withSearchIndex('myIndex')
                     .withCallback(function(err, resp) { assert(!err, err); prepSearch(); })
                     .build();
-
                 cluster.execute(store);
-                
             };
 
             var count = 0;
@@ -117,7 +108,6 @@ describe('Search - Integration', function() {
                     .withIndexName('myIndex')
                     .withCallback(fmCallback)
                     .build();
-
                 cluster.execute(fetch);
             };
             
@@ -126,14 +116,15 @@ describe('Search - Integration', function() {
     });
     
     after(function(done) {
-        
         var bpCallback = function(err, resp) {
             assert(!err, err);
+            // FUTURE: remove data cleaning
             Test.cleanBucket(cluster, 'default', Test.bucketName + '_search', function() {
-                cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done();} });
-                cluster.stop();
+                cluster.stop(function (err, state) {
+                    assert.strictEqual(state, RiakCluster.State.SHUTDOWN);
+                    done();
+                });
             });
-            
         };
         
         var store = new StoreProps.Builder()
@@ -141,13 +132,10 @@ describe('Search - Integration', function() {
 				.withSearchIndex('_dont_index_')
 				.withCallback(bpCallback)
 				.build();
-
         cluster.execute(store);
-        
     });
    
-    it('Should perform a search', function(done) {
-       
+    it('performs-search', function(done) {
         var count = 0;
         var callback = function(err, resp) {
             if (err || resp.numFound === 0) {
@@ -169,12 +157,8 @@ describe('Search - Integration', function() {
                 .withQuery('multi_ss:t*')
                 .withCallback(callback)
                 .build();
-            
             cluster.execute(search);
         };
-        
         searchme();
-        
     });
-
 });
