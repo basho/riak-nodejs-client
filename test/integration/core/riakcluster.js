@@ -299,10 +299,10 @@ describe('integration-core-riakcluster', function() {
                         var wait_count = 0;
                         var clusterStopFunc = function() {
                             logger.debug('ping successes: %d / ping_count: %d ', ping_successes, ping_count);
-                            if (ping_successes < ping_count && wait_count < 10) {
+                            if (ping_successes < ping_count && wait_count < 20) {
                                 logger.debug('waiting on ping successes: ', ping_successes);
                                 wait_count++;
-                                setTimeout(clusterStopFunc, 125);
+                                setTimeout(clusterStopFunc, 100);
                                 return;
                             }
                             assert.equal(ping_successes, ping_count);
