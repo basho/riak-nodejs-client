@@ -9,16 +9,10 @@ var assert = require('assert');
 
 var bucketName = Test.bucketName + '_sp';
 
-describe('Store and Fetch Bucket props - Integration', function() {
-   
-    this.timeout(10000);
-
+describe('integration-core-bucket-type-props', function() {
     var cluster;
     before(function(done) {
-        var nodes = RiakNode.buildNodes(Test.nodeAddresses);
-        cluster = new RiakCluster({ nodes: nodes});
-        cluster.start(function (err, rslt) {
-            assert(!err, err);
+        cluster = Test.buildCluster(function (err, rslt) {
             done();
         });
     });
@@ -33,8 +27,8 @@ describe('Store and Fetch Bucket props - Integration', function() {
         cluster.stop();
     });
     
-    describe('StoreBucketTypeProps', function() {
-        it('Should NOT store props for the default bucket type', function(done) {
+    describe('store', function() {
+        it('should-not-store-for-default', function(done) {
             var callback = function(err, resp) {
                 assert(err, err);
                 done();
@@ -46,7 +40,7 @@ describe('Store and Fetch Bucket props - Integration', function() {
             cluster.execute(store);
         });
     
-        it('Should store bucket props for a non-default bucket type', function(done) {
+        it('should-store-for-non-default', function(done) {
             var cb3 = function(err, resp) {
                 assert(!err, err);
                 done();
@@ -81,8 +75,8 @@ describe('Store and Fetch Bucket props - Integration', function() {
         });
     });
     
-    describe('FetchBucketTypeProps', function() {
-        it('Should fetch props for the default bucket type', function(done) {
+    describe('fetch', function() {
+        it('default', function(done) {
             var callback = function(err, resp) {
                 assert(!err, err);
                 assert(resp.nVal);
@@ -94,7 +88,7 @@ describe('Store and Fetch Bucket props - Integration', function() {
             cluster.execute(fetch);
         });
         
-        it('Should fetch props for a non-default bucket type', function(done) {
+        it('non-default', function(done) {
             var callback = function(err, resp) {
                 assert(!err, err);
                 assert(resp.nVal);

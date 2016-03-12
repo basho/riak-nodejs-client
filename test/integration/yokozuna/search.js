@@ -1,5 +1,8 @@
 'use strict';
 
+var assert = require('assert');
+var logger = require('winston');
+
 var Test = require('../testparams');
 var StoreIndex = require('../../../lib/commands/yokozuna/storeindex');
 var FetchIndex = require('../../../lib/commands/yokozuna/fetchindex');
@@ -8,22 +11,14 @@ var Search = require('../../../lib/commands/yokozuna/search');
 var StoreProps = require('../../../lib/commands/kv/storebucketprops');
 var StoreValue = require('../../../lib/commands/kv/storevalue');
 
-var RiakNode = require('../../../lib/core/riaknode');
-var RiakCluster = require('../../../lib/core/riakcluster');
-
-var assert = require('assert');
-var logger = require('winston');
+var bucketName = Test.bucketName + '_search';
 
 describe('integration-yokozuna-search', function() {
-    var cluster;
     this.timeout(30000);
-    
+    var cluster;
     before(function(done) {
-        var nodes = RiakNode.buildNodes(Test.nodeAddresses);
-        cluster = new RiakCluster({ nodes: nodes});
-        cluster.start(function (err, rslt) {
+        cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
-            
             var callback = function(err, resp) {
                 assert(!err, err);
                 assert(resp);
@@ -37,7 +32,6 @@ describe('integration-yokozuna-search', function() {
 
             var prepSearch = function() {
                 var stuffToStore = [
-
                     "{ \"content_s\":\"Alice was beginning to get very tired of sitting by her sister on the " +
                                         "bank, and of having nothing to do: once or twice she had peeped into the " +
                                         "book her sister was reading, but it had no pictures or conversations in " +
@@ -57,9 +51,9 @@ describe('integration-yokozuna-search', function() {
             
                 var count = 0;
                 var storeCb = function(err, resp) {
-                    if (count < 3) {
+                    if (count < stuffToStore.length) {
                         var store = new StoreValue.Builder()
-                            .withBucket(Test.bucketName + '_search')
+                            .withBucket(bucketName)
                             .withKey('p' + count)
                             .withContent(stuffToStore[count])
                             .withCallback(storeCb)	
@@ -75,10 +69,12 @@ describe('integration-yokozuna-search', function() {
 
             var setOnBucket = function () {
                 var store = new StoreProps.Builder()
-                    .withBucket(Test.bucketName + '_search')
+                    .withBucket(bucketName)
                     .withSearchIndex('myIndex')
-                    .withCallback(function(err, resp) { assert(!err, err); prepSearch(); })
-                    .build();
+                    .withCallback(function(err, resp) {
+                        assert(!err, err);
+                        prepSearch();
+                    }).build();
                 cluster.execute(store);
             };
 
@@ -88,7 +84,7 @@ describe('integration-yokozuna-search', function() {
                 if (err) {
                     if (err === 'notfound') {
                         if (count < 10) {
-                            var sleepMs = 2000 * count;
+                            var sleepMs = 500 * count;
                             logger.debug("[test/integration/yokozuna/search] sleeping for '%d' ms", sleepMs);
                             setTimeout(fetchme, sleepMs);
                         } else {
@@ -110,27 +106,26 @@ describe('integration-yokozuna-search', function() {
                     .build();
                 cluster.execute(fetch);
             };
-            
             fetchme();
         });
     });
     
     after(function(done) {
-        var bpCallback = function(err, resp) {
+        var bpcb = function(err, resp) {
             assert(!err, err);
             // FUTURE: remove data cleaning
-            Test.cleanBucket(cluster, 'default', Test.bucketName + '_search', function() {
+            Test.cleanBucket(cluster, 'default', bucketName, function() {
                 cluster.stop(function (err, state) {
-                    assert.strictEqual(state, RiakCluster.State.SHUTDOWN);
+                    assert(!err, err);
                     done();
                 });
             });
         };
         
         var store = new StoreProps.Builder()
-				.withBucket(Test.bucketName + '_search')
+				.withBucket(bucketName)
 				.withSearchIndex('_dont_index_')
-				.withCallback(bpCallback)
+				.withCallback(bpcb)
 				.build();
         cluster.execute(store);
     });

@@ -1,21 +1,15 @@
 'use strict';
 
+var assert = require('assert');
+
 var Test = require('../testparams');
 var UpdateCounter = require('../../../lib/commands/crdt/updatecounter');
 var FetchCounter = require('../../../lib/commands/crdt/fetchcounter');
-var RiakNode = require('../../../lib/core/riaknode');
-var RiakCluster = require('../../../lib/core/riakcluster');
-var assert = require('assert');
 
 describe('Update and Fetch Counter - Integration', function() {
-   
     var cluster;
-    this.timeout(10000);
-    
     before(function(done) {
-        var nodes = RiakNode.buildNodes(Test.nodeAddresses);
-        cluster = new RiakCluster({ nodes: nodes});
-        cluster.start(function (err, rslt) {
+        cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
             var callback = function(err, resp) {
                 assert(!err, err);
@@ -34,8 +28,10 @@ describe('Update and Fetch Counter - Integration', function() {
     
     after(function(done) {
         Test.cleanBucket(cluster, Test.counterBucketType, Test.bucketName, function() {
-            cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done();} });
-            cluster.stop();
+            cluster.stop(function (err, rslt) {
+                assert(!err, err);
+                done();
+            });
         });
     });
     

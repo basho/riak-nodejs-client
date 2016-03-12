@@ -1,28 +1,19 @@
 'use strict';
 
+var assert = require('assert');
+var logger = require('winston');
+
 var Test = require('../testparams');
 var StoreProps = require('../../../lib/commands/kv/storebucketprops');
 var MapReduce = require('../../../lib/commands/mapreduce/mapreduce');
 var StoreValue = require('../../../lib/commands/kv/storevalue');
 
-var RiakNode = require('../../../lib/core/riaknode');
-var RiakCluster = require('../../../lib/core/riakcluster');
-var assert = require('assert');
-var logger = require('winston');
-
 describe('MapReduce - Integration', function() {
-   
 	var mrBucketName = Test.bucketName + '_mr';
-
     var cluster;
-    this.timeout(30000);
-    
     before(function(done) {
-        var nodes = RiakNode.buildNodes(Test.nodeAddresses);
-        cluster = new RiakCluster({ nodes: nodes});
-        cluster.start(function (err, rslt) {
+        cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
-            
             var stuffToStore = [
                 "Alice was beginning to get very tired of sitting by her sister on the " +
                                     "bank, and of having nothing to do: once or twice she had peeped into the " +
@@ -55,15 +46,16 @@ describe('MapReduce - Integration', function() {
                     done();
                 }
             };
-
             storeCb();
         });
     });
     
     after(function(done) {
        Test.cleanBucket(cluster, 'default', mrBucketName, function() {
-            cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done();} });
-            cluster.stop();
+            cluster.stop(function (err, rslt) {
+                assert(!err, err);
+                done();
+            });
         }); 
     });
     

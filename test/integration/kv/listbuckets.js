@@ -1,22 +1,15 @@
 'use strict';
 
+var assert = require('assert');
+
 var Test = require('../testparams');
 var ListBuckets = require('../../../lib/commands/kv/listbuckets');
 var StoreValue = require('../../../lib/commands/kv/storevalue');
-var RiakNode = require('../../../lib/core/riaknode');
-var RiakCluster = require('../../../lib/core/riakcluster');
-var assert = require('assert');
 
 describe('ListBuckets - Integration', function() {
-   
-    this.timeout(60000);
-   
     var cluster;
-    
     before(function(done) {
-        var nodes = RiakNode.buildNodes(Test.nodeAddresses);
-        cluster = new RiakCluster({ nodes: nodes});
-        cluster.start(function (err, rslt) {
+        cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
             
             var count = 0;
@@ -59,8 +52,10 @@ describe('ListBuckets - Integration', function() {
                     num = 1;
                     Test.cleanBucket(cluster, type, Test.bucketName + '_lb' + (num - 1), nukeBucket);
                 } else {
-                    cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done();} });
-                    cluster.stop();
+                    cluster.stop(function (err, rslt) {
+                        assert(!err, err);
+                        done();
+                    });
                 }
             } else {
                 Test.cleanBucket(cluster, type, Test.bucketName + '_lb' + (num - 1), nukeBucket);

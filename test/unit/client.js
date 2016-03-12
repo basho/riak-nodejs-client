@@ -151,6 +151,11 @@ describe('Client', function() {
             assert(typeofKvStoreBucketProps === 'function', "typeof(Riak.Commands.KV.StoreBucketProps): " + typeofKvStoreBucketProps);
             done();
         });
+        it('Riak.Commands.KV.ResetBucketProps', function(done) {
+            var typeofKvResetBucketProps = typeof(Riak.Commands.KV.ResetBucketProps);
+            assert(typeofKvResetBucketProps === 'function', "typeof(Riak.Commands.KV.ResetBucketProps): " + typeofKvResetBucketProps);
+            done();
+        });
         it('Riak.Commands.KV.StoreBucketTypeProps', function(done) {
             var typeofKvStoreBucketTypeProps = typeof(Riak.Commands.KV.StoreBucketTypeProps);
             assert(typeofKvStoreBucketTypeProps === 'function', "typeof(Riak.Commands.KV.StoreBucketTypeProps): " + typeofKvStoreBucketTypeProps);

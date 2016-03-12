@@ -1,26 +1,21 @@
 'use strict';
 
+var assert = require('assert');
+
 var Test = require('../testparams');
 var ListKeys = require('../../../lib/commands/kv/listkeys');
 var StoreValue = require('../../../lib/commands/kv/storevalue');
-var RiakNode = require('../../../lib/core/riaknode');
-var RiakCluster = require('../../../lib/core/riakcluster');
-var assert = require('assert');
 
 describe('ListKeys - Integration', function() {
    
-    this.timeout(60000);
-   
-    var cluster;
     var totalKeyCount = 50;
     var listKeysPrefix = 'listKeysPrefix_';
-    
+
+    var cluster;
     before(function(done) {
-        var nodes = RiakNode.buildNodes(Test.nodeAddresses);
-        cluster = new RiakCluster({ nodes: nodes});
-        cluster.start(function (err, rslt) {
+        cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
-            
+
             var count = 0;
             var cb = function(err, resp) {
                 assert(!err, err);

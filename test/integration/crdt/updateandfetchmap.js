@@ -1,24 +1,17 @@
 'use strict';
 
+var assert = require('assert');
+
 var Test = require('../testparams');
 var UpdateMap = require('../../../lib/commands/crdt/updatemap');
 var FetchMap = require('../../../lib/commands/crdt/fetchmap');
-var RiakNode = require('../../../lib/core/riaknode');
-var RiakCluster = require('../../../lib/core/riakcluster');
-var assert = require('assert');
 
 describe('Update and Fetch Map - Integration', function() {
-    
-    var cluster;
-    this.timeout(10000);
     var context;
-    
+    var cluster;
     before(function(done) {
-        var nodes = RiakNode.buildNodes(Test.nodeAddresses);
-        cluster = new RiakCluster({ nodes: nodes});
-        cluster.start(function (err, rslt) {
+        cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
-
             var callback = function(err, resp) {
                 assert(!err, err);
                 assert(resp.context);
@@ -27,7 +20,6 @@ describe('Update and Fetch Map - Integration', function() {
             };
 
             var mapOp = new UpdateMap.MapOperation();
-            
             mapOp.incrementCounter('counter_1', 50)
                 .addToSet('set_1', 'value_1')
                 .setRegister('register_1', new Buffer('register_value_1'))
@@ -48,15 +40,16 @@ describe('Update and Fetch Map - Integration', function() {
                 .withReturnBody(true)
                 .withTimeout(20000)
                 .build();
-
             cluster.execute(update);
         });
     });
     
     after(function(done) {
         Test.cleanBucket(cluster, Test.mapBucketType, Test.bucketName, function() {
-            cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done();} });
-            cluster.stop();
+            cluster.stop(function (err, rslt) {
+                assert(!err, err);
+                done();
+            });
         });
     });
     

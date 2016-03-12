@@ -97,8 +97,7 @@ describe('integration-core-riakcluster', function() {
     });
     
     describe('command-queuing', function() {
-        this.timeout(5000);
-
+        this.timeout(4000); // NB: needed for Windows
         it('queues-commands-and-re-tries', function(done) {
             var port = Test.getPort();
 

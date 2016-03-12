@@ -1,22 +1,17 @@
 'use strict';
 
+var assert = require('assert');
+
 var Test = require('../testparams');
 var StoreValue = require('../../../lib/commands/kv/storevalue');
 var FetchValue = require('../../../lib/commands/kv/fetchvalue');
-var RiakNode = require('../../../lib/core/riaknode');
-var RiakCluster = require('../../../lib/core/riakcluster');
-var assert = require('assert');
 
 describe('FetchValue - Integration', function() {
-   
     var cluster;
-    this.timeout(10000);
-    
     before(function(done) {
-        var nodes = RiakNode.buildNodes(Test.nodeAddresses);
-        cluster = new RiakCluster({ nodes: nodes});
-        cluster.start(function (err, rslt) {
+        cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
+
             var count = 0;
             var cb = function(err, resp) {
                 assert(!err, err);
@@ -25,29 +20,25 @@ describe('FetchValue - Integration', function() {
                     done();
                 }
             };
-            
+
             var store = new StoreValue.Builder()
                 .withBucket(Test.bucketName)
                 .withKey('my_key1')
                 .withContent('this is a value in Riak')
                 .withCallback(cb)
                 .build();
-        
             cluster.execute(store);
 
             var myObject = { field1: 'field1_value', field2: 'field2_value', field3: 7 };
-
             store = new StoreValue.Builder()
                     .withBucket(Test.bucketName)
                     .withKey('my_key2')
                     .withContent(myObject)
                     .withCallback(cb)
                     .build();
-
             cluster.execute(store);
 
-            var i;
-            for (i = 0; i < 2; i++) {
+            for (var i = 0; i < 2; i++) {
                 store = new StoreValue.Builder()
                     .withBucket(Test.bucketName)
                     .withBucketType(Test.bucketType)
@@ -55,7 +46,6 @@ describe('FetchValue - Integration', function() {
                     .withContent('this is a value in Riak')
                     .withCallback(cb)
                     .build();
-                
                 cluster.execute(store);
             }
 
@@ -66,7 +56,6 @@ describe('FetchValue - Integration', function() {
                     .withContent('this is a value in Riak')
                     .withCallback(cb)
                     .build();
-
             cluster.execute(store);
         });
     });
@@ -74,8 +63,10 @@ describe('FetchValue - Integration', function() {
     after(function(done) {
         Test.cleanBucket(cluster, 'default', Test.bucketName, function() { 
             Test.cleanBucket(cluster, Test.bucketType, Test.bucketName, function() {
-                cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done();} });
-                cluster.stop();
+                cluster.stop(function (err, rslt) {
+                    assert(!err, err);
+                    done();
+                });
             });
         });
    });
