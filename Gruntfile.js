@@ -77,11 +77,15 @@ module.exports = function(grunt) {
     }
   });
 
-  if (grunt.option('debug') || process.env.GRUNT_DEBUG) {
+  var enable_debug = process.env.RIAK_NODEJS_CLIENT_DEBUG ||
+    process.env.GRUNT_DEBUG || grunt.option('debug');
+  if (enable_debug) {
     grunt.log.write('enabling test debugging in Mocha');
     grunt.config.set('mochaTest.unit.options.require', 'test/debug-log');
     grunt.config.set('mochaTest.integration.options.require', 'test/debug-log');
     grunt.config.set('mochaTest.security.options.require', 'test/debug-log');
+  } else {
+    grunt.config.set('mochaTest.options.require', 'test/disable-log');
   }
 
   grunt.loadNpmTasks('grunt-contrib-jshint');

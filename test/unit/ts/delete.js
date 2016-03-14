@@ -18,9 +18,6 @@ var table = 'test-table';
 var key = [ 'foo', 'bar', 'baz' ];
 
 describe('Delete', function() {
-
-    this.timeout(250);
-
     describe('Build', function() {
         it('should build a TsDelReq correctly', function(done) {
             var cmd = new TS.Delete.Builder()

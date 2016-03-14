@@ -18,9 +18,6 @@ var table = 'test-table';
 var key = [ 'foo', 'bar', 'baz' ];
 
 describe('Get', function() {
-
-    this.timeout(250);
-
     describe('Build', function() {
         it('should build a TsGetReq correctly', function(done) {
             var cmd = new TS.Get.Builder()
