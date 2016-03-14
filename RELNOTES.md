@@ -1,6 +1,10 @@
 Release Notes
 =============
 
+* [2.1.2](https://github.com/basho/riak-nodejs-client/issues?q=milestone%3Ariak-nodejs-client-2.1.2] - Following issues / PRs addressed:
+ * [Improve closed connection handling](https://github.com/basho/riak-nodejs-client/pull/139)
+ * [Use TCP keep-alives if available](https://github.com/basho/riak-nodejs-client/issues/141)
+ * [Update Winston dependency](https://github.com/basho/riak-nodejs-client/issues/132)
 * 2.1.1 - Following issues / PRs addressed:
  * [Use well-known cipher list](https://github.com/basho/riak-nodejs-client/issues/126)
  * [Cipher list incompatible with Riak Security](https://github.com/basho/riak-nodejs-client/issues/104)
