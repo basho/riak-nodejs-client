@@ -48,20 +48,18 @@ describe('integration-core-riaknode', function() {
                             });
                         }
                     };
-                    var cmd = new Ping(cb);
-
                     assert.equal(node.executeCount, 0);
 
-                    assert(node.execute(cmd));
+                    assert(node.execute(new Ping(cb)));
                     assert.equal(node.executeCount, 1);
 
-                    assert(node.execute(cmd));
+                    assert(node.execute(new Ping(cb)));
                     assert.equal(node.executeCount, 2);
 
-                    assert(node.execute(cmd));
+                    assert(node.execute(new Ping(cb)));
                     assert.equal(node.executeCount, 3);
 
-                    assert(node.execute(cmd));
+                    assert(node.execute(new Ping(cb)));
                     assert.equal(node.executeCount, 4);
                 };
 
