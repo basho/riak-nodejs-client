@@ -11,12 +11,16 @@ var RpbGetResp = rpb.getProtoFor('RpbGetResp');
 var RpbContent = rpb.getProtoFor('RpbContent');
 var rpbGetRespCode = rpb.getCodeFor('RpbGetResp');
 
+function getConn() {
+    return new RiakConnection({
+        remoteAddress : "127.0.0.1",
+        remotePort : 8087,
+        connectionTimeout : 30000
+    });
+}
+
 describe('RiakConnection', function() {
     describe('#_receiveData', function() {
-        var conn = new RiakConnection({ remoteAddress : "127.0.0.1",
-                                            remotePort : 8087,
-                                            connectionTimeout : 30000
-                                          });
         var resp = new RpbErrorResp();
         var msg = new Buffer('some error message');
         resp.setErrmsg(msg);
@@ -27,10 +31,11 @@ describe('RiakConnection', function() {
         header.writeInt32BE(encoded.length + 1, 0);
         
         it('should emit responseReceived', function(done) {
+            var conn = getConn();
             conn.on('responseReceived', function(conn, command, code, decoded) {
                 assert.strictEqual(code, responseCode);
                 assert.strictEqual(decoded.getErrmsg().toBuffer().toString(), msg.toString());
-                conn.removeAllListeners();
+                conn.close();
                 done();
             });
             conn._receiveData(header);
@@ -38,13 +43,14 @@ describe('RiakConnection', function() {
         });
         
         it('should emit responseReceived twice', function(done) {
+            var conn = getConn();
             var count = 0;
             conn.on('responseReceived', function(conn, command, code, decoded) {
                 count++;
                 assert.strictEqual(code, responseCode);
                 assert.strictEqual(decoded.getErrmsg().toBuffer().toString(), msg.toString());
                 if (count === 2) {
-                    conn.removeAllListeners();
+                    conn.close();
                     done();
                 }
             });
@@ -54,28 +60,20 @@ describe('RiakConnection', function() {
             }
         });
         
-        it('should buffer a partial message', function() {
-            conn._receiveData(header);
-            assert(conn._buffer.flip().remaining() === 5);
-            conn._buffer.clear();
-        });
-        
         it('should emit then buffer partial second message', function(done) {
+            var conn = getConn();
             conn.on('responseReceived', function(conn, command, code, decoded) {
                 assert.strictEqual(code, responseCode);
                 assert.strictEqual(decoded.getErrmsg().toBuffer().toString(), msg.toString());
-                assert.strictEqual(conn._buffer.flip().remaining(), 5);
-                assert.strictEqual(conn._buffer.offset, 0);
-                conn.removeAllListeners();
-                conn._buffer.clear();
+                conn.close();
                 done();
             });
-            
             var combined = Buffer.concat([header, encoded, header]);
             conn._receiveData(combined);
         });
 
         it('should not clobber data when decoding buffer', function(done) {
+            var conn = getConn();
             var vclocks = ['vclock1234', 'vclock5678'];
             var decodedMessages = [];
             conn.on('responseReceived', function(conn, command, code, decoded) {
@@ -90,7 +88,7 @@ describe('RiakConnection', function() {
                             i, vclock, decodedVclock);
                         assert.strictEqual(decodedVclock, vclock);
                     }
-                    conn.removeAllListeners();
+                    conn.close();
                     done();
                 }
             });

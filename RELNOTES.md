@@ -1,6 +1,10 @@
 Release Notes
 =============
 
+* [2.2.0](https://github.com/basho/riak-nodejs-client/issues?q=milestone%3Ariak-nodejs-client-2.2.0) - Following issues / PRs addressed:
+ * [Implement read / write timeouts](https://github.com/basho/riak-nodejs-client/pull/145)
+ * The Riak Node.js Client now uses the `backoff` module to back-off for retries and health checking attempts.
+ * Compatibility with Riak TS 1.3
 * [2.1.2](https://github.com/basho/riak-nodejs-client/issues?q=milestone%3Ariak-nodejs-client-2.1.2) - Following issues / PRs addressed:
  * [Improve closed connection handling](https://github.com/basho/riak-nodejs-client/pull/139)
  * [Use TCP keep-alives if available](https://github.com/basho/riak-nodejs-client/issues/141)

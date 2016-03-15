@@ -26,10 +26,10 @@
   ],
   "dependencies": {
     "async": "^1.5.0",
+    "backoff": "^2.5.0",
     "bytebuffer": "~3.5",
     "hashmap": "~2.0",
     "joi": "~6.0",
-    "linkedlist": "~1.0",
     "long": "^2.3.0",
     "protobufjs": "~3.8",
     "winston": "^2.2.0"
