@@ -1,8 +1,11 @@
 'use strict';
 
 var assert = require('assert');
+var fs = require('fs');
 var logger = require('winston');
 
+var Node = require('../../lib/core/riaknode');
+var Cluster = require('../../lib/core/riakcluster');
 var DeleteValue = require('../../lib/commands/kv/deletevalue');
 var ListKeys = require('../../lib/commands/kv/listkeys');
 
@@ -32,10 +35,44 @@ if (process.env.RIAK_HOST) {
 if (process.env.RIAK_PORT) {
     riakPort = Number(process.env.RIAK_PORT);
 }
+var nodeAddresses = [ riakHost + ':' + riakPort ];
 
-module.exports.nodeAddresses = [ riakHost + ':' + riakPort ];
+var certAuth = {
+    // Use the following when the private key and public cert
+    // are in two file
+    // key: fs.readFileSync(''),
+    // cert: fs.readFileSync('')
+    user: 'riakuser',
+    // password: '', // NB: optional, leave null when using certs
+    pfx: fs.readFileSync('./tools/test-ca/certs/riakuser-client-cert.pfx'),
+    ca: [ fs.readFileSync('./tools/test-ca/certs/cacert.pem') ],
+    rejectUnauthorized: true
+};
+
+var passAuth = {
+    user: 'riakpass',
+    password: 'Test1234',
+    ca: [ fs.readFileSync('./tools/test-ca/certs/cacert.pem') ],
+    rejectUnauthorized: true
+};
+
+module.exports.nodeAddresses = nodeAddresses;
 module.exports.riakHost = riakHost;
 module.exports.riakPort = riakPort;
+module.exports.certAuth = certAuth;
+module.exports.passAuth = passAuth;
+
+module.exports.buildCluster = function(start_cb) {
+    var nb = new Node.Builder()
+        .withRemoteAddress(riakHost)
+        .withRemotePort(riakPort);
+    if (process.env.RIAK_NODEJS_CLIENT_SECURITY) {
+        nb.withAuth(certAuth);
+    }
+    var cluster = new Cluster({ nodes: [ nb.build() ]});
+    cluster.start(start_cb);
+    return cluster;
+};
 
 /**
  * 

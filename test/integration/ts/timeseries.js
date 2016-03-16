@@ -3,8 +3,6 @@
 var Test = require('../testparams');
 
 var TS = require('../../../lib/commands/ts');
-var RiakNode = require('../../../lib/core/riaknode');
-var RiakCluster = require('../../../lib/core/riakcluster');
 
 var assert = require('assert');
 var logger = require('winston');
@@ -46,12 +44,9 @@ function validateResponseRow(got, want) {
 }
 
 describe('Timeseries - Integration', function () {
-    this.timeout(1500);
-
     before(function(done) {
-        var nodes = RiakNode.buildNodes(Test.nodeAddresses);
-        cluster = new RiakCluster({ nodes: nodes});
-        cluster.start(function (err, rslt) {
+        cluster = Test.buildCluster(function (err, rslt) {
+            assert(!err, err);
             var callback = function(err, resp) {
                 assert(!err, err);
                 assert(resp);
@@ -270,11 +265,9 @@ describe('Timeseries - Integration', function () {
     });
 
     after(function (done) {
-        cluster.on('stateChange', function (state) {
-            if (state === RiakCluster.State.SHUTDOWN) {
-                done();
-            }
+        cluster.stop(function (err, rslt) {
+            assert(!err, err);
+            done();
         });
-        cluster.stop();
     });
 });

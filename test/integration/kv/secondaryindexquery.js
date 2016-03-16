@@ -1,23 +1,17 @@
 'use strict';
 
+var assert = require('assert');
+
 var Test = require('../testparams');
 var StoreValue = require('../../../lib/commands/kv/storevalue');
 var RiakObject = require('../../../lib/commands/kv/riakobject');
 var SecondaryIndexQuery = require('../../../lib/commands/kv/secondaryindexquery');
-var RiakNode = require('../../../lib/core/riaknode');
-var RiakCluster = require('../../../lib/core/riakcluster');
-var assert = require('assert');
 
 describe('Secondary Index Query - Integration', function() {
     var cluster;
-    this.timeout(10000);
-    
     before(function(done) {
-        var nodes = RiakNode.buildNodes(Test.nodeAddresses);
-        cluster = new RiakCluster({ nodes: nodes});
-        cluster.start(function (err, rslt) {
+        cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
-            
             var count = 0;
             var storeCb = function(err, response) {
                 count++;
@@ -37,7 +31,6 @@ describe('Secondary Index Query - Integration', function() {
                         .withKey('key' + i)
                         .withCallback(storeCb)
                         .build();
-
                 cluster.execute(store);
                 
                 ro = new RiakObject();
@@ -50,7 +43,6 @@ describe('Secondary Index Query - Integration', function() {
                         .withKey('key_' + i)
                         .withCallback(storeCb)
                         .build();
-
                 cluster.execute(store);
                 
                 ro = new RiakObject();
@@ -63,7 +55,6 @@ describe('Secondary Index Query - Integration', function() {
                         .withKey('key' + i)
                         .withCallback(storeCb)
                         .build();
-
                 cluster.execute(store);
                 
                 ro = new RiakObject();
@@ -76,7 +67,6 @@ describe('Secondary Index Query - Integration', function() {
                         .withKey('key_' + i)
                         .withCallback(storeCb)
                         .build();
-
                 cluster.execute(store);
             }
         });
@@ -85,8 +75,10 @@ describe('Secondary Index Query - Integration', function() {
     after(function(done) {
         Test.cleanBucket(cluster, 'default', Test.bucketName, function() { 
             Test.cleanBucket(cluster, Test.bucketType, Test.bucketName, function() {
-                cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done(); } });
-                cluster.stop();
+                cluster.stop(function (err, rslt) {
+                    assert(!err, err);
+                    done();
+                });
             });
         });
    });

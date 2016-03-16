@@ -1,24 +1,18 @@
 'use strict';
 
+var assert = require('assert');
+
 var Test = require('../testparams');
 var UpdateSet = require('../../../lib/commands/crdt/updateset');
 var FetchSet = require('../../../lib/commands/crdt/fetchset');
-var RiakNode = require('../../../lib/core/riaknode');
 var RiakCluster = require('../../../lib/core/riakcluster');
-var assert = require('assert');
 
 describe('Update and Fetch Set - Integration', function() {
-    
-    var cluster;
-    this.timeout(10000);
     var context;
-    
+    var cluster;
     before(function(done) {
-        var nodes = RiakNode.buildNodes(Test.nodeAddresses);
-        cluster = new RiakCluster({ nodes: nodes});
-        cluster.start(function (err, rslt) {
+        cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
-
             var callback = function(err, resp) {
                 assert(!err, err);
                 assert.equal(resp.values.length, 2);
@@ -26,7 +20,6 @@ describe('Update and Fetch Set - Integration', function() {
                 context = resp.context;
                 done();
             };
-            
             var update = new UpdateSet.Builder()
                     .withBucketType(Test.setBucketType)
                     .withBucket(Test.bucketName)
@@ -40,8 +33,9 @@ describe('Update and Fetch Set - Integration', function() {
     
     after(function(done) {
         Test.cleanBucket(cluster, Test.setBucketType, Test.bucketName, function() {
-            cluster.on('stateChange', function(state) { if (state === RiakCluster.State.SHUTDOWN) { done();} });
-            cluster.stop();
+            cluster.stop(function (err, state) {
+                done();
+            });
         });
     });
     

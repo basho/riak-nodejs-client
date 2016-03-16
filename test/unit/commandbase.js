@@ -306,6 +306,16 @@ describe('CommandBase', function() {
                         b.withBucket(default_options.bucket);
                     }
                 },
+            'KV.ResetBucketProps' : {
+                    options : {
+                        bucketType: default_options.bucketType,
+                        bucket: default_options.bucket,
+                        callback: cb
+                    },
+                    builder_func: function (b) {
+                        b.withBucket(default_options.bucket);
+                    }
+                },
             'KV.StoreValue' : {
                     options : {
                         bucketType: default_options.bucketType,
