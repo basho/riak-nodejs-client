@@ -27,4 +27,4 @@ test:
 	$(RIAK_ADMIN) security disable
 	$(GRUNT)
 	$(RIAK_ADMIN) security enable
-	$(GRUNT) security
+	$(GRUNT) security-test
