@@ -106,6 +106,7 @@ module.exports = function(grunt) {
   });
   grunt.registerTask('integration', ['jshint', 'mochaTest:integration']);
   grunt.registerTask('timeseries', ['jshint', 'mochaTest:timeseries']);
+  grunt.registerTask('security-test', ['mochaTest:security']);
   grunt.registerTask('security', ['jshint', 'mochaTest:security']);
   grunt.registerTask('default', ['jshint', 'mochaTest:unit', 'mochaTest:integration']);
   grunt.registerTask('docs', 'yuidoc');

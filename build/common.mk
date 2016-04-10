@@ -1,7 +1,7 @@
 VERBOSITY = normal
 GRUNT=$(PROJDIR)/node_modules/grunt-cli/bin/grunt
 
-.PHONY: all install-deps help test unit-test integration-test publish
+.PHONY: all install-deps help test unit-test integration-test security-test publish
 
 all: test
 
