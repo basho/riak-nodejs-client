@@ -202,11 +202,9 @@ describe('Timeseries - Integration', function () {
                 .build();
             cluster.execute(cmd);
         });
-        it('does not error when key does not exist', function(done) {
+        it('errors with notfound when key does not exist', function(done) {
             var callback = function(err, resp) {
-                assert(!err, err);
-                assert.equal(resp.columns.length, 0);
-                assert.equal(resp.rows.length, 0);
+                assert(err, 'expected notfound error');
                 done();
             };
             var key = [ 'hash-foo', 'user-bar', fiveMinsAgo ];
@@ -240,9 +238,7 @@ describe('Timeseries - Integration', function () {
         it('deletes one row of TS data', function(done) {
             var key = [ 'hash1', 'user2', twentyMinsAgo ];
             var cb2 = function(err, resp, errdata) {
-                assert(!err, err);
-                assert.equal(resp.columns.length, 0);
-                assert.equal(resp.rows.length, 0);
+                assert(err, 'expected notfound error');
                 done();
             };
             var cb1 = function(err, resp) {

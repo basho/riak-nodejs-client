@@ -210,12 +210,19 @@ describe('integration-core-riakcluster', function() {
         });
     });
 
-    describe('connection-closed', function() {
-        it('handles-closed-connections', function(done) {
-            var nc = 2;
-            var ping_count = 8;
+    describe('connection-tests', function() {
+        var nc = 3;
+        var ping_count = 9;
 
-            var makeServerListenFunc = function(server, port) {
+        function writePingResp(socket) {
+            var rsp = new Buffer(5);
+            rsp.writeUInt8(2, 4);
+            rsp.writeInt32BE(1, 0);
+            socket.write(rsp);
+        }
+
+        function runTest(onDataFunc, done, clusterBldrCb, nodeBldrCb) {
+            function makeServerListenFunc(server, port) {
                 var f = function(async_cb) {
                     server.listen(port, '127.0.0.1', function() {
                         logger.debug('listening on port: ', port);
@@ -223,39 +230,26 @@ describe('integration-core-riakcluster', function() {
                     });
                 };
                 return f;
-            };
+            }
 
-            var makeCreateServerCallback = function () {
+            function makeCreateServerCallback(onDataFunc) {
                 var datas = 0;
                 return function(socket) {
-                    socket.on('data' , function(data) {
-                        datas++;
-                        logger.debug('datas: ', datas);
-                        if (datas % 3 === 0) {
-                            socket.destroy();
-                        } else {
-                            var rsp = new Buffer(5);
-                            rsp.writeUInt8(2, 4);
-                            rsp.writeInt32BE(1, 0);
-                            socket.write(rsp);
-                        }
+                    logger.debug('[riakcluster/connection-tests] client connected');
+                    socket.on('data', function(data) {
+                        datas = onDataFunc(socket, datas);
+                    });
+                    socket.on('end', function () {
+                        logger.debug('[riakcluster/connection-tests] client disconnected');
+                    });
+                    socket.on('error', function (err) {
+                        logger.debug('[riakconnection/connection-tests] socket error:', err);
                     });
                 };
-            };
-
-            var ports = [];
-            var servers = [];
-            var serverListenFuncs = [];
-            for (var i = 0; i < nc; i++) {
-                var port = Test.getPort();
-                ports.push(port);
-                var server = net.createServer(makeCreateServerCallback());
-                servers.push(server);
-                serverListenFuncs.push(makeServerListenFunc(server, port));
             }
 
             var ping_successes = 0;
-            var makePingFunc = function(i, c) {
+            function makePingFunc(i, c) {
                 var f = function(async_cb) {
                     var p = new Ping(function (err, rslt) {
                         if (err) {
@@ -263,27 +257,47 @@ describe('integration-core-riakcluster', function() {
                         }
                         if (rslt === true) {
                             ping_successes++;
-                            logger.debug('ping success! ping successes: %d', ping_successes);
+                            logger.debug('%d ping success! ping successes: %d', i, ping_successes);
                         }
                         async_cb(null, rslt);
                     });
                     c.execute(p);
                 };
                 return f;
-            };
+            }
+
+            var ports = [];
+            var servers = [];
+            var serverListenFuncs = [];
+            for (var i = 0; i < nc; i++) {
+                var port = Test.getPort();
+                ports.push(port);
+
+                var cs_cb = makeCreateServerCallback(onDataFunc);
+                var server = net.createServer(cs_cb);
+                servers.push(server);
+
+                var sl_cb = makeServerListenFunc(server, port);
+                serverListenFuncs.push(sl_cb);
+            }
 
             async.parallel(serverListenFuncs, function (err, rslts) {
                 assert(!err, err);
                 var nodes = [];
                 ports.forEach(function (p) {
-                    var node = new RiakNode.Builder()
-                        .withRemotePort(p)
-                        .build();
-                    nodes.push(node);
+                    var node_bldr = new RiakNode.Builder()
+                        .withRemotePort(p);
+                    if (nodeBldrCb) {
+                        nodeBldrCb(node_bldr);
+                    }
+                    nodes.push(node_bldr.build());
                 });
-                var cluster = new RiakCluster.Builder()
-                    .withRiakNodes(nodes)
-                    .build();
+                var cluster_bldr = new RiakCluster.Builder()
+                    .withRiakNodes(nodes);
+                if (clusterBldrCb) {
+                    clusterBldrCb(cluster_bldr);
+                }
+                var cluster = cluster_bldr.build();
                 cluster.start(function (err, c) {
                     assert(Object.is(cluster, c));
                     assert(!err, err);
@@ -331,6 +345,45 @@ describe('integration-core-riakcluster', function() {
                     });
                 });
             });
+        }
+
+        it('handles-closed-connections', function(done) {
+            function onDataFunc(socket, datas) {
+                datas++;
+                logger.debug('datas: ', datas);
+                if (datas % 3 === 0) {
+                    socket.destroy();
+                } else {
+                    writePingResp(socket);
+                }
+                return datas;
+            }
+
+            runTest(onDataFunc, done);
+        });
+
+        it('handles-read-timeouts', function(done) {
+            function onDataFunc(socket, datas) {
+                datas++;
+                if (datas % 2 === 0) {
+                    logger.debug('writing delayed ping response:', datas);
+                    setTimeout(function () {
+                        writePingResp(socket);
+                    }, 250);
+                } else {
+                    logger.debug('writing immediate ping response:', datas);
+                    writePingResp(socket);
+                }
+                return datas;
+            }
+
+            runTest(onDataFunc, done,
+                function (cluster_bldr) {
+                    cluster_bldr.withExecutionAttempts(8);
+                },
+                function (node_bldr) {
+                    node_bldr.withRequestTimeout(125);
+                });
         });
     });
 });

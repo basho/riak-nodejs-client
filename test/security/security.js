@@ -7,20 +7,19 @@ var Ping = require('../../lib/commands/ping');
 var Test = require('../integration/testparams');
 var RiakConnection = require('../../lib/core/riakconnection');
 
-function ping_cb(err, rslt) {
-    assert(!err, err);
-    assert.strictEqual(rslt, true);
-}
-
-function ping(conn) {
-    var p = new Ping(ping_cb);
-    conn.execute(p);
-}
-
 function cleanup(conn, done) {
     conn.removeAllListeners();
     conn.close();
     done();
+}
+
+function ping(conn, done) {
+    var p = new Ping(function () {});
+    conn.on('responseReceived', function (c, cmd, mc, pb) {
+        assert.strictEqual(mc, cmd.getExpectedResponseCode());
+        cleanup(c, done);
+    });
+    conn.execute(p);
 }
 
 function setup_events(conn, done) {
@@ -28,14 +27,8 @@ function setup_events(conn, done) {
         assert(!err, err);
         cleanup(c, done);
     });
-
-    conn.on('responseReceived', function (c, cmd, msgCode) {
-        assert.strictEqual(msgCode, cmd.expectedCode);
-        cleanup(c, done);
-    });
-
     conn.on('connected', function (c) {
-        ping(c);
+        ping(c, done);
     });
 }
 
