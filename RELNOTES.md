@@ -2,7 +2,9 @@ Release Notes
 =============
 
 * [2.2.0](https://github.com/basho/riak-nodejs-client/issues?q=milestone%3Ariak-nodejs-client-2.2.0) - Following issues / PRs addressed:
+ * [Support load balancers](https://github.com/basho/riak-nodejs-client/issues/151) ([PR](https://github.com/basho/riak-nodejs-client/pull/152))
  * [Implement read / write timeouts](https://github.com/basho/riak-nodejs-client/pull/145)
+ * [Add `ResetBucketProperties` command](https://github.com/basho/riak-nodejs-client/issues/142) ([PR](https://github.com/basho/riak-nodejs-client/pull/143))
  * The Riak Node.js Client now uses the `backoff` module to back-off for retries and health checking attempts.
  * Compatibility with Riak TS 1.3
 * [2.1.2](https://github.com/basho/riak-nodejs-client/issues?q=milestone%3Ariak-nodejs-client-2.1.2) - Following issues / PRs addressed:
