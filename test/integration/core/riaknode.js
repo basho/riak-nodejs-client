@@ -65,8 +65,78 @@ describe('integration-core-riaknode', function() {
 
                 node.start(scb);
             };
-            
+
             server.listen({ host: '127.0.0.1', port: port }, lcb);
+        });
+    });
+
+    describe('load-balancer', function() {
+        it('does-not-health-check', function(done) {
+            var port = Test.getPort();
+            var i = 0;
+            var server = net.createServer(function(socket) {
+                socket.on('data' , function(data) {
+                    i++;
+                    logger.debug('[t/i/c/rn] i: %d', i);
+                    if (i % 2 === 0) {
+                        socket.destroy();
+                    } else {
+                        var header = new Buffer(5);
+                        header.writeUInt8(2, 4);
+                        header.writeInt32BE(1, 0);
+                        socket.write(header);
+                    }
+                });
+            });
+
+            server.listen(port, '127.0.0.1', function () {
+                var node = new RiakNode.Builder()
+                        .withRemotePort(port)
+                        .withMinConnections(1)
+                        .withMaxConnections(1)
+                        .withExternalLoadBalancer(true)
+                        .build();
+
+                var sawHealthCheck = false;
+
+                function ping() {
+                    logger.debug('[t/i/c/rn] executing ping, i: %d', i);
+                    var ping = new Ping(pingCb);
+                    node.execute(ping);
+                }
+
+                var pingCb = function(err, resp) {
+                    if (err) {
+                        logger.debug('[t/i/c/rn] ping err:', err);
+                    }
+                    if (i < 10) {
+                        setTimeout(ping, 125);
+                    } else {
+                        node.removeAllListeners();
+                        node.stop(function (err, rslt) {
+                            assert(!err);
+                            assert.strictEqual(sawHealthCheck, false);
+                            assert.equal(rslt, RiakNode.State.SHUTDOWN);
+                            server.close(function () {
+                                done();
+                            });
+                        });
+                    }
+                };
+
+                var stateCb = function(node, state) {
+                    if (state === RiakNode.State.HEALTH_CHECKING) {
+                        sawHealthCheck = true;
+                    }
+                };
+
+                node.start(function (err, n) {
+                    assert(Object.is(node, n));
+                    assert(!err, err);
+                    node.on('stateChange', stateCb);
+                    ping();
+                });
+            });
         });
     });
 
@@ -92,7 +162,7 @@ describe('integration-core-riaknode', function() {
                     });
                 }
             });
-            
+
             server.listen(port, '127.0.0.1', function () {
                 var node = new RiakNode.Builder()
                         .withRemotePort(port)
@@ -125,7 +195,7 @@ describe('integration-core-riaknode', function() {
                         });
                     }
                 };
-                
+
                 node.start(function (err, n) {
                     assert(Object.is(node, n));
                     assert(!err, err);
@@ -138,7 +208,7 @@ describe('integration-core-riaknode', function() {
                 });
             });
         });
-        
+
         it('should recover using StoreValue as a check', function(done) {
             var port = Test.getPort();
             var connects = 0;
@@ -156,7 +226,7 @@ describe('integration-core-riaknode', function() {
                     });
                 }
             });
-            
+
             server.listen(port, '127.0.0.1', function () {
                 var storeCheck = new StoreValue({bucket: 'b', value: 'v'}, function(){});
                 var node = new RiakNode.Builder()
@@ -177,7 +247,7 @@ describe('integration-core-riaknode', function() {
                         default:
                             break;
                     }
-                    
+
                     if (heathChecking && healthChecked) {
                         node.removeAllListeners();
                         node.stop(function (err, rslt) {
@@ -189,7 +259,7 @@ describe('integration-core-riaknode', function() {
                         });
                     }
                 };
-                
+
                 node.start(function (err, n) {
                     assert(Object.is(node, n));
                     assert(!err, err);
