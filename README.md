@@ -15,9 +15,11 @@ latency. Both Riak and this code is maintained by [Basho](http://www.basho.com/)
 
 `npm install basho-riak-client --save`
 
-## Documentation
+## Build Status
 
 * Master: [![Build Status](https://travis-ci.org/basho/riak-nodejs-client.svg?branch=master)](https://travis-ci.org/basho/riak-nodejs-client)
+
+## Documentation
 
 Most documentation is living in the [wiki](https://github.com/basho/riak-nodejs-client/wiki). For specifics on our progress here, see the [release notes](https://github.com/basho/riak-nodejs-client/blob/master/RELNOTES.md). 
 
