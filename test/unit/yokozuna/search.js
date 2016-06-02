@@ -53,8 +53,18 @@ describe('Search', function() {
             doc.fields.push(pair);
 
             pair = new RpbPair();
+            pair.key = new Buffer('leader2_b');
+            pair.value = new Buffer('false');
+            doc.fields.push(pair);
+
+            pair = new RpbPair();
             pair.key = new Buffer('age_i');
             pair.value = new Buffer('30');
+            doc.fields.push(pair);
+
+            pair = new RpbPair();
+            pair.key = new Buffer('age_f');
+            pair.value = new Buffer('12.34');
             doc.fields.push(pair);
 
             pair = new RpbPair();
@@ -82,7 +92,9 @@ describe('Search', function() {
                 assert.equal(response.docs.length, 1);
                 var doc = response.docs[0];
                 assert.strictEqual(doc.leader_b, true);
+                assert.strictEqual(doc.leader2_b, false);
                 assert.strictEqual(doc.age_i, 30);
+                assert.strictEqual(doc.age_f, 12.34);
                 assert.strictEqual(doc.nullValue, null);
                 assert.strictEqual(doc.emptyString, '');
                 assert.strictEqual(doc._yz_id, 'default_cats_liono_37');
