@@ -9,8 +9,7 @@ var assert = require('assert');
 
 describe('Search', function() {
     describe('Build', function() {
-        it('should build a RpbSearchQueryReq correctly', function(done) {
-        
+        it('builds-RpbSearchQueryReq', function(done) {
             var search = new Search.Builder()
                     .withIndexName('indexName')
                     .withQuery('some solr query')
@@ -24,9 +23,9 @@ describe('Search', function() {
                     .withPresort('key')
                     .withCallback(function(){})
                     .build();
-            
+
             var protobuf = search.constructPbRequest();
-            
+
             assert.equal(protobuf.index.toString('utf8'), 'indexName');
             assert.equal(protobuf.q.toString('utf8'), 'some solr query');
             assert.equal(protobuf.rows, 20);
@@ -40,85 +39,81 @@ describe('Search', function() {
             assert.equal(protobuf.fl[1].toString('utf8'), 'field2');
             assert.equal(protobuf.presort.toString('utf8'), 'key');
             done();
-            
-        
         });
-        
-        it('should take a RpbSearchQueryResp and call the users callback with the response', function(done) {
-            
+
+        it('processes-RpbSearchQueryResp', function(done) {
             var resp = new RpbSearchQueryResp();
-            
+
             var doc = new RpbSearchDoc();
-            // The PB API is broken in that it returns everything as strings. The 
+            // The PB API is broken in that it returns everything as strings. The
             // search command should convert boolean and numeric values properly
             var pair = new RpbPair();
             pair.key = new Buffer('leader_b');
             pair.value = new Buffer('true');
             doc.fields.push(pair);
-            
+
             pair = new RpbPair();
             pair.key = new Buffer('age_i');
             pair.value = new Buffer('30');
             doc.fields.push(pair);
-            
+
             pair = new RpbPair();
             pair.key = new Buffer('_yz_id');
             pair.value = new Buffer('default_cats_liono_37');
             doc.fields.push(pair);
-            
+
             pair = new RpbPair();
             pair.key = new Buffer('nullValue');
             pair.value = new Buffer('null');
             doc.fields.push(pair);
-            
+
+            pair = new RpbPair();
+            pair.key = new Buffer('emptyString');
+            pair.value = new Buffer('');
+            doc.fields.push(pair);
+
             resp.docs.push(doc);
             resp.max_score = 1.123;
             resp.num_found = 1;
-            
+
             var callback = function(err, response) {
-              
                 assert.equal(response.numFound, 1);
                 assert.equal(response.maxScore, 1.123);
                 assert.equal(response.docs.length, 1);
                 var doc = response.docs[0];
-                assert.equal(doc.leader_b, true); // converted to boolean
-                assert.equal(doc.age_i, 30); // converted to number
-                assert.equal(doc.nullValue, null); // converted to null
-                assert.equal(doc._yz_id, 'default_cats_liono_37'); // left as string
+                assert.strictEqual(doc.leader_b, true);
+                assert.strictEqual(doc.age_i, 30);
+                assert.strictEqual(doc.nullValue, null);
+                assert.strictEqual(doc.emptyString, '');
+                assert.strictEqual(doc._yz_id, 'default_cats_liono_37');
                 done();
             };
-            
+
             var search = new Search.Builder()
                     .withIndexName('indexName')
                     .withQuery('some solr query')
                     .withCallback(callback)
                     .build();
-            
             search.onSuccess(resp);
-            
         });
-        
-        it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
+
+        it ('processes-RpbErrorResp', function(done) {
            var rpbErrorResp = new RpbErrorResp();
            rpbErrorResp.setErrmsg(new Buffer('this is an error'));
-           
+
            var callback = function(err, response) {
                if (err) {
                    assert.equal(err,'this is an error');
                    done();
                }
            };
-           
+
            var search = new Search.Builder()
                     .withIndexName('indexName')
                     .withQuery('some solr query')
                     .withCallback(callback)
                     .build();
-            
            search.onRiakError(rpbErrorResp);
-           
-           
        });
-        
     });
 });
