@@ -72,3 +72,4 @@ Thank you to all of our contributors!
 * [Gabriel Nicolas Avellaneda](https://github.com/GabrielNicolasAvellaneda)
 * [Iain Proctor](https://github.com/iproctor)
 * [Brian Edgerton](https://github.com/brianedgerton)
+* [Samuel](https://github.com/faust64)
