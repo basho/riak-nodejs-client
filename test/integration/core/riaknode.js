@@ -68,6 +68,39 @@ describe('integration-core-riaknode', function() {
 
             server.listen({ host: '127.0.0.1', port: port }, lcb);
         });
+
+        it('does-not-crash-when-connection-closes', function(done) {
+            var port = Test.getPort();
+            var destroyed = false;
+            var server = net.createServer(function(socket) {
+                socket.destroy();
+                destroyed = true;
+            });
+            var lcb = function () {
+                var node = new RiakNode.Builder()
+                    .withRemotePort(port)
+                    .withMinConnections(1)
+                    .build();
+                var scb = function (err, n) {
+                    function endTest() {
+                        if (destroyed) {
+                            n.stop(function (err, rslt) {
+                                assert(!err);
+                                assert.equal(rslt, RiakNode.State.SHUTDOWN);
+                                server.close(function () {
+                                    done();
+                                });
+                            });
+                        } else {
+                            setTimeout(endTest, 10);
+                        }
+                    }
+                    setTimeout(endTest, 10);
+                };
+                node.start(scb);
+            };
+            server.listen({ host: '127.0.0.1', port: port }, lcb);
+        });
     });
 
     describe('load-balancer', function() {

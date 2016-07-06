@@ -1,6 +1,8 @@
 Release Notes
 =============
 
+* [2.2.1](https://github.com/basho/riak-nodejs-client/issues?q=milestone%3Ariak-nodejs-client-2.2.1) - Following issues / PRs addressed:
+ * [Fix uncaught exception when connection closes on a connection that had never executed a command](https://github.com/basho/riak-nodejs-client/pull/163)
 * [2.2.0](https://github.com/basho/riak-nodejs-client/issues?q=milestone%3Ariak-nodejs-client-2.2.0) - Following issues / PRs addressed:
  * [Support load balancers](https://github.com/basho/riak-nodejs-client/issues/151) ([PR](https://github.com/basho/riak-nodejs-client/pull/152))
  * [Implement read / write timeouts](https://github.com/basho/riak-nodejs-client/pull/145)
