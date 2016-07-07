@@ -110,16 +110,16 @@ describe('Search', function() {
         });
 
         it('processes-RpbSearchQueryResp-gh-165', function(done) {
-			/*
-				{
-				"state": "connected",
-				"hardwareId": 2,
-				"_yz_id": "1*ssh-sessions*ssh-sessions*4e05ed89-2a49-4f17-8885-ca79f0d292c0*41",
-				"_yz_rk": "4e05ed89-2a49-4f17-8885-ca79f0d292c0",
-				"_yz_rt": "ssh-sessions",
-				"_yz_rb": "ssh-sessions"
-				}
-			*/
+            /*
+                {
+                "state": "connected",
+                "hardwareId": 2,
+                "_yz_id": "1*ssh-sessions*ssh-sessions*4e05ed89-2a49-4f17-8885-ca79f0d292c0*41",
+                "_yz_rk": "4e05ed89-2a49-4f17-8885-ca79f0d292c0",
+                "_yz_rt": "ssh-sessions",
+                "_yz_rb": "ssh-sessions"
+                }
+            */
             var resp = new RpbSearchQueryResp();
             var doc = new RpbSearchDoc();
             var pair = new RpbPair();
