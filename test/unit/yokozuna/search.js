@@ -162,7 +162,7 @@ describe('Search', function() {
                 assert.equal(response.docs.length, 1);
                 var doc = response.docs[0];
                 assert.strictEqual(doc.state, 'connected');
-                assert.strictEqual(doc.hardwareId, 2);
+                assert.strictEqual(doc.hardwareId, '2');
                 assert.strictEqual(doc._yz_id, '1*ssh-sessions*ssh-sessions*4e05ed89-2a49-4f17-8885-ca79f0d292c0*41');
                 assert.strictEqual(doc._yz_rk, '4e05ed89-2a49-4f17-8885-ca79f0d292c0');
                 assert.strictEqual(doc._yz_rt, 'ssh-sessions');
@@ -173,6 +173,7 @@ describe('Search', function() {
             var search = new Search.Builder()
                     .withIndexName('indexName')
                     .withQuery('some solr query')
+                    .withConvertDocuments(false)
                     .withCallback(callback)
                     .build();
             search.onSuccess(resp);
