@@ -73,3 +73,4 @@ Thank you to all of our contributors!
 * [Iain Proctor](https://github.com/iproctor)
 * [Brian Edgerton](https://github.com/brianedgerton)
 * [Samuel](https://github.com/faust64)
+* [Bryan Burgers](https://github.com/bryanburgers)

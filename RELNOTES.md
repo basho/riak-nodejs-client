@@ -1,6 +1,8 @@
 Release Notes
 =============
 
+* [2.2.2](https://github.com/basho/riak-nodejs-client/issues?q=milestone%3Ariak-nodejs-client-2.2.2) - Following issues / PRs addressed:
+ * [Add `convertDocuments` search option to allow *not* converting Solr documents. Do not convert well-known Riak/Solr fields `_yz_*`](https://github.com/basho/riak-nodejs-client/pull/166)
 * [2.2.1](https://github.com/basho/riak-nodejs-client/issues?q=milestone%3Ariak-nodejs-client-2.2.1) - Following issues / PRs addressed:
  * [Fix uncaught exception when connection closes on a connection that had never executed a command](https://github.com/basho/riak-nodejs-client/pull/163)
 * [2.2.0](https://github.com/basho/riak-nodejs-client/issues?q=milestone%3Ariak-nodejs-client-2.2.0) - Following issues / PRs addressed:
