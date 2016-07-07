@@ -109,7 +109,7 @@ describe('Search', function() {
             search.onSuccess(resp);
         });
 
-        it('processes-RpbSearchQueryResp-gh-165', function(done) {
+        it('processes-RpbSearchQueryResp-no-conversion-gh-165', function(done) {
             /*
                 {
                 "state": "connected",
@@ -174,6 +174,72 @@ describe('Search', function() {
                     .withIndexName('indexName')
                     .withQuery('some solr query')
                     .withConvertDocuments(false)
+                    .withCallback(callback)
+                    .build();
+            search.onSuccess(resp);
+        });
+
+        it('processes-RpbSearchQueryResp-with-conversion-gh-165', function(done) {
+            var resp = new RpbSearchQueryResp();
+            var doc = new RpbSearchDoc();
+            var pair = new RpbPair();
+            pair.key = new Buffer('state');
+            pair.value = new Buffer('connected');
+            doc.fields.push(pair);
+
+            pair = new RpbPair();
+            pair.key = new Buffer('hardwareId');
+            pair.value = new Buffer('2');
+            doc.fields.push(pair);
+
+            pair = new RpbPair();
+            pair.key = new Buffer('booleanValue');
+            pair.value = new Buffer('true');
+            doc.fields.push(pair);
+
+            pair = new RpbPair();
+            pair.key = new Buffer('_yz_id');
+            pair.value = new Buffer('1*ssh-sessions*ssh-sessions*4e05ed89-2a49-4f17-8885-ca79f0d292c0*41');
+            doc.fields.push(pair);
+
+            pair = new RpbPair();
+            pair.key = new Buffer('_yz_rk');
+            pair.value = new Buffer('4e05ed89-2a49-4f17-8885-ca79f0d292c0');
+            doc.fields.push(pair);
+
+            pair = new RpbPair();
+            pair.key = new Buffer('_yz_rt');
+            pair.value = new Buffer('ssh-sessions');
+            doc.fields.push(pair);
+
+            pair = new RpbPair();
+            pair.key = new Buffer('_yz_rb');
+            pair.value = new Buffer('ssh-sessions');
+            doc.fields.push(pair);
+
+            resp.docs.push(doc);
+            resp.max_score = 1.123;
+            resp.num_found = 1;
+
+            var callback = function(err, response) {
+                assert.equal(response.numFound, 1);
+                assert.equal(response.maxScore, 1.123);
+                assert.equal(response.docs.length, 1);
+                var doc = response.docs[0];
+                assert.strictEqual(doc.state, 'connected');
+                assert.strictEqual(doc.hardwareId, 2);
+                assert.strictEqual(doc.booleanValue, true);
+                assert.strictEqual(doc._yz_id, '1*ssh-sessions*ssh-sessions*4e05ed89-2a49-4f17-8885-ca79f0d292c0*41');
+                assert.strictEqual(doc._yz_rk, '4e05ed89-2a49-4f17-8885-ca79f0d292c0');
+                assert.strictEqual(doc._yz_rt, 'ssh-sessions');
+                assert.strictEqual(doc._yz_rb, 'ssh-sessions');
+                done();
+            };
+
+            var search = new Search.Builder()
+                    .withIndexName('indexName')
+                    .withQuery('some solr query')
+                    .withConvertDocuments(true)
                     .withCallback(callback)
                     .build();
             search.onSuccess(resp);
