@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.1.0</em>
+            <em>API Docs for: 2.2.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -82,6 +82,8 @@
                                 <li><a href="../classes/Ping.html">Ping</a></li>
                                 <li><a href="../classes/Query.html">Query</a></li>
                                 <li><a href="../classes/Query.Builder.html">Query.Builder</a></li>
+                                <li><a href="../classes/ResetBucketProps.html">ResetBucketProps</a></li>
+                                <li><a href="../classes/ResetBucketProps.Builder.html">ResetBucketProps.Builder</a></li>
                                 <li><a href="../classes/RiakCluster.html">RiakCluster</a></li>
                                 <li><a href="../classes/RiakCluster.Builder.html">RiakCluster.Builder</a></li>
                                 <li><a href="../classes/RiakConnection.html">RiakConnection</a></li>
@@ -163,7 +165,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_core_riaknode.js.html#l18"><code>lib&#x2F;core&#x2F;riaknode.js:18</code></a>
+            Defined in: <a href="../files/lib_core_riaknode.js.html#l23"><code>lib&#x2F;core&#x2F;riaknode.js:23</code></a>
         </div>
 
             Module: <a href="../modules/Core.html">Core</a>
@@ -179,10 +181,11 @@ a Riak node in a Riak cluster.</p>
 <pre class="code prettyprint"><code>{
   remoteAdddress: '127.0.0.1',
   remotePort: 8087,
-  maxConnections: 10000,
+  maxConnections: 128,
   minConnections: 1,
-  idleTimeout: 3000,
-  connectionTimeout: 0,
+  idleTimeout: 10000,
+  connectionTimeout: 3000,
+  requestTimeout: 5000,
   cork: true
 }
 </code></pre>
@@ -216,7 +219,7 @@ a Riak node in a Riak cluster.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l18"><code>lib&#x2F;core&#x2F;riaknode.js:18</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l23"><code>lib&#x2F;core&#x2F;riaknode.js:23</code></a>
         </p>
 
 
@@ -276,7 +279,7 @@ a Riak node in a Riak cluster.</p>
 
                             </li>
                             <li class="param">
-                                    <code class="param-name optional">[maxConnections=10000]</code>
+                                    <code class="param-name optional">[maxConnections=128]</code>
                                     <span class="type">Number</span>
                                     <span class="flag optional" title="This parameter is optional.">optional</span>
 
@@ -287,7 +290,7 @@ a Riak node in a Riak cluster.</p>
 
                             </li>
                             <li class="param">
-                                    <code class="param-name optional">[idleTimeout=1000]</code>
+                                    <code class="param-name optional">[idleTimeout=10000]</code>
                                     <span class="type">Number</span>
                                     <span class="flag optional" title="This parameter is optional.">optional</span>
 
@@ -298,12 +301,23 @@ a Riak node in a Riak cluster.</p>
 
                             </li>
                             <li class="param">
-                                    <code class="param-name optional">[connectionTimeout=0]</code>
+                                    <code class="param-name optional">[connectionTimeout=3000]</code>
                                     <span class="type">Number</span>
                                     <span class="flag optional" title="This parameter is optional.">optional</span>
 
                                 <div class="param-description">
                                     <p>Set the connection timeout used when making new connections.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[requestTimeout=5000]</code>
+                                    <span class="type">Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Set the timeout used when executing commands.</p>
 
                                 </div>
 
@@ -412,6 +426,17 @@ a Riak node in a Riak cluster.</p>
                                 </div>
 
                             </li>
+                            <li class="param">
+                                    <code class="param-name optional">[externalLoadBalancer]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>This RiakNode object connects to a load balancer. Default is false.</p>
+
+                                </div>
+
+                            </li>
                         </ul>
                 </li>
             </ul>
@@ -510,7 +535,7 @@ a Riak node in a Riak cluster.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l229"><code>lib&#x2F;core&#x2F;riaknode.js:229</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l473"><code>lib&#x2F;core&#x2F;riaknode.js:473</code></a>
         </p>
 
 
@@ -577,7 +602,7 @@ a Riak node in a Riak cluster.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l97"><code>lib&#x2F;core&#x2F;riaknode.js:97</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l428"><code>lib&#x2F;core&#x2F;riaknode.js:428</code></a>
         </p>
 
 
@@ -633,7 +658,7 @@ a Riak node in a Riak cluster.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l176"><code>lib&#x2F;core&#x2F;riaknode.js:176</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l459"><code>lib&#x2F;core&#x2F;riaknode.js:459</code></a>
         </p>
 
 
@@ -686,7 +711,7 @@ a Riak node in a Riak cluster.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l421"><code>lib&#x2F;core&#x2F;riaknode.js:421</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l600"><code>lib&#x2F;core&#x2F;riaknode.js:600</code></a>
         </p>
 
 
@@ -726,7 +751,7 @@ RiakNode.State.SHUTDOWN
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_core_riaknode.js.html#l487"><code>lib&#x2F;core&#x2F;riaknode.js:487</code></a>
+                            <a href="../files/lib_core_riaknode.js.html#l681"><code>lib&#x2F;core&#x2F;riaknode.js:681</code></a>
                             </p>
                     
                     
@@ -783,7 +808,7 @@ RiakNode.State.SHUTDOWN
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_core_riaknode.js.html#l479"><code>lib&#x2F;core&#x2F;riaknode.js:479</code></a>
+                            <a href="../files/lib_core_riaknode.js.html#l673"><code>lib&#x2F;core&#x2F;riaknode.js:673</code></a>
                             </p>
                     
                     

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.1.0</em>
+            <em>API Docs for: 2.2.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -82,6 +82,8 @@
                                 <li><a href="../classes/Ping.html">Ping</a></li>
                                 <li><a href="../classes/Query.html">Query</a></li>
                                 <li><a href="../classes/Query.Builder.html">Query.Builder</a></li>
+                                <li><a href="../classes/ResetBucketProps.html">ResetBucketProps</a></li>
+                                <li><a href="../classes/ResetBucketProps.Builder.html">ResetBucketProps.Builder</a></li>
                                 <li><a href="../classes/RiakCluster.html">RiakCluster</a></li>
                                 <li><a href="../classes/RiakCluster.Builder.html">RiakCluster.Builder</a></li>
                                 <li><a href="../classes/RiakConnection.html">RiakConnection</a></li>
@@ -168,6 +170,8 @@ var CommandBase = require(&#x27;../commandbase&#x27;);
 var inherits = require(&#x27;util&#x27;).inherits;
 var Joi = require(&#x27;joi&#x27;);
 
+var utils = require(&#x27;../../utils&#x27;);
+
 /**
  * Provides the (Yokozuna) Search class, its builder, and its response.
  * @module YZ
@@ -203,6 +207,7 @@ var Joi = require(&#x27;joi&#x27;);
  * @param {String} [options.defaultOperation] Set the default operation. Allowed settings are either “and” or “or”.
  * @param {String[]} [options.returnFields] Only return the provided fields.
  * @param {String} [options.presort] Sorts all of the results. Either &quot;key&quot; or &quot;score&quot;.
+ * @param {Boolean} [options.convertDocuments] Convert Solr document values to JS types.
  * @param {Function} callback The callback to execute when the comman completes.
  * @param {String} callback.err an error message. Will be null if no error.
  * @param {Object} callback.response the response from Riak (Solr)
@@ -249,6 +254,19 @@ Search.prototype.constructPbRequest = function() {
 
 };
 
+// https://github.com/basho/yokozuna/blob/develop/include/yokozuna.hrl#L340-L404
+function isYzField(f) {
+    return f === &#x27;_yz_id&#x27;   ||
+           f === &#x27;_yz_ed&#x27;   ||
+           f === &#x27;_yz_fpn&#x27;  ||
+           f === &#x27;_yz_vtag&#x27; ||
+           f === &#x27;_yz_pn&#x27;   ||
+           f === &#x27;_yz_rk&#x27;   ||
+           f === &#x27;_yz_rt&#x27;   ||
+           f === &#x27;_yz_rb&#x27;   ||
+           f === &#x27;_yz_err&#x27;;
+}
+
 Search.prototype.onSuccess = function(rpbSearchQueryResp) {
 
     var docsToReturn = new Array(rpbSearchQueryResp.docs.length);
@@ -257,17 +275,21 @@ Search.prototype.onSuccess = function(rpbSearchQueryResp) {
         for (var j = 0; j &lt; rpbSearchQueryResp.docs[i].fields.length; j++) {
             var key = rpbSearchQueryResp.docs[i].fields[j].key.toString(&#x27;utf8&#x27;);
             var value = rpbSearchQueryResp.docs[i].fields[j].value.toString(&#x27;utf8&#x27;);
-            // Search and MapReduce are effectively broken with the PB API because
-            // everything is returned as a string.
-            if (!isNaN(value)) {
-                // it&#x27;s really a number.
-                value = +value;
-            } else if (value === &#x27;null&#x27;) {
-                // It&#x27;s actually null
-                value = null;
-            } else {
-                // might also be a boolean.
-                value = value === &#x27;true&#x27; || (value === &#x27;false&#x27; ? false : value);
+            // GH-165 do not convert well-known YZ fields
+            if (isYzField(key) === false &amp;&amp; this.options.convertDocuments === true) {
+                // Search and MapReduce are effectively broken with the PB API because
+                // everything is returned as a string.
+                var valAsNum = utils.maybeIsNumber(value);
+                if (valAsNum) {
+                    // it&#x27;s a Long or number.
+                    value = valAsNum;
+                } else if (value === &#x27;null&#x27;) {
+                    // It&#x27;s actually null
+                    value = null;
+                } else {
+                    // might also be a boolean.
+                    value = value === &#x27;true&#x27; || (value === &#x27;false&#x27; ? false : value);
+                }
             }
             //Support multiple values for the same key
             if (doc.hasOwnProperty(key)) {
@@ -301,7 +323,8 @@ var schema = Joi.object().keys({
     defaultField: Joi.string().default(null).optional(),
     defaultOperation: Joi.string().default(null).optional(),
     returnFields: Joi.array().default([]).optional(),
-    presort: Joi.string().default(null).optional()
+    presort: Joi.string().default(null).optional(),
+    convertDocuments: Joi.boolean().default(true).optional()
 });
 
 /**
@@ -432,6 +455,16 @@ Builder.prototype = {
     */
    withPresort : function(presort) {
        this.presort = presort;
+       return this;
+   },
+   /**
+    * Convert values in documents returned by Solr to corresponding Javascript types.
+    * @method convertDocuments
+    * @param {Boolean} convert Solr document values to JS types.
+    * @chainable
+    */
+   withConvertDocuments : function(convertDocuments) {
+       this.convertDocuments = convertDocuments;
        return this;
    },
    /**

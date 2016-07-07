@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib/commands/ts/store.js - basho-riak-client</title>
+    <title>ResetBucketProps.Builder - basho-riak-client</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -160,237 +160,349 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: lib/commands/ts/store.js</h1>
+<h1>ResetBucketProps.Builder Class</h1>
+<div class="box meta">
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-&#x27;use strict&#x27;;
 
-var util = require(&#x27;util&#x27;);
-var Joi = require(&#x27;joi&#x27;);
-var logger = require(&#x27;winston&#x27;);
+        <div class="foundat">
+            Defined in: <a href="../files/lib_commands_kv_resetbucketprops.js.html#l63"><code>lib&#x2F;commands&#x2F;kv&#x2F;resetbucketprops.js:63</code></a>
+        </div>
 
-var ByteBuffer = require(&#x27;bytebuffer&#x27;);
+            Module: <a href="../modules/KV.html">KV</a>
 
-var CommandBase = require(&#x27;../commandbase&#x27;);
-var tsdata = require(&#x27;./data&#x27;);
-var tsutils = require(&#x27;./utils&#x27;);
-var utils = require(&#x27;../../utils&#x27;);
+</div>
 
-var rpb = require(&#x27;../../protobuf/riakprotobuf&#x27;);
-var TsColumnType = rpb.getProtoFor(&#x27;TsColumnType&#x27;);
-var TsColumnDescription = rpb.getProtoFor(&#x27;TsColumnDescription&#x27;);
-var TsRow = rpb.getProtoFor(&#x27;TsRow&#x27;);
-var TsCell = rpb.getProtoFor(&#x27;TsCell&#x27;);
 
-/**
- * Provides the Store class, its builder, and its response.
- * @module TS
- */
+<div class="box intro">
+    <p>A builder for constructing ResetBucketProps instances.</p>
+<p>Rather than having to manually construct the <strong>options</strong> and instantiating
+a ResetBucketProps directly, this builder may be used.</p>
+<pre class="code prettyprint"><code>var fetchValue = new ResetBucketProps.Builder()
+     .withBucketType('myBucketType')
+     .withBucket('myBucket')
+     .build();</code></pre>
 
-/**
- * Command used to store timeseries data in Riak.
- *
- * As a convenience, a builder class is provided:
- *
- *      var storeValue = new Store.Builder()
- *          .withTable(&#x27;table&#x27;)
- *          .withColumns(cols)
- *          .withRows(rows)
- *          .build();
- *
- * See {{#crossLink &quot;Store.Builder&quot;}}Store.Builder{{/crossLink}}
- *
- * @class Store
- * @constructor
- * @param {Object} options The options for this command.
- * @param {String} options.table The timeseries table in Riak.
- * @param {Object[]} options.columns The timeseries columns in Riak.
- * @param {Object[]} options.rows The timeseries rows in Riak.
- * @param {Function} callback The allback to be executed when the operation completes.
- * @param {String} callback.err An error message. Will be null if no error.
- * @param {Object} callback.response Will be either true or false.
- * @param {Object} callback.data additional error data. Will be null if no error.
- * @extends CommandBase
- */
-function Store(options, callback) {
-    CommandBase.call(this, &#x27;TsPutReq&#x27;, &#x27;TsPutResp&#x27;, callback);
-    this.validateOptions(options, schema);
-}
+</div>
 
-util.inherits(Store, CommandBase);
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_ResetBucketProps.Builder" class="method item">
+    <h3 class="name"><code>ResetBucketProps.Builder</code></h3>
 
-Store.prototype.constructPbRequest = function() {
-    var protobuf = this.getPbReqBuilder();
-    protobuf.setTable(new Buffer(this.options.table));
+        <span class="paren">()</span>
 
-    var i, ct;
-    if (this.options.columns) {
-        // Use column descriptions to populate cells
-        var columnTypes = [];
-        for (i = 0; i &lt; this.options.columns.length; i++) {
-            var col = this.options.columns[i];
 
-            var tscd = new TsColumnDescription();
-            tscd.setName(new Buffer(col.name));
 
-            ct = col.type;
-            columnTypes.push(ct);
-            tscd.setType(ct);
 
-            protobuf.columns.push(tscd);
-        }
 
-        for (i = 0; i &lt; this.options.rows.length; i++) {
-            var tsr = new TsRow();
-            var row = this.options.rows[i];
-            for (var j = 0; j &lt; row.length; j++) {
-                var tsc = new TsCell();
-                ct = columnTypes[j];
-                var cell = row[j];
-                if (!utils.isNullOrUndefined(cell)) {
-                    switch (ct) {
-                        case TsColumnType.VARCHAR:
-                            if (Buffer.isBuffer(cell)) {
-                                tsc.setVarcharValue(cell);
-                            } else if (ByteBuffer.isByteBuffer(cell)) {
-                                tsc.setVarcharValue(cell.toBuffer());
-                            } else {
-                                tsc.setVarcharValue(new Buffer(cell));
-                            }
-                            break;
-                        case TsColumnType.SINT64:
-                            // NB: must be convertible to Long to serialize as sint64
-                            tsc.setSint64Value(cell);
-                            break;
-                        case TsColumnType.DOUBLE:
-                            tsc.setDoubleValue(cell);
-                            break;
-                        case TsColumnType.TIMESTAMP:
-                            // NB: must be convertible to Long to serialize as sint64
-                            var val = tsutils.maybeConvertToLong(cell);
-                            tsc.setTimestampValue(val);
-                            break;
-                        case TsColumnType.BOOLEAN:
-                            tsc.setBooleanValue(cell);
-                            break;
-                        default:
-                            var msg = util.format(&quot;could not serialize: %s, column type: %d&quot;,
-                                            JSON.stringify(cell), ct);
-                            throw new Error(msg);
-                    }
-                }
-                tsr.cells.push(tsc);
-            }
-            protobuf.rows.push(tsr);
-        }
-    } else {
-        this.options.rows.forEach(function (row) {
-            var cells = tsutils.convertToTsCells(row);
-            var tsr = new TsRow();
-            Array.prototype.push.apply(tsr.cells, cells);
-            protobuf.rows.push(tsr);
-        });
-    }
 
-    return protobuf;
-};
 
-Store.prototype.onSuccess = function(rpbPutResp) {
-    this._callback(null, true);
-    return true;
-};
 
-var columnTypeSchema = Joi.number().valid(tsdata.validColumnTypes);
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_kv_resetbucketprops.js.html#l63"><code>lib&#x2F;commands&#x2F;kv&#x2F;resetbucketprops.js:63</code></a>
+        </p>
 
-var columnSchema = Joi.object().keys({
-    name: Joi.string().required(),
-    type: columnTypeSchema.required(),
-    complexType: Joi.array().items(columnTypeSchema).optional(),
-});
 
-var schema = Joi.object().keys({
-    table: Joi.string().required(),
-    columns: Joi.array().items(columnSchema).optional(),
-    rows: Joi.array().items(Joi.array().sparse()).required(),
-});
 
-/**
- * A builder for constructing Store instances.
- *
- * Rather than having to manually construct the __options__ and instantiating
- * a Store directly, this builder may be used.
- *
- *     var storeValue = new Store.Builder()
- *          .withTable(&#x27;table&#x27;)
- *          .withColumns(columns)
- *          .withRows(rows)
- *          .build();
- *
- * @class Store.Builder
- * @constructor
- */
-function Builder() {}
+    </div>
 
-Builder.prototype = {
-    /**
-     * Set the table.
-     * @method withTable
-     * @param {String} table the table in Riak
-     * @chainable
-     */
-    withTable : function(table) {
-        this.table = table;
-        return this;
-    },
-    /**
-     * Set the columns (optional).
-     * @method withColumns
-     * @param {Object[]} columns the timeseries columns in Riak
-     * @chainable
-     */
-    withColumns : function(columns) {
-        this.columns = columns;
-        return this;
-    },
-    /**
-     * Set the rows.
-     * @method withRows
-     * @param {Object[]} rows the timeseries row data
-     * @chainable
-     */
-    withRows : function(rows) {
-        this.rows = rows;
-        return this;
-    },
-    /**
-     * Set the callback to be executed when the operation completes.
-     * @method withCallback
-     * @param {Function} callback The allback to be executed when the operation completes.
-     * @param {String} callback.err An error message. Will be null if no error.
-     * @param {Object} callback.response The response from Riak
-     * @chainable
-     */
-    withCallback : function(callback) {
-        this.callback = callback;
-        return this;
-    },
-    /**
-     * Construct a Store instance.
-     * @method build
-     * @return {Store} a Store instance
-     */
-    build : function() {
-        var cb = this.callback;
-        delete this.callback;
-        return new Store(this, cb);
-    }
-};
+    <div class="description">
+        
+    </div>
 
-module.exports = Store;
-module.exports.Builder = Builder;
 
-    </pre>
+
+
+</div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_build">build</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_withBucket">withBucket</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_withBucketType">withBucketType</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_withCallback">withCallback</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_build" class="method item">
+    <h3 class="name"><code>build</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/ResetBucketProps.html" class="crosslink">ResetBucketProps</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_kv_resetbucketprops.js.html#l114"><code>lib&#x2F;commands&#x2F;kv&#x2F;resetbucketprops.js:114</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Construct a ResetBucketProps command.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/ResetBucketProps.html" class="crosslink">ResetBucketProps</a></span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_withBucket" class="method item">
+    <h3 class="name"><code>withBucket</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>bucket</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_kv_resetbucketprops.js.html#l91"><code>lib&#x2F;commands&#x2F;kv&#x2F;resetbucketprops.js:91</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Set the bucket.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">bucket</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>the bucket in Riak</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_withBucketType" class="method item">
+    <h3 class="name"><code>withBucketType</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>bucketType</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_kv_resetbucketprops.js.html#l80"><code>lib&#x2F;commands&#x2F;kv&#x2F;resetbucketprops.js:80</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Set the bucket type.
+If not supplied, 'default' is used.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">bucketType</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>the bucket type in riak</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_withCallback" class="method item">
+    <h3 class="name"><code>withCallback</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_kv_resetbucketprops.js.html#l101"><code>lib&#x2F;commands&#x2F;kv&#x2F;resetbucketprops.js:101</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Set the callback to be executed when the operation completes.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                        <p>The callback to be executed when the operation completes.</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">err</code>
+                                    <span class="type">String</span>
+
+                                <div class="param-description">
+                                    <p>An error message. Will ne null if no error.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">response</code>
+                                    <span class="type">Object</span>
+
+                                <div class="param-description">
+                                    <p>the response from Riak.</p>
+
+                                </div>
+
+                                    <ul class="params-list">
+                                        <li class="param">
+                                                <code class="param-name">preflist</code>
+                                                <span class="type">Object</span>
+
+                                            <div class="param-description">
+                                                An array of one or more preflist items.
+                                            </div>
+                                        </li>
+                                    </ul>
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+            </div>
+
+
+
+    </div>
 </div>
                     </div>
                 </div>

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.1.0</em>
+            <em>API Docs for: 2.2.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -82,6 +82,8 @@
                                 <li><a href="../classes/Ping.html">Ping</a></li>
                                 <li><a href="../classes/Query.html">Query</a></li>
                                 <li><a href="../classes/Query.Builder.html">Query.Builder</a></li>
+                                <li><a href="../classes/ResetBucketProps.html">ResetBucketProps</a></li>
+                                <li><a href="../classes/ResetBucketProps.Builder.html">ResetBucketProps.Builder</a></li>
                                 <li><a href="../classes/RiakCluster.html">RiakCluster</a></li>
                                 <li><a href="../classes/RiakCluster.Builder.html">RiakCluster.Builder</a></li>
                                 <li><a href="../classes/RiakConnection.html">RiakConnection</a></li>
@@ -167,12 +169,12 @@
 var async = require(&#x27;async&#x27;);
 var events = require(&#x27;events&#x27;);
 var Joi = require(&#x27;joi&#x27;);
-var LinkedList = require(&#x27;linkedlist&#x27;);
 var logger = require(&#x27;winston&#x27;);
 var util = require(&#x27;util&#x27;);
 
 var RiakNode = require (&#x27;./riaknode&#x27;);
 var RoundRobinNodeManager = require(&#x27;./roundrobinnodemanager&#x27;);
+var utils = require(&#x27;./utils&#x27;);
 
 /**
  * @module Core
@@ -180,12 +182,12 @@ var RoundRobinNodeManager = require(&#x27;./roundrobinnodemanager&#x27;);
 
 /**
  * Provides the RiakCluster class and its Builder.
- * 
- * Instances of this class maintain a set of {{#crossLink &quot;RiakNode&quot;}}{{/crossLink}} objects and 
+ *
+ * Instances of this class maintain a set of {{#crossLink &quot;RiakNode&quot;}}{{/crossLink}} objects and
  * executes commands on them.
- * 
+ *
  * __options__ is an object with the following defaults:
- * 
+ *
  *     {
  *       nodes: [defaultRiakNode],
  *       executionAttempts: 3,
@@ -193,16 +195,16 @@ var RoundRobinNodeManager = require(&#x27;./roundrobinnodemanager&#x27;);
  *       queueCommands: false,
  *       queueMaxDepth: unlimited
  *     }
- *     
- * The __defaultRiakNode__ is a RiakNode connected to 127.0.0.1:8087 
- * 
- * As a convenience a builder class is provided. 
- * 
+ *
+ * The __defaultRiakNode__ is a RiakNode connected to 127.0.0.1:8087
+ *
+ * As a convenience a builder class is provided.
+ *
  *     var nodeTemplate = new RiakNode.Builder().withMinConnections(10);
  *     var nodeAddys = [&#x27;192.168.1.1&#x27;, &#x27;192.168.1.2&#x27;];
  *     var arrayOfNodes = RiakNode.buildNodes(nodeAddys, nodeTemplate);
  *     var myCluster = new RiakCluster.Builder().withRiakNodes(arrayOfNodes).build();
- *     
+ *
  * See {{#crossLink &quot;RiakCluster.Builder&quot;}}RiakCluster.Builder{{/crossLink}}
  *
  * @class RiakCluster
@@ -237,7 +239,15 @@ function RiakCluster(options) {
         self.queueSubmitInterval = options.queueSubmitInterval;
     });
 
-    this._commandQueue = new LinkedList();
+    this._commandQueue = [];
+
+    // Note: useful for debugging event issues
+    // this.setMaxListeners(1);
+
+    this._stateCheck = function(allowedStates) {
+        return utils.stateCheck(&#x27;[RiakCluster]&#x27;, this.state,
+            allowedStates, stateNames);
+    };
 }
 
 util.inherits(RiakCluster, events.EventEmitter);
@@ -309,7 +319,7 @@ function makeStopNodeFunc(node) {
     var f = function (async_cb) {
         node.stop(function (err, rslt) {
             if (err) {
-                logger.error(&#x27;[RiakCluster] error stopping node (%s:%d):&#x27;, 
+                logger.error(&#x27;[RiakCluster] error stopping node (%s:%d):&#x27;,
                     node.remoteAddress, node.remotePort, err);
             }
             if (async_cb) {
@@ -325,7 +335,7 @@ RiakCluster.prototype._startNode = function (node, callback) {
     node.on(EVT_RC, this._onRetryCommand.bind(this));
     node.start(function (err, rslt) {
         if (err) {
-            logger.error(&#x27;[RiakCluster] error starting node (%s:%d):&#x27;, 
+            logger.error(&#x27;[RiakCluster] error starting node (%s:%d):&#x27;,
                 node.remoteAddress, node.remotePort, err);
         }
         if (callback) {
@@ -335,7 +345,7 @@ RiakCluster.prototype._startNode = function (node, callback) {
 };
 
 RiakCluster.prototype._shutdown = function (callback) {
-    logger.debug(&#x27;[RiakCluster] checking to see if nodes are shut down.&#x27;); 
+    logger.debug(&#x27;[RiakCluster] checking to see if nodes are shut down.&#x27;);
 
     var allStopped = true;
     for (var i = 0; i &lt; this.nodes.length; i++) {
@@ -351,7 +361,7 @@ RiakCluster.prototype._shutdown = function (callback) {
         this.state = State.SHUTDOWN;
         logger.debug(&#x27;[RiakCluster] cluster shut down.&#x27;);
         if (this._commandQueue.length) {
-            logger.warn(&#x27;[RiakCluster] There were %d commands in the queue at shutdown&#x27;, 
+            logger.warn(&#x27;[RiakCluster] There were %d commands in the queue at shutdown&#x27;,
                 this._commandQueue.length);
         }
         this.emit(EVT_SC, this.state);
@@ -367,44 +377,63 @@ RiakCluster.prototype._shutdown = function (callback) {
 
 /**
  * Execute a command on this RiakCluster.
- * 
+ *
  * Selects a RiakNode from the cluster and executes the command on it.
  * @method execute
  * @param {Object} riakCommand - the command to execute.
  * @param {RiakNode} [previous] the previous node this command was attempted on
  */
-RiakCluster.prototype.execute = function(riakCommand, previous) {
+RiakCluster.prototype.execute = function(command, previous) {
     // If there&#x27;s no previous node, set the remaining retries
     if (arguments.length === 1) {
-        riakCommand.remainingTries = this.executionAttempts;
+        command.remainingTries = this.executionAttempts;
     }
 
     logger.debug(&#x27;[RiakCluster] execute command: %s remaining tries: %d.&#x27;,
-        riakCommand.PbRequestName, riakCommand.remainingTries);
+        command.name, command.remainingTries);
 
     var executing = false;
     if (this._commandQueue.length === 0) {
-        executing = this.nodeManager.executeOnNode(this.nodes, riakCommand, previous);
+        executing = this.nodeManager.executeOnNode(this.nodes, command, previous);
     }
 
+    /*
+     * NB: executing may be false if one or more nodes are NOT in the RUNNING
+     * state, or if a node&#x27;s connections are all in use.
+     */
     if (!executing) {
+        /*
+         * NB: if commands ARE being queued, this will add the non-executed command
+         * to the queue and schedule execution at a later time without decrementing
+         * the re-try count.
+         */
         if (this.queueCommands) {
             if (this.queueMaxDepth &amp;&amp; (this._commandQueue.length &gt;= this.queueMaxDepth)) {
-                riakCommand.onError(&quot;No RiakNodes available and command queue at maxDepth&quot;);
+                command.onError(&quot;No RiakNodes available and command queue at maxDepth&quot;);
             } else {
-                this._commandQueue.push(riakCommand);
+                this._commandQueue.push(command);
                 if (this.state === State.RUNNING) {
                     this.state = State.QUEUEING;
-
                     // TODO: should this timeout be average command execution time? Used for rate-limiting
                     setTimeout(this._submitFromQueue.bind(this), this.queueSubmitInterval);
                     logger.info(&#x27;[RiakCluster] queueing commands.&#x27;);
                     this.emit(EVT_SC, this.state);
                 }
             }
-        } else {
-            riakCommand.onError(&#x27;No RiakNodes available to execute command.&#x27;);
+            return;
         }
+
+        /*
+         * NB: if commands are not being queued, but re-tries are available,
+         * re-try the command to try and run it on a different node
+         */
+        if (command.remainingTries &gt; 0) {
+            command.remainingTries--;
+            this._onRetryCommand(command, previous);
+            return;
+        }
+
+        command.onError(&#x27;No RiakNodes available to execute command.&#x27;);
     }
 };
 
@@ -417,8 +446,8 @@ RiakCluster.prototype._submitFromQueue = function() {
             command = this._commandQueue.shift();
             executing = this.nodeManager.executeOnNode(this.nodes, command);
             if (!executing) {
-				// TODO: this does not take retries into account, so a command that continually
-				// errors could back up the queue indefinitely
+                // TODO: this does not take retries into account, so a command that continually
+                // errors could back up the queue indefinitely
                 this._commandQueue.unshift(command);
                 // TODO: should this timeout be based on an average command execution time?
                 setTimeout(this._submitFromQueue.bind(this), this.queueSubmitInterval);
@@ -495,41 +524,54 @@ RiakCluster.prototype._onNodeStateChange = function(node, state) {
 };
 
 RiakCluster.prototype._onRetryCommand = function(command, lastNode) {
-    this.execute(command, lastNode);
-};
-
-RiakCluster.prototype._stateCheck = function(allowedStates) {
-    if (allowedStates.indexOf(this.state) === -1) {
-        throw new Error(&#x27;RiakCluster: Illegal State; required: &#x27; + allowedStates + &#x27; current: &#x27; + this.state);
+    var i = this.executionAttempts - command.remainingTries;
+    // NB: only &quot;immediately&quot; re-try if there&#x27;s another node on which to re-try
+    if ((this.nodes.length &gt; 1) &amp;&amp; (i === 0 || i === 1)) {
+        logger.debug(&#x27;[RiakCluster] scheduling immediate re-try for:&#x27;, command.name);
+        setImmediate(this.execute.bind(this, command, lastNode));
+    } else {
+        var delay_ms = 100 * i;
+        logger.debug(&#x27;[RiakCluster] scheduling re-try with %d ms delay for:&#x27;, delay_ms, command.name);
+        setTimeout(this.execute.bind(this, command, lastNode), delay_ms);
     }
 };
 
 /**
  * The state of this cluster.
- * 
+ *
  * If listening for stateChange events, a numeric value will be sent that
  * can be compared to:
- * 
+ *
  *     RiakCluster.State.CREATED
  *     RiakCluster.State.RUNNING
  *     RiakCluster.State.SHUTTING_DOWN
  *     RiakCluster.State.SHUTDOWN
- * 
+ *
  * See: {{#crossLink &quot;RiakCluster/stateChange:event&quot;}}stateChange{{/crossLink}}
- * 
+ *
  * @property State
  * @type {Object}
  * @static
  * @final
  */
-var State = Object.freeze({ CREATED : 0, 
-                            RUNNING : 1,
-                            QUEUEING: 2, 
-                            SHUTTING_DOWN : 3, 
-                            SHUTDOWN : 4});
+var State = Object.freeze({
+    CREATED : 0,
+    RUNNING : 1,
+    QUEUEING: 2,
+    SHUTTING_DOWN : 3,
+    SHUTDOWN : 4
+});
+
+var stateNames = Object.freeze({
+    0 : &#x27;CREATED&#x27;,
+    1 : &#x27;RUNNING&#x27;,
+    2 : &#x27;QUEUEING&#x27;,
+    3 : &#x27;SHUTTING_DOWN&#x27;,
+    4 : &#x27;SHUTDOWN&#x27;
+});
 
 var defaultRiakNode = new RiakNode();
-var defaultExecutionAttempts = 3;
+var defaultExecutionAttempts = 4;
 
 function createDefaultNodeManager() {
     return new RoundRobinNodeManager();
@@ -569,12 +611,12 @@ var EVT_RC = &#x27;retryCommand&#x27;;
 
 /**
  * A Builder for constructing RiakCluster instances.
- * 
+ *
  * Rather than having to manually construct the __options__ and instantiating
  * a RiakCluster directly, this builder may be used.
- * 
+ *
  * var newCluster = new RiakCluster.Builder().withRiakNodes([node1, node2]).build();
- * 
+ *
  * @class RiakCluster.Builder
  * @constructor
  */
@@ -592,15 +634,15 @@ Builder.prototype = {
     withRiakNodes : function(nodes) {
         for (var i = 0; i &lt; nodes.length; i++) {
             if (nodes[i] instanceof RiakNode) {
-                this.nodes.push(nodes[i]); 
+                this.nodes.push(nodes[i]);
             }
         }
         return this;
     },
     /**
      * Set the number of times a command will be attempted.
-     * In the case of a command failing for any reason, it will be retried 
-     * on a different node. 
+     * In the case of a command failing for any reason, it will be retried
+     * on a different node.
      * @method withExecutionAttempts
      * @param {Number} numAttempts - the number of times to attempt a command (__default:__ 3)
      * @return {RiakCluster.Builder}
@@ -611,7 +653,7 @@ Builder.prototype = {
     },
     /**
      * Set the NodeManager for this cluster.
-     * 
+     *
      * If not provided the {{#crossLink &quot;RoundRobinNodeManager&quot;}}{{/crossLink}} is
      * used.
      * @method withNodeManager
@@ -624,16 +666,16 @@ Builder.prototype = {
     },
     /**
      * Set whether to queue commands or not if no RiakNodes are available.
-     * 
+     *
      * If all nodes are down (health checking) or maxConnections are in use on
-     * all nodes, the default behavior is to fail commands when submitted. 
-     * 
+     * all nodes, the default behavior is to fail commands when submitted.
+     *
      * Setting this option causes the the RiakCluster to queue additional commands
-     * (FIFO) then send them when nodes/connections become available. 
-     * 
-     * If maxDepth is supplied the queue is bounded and additional commands 
+     * (FIFO) then send them when nodes/connections become available.
+     *
+     * If maxDepth is supplied the queue is bounded and additional commands
      * attempting to be queued will be failed. The default is an unbounded queue.
-     * 
+     *
      * @method withQueueCommands
      * @param {Number} [maxDepth=unlimited] the maximum number of commands to queue. Default is unlimited.
      * @param {Number} [submitInterval=500] The duration in milliseconds between queue submission attempts. Default is 500.

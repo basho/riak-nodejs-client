@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.1.0</em>
+            <em>API Docs for: 2.2.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -82,6 +82,8 @@
                                 <li><a href="../classes/Ping.html">Ping</a></li>
                                 <li><a href="../classes/Query.html">Query</a></li>
                                 <li><a href="../classes/Query.Builder.html">Query.Builder</a></li>
+                                <li><a href="../classes/ResetBucketProps.html">ResetBucketProps</a></li>
+                                <li><a href="../classes/ResetBucketProps.Builder.html">ResetBucketProps.Builder</a></li>
                                 <li><a href="../classes/RiakCluster.html">RiakCluster</a></li>
                                 <li><a href="../classes/RiakCluster.Builder.html">RiakCluster.Builder</a></li>
                                 <li><a href="../classes/RiakConnection.html">RiakConnection</a></li>
@@ -163,7 +165,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_commands_yokozuna_search.js.html#l143"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:143</code></a>
+            Defined in: <a href="../files/lib_commands_yokozuna_search.js.html#l164"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:164</code></a>
         </div>
 
             Module: <a href="../modules/YZ.html">YZ</a>
@@ -201,7 +203,7 @@ a Search directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_search.js.html#l143"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:143</code></a>
+        <a href="../files/lib_commands_yokozuna_search.js.html#l164"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:164</code></a>
         </p>
 
 
@@ -235,6 +237,10 @@ a Search directly, this builder may be used.</p>
                     <ul class="index-list methods">
                             <li class="index-item method">
                                 <a href="#method_build">build</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_convertDocuments">convertDocuments</a>
 
                             </li>
                             <li class="index-item method">
@@ -309,7 +315,7 @@ a Search directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_search.js.html#l288"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:288</code></a>
+        <a href="../files/lib_commands_yokozuna_search.js.html#l319"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:319</code></a>
         </p>
 
 
@@ -329,6 +335,61 @@ a Search directly, this builder may be used.</p>
                         <span class="type"><a href="../classes/Search.html" class="crosslink">Search</a></span>:
             </div>
         </div>
+
+
+</div>
+<div id="method_convertDocuments" class="method item">
+    <h3 class="name"><code>convertDocuments</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>convert</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_commands_yokozuna_search.js.html#l294"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:294</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Convert values in documents returned by Solr to corresponding Javascript types.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">convert</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>Solr document values to JS types.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
 
 
 </div>
@@ -354,7 +415,7 @@ a Search directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_search.js.html#l273"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:273</code></a>
+        <a href="../files/lib_commands_yokozuna_search.js.html#l304"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:304</code></a>
         </p>
 
 
@@ -457,7 +518,7 @@ a Search directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_search.js.html#l228"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:228</code></a>
+        <a href="../files/lib_commands_yokozuna_search.js.html#l249"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:249</code></a>
         </p>
 
 
@@ -513,7 +574,7 @@ Overrides the “default_field” setting in the schema file.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_search.js.html#l239"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:239</code></a>
+        <a href="../files/lib_commands_yokozuna_search.js.html#l260"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:260</code></a>
         </p>
 
 
@@ -570,7 +631,7 @@ Overrides the “default_op” setting in the schema file.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_search.js.html#l218"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:218</code></a>
+        <a href="../files/lib_commands_yokozuna_search.js.html#l239"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:239</code></a>
         </p>
 
 
@@ -625,7 +686,7 @@ Overrides the “default_op” setting in the schema file.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_search.js.html#l163"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:163</code></a>
+        <a href="../files/lib_commands_yokozuna_search.js.html#l184"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:184</code></a>
         </p>
 
 
@@ -680,7 +741,7 @@ Overrides the “default_op” setting in the schema file.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_search.js.html#l185"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:185</code></a>
+        <a href="../files/lib_commands_yokozuna_search.js.html#l206"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:206</code></a>
         </p>
 
 
@@ -736,7 +797,7 @@ Riak defaults to 10 if this is not set.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_search.js.html#l262"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:262</code></a>
+        <a href="../files/lib_commands_yokozuna_search.js.html#l283"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:283</code></a>
         </p>
 
 
@@ -792,7 +853,7 @@ This is useful when paginating to ensure the results are returned in a consisten
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_search.js.html#l173"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:173</code></a>
+        <a href="../files/lib_commands_yokozuna_search.js.html#l194"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:194</code></a>
         </p>
 
 
@@ -849,7 +910,7 @@ includes most of the single-node Solr queries.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_search.js.html#l251"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:251</code></a>
+        <a href="../files/lib_commands_yokozuna_search.js.html#l272"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:272</code></a>
         </p>
 
 
@@ -905,7 +966,7 @@ Filters the results to only contain the provided fields.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_search.js.html#l207"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:207</code></a>
+        <a href="../files/lib_commands_yokozuna_search.js.html#l228"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:228</code></a>
         </p>
 
 
@@ -961,7 +1022,7 @@ Default is “none”, which causes the results to be sorted in descending order
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_yokozuna_search.js.html#l196"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:196</code></a>
+        <a href="../files/lib_commands_yokozuna_search.js.html#l217"><code>lib&#x2F;commands&#x2F;yokozuna&#x2F;search.js:217</code></a>
         </p>
 
 

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.1.0</em>
+            <em>API Docs for: 2.2.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -82,6 +82,8 @@
                                 <li><a href="../classes/Ping.html">Ping</a></li>
                                 <li><a href="../classes/Query.html">Query</a></li>
                                 <li><a href="../classes/Query.Builder.html">Query.Builder</a></li>
+                                <li><a href="../classes/ResetBucketProps.html">ResetBucketProps</a></li>
+                                <li><a href="../classes/ResetBucketProps.Builder.html">ResetBucketProps.Builder</a></li>
                                 <li><a href="../classes/RiakCluster.html">RiakCluster</a></li>
                                 <li><a href="../classes/RiakCluster.Builder.html">RiakCluster.Builder</a></li>
                                 <li><a href="../classes/RiakConnection.html">RiakConnection</a></li>
@@ -163,7 +165,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_core_riaknode.js.html#l495"><code>lib&#x2F;core&#x2F;riaknode.js:495</code></a>
+            Defined in: <a href="../files/lib_core_riaknode.js.html#l689"><code>lib&#x2F;core&#x2F;riaknode.js:689</code></a>
         </div>
 
             Module: <a href="../modules/Core.html">Core</a>
@@ -196,7 +198,7 @@ a RiakNode directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l495"><code>lib&#x2F;core&#x2F;riaknode.js:495</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l689"><code>lib&#x2F;core&#x2F;riaknode.js:689</code></a>
         </p>
 
 
@@ -250,6 +252,10 @@ a RiakNode directly, this builder may be used.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_withExternalLoadBalancer">withExternalLoadBalancer</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_withHealthCheck">withHealthCheck</a>
 
                             </li>
@@ -271,6 +277,10 @@ a RiakNode directly, this builder may be used.</p>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_withRemotePort">withRemotePort</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_withRequestTimeout">withRequestTimeout</a>
 
                             </li>
                     </ul>
@@ -301,7 +311,7 @@ a RiakNode directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l625"><code>lib&#x2F;core&#x2F;riaknode.js:625</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l832"><code>lib&#x2F;core&#x2F;riaknode.js:832</code></a>
         </p>
 
 
@@ -352,7 +362,7 @@ a RiakNode directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l636"><code>lib&#x2F;core&#x2F;riaknode.js:636</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l842"><code>lib&#x2F;core&#x2F;riaknode.js:842</code></a>
         </p>
 
 
@@ -434,7 +444,7 @@ a RiakNode directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l592"><code>lib&#x2F;core&#x2F;riaknode.js:592</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l799"><code>lib&#x2F;core&#x2F;riaknode.js:799</code></a>
         </p>
 
 
@@ -591,7 +601,7 @@ a RiakNode directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l569"><code>lib&#x2F;core&#x2F;riaknode.js:569</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l757"><code>lib&#x2F;core&#x2F;riaknode.js:757</code></a>
         </p>
 
 
@@ -614,7 +624,7 @@ a RiakNode directly, this builder may be used.</p>
 
                     <div class="param-description">
                         <ul>
-<li>timeout in milliseconds (<strong>default:</strong> 0).</li>
+<li>timeout in milliseconds (<strong>default:</strong> 3000).</li>
 </ul>
 
                     </div>
@@ -655,7 +665,7 @@ a RiakNode directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l580"><code>lib&#x2F;core&#x2F;riaknode.js:580</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l777"><code>lib&#x2F;core&#x2F;riaknode.js:777</code></a>
         </p>
 
 
@@ -689,6 +699,62 @@ a RiakNode directly, this builder may be used.</p>
 
 
 </div>
+<div id="method_withExternalLoadBalancer" class="method item">
+    <h3 class="name"><code>withExternalLoadBalancer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[externalLoadBalancer=true]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_core_riaknode.js.html#l788"><code>lib&#x2F;core&#x2F;riaknode.js:788</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Set whether this RiakNode connects to an external load balancer.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[externalLoadBalancer=true]</code>
+                        <span class="type">Boolean</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>connects to external load balancer. Default is false.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_withHealthCheck" class="method item">
     <h3 class="name"><code>withHealthCheck</code></h3>
 
@@ -711,7 +777,7 @@ a RiakNode directly, this builder may be used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l610"><code>lib&#x2F;core&#x2F;riaknode.js:610</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l817"><code>lib&#x2F;core&#x2F;riaknode.js:817</code></a>
         </p>
 
 
@@ -774,7 +840,7 @@ health check is considered a success.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l555"><code>lib&#x2F;core&#x2F;riaknode.js:555</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l744"><code>lib&#x2F;core&#x2F;riaknode.js:744</code></a>
         </p>
 
 
@@ -800,7 +866,7 @@ set via <strong>withMinConnections()</strong>.</p>
 
                     <div class="param-description">
                         <ul>
-<li>the timeout in milliseconds (<strong>defualt:</strong> 3000)</li>
+<li>the timeout in milliseconds (<strong>default:</strong> 10000)</li>
 </ul>
 
                     </div>
@@ -843,7 +909,7 @@ set via <strong>withMinConnections()</strong>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l544"><code>lib&#x2F;core&#x2F;riaknode.js:544</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l734"><code>lib&#x2F;core&#x2F;riaknode.js:734</code></a>
         </p>
 
 
@@ -909,7 +975,7 @@ set via <strong>withMinConnections()</strong>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l532"><code>lib&#x2F;core&#x2F;riaknode.js:532</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l723"><code>lib&#x2F;core&#x2F;riaknode.js:723</code></a>
         </p>
 
 
@@ -976,7 +1042,7 @@ These connections are exempt from the idle timeout.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l510"><code>lib&#x2F;core&#x2F;riaknode.js:510</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l703"><code>lib&#x2F;core&#x2F;riaknode.js:703</code></a>
         </p>
 
 
@@ -1042,7 +1108,7 @@ These connections are exempt from the idle timeout.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_core_riaknode.js.html#l521"><code>lib&#x2F;core&#x2F;riaknode.js:521</code></a>
+        <a href="../files/lib_core_riaknode.js.html#l713"><code>lib&#x2F;core&#x2F;riaknode.js:713</code></a>
         </p>
 
 
@@ -1066,6 +1132,72 @@ These connections are exempt from the idle timeout.</p>
                     <div class="param-description">
                         <ul>
 <li>remote port of the Riak node (<strong>default:</strong> 8087)</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/RiakNode.Builder.html" class="crosslink">RiakNode.Builder</a></span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_withRequestTimeout" class="method item">
+    <h3 class="name"><code>withRequestTimeout</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>requestTimeout</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/RiakNode.Builder.html" class="crosslink">RiakNode.Builder</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_core_riaknode.js.html#l767"><code>lib&#x2F;core&#x2F;riaknode.js:767</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Set the request timeout used when executing commands.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">requestTimeout</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>timeout in milliseconds (<strong>default:</strong> 5000).</li>
 </ul>
 
                     </div>

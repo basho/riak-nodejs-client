@@ -45,6 +45,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "Ping",
         "Query",
         "Query.Builder",
+        "ResetBucketProps",
+        "ResetBucketProps.Builder",
         "RiakCluster",
         "RiakCluster.Builder",
         "RiakConnection",

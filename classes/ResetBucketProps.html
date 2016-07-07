@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>UpdateCounter.Builder - basho-riak-client</title>
+    <title>ResetBucketProps - basho-riak-client</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -160,294 +160,46 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>UpdateCounter.Builder Class</h1>
+<h1>ResetBucketProps Class</h1>
 <div class="box meta">
 
-
-        <div class="foundat">
-            Defined in: <a href="../files/lib_commands_crdt_updatecounter.js.html#l117"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatecounter.js:117</code></a>
+        <div class="extends">
+            Extends <a href="../classes/CommandBase.html" class="crosslink">CommandBase</a>
         </div>
 
-            Module: <a href="../modules/CRDT.html">CRDT</a>
+        <div class="foundat">
+            Defined in: <a href="../files/lib_commands_kv_resetbucketprops.js.html#l13"><code>lib&#x2F;commands&#x2F;kv&#x2F;resetbucketprops.js:13</code></a>
+        </div>
+
+            Module: <a href="../modules/KV.html">KV</a>
 
 </div>
 
 
 <div class="box intro">
-    <p>A builder for constructing UpdateCounter instances.</p>
-<p>Rather than having to manually construct the <strong>options</strong> and instantiating
-a UpdateCounter directly, this builder may be used.</p>
-<pre class="code prettyprint"><code>var update = new UpdateCounter.Builder()
-          .withBucketType('counters')
-          .withBucket('myBucket')
-          .withKey('counter_1')
-          .withIncrement(100)
-          .withCallback(callback)
-          .build();</code></pre>
+    <p>Command used to reset a bucket's properties in Riak
+to the default values</p>
+<p>As a convenience, a builder class is provided:</p>
+<pre class="code prettyprint"><code>var fetch = new ResetBucketProps.Builder()
+    .withBucketType('myBucketType')
+    .withBucket('myBucket')
+    .withCallback(myCallback)
+    .build();
+</code></pre>
+<p>See <a href="../classes/ResetBucketProps.Builder.html" class="crosslink">ResetBucketProps.Builder</a></p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_UpdateCounter.Builder" class="method item">
-    <h3 class="name"><code>UpdateCounter.Builder</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/lib_commands_crdt_updatecounter.js.html#l117"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatecounter.js:117</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-    </div>
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-                <div class="index-section methods">
-                    <h3>Methods</h3>
-
-                    <ul class="index-list methods">
-                            <li class="index-item method">
-                                <a href="#method_build">build</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_withBucket">withBucket</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_withBucketType">withBucketType</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_withCallback">withCallback</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_withDw">withDw</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_withIncrement">withIncrement</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_withKey">withKey</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_withPw">withPw</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_withReturnBody">withReturnBody</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_withTimeout">withTimeout</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_withW">withW</a>
-
-                            </li>
-                    </ul>
-                </div>
-
-
-
-        </div>
-
-            <div id="methods" class="api-class-tabpanel">
-                <h2 class="off-left">Methods</h2>
-
-<div id="method_build" class="method item">
-    <h3 class="name"><code>build</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/UpdateCounter.html" class="crosslink">UpdateCounter</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/lib_commands_crdt_updatecounter.js.html#l251"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatecounter.js:251</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Construct a UpdateCounter instance.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/UpdateCounter.html" class="crosslink">UpdateCounter</a></span>:
-                    <p>a UpdateCounter instance</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_withBucket" class="method item">
-    <h3 class="name"><code>withBucket</code></h3>
+<div id="method_ResetBucketProps" class="method item">
+    <h3 class="name"><code>ResetBucketProps</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>bucket</code>
+                        <code>options</code>
                 </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/lib_commands_crdt_updatecounter.js.html#l138"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatecounter.js:138</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Set the bucket.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">bucket</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>the bucket in Riak</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_withBucketType" class="method item">
-    <h3 class="name"><code>withBucketType</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>bucketType</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/lib_commands_crdt_updatecounter.js.html#l148"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatecounter.js:148</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Set the bucket type.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">bucketType</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>the bucket type in riak</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_withCallback" class="method item">
-    <h3 class="name"><code>withCallback</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
                         <code>callback</code>
                 </li>
@@ -459,13 +211,12 @@ a UpdateCounter directly, this builder may be used.</p>
 
 
 
-        <span class="flag chainable">chainable</span>
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_commands_crdt_updatecounter.js.html#l237"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatecounter.js:237</code></a>
+        <a href="../files/lib_commands_kv_resetbucketprops.js.html#l13"><code>lib&#x2F;commands&#x2F;kv&#x2F;resetbucketprops.js:13</code></a>
         </p>
 
 
@@ -473,14 +224,47 @@ a UpdateCounter directly, this builder may be used.</p>
     </div>
 
     <div class="description">
-        <p>Set the callback to be executed when the operation completes.</p>
-
+        
     </div>
 
         <div class="params">
             <h4>Parameters:</h4>
 
             <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>The options for this command.</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name optional">[bucketType=default]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>The bucket type in riak. If not supplied 'default' is used.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">bucket</code>
+                                    <span class="type">String</span>
+
+                                <div class="param-description">
+                                    <p>The bucket in riak.</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
                 <li class="param">
                         <code class="param-name">callback</code>
                         <span class="type">Function</span>
@@ -507,28 +291,20 @@ a UpdateCounter directly, this builder may be used.</p>
                                     <span class="type">Object</span>
 
                                 <div class="param-description">
-                                    <p>The response from Riak. Will ne null if returnBody not set.</p>
+                                    <p>the response from Riak.</p>
 
                                 </div>
 
-                                    <ul class="params-list">
-                                        <li class="param">
-                                                <code class="param-name">generatedKey</code>
-                                                <span class="type">String</span>
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">data</code>
+                                    <span class="type">Object</span>
 
-                                            <div class="param-description">
-                                                If no key was supplied, Riak will generate and return one here.
-                                            </div>
-                                        </li>
-                                        <li class="param">
-                                                <code class="param-name">counterValue</code>
-                                                <span class="type">Number</span>
+                                <div class="param-description">
+                                    <p>additional error data. Will be null if no error.</p>
 
-                                            <div class="param-description">
-                                                The value of the counter in Riak.
-                                            </div>
-                                        </li>
-                                    </ul>
+                                </div>
+
                             </li>
                         </ul>
                 </li>
@@ -538,29 +314,85 @@ a UpdateCounter directly, this builder may be used.</p>
 
 
 </div>
-<div id="method_withDw" class="method item">
-    <h3 class="name"><code>withDw</code></h3>
+    </div>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>dw</code>
-                </li>
-            </ul><span class="paren">)</span>
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods extends">
+                            <li class="index-item method protected inherited">
+                                <a href="#method_constructPbRequest">constructPbRequest</a>
+
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method_getCallback">getCallback</a>
+
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method_getExpectedResponseCode">getExpectedResponseCode</a>
+
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method_getPbReqBuilder">getPbReqBuilder</a>
+
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method_getRiakMessage">getRiakMessage</a>
+
+                            </li>
+                            <li class="index-item method protected inherited">
+                                <a href="#method_onError">onError</a>
+
+                            </li>
+                            <li class="index-item method protected inherited">
+                                <a href="#method_onRiakError">onRiakError</a>
+
+                            </li>
+                            <li class="index-item method protected inherited">
+                                <a href="#method_onSuccess">onSuccess</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+
         </div>
 
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_constructPbRequest" class="method item protected inherited">
+    <h3 class="name"><code>constructPbRequest</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+        <span class="flag protected">protected</span>
 
 
 
-
-
-        <span class="flag chainable">chainable</span>
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/lib_commands_crdt_updatecounter.js.html#l193"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatecounter.js:193</code></a>
+                <p>Inherited from
+                <a href="../classes/CommandBase.html#method_constructPbRequest">CommandBase</a>:
+        <a href="../files/lib_commands_commandbase.js.html#l128"><code>lib&#x2F;commands&#x2F;commandbase.js:128</code></a>
         </p>
 
 
@@ -568,56 +400,42 @@ a UpdateCounter directly, this builder may be used.</p>
     </div>
 
     <div class="description">
-        <p>Set the DW value.
-How many replicas to commit to durable storage before returning a successful response.
-If not set the bucket default is used.</p>
-
+        Construct and return the Riak protocol buffer message for this command.
+Subclasses must override this method.
     </div>
 
-        <div class="params">
-            <h4>Parameters:</h4>
 
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">dw</code>
-                        <span class="type">Number</span>
+        <div class="returns">
+            <h4>Returns:</h4>
 
-
-                    <div class="param-description">
-                        <p>the DW value.</p>
-
-                    </div>
-
-                </li>
-            </ul>
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    a protocol buffer message builder
+            </div>
         </div>
-
 
 
 </div>
-<div id="method_withIncrement" class="method item">
-    <h3 class="name"><code>withIncrement</code></h3>
+<div id="method_getCallback" class="method item private inherited">
+    <h3 class="name"><code>getCallback</code></h3>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>increment</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Function</span>
+        </span>
 
 
-
+        <span class="flag private">private</span>
 
 
 
-        <span class="flag chainable">chainable</span>
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/lib_commands_crdt_updatecounter.js.html#l170"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatecounter.js:170</code></a>
+                <p>Inherited from
+                <a href="../classes/CommandBase.html#method_getCallback">CommandBase</a>:
+        <a href="../files/lib_commands_commandbase.js.html#l68"><code>lib&#x2F;commands&#x2F;commandbase.js:68</code></a>
         </p>
 
 
@@ -625,55 +443,41 @@ If not set the bucket default is used.</p>
     </div>
 
     <div class="description">
-        <p>Set the increment to apply to this counter.
-This may be negative as well as positive.</p>
-
+        Fires the user's callback with the arguments passed in.
     </div>
 
-        <div class="params">
-            <h4>Parameters:</h4>
 
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">increment</code>
-                        <span class="type">Number</span>
+        <div class="returns">
+            <h4>Returns:</h4>
 
-
-                    <div class="param-description">
-                        <p>the amount to increment (negative to decrement)</p>
-
-                    </div>
-
-                </li>
-            </ul>
+            <div class="returns-description">
+                        <span class="type">Function</span>:
+                    the user supplied callback
+            </div>
         </div>
-
 
 
 </div>
-<div id="method_withKey" class="method item">
-    <h3 class="name"><code>withKey</code></h3>
+<div id="method_getExpectedResponseCode" class="method item private inherited">
+    <h3 class="name"><code>getExpectedResponseCode</code></h3>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>key</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
 
 
-
+        <span class="flag private">private</span>
 
 
 
-        <span class="flag chainable">chainable</span>
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/lib_commands_crdt_updatecounter.js.html#l159"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatecounter.js:159</code></a>
+                <p>Inherited from
+                <a href="../classes/CommandBase.html#method_getExpectedResponseCode">CommandBase</a>:
+        <a href="../files/lib_commands_commandbase.js.html#l78"><code>lib&#x2F;commands&#x2F;commandbase.js:78</code></a>
         </p>
 
 
@@ -681,9 +485,140 @@ This may be negative as well as positive.</p>
     </div>
 
     <div class="description">
-        <p>Set the key.
-If not set Riak will generate one.</p>
+        Returns the expected response code for this command.
+    </div>
 
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Number</span>:
+                    the expected response code for this command.
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getPbReqBuilder" class="method item private inherited">
+    <h3 class="name"><code>getPbReqBuilder</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/CommandBase.html#method_getPbReqBuilder">CommandBase</a>:
+        <a href="../files/lib_commands_commandbase.js.html#l111"><code>lib&#x2F;commands&#x2F;commandbase.js:111</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        Returns and instance of the protocol buffer message builder for this command.
+This is determined via the pbRequestName passed to the constructor.
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    the builder for the protocol buffer message to be sent for this command
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getRiakMessage" class="method item private inherited">
+    <h3 class="name"><code>getRiakMessage</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/CommandBase.html#method_getRiakMessage">CommandBase</a>:
+        <a href="../files/lib_commands_commandbase.js.html#l88"><code>lib&#x2F;commands&#x2F;commandbase.js:88</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        Returns the encoded protobuf and message header.
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    object containing the header and encoded protobuf
+            </div>
+        </div>
+
+
+</div>
+<div id="method_onError" class="method item protected inherited">
+    <h3 class="name"><code>onError</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>msg</code>
+                </li>
+                <li class="arg">
+                        <code>data</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag protected">protected</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/CommandBase.html#method_onError">CommandBase</a>:
+        <a href="../files/lib_commands_commandbase.js.html#l164"><code>lib&#x2F;commands&#x2F;commandbase.js:164</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        Called by RiakNode if an error occurs executing the command and all retries are exhausted.
     </div>
 
         <div class="params">
@@ -691,13 +626,22 @@ If not set Riak will generate one.</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">key</code>
+                        <code class="param-name">msg</code>
                         <span class="type">String</span>
 
 
                     <div class="param-description">
-                        <p>the key in riak.</p>
+                        an error message
+                    </div>
 
+                </li>
+                <li class="param">
+                        <code class="param-name">data</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        additional error data
                     </div>
 
                 </li>
@@ -707,29 +651,29 @@ If not set Riak will generate one.</p>
 
 
 </div>
-<div id="method_withPw" class="method item">
-    <h3 class="name"><code>withPw</code></h3>
+<div id="method_onRiakError" class="method item protected inherited">
+    <h3 class="name"><code>onRiakError</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>pw</code>
+                        <code>rpbErrorResp</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
 
 
+        <span class="flag protected">protected</span>
 
 
 
-        <span class="flag chainable">chainable</span>
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/lib_commands_crdt_updatecounter.js.html#l205"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatecounter.js:205</code></a>
+                <p>Inherited from
+                <a href="../classes/CommandBase.html#method_onRiakError">CommandBase</a>:
+        <a href="../files/lib_commands_commandbase.js.html#l151"><code>lib&#x2F;commands&#x2F;commandbase.js:151</code></a>
         </p>
 
 
@@ -737,10 +681,8 @@ If not set Riak will generate one.</p>
     </div>
 
     <div class="description">
-        <p>Set the PW value.
-How many primary nodes must be up when the write is attempted.
-If not set the bucket default is used.</p>
-
+        Called by RiakNode when a RpbErrorResp is received and all retries are exhausted.
+Commands may override this method.
     </div>
 
         <div class="params">
@@ -748,13 +690,12 @@ If not set the bucket default is used.</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">pw</code>
-                        <span class="type">Number</span>
+                        <code class="param-name">rpbErrorResp</code>
+                        <span class="type">Object</span>
 
 
                     <div class="param-description">
-                        <p>the PW value.</p>
-
+                        the RpbErrorResp protocol buffer
                     </div>
 
                 </li>
@@ -764,29 +705,32 @@ If not set the bucket default is used.</p>
 
 
 </div>
-<div id="method_withReturnBody" class="method item">
-    <h3 class="name"><code>withReturnBody</code></h3>
+<div id="method_onSuccess" class="method item protected inherited">
+    <h3 class="name"><code>onSuccess</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>returnBody</code>
+                        <code>pbResponseMessage</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+        <span class="flag protected">protected</span>
 
 
 
-
-
-        <span class="flag chainable">chainable</span>
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/lib_commands_crdt_updatecounter.js.html#l217"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatecounter.js:217</code></a>
+                <p>Inherited from
+                <a href="../classes/CommandBase.html#method_onSuccess">CommandBase</a>:
+        <a href="../files/lib_commands_commandbase.js.html#l139"><code>lib&#x2F;commands&#x2F;commandbase.js:139</code></a>
         </p>
 
 
@@ -794,8 +738,8 @@ If not set the bucket default is used.</p>
     </div>
 
     <div class="description">
-        <p>Return the counter after updating.</p>
-
+        Called by RiakNode when a response is received.
+Subclasses must override this method.
     </div>
 
         <div class="params">
@@ -803,131 +747,26 @@ If not set the bucket default is used.</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">returnBody</code>
-                        <span class="type">Boolean</span>
+                        <code class="param-name">pbResponseMessage</code>
+                        <span class="type">Object</span>
 
 
                     <div class="param-description">
-                        <p>true to return the counter.</p>
-
+                        the protocol buffer received from riak
                     </div>
 
                 </li>
             </ul>
         </div>
 
+        <div class="returns">
+            <h4>Returns:</h4>
 
-
-</div>
-<div id="method_withTimeout" class="method item">
-    <h3 class="name"><code>withTimeout</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>timeout</code>
-                </li>
-            </ul><span class="paren">)</span>
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    true if not streaming or the last response has been received, false otherwise.
+            </div>
         </div>
-
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/lib_commands_crdt_updatecounter.js.html#l227"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatecounter.js:227</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Set a timeout for this operation.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">timeout</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>a timeout in milliseconds.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_withW" class="method item">
-    <h3 class="name"><code>withW</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>w</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/lib_commands_crdt_updatecounter.js.html#l181"><code>lib&#x2F;commands&#x2F;crdt&#x2F;updatecounter.js:181</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Set the W value.
-How many replicas to write to before returning a successful response.
-If not set the bucket default is used.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">w</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>the W value.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
 
 
 </div>

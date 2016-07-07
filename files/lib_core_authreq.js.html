@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.1.0</em>
+            <em>API Docs for: 2.2.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -82,6 +82,8 @@
                                 <li><a href="../classes/Ping.html">Ping</a></li>
                                 <li><a href="../classes/Query.html">Query</a></li>
                                 <li><a href="../classes/Query.Builder.html">Query.Builder</a></li>
+                                <li><a href="../classes/ResetBucketProps.html">ResetBucketProps</a></li>
+                                <li><a href="../classes/ResetBucketProps.Builder.html">ResetBucketProps.Builder</a></li>
                                 <li><a href="../classes/RiakCluster.html">RiakCluster</a></li>
                                 <li><a href="../classes/RiakCluster.Builder.html">RiakCluster.Builder</a></li>
                                 <li><a href="../classes/RiakConnection.html">RiakConnection</a></li>
@@ -183,11 +185,12 @@ var logger = require(&#x27;winston&#x27;);
  * @param {Object} options
  * @param {String} options.user the user with which to authenticate (required)
  * @param {String} options.password the password with which to authenticate (optional)
- * @param {Function} callback the function to call when the command completes or errors
  * @extends CommandBase
  */
-function AuthReq(options, callback) {
-    CommandBase.call(this, &#x27;RpbAuthReq&#x27;, &#x27;RpbAuthResp&#x27;, callback);
+function AuthReq(options) {
+    CommandBase.call(this, &#x27;RpbAuthReq&#x27;, &#x27;RpbAuthResp&#x27;, function () {
+        logger.debug(&#x27;[AuthReq] callback&#x27;);
+    });
     this.validateOptions(options, schema);
     this.user = this.options.user;
     this.password = this.options.password;
@@ -197,18 +200,13 @@ inherits(AuthReq, CommandBase);
 
 AuthReq.prototype.constructPbRequest = function() {
     var protobuf = this.getPbReqBuilder();
-
     protobuf.setUser(new Buffer(this.user));
     protobuf.setPassword(new Buffer(this.password));
-
     return protobuf;
 };
 
 AuthReq.prototype.onSuccess = function(rpbAuthResp) {
-    /*
-     * NB: this method is never called since AuthReq
-     * is &quot;internally&quot; used only by RiakConnection
-     */
+    this._callback(null, true);
     return true;
 };
 

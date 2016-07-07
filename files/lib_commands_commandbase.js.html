@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.1.0</em>
+            <em>API Docs for: 2.2.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -82,6 +82,8 @@
                                 <li><a href="../classes/Ping.html">Ping</a></li>
                                 <li><a href="../classes/Query.html">Query</a></li>
                                 <li><a href="../classes/Query.Builder.html">Query.Builder</a></li>
+                                <li><a href="../classes/ResetBucketProps.html">ResetBucketProps</a></li>
+                                <li><a href="../classes/ResetBucketProps.Builder.html">ResetBucketProps.Builder</a></li>
                                 <li><a href="../classes/RiakCluster.html">RiakCluster</a></li>
                                 <li><a href="../classes/RiakCluster.Builder.html">RiakCluster.Builder</a></li>
                                 <li><a href="../classes/RiakConnection.html">RiakConnection</a></li>
@@ -164,8 +166,11 @@
     <pre class="code prettyprint linenums">
 &#x27;use strict&#x27;;
 
+var util = require(&#x27;util&#x27;);
 var ProtoBufFactory = require(&#x27;../protobuf/riakprotobuf&#x27;);
 var Joi = require(&#x27;joi&#x27;);
+
+var cid = 1;
 
 /**
  * Provides a base class for all commands.
@@ -212,8 +217,8 @@ function CommandBase(pbRequestName, pbResponseName, callback) {
     this.remainingTries = 1;
     
     // This is to facilitate debugging what pb messages this Command represents
-    this.PbRequestName = pbRequestName;
-    this.PbResponseName = pbResponseName;
+    this.name = util.format(&#x27;%s-%d&#x27;, pbRequestName, cid);
+    cid++;
 
     this.validateOptions = function (options, schema, joi_opts) {
         var self = this;

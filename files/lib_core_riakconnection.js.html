@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="basho-riak-client" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.1.0</em>
+            <em>API Docs for: 2.2.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -82,6 +82,8 @@
                                 <li><a href="../classes/Ping.html">Ping</a></li>
                                 <li><a href="../classes/Query.html">Query</a></li>
                                 <li><a href="../classes/Query.Builder.html">Query.Builder</a></li>
+                                <li><a href="../classes/ResetBucketProps.html">ResetBucketProps</a></li>
+                                <li><a href="../classes/ResetBucketProps.Builder.html">ResetBucketProps.Builder</a></li>
                                 <li><a href="../classes/RiakCluster.html">RiakCluster</a></li>
                                 <li><a href="../classes/RiakCluster.Builder.html">RiakCluster.Builder</a></li>
                                 <li><a href="../classes/RiakConnection.html">RiakConnection</a></li>
@@ -172,13 +174,38 @@ var fs = require(&#x27;fs&#x27;);
 var logger = require(&#x27;winston&#x27;);
 
 var ByteBuffer = require(&#x27;bytebuffer&#x27;);
-var RiakProtoBuf = require(&#x27;../protobuf/riakprotobuf&#x27;);
 var StartTls = require(&#x27;./starttls&#x27;);
 var AuthReq = require(&#x27;./authreq&#x27;);
+var utils = require(&#x27;./utils&#x27;);
+
+var rpb = require(&#x27;../protobuf/riakprotobuf&#x27;);
 
 var DEFAULT_MAX_BUFFER = 2048 * 1024;
 var DEFAULT_INIT_BUFFER = 2 * 1024;
-var DEFAULT_CONNECTION_TIMEOUT = 30000;
+
+// TODO FUTURE these are shared with RiakNode
+var DEFAULT_CONNECTION_TIMEOUT = 3000;
+var DEFAULT_REQUEST_TIMEOUT = 5000;
+
+// NB: fixes GH 104
+// https://github.com/basho/riak-nodejs-client/issues/104
+// TODO FUTURE: remove this when Riak uses Erlang R17 or higher.
+var RIAK_R16_CIPHERS = &#x27;DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:AES128-SHA256:AES128-SHA:AES256-SHA256:AES256-SHA:RC4-SHA&#x27;;
+
+var cid = {};
+
+function debugOutputConnectionListeners(name, conn) {
+    if (logger.debug) {
+        logger.debug(&#x27;%s listeners for &quot;close&quot; event: %d&#x27;, name, conn.listenerCount(&#x27;close&#x27;));
+        logger.debug(&#x27;%s listeners for &quot;connect&quot; event: %d&#x27;, name, conn.listenerCount(&#x27;connect&#x27;));
+        logger.debug(&#x27;%s listeners for &quot;data&quot; event: %d&#x27;, name, conn.listenerCount(&#x27;data&#x27;));
+        logger.debug(&#x27;%s listeners for &quot;drain&quot; event: %d&#x27;, name, conn.listenerCount(&#x27;drain&#x27;));
+        logger.debug(&#x27;%s listeners for &quot;end&quot; event: %d&#x27;, name, conn.listenerCount(&#x27;end&#x27;));
+        logger.debug(&#x27;%s listeners for &quot;error&quot; event: %d&#x27;, name, conn.listenerCount(&#x27;error&#x27;));
+        logger.debug(&#x27;%s listeners for &quot;lookup&quot; event: %d&#x27;, name, conn.listenerCount(&#x27;lookup&#x27;));
+        logger.debug(&#x27;%s listeners for &quot;timeout&quot; event: %d&#x27;, name, conn.listenerCount(&#x27;timeout&#x27;));
+    }
+}
 
 /**
  * @module Core
@@ -195,7 +222,14 @@ function RiakConnection(options) {
 
     this.remoteAddress = options.remoteAddress;
     this.remotePort = options.remotePort;
-    this.connectionTimeout = options.connectionTimeout;
+
+    // This is to facilitate debugging
+    if (!cid[this.remotePort]) {
+        cid[this.remotePort] = 1;
+    }
+    this.name = util.format(&#x27;[RiakConnection] (%s:%d-%d)&#x27;,
+        this.remoteAddress, this.remotePort, cid[this.remotePort]);
+    cid[this.remotePort]++;
 
     if (options.cork) {
         this.cork = true;
@@ -203,45 +237,197 @@ function RiakConnection(options) {
 
     if (options.auth) {
         this.auth = options.auth;
+        this.auth.ciphers = RIAK_R16_CIPHERS;
     }
 
     if (options.healthCheck) {
         this.healthCheck = options.healthCheck;
     }
 
+    this.connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
     if (options.hasOwnProperty(&#x27;connectionTimeout&#x27;)) {
         this.connectionTimeout = options.connectionTimeout;
-    } else {
-        this.connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
     }
 
+    this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
+    if (options.hasOwnProperty(&#x27;requestTimeout&#x27;)) {
+        this.requestTimeout = options.requestTimeout;
+    }
+
+    this.maxBufferSize = DEFAULT_MAX_BUFFER;
     if (options.hasOwnProperty(&#x27;maxBufferSize&#x27;)) {
         this.maxBufferSize = options.maxBufferSize;
-    } else {
-        this.maxBufferSize = DEFAULT_MAX_BUFFER;
     }
 
+    var initBufferSize = DEFAULT_INIT_BUFFER;
     if (options.hasOwnProperty(&#x27;initBufferSize&#x27;)) {
-        this.initBufferSize = options.initBufferSize;
-    } else {
-        this.initBufferSize = DEFAULT_INIT_BUFFER;
+        initBufferSize = options.initBufferSize;
     }
 
-    this.inFlight = false; 
-    this.lastUsed = Date.now();
+    this._emitAndClose = function(evt, evt_args) {
+        if (!this.closed) {
+            // NB: this can be useful
+            // logger.debug(&quot;%s emitting &#x27;%s&#x27; args &#x27;%s&#x27;&quot;, this.name, evt, evt_args);
+            // NB: RiakNode checks inFlight to re-try command if necessary
+            // so don&#x27;t set inFlight to false here, it will be set to false in close()
+            this.closed = true;
+            this._connection.end();
+            this.emit(evt, this, evt_args);
+            this.close();
+        }
+    };
 
-    this._buffer = null;
+    this._connHandleEnd = function () {
+        logger.debug(&#x27;%s handling &quot;end&quot; event&#x27;, this.name);
+        this._emitAndClose(&#x27;connectionClosed&#x27;);
+    };
+
+    this._connHandleTimeout = function (command) {
+        var err = util.format(&quot;%s command &#x27;%s&#x27; timed out (in-flight: %s)&quot;,
+            this.name, command.name, this.inFlight);
+        if (logger.debug) {
+            logger.debug(err);
+        }
+        this._emitAndClose(&#x27;connectionClosed&#x27;);
+    };
+
+    this._clearSocketTimeout = function() {
+        if (this._connection) {
+            if (this._boundConnectionTimeout) {
+                this._connection.removeListener(&#x27;timeout&#x27;, this._boundConnectionTimeout);
+                this._boundConnectionTimeout = null;
+            }
+            this._connection.setTimeout(0);
+        }
+    };
+
+    // buffer is private
+    var buffer = null;
+
+    // private buffer functions
+    function initBuffer(data) {
+        // Create a new buffer to receive data if needed
+        if (buffer === null) {
+            buffer = new ByteBuffer(initBufferSize);
+        }
+        buffer.append(data);
+        buffer.flip();
+    }
+
+    function getProtobufsFromBuffer(protobufArray) {
+        if (arguments.length === 0) {
+            protobufArray = [];
+        }
+
+        if (buffer.remaining() &gt;= 4) {
+            buffer.mark();
+            var messageLength = buffer.readUint32();
+
+            // See if we have the complete message
+            if (buffer.remaining() &gt;= messageLength) {
+                // We have a complete message from riak
+                var slice = buffer.slice(undefined, buffer.offset + messageLength);
+                var code = slice.readUint8();
+
+                // Our fun API does some creative things like ... returning only
+                // a code, with 0 bytes following. In those cases we want to set
+                // decoded to null.
+                var decoded = null;
+                if (messageLength - 1 &gt; 0) {
+                    var ResponseProto = rpb.getProtoFor(code);
+                    // GH issue #45
+                    // Must use &#x27;true&#x27; as argument to force copy of data
+                    // otherwise, subsequent fetches will clobber data
+                    decoded = ResponseProto.decode(slice.toBuffer(true));
+                }
+
+                protobufArray[protobufArray.length] = { msgCode : code, protobuf : decoded };
+                // skip past message in buffer
+                buffer.skip(messageLength);
+                // recursively call this until we are out of messages
+                return getProtobufsFromBuffer(protobufArray);
+            } else {
+                // rewind the offset
+                buffer.reset();
+            }
+        }
+
+        // ByteBuffer&#x27;s &#x27;flip()&#x27; effectively clears the buffer which we don&#x27;t
+        // want. We want to flip while preserving anything in the buffer and
+        // compact if necessary.
+
+        var newOffset = buffer.remaining();
+        // Compact if necessary
+        if (newOffset &gt; 0 &amp;&amp; buffer.offset !== 0) {
+            buffer.copyTo(buffer, 0);
+        }
+        buffer.offset = newOffset;
+        buffer.limit = buffer.capacity();
+
+        return protobufArray;
+    }
+
+    function closeBuffer() {
+        if (buffer) {
+            buffer.clear();
+            buffer = null;
+        }
+    }
+
+    // protected buffer functions
+    this._closeBuffer = function () {
+        closeBuffer();
+    };
+
+    this._resetBuffer = function () {
+        if (buffer &amp;&amp; buffer.capacity() &gt; this.maxBufferSize) {
+            closeBuffer();
+        }
+    };
+
+    this._buildProtobufArray = function (data) {
+        initBuffer(data);
+        return getProtobufsFromBuffer();
+    };
+
+    // protected execute functions
+    this._executeInit = function() {
+        this.lastUsed = Date.now();
+        this.executeDone();
+    };
+
+    this._executeStart = function(command) {
+        this.command = command;
+        logger.debug(&#x27;%s execute command:&#x27;, this.name, command.name);
+        this.inFlight = true;
+        this.lastUsed = Date.now();
+    };
+
+    this._executeInit();
+
+    this.closed = false;
+    this._connectedEmitted = false;
 
     this._connection = new net.Socket();
+    if (this._connection.setKeepAlive) {
+        this._connection.setKeepAlive(true, 0);
+    }
+    if (this._connection.setNoDelay) {
+        this._connection.setNoDelay(true);
+    }
 
-    // Note: useful for debugging event-related nonsense
-    // this._connection.setMaxListeners(1);
+    // Note: useful for debugging event issues
+    /*
+    debugOutputConnectionListeners(this.name, this._connection);
+    this.setMaxListeners(1);
+    this._connection.setMaxListeners(1);
+    */
 
     if (this.cork &amp;&amp; !this._connection.cork) {
-        logger.warn(&quot;[RiakConnection] wanted to use cork/uncork but not supported!&quot;);
+        logger.warn(&#x27;%s wanted to use cork/uncork but not supported!&#x27;, this.name);
         this.cork = false;
     } else {
-        logger.debug(&quot;[RiakConnection] using cork() / uncork()&quot;);
+        logger.debug(&#x27;%s using cork() / uncork()&#x27;, this.name);
     }
 }
 
@@ -250,251 +436,258 @@ util.inherits(RiakConnection, events.EventEmitter);
 RiakConnection.prototype.connect = function() {
     this._boundConnectionError = this._connectionError.bind(this);
     this._connection.on(&#x27;error&#x27;, this._boundConnectionError);
-    this._connection.on(&#x27;timeout&#x27;, this._connectionTimeout.bind(this));
-    this._connection.setTimeout(this.connectionTimeout);
-    this._connection.connect(this.remotePort, this.remoteAddress, this._connected.bind(this));
+
+    // This *is* the read/write timeout as well as idle timeout
+    // https://nodejs.org/api/net.html#net_socket_settimeout_timeout_callback
+    this._boundConnectionTimeout = this._connectionTimeout.bind(this);
+    this._connection.setTimeout(this.connectionTimeout, this._boundConnectionTimeout);
+
+    this._boundConnected = this._connected.bind(this);
+    this._connection.connect(this.remotePort, this.remoteAddress, this._boundConnected);
 };
 
 RiakConnection.prototype._connected = function() {
-    logger.debug(&quot;[RiakConnection] connected - host: &quot; + this.remoteAddress + 
-                &quot; port: &quot; + this.remotePort);
+    logger.debug(&#x27;%s connected&#x27;, this.name);
+    this._connection.removeListener(&#x27;connect&#x27;, this._boundConnected);
+    this._boundConnected = null;
 
     this._connection.removeListener(&#x27;error&#x27;, this._boundConnectionError);
-    this._connection.on(&#x27;error&#x27;, this._socketError.bind(this));
-    this._connection.on(&#x27;close&#x27;, this._connClosed.bind(this));
+    this._boundConnectionError = this._socketError.bind(this);
+    this._connection.on(&#x27;error&#x27;, this._boundConnectionError);
+
+    this._connection.on(&#x27;end&#x27;, this._connHandleEnd.bind(this));
+    this._connection.on(&#x27;data&#x27;, this._receiveData.bind(this));
 
     if (this.auth) {
-        // On data, move to next sequence in TLS negotiation
-        logger.debug(&#x27;[RiakConnection] StartTls&#x27;);
-        this._boundReceiveStartTls = this._receiveStartTls.bind(this);
-        this._connection.on(&#x27;data&#x27;, this._boundReceiveStartTls);
-        var command = new StartTls(function(){});
+        /*
+         * NB: at this point, we have not yet emitted the &#x27;connected&#x27; event,
+         * so listeners will not have yet registered for &#x27;connectionClosed&#x27;.
+         * This is why the &#x27;close&#x27; event must raise &#x27;connectFailed&#x27; via
+         * _boundConnectionError
+         */
+        this._connection.on(&#x27;close&#x27;, this._boundConnectionError);
+        this._boundResponseReceived = this._receiveStartTls.bind(this);
+        this.on(&#x27;responseReceived&#x27;, this._boundResponseReceived);
+        var command = new StartTls();
         this.execute(command);
     } else if (this.healthCheck) {
-        logger.debug(&#x27;[RiakConnection] HealthCheck&#x27;);
-        this._boundReceiveHealthCheck = this._receiveHealthCheck.bind(this);
-        this._connection.on(&#x27;data&#x27;, this._boundReceiveHealthCheck);
+         // NB: see above comment re: &#x27;close&#x27; event
+        this._connection.on(&#x27;close&#x27;, this._boundConnectionError);
+        this._boundResponseReceived = this._receiveHealthCheck.bind(this);
+        this.on(&#x27;responseReceived&#x27;, this._boundResponseReceived);
         this.execute(this.healthCheck);
     } else {
-        this._connection.on(&#x27;data&#x27;, this._receiveData.bind(this));
-        this._connection.setTimeout(0);
-        logger.debug(&#x27;[RiakConnection] emit connected, no-auth&#x27;);
+        this._clearSocketTimeout();
+        this._connection.on(&#x27;close&#x27;, this._connClosed.bind(this));
+        logger.debug(&#x27;%s emit connected, no-auth&#x27;, this.name);
+        this._connectedEmitted = true;
         this.emit(&#x27;connected&#x27;, this);
     }
 };
 
 RiakConnection.prototype._connectionError = function(err) {
-    // Connection error, emit to listener
-    logger.error(&quot;[RiakConnection] Failed to connect: &quot; +
-                this.remoteAddress + 
-                &quot; port: &quot; + this.remotePort + 
-                &quot; error: &quot; + err);
-    this._connection.destroy();
-    this.emit(&#x27;connectFailed&#x27;, this, err);
+    this._emitAndClose(&#x27;connectFailed&#x27;, err);
 };
 
-RiakConnection.prototype._connectionTimeout = function() {
-    this._connectionError(&#x27;RiakConnection Timed out trying to connect&#x27;);
+RiakConnection.prototype._connectionTimeout = function(err) {
+    if (!err) {
+        err = &#x27;timed out or other error trying to connect&#x27;;
+    }
+    this._connectionError(err);
 };
 
 RiakConnection.prototype._socketError = function(err) {
     // This is only called if we have an error after a successful connection
     // log only because close will be called right after
-    logger.error(&quot;[RiakConnection] Socket error; &quot; + err);
-};
-
-RiakConnection.prototype._receiveHealthCheck = function(data) {
-    logger.debug(&#x27;[RiakConnection]: receive healthcheck response&#x27;);
-
-    if (this._ensureExpectedResponse(data, this.healthCheck.PbResponseName)) {
-        // On data, use the _receiveData function
-        this._connection.removeListener(&#x27;data&#x27;, this._boundReceiveHealthCheck);
-        this._connection.on(&#x27;data&#x27;, this._receiveData.bind(this));
-        this._connection.setTimeout(0);
-
-        this.inFlight = false;
-
-        logger.debug(&#x27;[RiakConnection] emit connected, healthcheck success&#x27;);
-        this.emit(&#x27;connected&#x27;, this);
+    // https://nodejs.org/api/net.html#net_event_error
+    if (err) {
+        logger.error(&#x27;%s _socketError:&#x27;, this.name);
     }
 };
 
-RiakConnection.prototype._receiveStartTls = function(data) {
-    logger.debug(&quot;[RiakConnection]: receive StartTls response&quot;);
+RiakConnection.prototype._receiveHealthCheck = function(conn, command, code, decoded) {
+    // NB: this function is similar to _responseReceived in RiakNode
+    logger.debug(&#x27;%s receive health check response&#x27;, this.name);
+    this.executeDone();
+    this.removeListener(&#x27;responseReceived&#x27;, this._boundResponseReceived);
+    this._boundResponseReceived = null;
+    this._connection.removeListener(&#x27;close&#x27;, this._boundConnectionError);
+    this._boundConnectionError = null;
+    this._connection.on(&#x27;close&#x27;, this._connClosed.bind(this));
 
-    if (this._ensureExpectedResponse(data, &#x27;RpbStartTls&#x27;)) {
+    var self = this;
+    function onError(err) {
+        logger.error(err.msg);
+        self._connectionError(err.msg);
+    }
+    function onSuccess() {
+        logger.debug(&#x27;%s health check, emit connected&#x27;, self.name);
+        self._connectedEmitted = true;
+        self.emit(&#x27;connected&#x27;, self);
+    }
+    var data = {
+        conn: conn,
+        command: command,
+        code: code,
+        decoded: decoded,
+        shouldCallback: true
+    };
+    utils.handleRiakResponse(data, onError, onSuccess);
+};
 
-        var tls_secure_context = tls.createSecureContext(this.auth);
+RiakConnection.prototype._receiveStartTls = function(conn, command, code, decoded) {
+    // NB: this function is similar to _responseReceived in RiakNode
+    logger.debug(&#x27;%s receive StartTls response&#x27;, this.name);
+    this.executeDone();
+    this.removeListener(&#x27;responseReceived&#x27;, this._boundResponseReceived);
+    this._boundResponseReceived = null;
+
+    var self = this;
+    function onError(err) {
+        logger.error(err.msg);
+        self._connectionError(err.msg);
+    }
+    function onSuccess() {
+        var tls_secure_context = tls.createSecureContext(self.auth);
         var tls_socket_options = {
             isServer: false, // NB: required
             secureContext: tls_secure_context
         };
 
-        this._connection = new tls.TLSSocket(this._connection, tls_socket_options);
+        self._connection.removeListener(&#x27;error&#x27;, self._boundConnectionError);
+        self._connection = new tls.TLSSocket(self._connection, tls_socket_options);
+        // NB: *must* re-register for data event!
+        self._connection.on(&#x27;data&#x27;, self._receiveData.bind(self));
+        self._connection.on(&#x27;error&#x27;, self._boundConnectionError);
+
+        // NB: this is necessary since we have not yet emitted the &#x27;connected&#x27; event
+        // in which case the execute method would set up the timeout
+        // _receiveData clears the timeout as well as the bound method
+        self._boundConnectionTimeout = self._connectionTimeout.bind(self);
+        self._connection.setTimeout(self.connectionTimeout, self._boundConnectionTimeout);
 
         var auth_options = {
-            user: this.auth.user,
-            password: this.auth.password
+            user: self.auth.user,
+            password: self.auth.password
         };
 
-        // On data, move to next sequence in TLS negotiation
-        this._connection.removeListener(&#x27;data&#x27;, this._boundReceiveStartTls);
-        this._boundReceiveAuthResp = this._receiveAuthResp.bind(this);
-        this._connection.on(&#x27;data&#x27;, this._boundReceiveAuthResp);
+        // On responseReceived event, move to next sequence in TLS negotiation
+        self._boundResponseReceived = self._receiveAuthResp.bind(self);
+        self.on(&#x27;responseReceived&#x27;, self._boundResponseReceived);
 
         // Execute AuthReq command
-        this.inFlight = false;
-        var command = new AuthReq(auth_options, function(){});
-        this.execute(command);
+        /*
+        if (logger.debug) {
+            debugOutputConnectionListeners(self.name, self._connection);
+        }
+        */
+        var command = new AuthReq(auth_options);
+        self.execute(command);
     }
+    var data = {
+        conn: conn,
+        command: command,
+        code: code,
+        decoded: decoded,
+        shouldCallback: true
+    };
+    utils.handleRiakResponse(data, onError, onSuccess);
 };
 
-RiakConnection.prototype._receiveAuthResp = function(data) {
-    if (this._ensureExpectedResponse(data, &#x27;RpbAuthResp&#x27;)) {
+RiakConnection.prototype._receiveAuthResp = function(conn, command, code, decoded) {
+    logger.debug(&#x27;%s receive RpbAuthResp&#x27;, this.name);
+    this.executeDone();
+    this.removeListener(&#x27;responseReceived&#x27;, this._boundResponseReceived);
+    this._boundResponseReceived = null;
+    this._connection.removeListener(&#x27;close&#x27;, this._boundConnectionError);
+    this._boundConnectionError = null;
+    this._connection.on(&#x27;close&#x27;, this._connClosed.bind(this));
 
-        // On data, use the _receiveData function
-        this._connection.removeListener(&#x27;data&#x27;, this._boundReceiveAuthResp);
-        this._connection.on(&#x27;data&#x27;, this._receiveData.bind(this));
-        this._connection.setTimeout(0);
-
-        this.inFlight = false;
-
-        logger.debug(&#x27;[RiakConnection] emit connected, with-auth&#x27;);
-        this.emit(&#x27;connected&#x27;, this);
+    var self = this;
+    function onError(err) {
+        logger.error(err.msg);
+        self._connectionError(err.msg);
     }
+    function onSuccess() {
+        logger.debug(&#x27;%s emit connected, with-auth&#x27;, self.name);
+        self._connectedEmitted = true;
+        self.emit(&#x27;connected&#x27;, self);
+    }
+    var data = {
+        conn: conn,
+        command: command,
+        code: code,
+        decoded: decoded,
+        shouldCallback: true
+    };
+    utils.handleRiakResponse(data, onError, onSuccess);
 };
 
 RiakConnection.prototype._receiveData = function(data) {
     var protobufArray = this._buildProtobufArray(data);
-
     for (var i = 0; i &lt; protobufArray.length; i++) {
-        this.emit(&#x27;responseReceived&#x27;, this, this.command, 
-                    protobufArray[i].msgCode, protobufArray[i].protobuf);
+        this._clearSocketTimeout();
+        this.emit(&#x27;responseReceived&#x27;, this,
+            this.command, protobufArray[i].msgCode, protobufArray[i].protobuf);
     }
 };
 
-RiakConnection.prototype._ensureExpectedResponse = function(data, msgName) {
-    var protobufArray = this._buildProtobufArray(data);
-    var err;
-    if (protobufArray.length === 0) {
-        err = &#x27;Expected &#x27; + msgName + &#x27; response message&#x27;;
-    } else {
-
-        var resp = protobufArray[0];
-        var code = RiakProtoBuf.getCodeFor(msgName);
-
-        if (resp.msgCode === 0) {
-            // We received an RpbErrorResp
-            err = resp.protobuf.getErrmsg().toString(&#x27;utf8&#x27;);
-        } else if (resp.msgCode !== code) {
-            err = msgName + &#x27; incorrect response code: &#x27; + resp.msgCode;
-        }
-    }
-
-    if (err) {
-        this._connectionError(err);
-        return false;
-    } else {
-        return true;
-    }
-};
-
-RiakConnection.prototype._buildProtobufArray = function(data) {
-    // Create a new buffer to receive data if needed 
-    if (this._buffer === null) {
-        this._buffer = new ByteBuffer(this.initBufferSize);
-    }
-
-    this._buffer.append(data);
-    this._buffer.flip();
-    return this._getProtobufsFromBuffer();
-};
-
-RiakConnection.prototype._getProtobufsFromBuffer = function(protobufArray) {
-    if (arguments.length === 0) {
-        protobufArray = [];
-    }
-
-    if (this._buffer.remaining() &gt;= 4) {
-        this._buffer.mark();
-        var messageLength = this._buffer.readUint32();
-
-        // See if we have the complete message
-        if (this._buffer.remaining() &gt;= messageLength) {
-            // We have a complete message from riak
-            var slice = this._buffer.slice(undefined, this._buffer.offset + messageLength);
-            var code = slice.readUint8();
-
-            // Our fun API does some creative things like ... returning only 
-            // a code, with 0 bytes following. In those cases we want to set 
-            // decoded to null.
-            var decoded = null;
-            if (messageLength - 1 &gt; 0) {
-                var ResponseProto = RiakProtoBuf.getProtoFor(code);
-                // GH issue #45
-                // Must use &#x27;true&#x27; as argument to force copy of data
-                // otherwise, subsequent fetches will clobber data
-                decoded = ResponseProto.decode(slice.toBuffer(true));
-            } 
-
-            protobufArray[protobufArray.length] = { msgCode : code, protobuf : decoded};
-            // skip past message in buffer
-            this._buffer.skip(messageLength);
-            // recursively call this until we are out of messages
-            return this._getProtobufsFromBuffer(protobufArray);
-        } else {
-            // rewind the offset 
-            this._buffer.reset();
-        }   
-    }
-
-    // ByteBuffer&#x27;s &#x27;flip()&#x27; effectively clears the buffer which we don&#x27;t
-    // want. We want to flip while preserving anything in the buffer and 
-    // compact if necessary.
-
-    var newOffset = this._buffer.remaining();
-    // Compact if necessary
-    if (newOffset &gt; 0 &amp;&amp; this._buffer.offset !== 0) {
-        this._buffer.copyTo(this._buffer, 0);
-    }
-    this._buffer.offset = newOffset;
-    this._buffer.limit = this._buffer.capacity();
-
-    return protobufArray;
-};
-
-RiakConnection.prototype.resetBuffer = function() {
-    if (this._buffer &amp;&amp; this._buffer.capacity() &gt; this.maxBufferSize) {
-        this._buffer = null;
-    } 
-};
-
+// TODO FUTURE: what does &quot;had_error&quot; really mean?
 RiakConnection.prototype._connClosed = function(had_error) {
-    this._connection.destroy();
-    this.emit(&#x27;connectionClosed&#x27;, this);
+    this._emitAndClose(&#x27;connectionClosed&#x27;);
 };
 
 RiakConnection.prototype.close = function() {
+    this.closed = true;
+    this.executeDone();
     this.removeAllListeners();
-    this._connection.removeAllListeners();
-    this._connection.destroy();
-    this._buffer = null;
+    this._closeBuffer();
+    if (this._connection) {
+        this._connection.end();
+        this._connection.removeAllListeners();
+        this._connection.on(&#x27;error&#x27;, function (err) {
+            if (err) {
+                logger.error(&#x27;%s error AFTER close:&#x27;, this.name, err);
+            }
+        });
+        this._connection = null;
+    }
+    logger.debug(&#x27;%s closed&#x27;, this.name);
+};
+
+RiakConnection.prototype.executeDone = function() {
+    this.inFlight = false;
+    this.command = {
+        name: &#x27;no-command&#x27;
+    };
+    this._resetBuffer();
 };
 
 // command includes user callback
 RiakConnection.prototype.execute = function(command) {
-    this.command = command;
-
     if (this.inFlight === true) {
-        logger.error(&quot;[RiakConnection] attempted to run command on in-use connection&quot;);
+        logger.error(&#x27;%s attempted to run command &quot;%s&quot; on in-use connection&#x27;,
+            this.name, command.name);
         return false;
     }
 
-    logger.debug(&quot;[RiakConnection] execute command: &quot; + command.PbRequestName);
-    this.inFlight = true;
-    this.lastUsed = Date.now();
+    this._executeStart(command);
+
     // write PB to socket
     var message = command.getRiakMessage();
+
+    /*
+     * NB: only bind to &#x27;timeout&#x27; if &#x27;connected&#x27; event has been emitted.
+     * Initial connection, health check and starting TLS bind &#x27;timeout&#x27;
+     * to a handler that will raise &#x27;connectFailed&#x27; on timeout
+     */
+    if (this._connectedEmitted) {
+        if (this._boundConnectionTimeout) {
+            this._connection.removeListener(&#x27;timeout&#x27;, this._boundConnectionTimeout);
+        }
+        this._boundConnectionTimeout = this._connHandleTimeout.bind(this, command);
+        this._connection.setTimeout(this.requestTimeout, this._boundConnectionTimeout);
+    }
 
     /*
      * Use of cork()/uncork() suggested by Doug Luce
