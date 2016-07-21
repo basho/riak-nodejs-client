@@ -1,8 +1,8 @@
 'use strict';
 
 var Test = require('../testparams');
-
 var TS = require('../../../lib/commands/ts');
+var utils = require('../../../lib/utils');
 
 var assert = require('assert');
 var logger = require('winston');
@@ -43,7 +43,7 @@ function validateResponseRow(got, want) {
 	assert.strictEqual(got[4], null);
 }
 
-describe('Timeseries - Integration', function () {
+describe('timeseries-integration', function () {
     before(function(done) {
         cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
@@ -62,13 +62,13 @@ describe('Timeseries - Integration', function () {
         });
     });
 
-    describe('Query', function () {
-        it('can describe a timeseries table', function(done) {
+    describe('query', function () {
+        it('describes-table', function(done) {
             var queryText = 'DESCRIBE GeoCheckin';
             var callback = function(err, resp) {
                 assert(!err, err);
-                assert.equal(resp.columns.length, 5);
-                assert.equal(resp.rows.length, 5);
+                assert(resp.columns.length >= 5);
+                assert.strictEqual(resp.rows.length, 5);
                 done();
             };
             var q = new TS.Query.Builder()
@@ -77,15 +77,15 @@ describe('Timeseries - Integration', function () {
                 .build();
             cluster.execute(q);
         });
-        it('can create a new timeseries table', function(done) {
+        it('creates-table', function(done) {
             var tmp = rs.generate(32);
             var queryText = 'CREATE TABLE ' + tmp +
                 '(geohash varchar not null, user varchar not null, time timestamp not null, weather varchar not null, temperature double, ' +
                 'PRIMARY KEY((geohash, user, quantum(time, 15, m)), geohash, user, time))';
             var callback = function(err, resp) {
                 assert(!err, err);
-                assert.equal(resp.columns.length, 0);
-                assert.equal(resp.rows.length, 0);
+                assert.strictEqual(resp.columns.length, 0);
+                assert.strictEqual(resp.rows.length, 0);
                 done();
             };
             var q = new TS.Query.Builder()
@@ -94,12 +94,12 @@ describe('Timeseries - Integration', function () {
                 .build();
             cluster.execute(q);
         });
-        it('no matches returns no data', function(done) {
+        it('no-matches-returns-no-data', function(done) {
             var queryText = "select * from GeoCheckin where time > 0 and time < 10 and geohash = 'hash1' and user = 'user1'";
             var callback = function(err, resp) {
                 assert(!err, err);
-                assert.equal(resp.columns.length, 0);
-                assert.equal(resp.rows.length, 0);
+                assert.strictEqual(resp.columns.length, 0);
+                assert.strictEqual(resp.rows.length, 0);
                 done();
             };
             var q = new TS.Query.Builder()
@@ -108,13 +108,13 @@ describe('Timeseries - Integration', function () {
                 .build();
             cluster.execute(q);
         });
-        it('some matches returns data', function(done) {
+        it('some-matches-returns-data', function(done) {
             var queryText = "select * from GeoCheckin where time > " + tenMinsAgo +
                             " and time < " + now +
                             " and geohash = 'hash1' and user = 'user2'";
             var callback = function(err, resp) {
                 assert(!err, err);
-                assert.equal(resp.columns.length, columns.length);
+                assert.strictEqual(resp.columns.length, columns.length);
                 var got = resp.rows[0];
                 var want = rows[2];
                 validateResponseRow(got, want);
@@ -128,16 +128,16 @@ describe('Timeseries - Integration', function () {
         });
     });
 
-    describe('ListKeys', function () {
-        it('returns all TS keys - no streaming', function(done) {
+    describe('list-keys', function () {
+        it('returns-all-keys-no-streaming', function(done) {
             var callback = function(err, resp) {
                 assert(!err, err);
                 assert.equal(resp.keys.length, rows.length);
                 resp.keys.forEach(function (key) {
-                    assert.equal(key.length, 3);
+                    assert.strictEqual(key.length, 3);
                     assert.equal(key[0], 'hash1');
                     assert.equal(key[1], 'user2');
-                    // TODO RTS-311 assert(key[2] instanceof Date);
+                    assert(utils.isInteger(key[2]));
                 });
                 done();
             };
@@ -148,14 +148,13 @@ describe('Timeseries - Integration', function () {
                 .build();
             cluster.execute(cmd);
         });
-
-        it('returns all TS keys - streaming', function(done) {
+        it('returns-all-keys-streaming', function(done) {
             var allKeys = [];
             var callback = function(err, resp) {
                 assert(!err, err);
                 Array.prototype.push.apply(allKeys, resp.keys);
                 if (resp.done) {
-                    assert.equal(allKeys.length, rows.length);
+                    assert.strictEqual(allKeys.length, rows.length);
                     done();
                 }
             };
@@ -168,12 +167,12 @@ describe('Timeseries - Integration', function () {
         });
     });
 
-    describe('Describe', function () {
-        it('returns timeseries table description', function(done) {
+    describe('describe', function () {
+        it('returns-table-description', function(done) {
             var callback = function(err, resp) {
                 assert(!err, err);
-                assert.equal(resp.columns.length, 5);
-                assert.equal(resp.rows.length, 5);
+                assert(resp.columns.length >= 5);
+                assert.strictEqual(resp.rows.length, 5);
                 done();
             };
             var cmd = new TS.Describe.Builder()
