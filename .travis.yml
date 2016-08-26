@@ -1,14 +1,13 @@
 branches:
   only:
-    - master
-    - develop
-
+  - master
+  - develop
 language: node_js
-
 node_js:
-  - "stable"
-  - "0.12"
-
+- stable
+- '0.12'
 script:
-    - make unit-test
-
+- make unit-test
+notifications:
+  slack:
+    secure: hWbLCAj+9k3RvKkt1SwM3m1MPu/3CWlKNtyGdv1LD7Ud7AXhlgyAhzqMYUf6WjBicRb1czqjZGEd4Dtv64ICtpSi10rDxfY+eduBnSkxMKsgA09coaPe8dgaIF2Mwt+riSn8W6L6/odedBKE+ZlNY/0Thl1laLOssoll7S0YV5o=
