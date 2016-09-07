@@ -51,6 +51,16 @@ module.exports = function(grunt) {
             },
             src: ['test/integration/core/*.js', 'test/integration/crdt/*.js', 'test/integration/kv/*.js', 'test/integration/mapreduce/*.js', 'test/integration/yokozuna/*.js']
         },
+        integration_hll: {
+            options: {
+                reporter: 'spec',
+                captureFile: 'integration-test-results.txt',
+                quiet: false,
+                clearRequireCache: false,
+                colors: false
+            },
+            src: ['test/integration/dt/hll.js']
+        },
         timeseries: {
             options: {
                 reporter: 'spec',
@@ -70,7 +80,7 @@ module.exports = function(grunt) {
             },
             src: ['test/security/**/*.js']
         }
-    },   
+    },
     watch: {
       files: ['<%= jshint.files %>'],
       tasks: ['jshint']
@@ -105,6 +115,7 @@ module.exports = function(grunt) {
     grunt.task.run(['jshint', 'mochaTest:unit']);
   });
   grunt.registerTask('integration', ['jshint', 'mochaTest:integration']);
+  grunt.registerTask('integration-hll', ['jshint', 'mochaTest:integration_hll']);
   grunt.registerTask('timeseries', ['jshint', 'mochaTest:timeseries']);
   grunt.registerTask('security-test', ['mochaTest:security']);
   grunt.registerTask('security', ['jshint', 'mochaTest:security']);
