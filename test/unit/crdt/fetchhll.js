@@ -78,6 +78,5 @@ describe('FetchHll', function() {
 
             fetch.onRiakError(rpbErrorResp);
         });
-
     });
 });
