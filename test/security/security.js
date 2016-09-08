@@ -38,7 +38,6 @@ describe('security', function() {
             var conn = new RiakConnection({
                 remoteAddress : Test.riakHost,
                 remotePort : Test.riakPort,
-                connectionTimeout : 500,
                 auth: Test.certAuth
             });
             setup_events(conn, done);
@@ -51,7 +50,6 @@ describe('security', function() {
             var conn = new RiakConnection({
                 remoteAddress : Test.riakHost,
                 remotePort : Test.riakPort,
-                connectionTimeout : 500,
                 auth: Test.passAuth
             });
             setup_events(conn, done);
