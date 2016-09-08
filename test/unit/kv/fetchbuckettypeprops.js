@@ -62,21 +62,22 @@ describe('FetchBucketTypeProps', function() {
             props.setBackend(new Buffer('backend'));
             props.setSearchIndex(new Buffer('index'));
             props.setDatatype(new Buffer('dataType'));
-            
+            props.setHllPrecision(14);
+
             var hook = new RpbCommitHook();
             var modfun = new RpbModFun();
             modfun.module = new Buffer('module_name');
             modfun.function = new Buffer('function_name');
             hook.modfun = modfun;
-            
+
             props.precommit.push(hook);
             props.postcommit.push(hook);
             props.setChashKeyfun(modfun);
             props.setLinkfun(modfun);
-            
+
             var protobuf = new RpbGetBucketResp();
             protobuf.setProps(props);
-            
+
             var callback = function(err, response) {
                 assert.equal(response.nVal, 3);
                 assert.equal(response.allowMult, true);
@@ -109,27 +110,28 @@ describe('FetchBucketTypeProps', function() {
                 assert.equal(response.chashKeyfun.fun, 'function_name');
                 assert.equal(response.linkFun.mod, 'module_name');
                 assert.equal(response.linkFun.fun, 'function_name');
+                assert.equal(response.hllPrecision, 14);
                 done();
             };
-            
+
             var fetchProps = new FetchBucketTypeProps.Builder()
                     .withBucketType('bucket_type')
                     .withCallback(callback)
                     .build();
             fetchProps.onSuccess(protobuf);
         });
-        
+
         it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
            var rpbErrorResp = new RpbErrorResp();
            rpbErrorResp.setErrmsg(new Buffer('this is an error'));
-           
+
            var callback = function(err, response) {
                if (err) {
                    assert.equal(err,'this is an error');
                    done();
                }
            };
-           
+
            var fetchCommand = new FetchBucketTypeProps.Builder()
                .withBucketType('bucket_type')
                .withCallback(callback)
