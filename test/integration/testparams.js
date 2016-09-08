@@ -19,7 +19,7 @@ module.exports.bucketName = 'riak-nodejs-client';
 
 /**
 * Bucket type
-* 
+*
 * you must create the type 'leveldb_type' to use this:
 *
 * riak-admin bucket-type create leveldb_type '{"props":{"backend":"leveldb_backend"}}'
@@ -75,23 +75,24 @@ module.exports.buildCluster = function(start_cb) {
 };
 
 /**
- * 
- * CRDTs - need to create these types 
+ *
+ * CRDTs - need to create these types
  */
 module.exports.counterBucketType = 'counters';
 module.exports.setBucketType = 'sets';
 module.exports.mapBucketType = 'maps';
+module.exports.hllBucketType = 'hlls';
 
 module.exports.cleanBucket = function(cluster, type, bucket, callback) {
-  
-    // Note this also acts as the integration test for ListKeys and 
+
+    // Note this also acts as the integration test for ListKeys and
     // DeleteValue
     logger.debug('Clearing bucket: %s:%s', type, bucket);
     var numKeys = 0;
     var count = 0;
     var lkCallback = function(err, resp) {
         assert(!err, err);
-        
+
         numKeys += resp.keys.length;
 
         if (numKeys > 0) {
@@ -100,7 +101,7 @@ module.exports.cleanBucket = function(cluster, type, bucket, callback) {
             logger.debug('DONE clearing bucket: %s:%s', type, bucket);
             callback();
         }
-        
+
         var dCallback = function(err, resp) {
             assert(!err, err);
             count++;
@@ -109,28 +110,28 @@ module.exports.cleanBucket = function(cluster, type, bucket, callback) {
                 callback();
             }
         };
-        
+
         for (var i = 0; i < resp.keys.length; i++) {
-            
+
             var del = new DeleteValue.Builder()
                     .withBucket(resp.bucket)
                     .withBucketType(resp.bucketType)
                     .withKey(resp.keys[i])
                     .withCallback(dCallback)
                     .build();
-            
+
             cluster.execute(del);
         }
-        
+
     };
-    
+
     var list = new ListKeys.Builder()
             .withBucket(bucket)
             .withBucketType(type)
             .withCallback(lkCallback)
             .withStreaming(false)
             .build();
-    
+
     cluster.execute(list);
-    
+
 };

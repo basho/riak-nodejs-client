@@ -10,9 +10,9 @@ var assert = require('assert');
 describe('StoreBucketProps', function() {
     describe('Build', function() {
         it('should build a RpbSetBucketProps correctly', function(done) {
-            
+
             var hook = { mod: 'module_name', fun: 'function_name' };
-            
+
             var storeProps = new StoreBucketProps.Builder()
                 .withBucketType('bucket_type')
                 .withBucket('bucket_name')
@@ -38,11 +38,12 @@ describe('StoreBucketProps', function() {
                 .addPostcommitHook(hook)
                 .withChashkeyFunction(hook)
                 .withCallback(function(){})
+                .withHllPrecision(14)
                 .build();
-        
+
             var protobuf = storeProps.constructPbRequest();
             var props = protobuf.getProps();
-            
+
             assert.equal(protobuf.bucket.toString('utf8'), 'bucket_name');
             assert.equal(protobuf.type.toString('utf8'), 'bucket_type');
             assert.equal(props.getNVal(), 3);
@@ -63,62 +64,62 @@ describe('StoreBucketProps', function() {
             assert.equal(props.getSearch(), true);
             assert.equal(props.getBackend().toString('utf8'), 'backend');
             assert.equal(props.getSearchIndex().toString('utf8'), 'indexName');
-            
+
             assert.equal(props.precommit.length, 1);
             assert.equal(props.precommit[0].modfun.module.toString('utf8'), 'module_name');
             assert.equal(props.precommit[0].modfun.function.toString('utf8'), 'function_name');
-            
+
             assert.equal(props.postcommit.length, 1);
             assert.equal(props.postcommit[0].modfun.module.toString('utf8'), 'module_name');
             assert.equal(props.postcommit[0].modfun.function.toString('utf8'), 'function_name');
-            
+
             assert.equal(props.getChashKeyfun().module.toString('utf8'), 'module_name');
             assert.equal(props.getChashKeyfun().function.toString('utf8'), 'function_name');
+            assert.equal(props.getHllPrecision(), 14);
             done();
-            
-                
+
+
         });
-        
+
         it('should take a RpbSetBucketResp and call the users callback with the response', function(done) {
-           
+
             // RpbSetBucketResp has no body. Riak just sends back the code so we supply null
             // to the command on success and a simple boolean true is sent to the user callback
-            
+
             var callback = function(err, response) {
                 assert.equal(response, true);
                 done();
             };
-            
+
             var storeProps = new StoreBucketProps.Builder()
                 .withBucketType('bucket_type')
                 .withBucket('bucket_name')
                 .withCallback(callback)
                 .build();
-        
+
             storeProps.onSuccess(null);
-            
+
         });
-        
+
         it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
            var rpbErrorResp = new RpbErrorResp();
            rpbErrorResp.setErrmsg(new Buffer('this is an error'));
-           
+
            var callback = function(err, response) {
                if (err) {
                    assert.equal(err,'this is an error');
                    done();
                }
            };
-           
+
            var storeProps = new StoreBucketProps.Builder()
                 .withBucketType('bucket_type')
                 .withBucket('bucket_name')
                 .withCallback(callback)
                 .build();
-        
+
             storeProps.onRiakError(rpbErrorResp);
-           
+
         });
     });
 });
-        

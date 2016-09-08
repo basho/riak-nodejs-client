@@ -1,7 +1,7 @@
 VERBOSITY = normal
 GRUNT=$(PROJDIR)/node_modules/grunt-cli/bin/grunt
 
-.PHONY: all install-deps help test unit-test integration-test security-test publish
+.PHONY: all install-deps help test unit-test integration-test integration-test-hll security-test publish
 
 all: test
 
@@ -17,6 +17,9 @@ unit-test:
 integration-test:
 	$(GRUNT) integration
 
+integration-test-hll:
+	$(GRUNT) integration-hll
+
 security-test:
 	$(GRUNT) security
 
@@ -29,13 +32,14 @@ publish:
 help:
 	@echo ''
 	@echo ' Targets:'
-	@echo '--------------------------------------------------------------'
-	@echo ' all                          - Run everything                '
-	@echo ' lint                         - Run jshint                    '
-	@echo ' install-deps                 - Install required dependencies '
-	@echo ' test                         - Run unit & integration tests  '
-	@echo ' unit-test [SUITE=suite_name] - Run unit tests                '
-	@echo ' integration-test             - Run integration tests         '
-	@echo ' security-test                - Run security tests            '
-	@echo '--------------------------------------------------------------'
+	@echo '-----------------------------------------------------------------'
+	@echo ' all                          - Run everything                   '
+	@echo ' lint                         - Run jshint                       '
+	@echo ' install-deps                 - Install required dependencies    '
+	@echo ' test                         - Run unit & integration tests     '
+	@echo ' unit-test [SUITE=suite_name] - Run unit tests                   '
+	@echo ' integration-test             - Run integration tests            '
+	@echo ' integration-test-hll         - Run Hyperloglog integration tests'
+	@echo ' security-test                - Run security tests               '
+	@echo '-----------------------------------------------------------------'
 	@echo ''
