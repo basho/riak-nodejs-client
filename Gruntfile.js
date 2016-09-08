@@ -49,7 +49,7 @@ module.exports = function(grunt) {
                 clearRequireCache: false,
                 colors: false
             },
-            src: ['test/integration/core/*.js', 'test/integration/crdt/*.js', 'test/integration/kv/*.js', 'test/integration/mapreduce/*.js', 'test/integration/yokozuna/*.js']
+            src: ['test/integration/core/*.js', 'test/integration/crdt/*.js', 'test/integration/kv/*.js', 'test/integration/mapreduce/*.js', 'test/integration/yokozuna/*.js', '!test/integration/crdt/updateandfetchhll.js']
         },
         integration_hll: {
             options: {
@@ -59,7 +59,7 @@ module.exports = function(grunt) {
                 clearRequireCache: false,
                 colors: false
             },
-            src: ['test/integration/dt/hll.js']
+            src: ['test/integration/crdt/updateandfetchhll.js']
         },
         timeseries: {
             options: {
