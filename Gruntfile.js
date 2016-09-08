@@ -49,7 +49,7 @@ module.exports = function(grunt) {
                 clearRequireCache: false,
                 colors: false
             },
-            src: ['test/integration/core/*.js', 'test/integration/crdt/*.js', 'test/integration/kv/*.js', 'test/integration/mapreduce/*.js', 'test/integration/yokozuna/*.js', '!test/integration/crdt/updateandfetchhll.js']
+            src: ['test/integration/**/*.js', '!test/integration/crdt/*hll.js', '!test/integration/ts/*.js']
         },
         integration_hll: {
             options: {
@@ -121,5 +121,4 @@ module.exports = function(grunt) {
   grunt.registerTask('security', ['jshint', 'mochaTest:security']);
   grunt.registerTask('default', ['jshint', 'mochaTest:unit', 'mochaTest:integration']);
   grunt.registerTask('docs', 'yuidoc');
-
 };
