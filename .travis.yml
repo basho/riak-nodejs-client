@@ -2,18 +2,18 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-- stable
-- '0.12'
+  - stable
+  - '0.12'
 addons:
   hosts:
-  - riak-test
+    - riak-test
 before_script:
-- sudo ./tools/travis-ci/riak-install -i
-- sudo ./tools/devrel/gen-riak-conf /etc/riak/riak.conf 10018 10017
-- sudo ./tools/travis-ci/riak-install -s
-- sudo ./tools/devrel/riak-cluster-config "$(which riak-admin)" 10018 true false
+  - sudo ./tools/travis-ci/riak-install -i
+  - sudo ./tools/devrel/gen-riak-conf /etc/riak/riak.conf 10018 10017
+  - sudo ./tools/travis-ci/riak-install -s
+  - sudo ./tools/devrel/riak-cluster-config "$(which riak-admin)" 10018 true false
 script:
-- make test
+  - make test
 notifications:
   slack:
     secure: DatOW6e8FqaZmvxcHw+zZ/ku3wMWZ7eoWmqzhu4Wwf4tgC9L//jy4kj2kJx3gktTMPj3rt6eqw9+j7XOjaSFYD8K+BFh/39ORz6G89/Q3WtoK2OsiREtdskLf1qTku7euvXbwhsVno9AWz2AW+idYQj7WxjUKB4TcYn3B4Od3NU=

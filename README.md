@@ -49,7 +49,7 @@ Thank you for being part of the community! We love you for it.
 
 ## Roadmap
 
-TODO
+The **Riak Node.js Client** will support Node.js releases according to the [LTS schedule](https://github.com/nodejs/LTS#lts-schedule).
 
 ## License and Authors
 **The Riak Node.js** Client is Open Source software released under the Apache 2.0 License. Please see the [LICENSE](LICENSE) file for full license details.
