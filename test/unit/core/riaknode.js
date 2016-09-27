@@ -16,7 +16,7 @@ describe('RiakNode', function() {
             assert.strictEqual(n.maxConnections, RiakNode.consts.DefaultMaxConnections);
             assert.strictEqual(n.idleTimeout, RiakNode.consts.DefaultIdleTimeout);
             assert.strictEqual(n.requestTimeout, RiakNode.consts.DefaultRequestTimeout);
-            assert.strictEqual(n.healthCheck, RiakNode.consts.DefaultHealthCheck);
+            assert.deepEqual(n.healthCheck, RiakNode.consts.DefaultHealthCheck);
             assert.strictEqual(n.cork, true);
             assert.strictEqual(n.externalLoadBalancer, false);
             done();

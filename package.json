@@ -25,28 +25,28 @@
     "basho"
   ],
   "dependencies": {
-    "async": "^1.5.0",
-    "backoff": "^2.5.0",
-    "bytebuffer": "~3.5",
+    "async": "~2.0",
+    "backoff": "~2.5",
+    "bytebuffer": "~5.0",
     "hashmap": "~2.0",
     "joi": "~6.0",
-    "long": "^2.3.0",
-    "protobufjs": "~3.8",
-    "winston": "^2.2.0"
+    "long": "~3.2",
+    "protobufjs": "~5.0",
+    "winston": "~2.2"
   },
   "devDependencies": {
-    "benchmark": "^1.0.0",
+    "benchmark": "latest",
     "grunt": "latest",
-    "grunt-benchmark": "^0.3.0",
+    "grunt-benchmark": "latest",
     "grunt-cli": "latest",
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-watch": "latest",
     "grunt-contrib-yuidoc": "latest",
     "grunt-mocha-test": "latest",
-    "jshint": "~2.6",
-    "mocha": "~2.2",
-    "randomstring": "^1.0.5",
-    "yuidocjs": "^0.9.0"
+    "jshint": "latest",
+    "mocha": "~3.1",
+    "randomstring": "~1.1",
+    "yuidocjs": "latest"
   },
   "engines": {
     "node": "~0.12"
