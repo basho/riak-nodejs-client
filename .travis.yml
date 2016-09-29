@@ -12,7 +12,7 @@ env:
   - RIAK_DOWNLOAD_URL=http://s3.amazonaws.com/downloads.basho.com/riak/2.1/2.1.4/ubuntu/trusty/riak_2.1.4-1_amd64.deb
   - RIAK_DOWNLOAD_URL=rc
 before_script:
-  - sudo /usr/bin/env bash -x ./tools/travis-ci/riak-install -i -d "$RIAK_DOWNLOAD_URL"
+  - sudo ./tools/travis-ci/riak-install -i -d "$RIAK_DOWNLOAD_URL"
   - sudo ./tools/devrel/gen-riak-conf /etc/riak/riak.conf 10018 10017
   - sudo ./tools/travis-ci/riak-install -s
   - sudo ./tools/devrel/riak-cluster-config "$(which riak-admin)" 10018 true false
