@@ -10,9 +10,9 @@ var rs = require('randomstring');
 
 describe('yokozuna-store-and-fetch', function() {
     var cluster;
-    var fetch_attempts = 6;
+    var fetch_attempts = 10;
     var fetch_timeout = 1000;
-    var total_timeout = fetch_attempts * fetch_timeout;
+    var total_timeout = (fetch_attempts * fetch_timeout) + 1000;
     var tmp = 'idx_' + rs.generate(8);
 
     this.timeout(total_timeout);
