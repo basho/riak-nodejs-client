@@ -54,7 +54,7 @@ describe('yokozuna-store-and-fetch', function() {
         var callback = function(err, resp) {
             count++;
             if (err && err === 'notfound') {
-                if (count < fetch_count) {
+                if (count < fetch_attempts) {
                     setTimeout(fetchme, fetch_timeout);
                 } else {
                     assert(!err, err);
