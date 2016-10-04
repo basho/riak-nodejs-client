@@ -18,13 +18,13 @@ describe('Update and Fetch Yokozuna index - Integration', function() {
                 done();
             };
             var store = new StoreIndex.Builder()
-                    .withIndexName('myIndex')
+                    .withIndexName('myTemporaryIndex')
                     .withCallback(callback)
                     .build();
             cluster.execute(store);
         });
     });
-    
+
     after(function(done) {
         var callback = function(err, resp) {
             assert(!err, err);
@@ -35,12 +35,12 @@ describe('Update and Fetch Yokozuna index - Integration', function() {
             });
         };
         var del = new DeleteIndex.Builder()
-				.withIndexName('myIndex')
+				.withIndexName('myTemporaryIndex')
 				.withCallback(callback)
 				.build();
         cluster.execute(del);
     });
-    
+
     it('Should fetch an index', function(done) {
         var count = 0;
         var callback = function(err, resp) {
@@ -59,7 +59,7 @@ describe('Update and Fetch Yokozuna index - Integration', function() {
 
         var fetchme = function() {
             var fetch = new FetchIndex.Builder()
-				.withIndexName('myIndex')
+				.withIndexName('myTemporaryIndex')
 				.withCallback(callback)
 				.build();
             cluster.execute(fetch);
