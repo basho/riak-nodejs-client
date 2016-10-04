@@ -6,9 +6,12 @@ var Test = require('../testparams');
 var StoreIndex = require('../../../lib/commands/yokozuna/storeindex');
 var FetchIndex = require('../../../lib/commands/yokozuna/fetchindex');
 var DeleteIndex = require('../../../lib/commands/yokozuna/deleteindex');
+var rs = require('randomstring');
 
 describe('Update and Fetch Yokozuna index - Integration', function() {
     var cluster;
+    var tmp = 'index' + rs.generate(32);
+
     before(function(done) {
         cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
@@ -18,7 +21,7 @@ describe('Update and Fetch Yokozuna index - Integration', function() {
                 done();
             };
             var store = new StoreIndex.Builder()
-                    .withIndexName('myTemporaryIndex')
+                    .withIndexName(tmp)
                     .withCallback(callback)
                     .build();
             cluster.execute(store);
@@ -35,7 +38,7 @@ describe('Update and Fetch Yokozuna index - Integration', function() {
             });
         };
         var del = new DeleteIndex.Builder()
-				.withIndexName('myTemporaryIndex')
+				.withIndexName(tmp)
 				.withCallback(callback)
 				.build();
         cluster.execute(del);
@@ -59,7 +62,7 @@ describe('Update and Fetch Yokozuna index - Integration', function() {
 
         var fetchme = function() {
             var fetch = new FetchIndex.Builder()
-				.withIndexName('myTemporaryIndex')
+				.withIndexName(tmp)
 				.withCallback(callback)
 				.build();
             cluster.execute(fetch);
