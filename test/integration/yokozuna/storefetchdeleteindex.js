@@ -6,9 +6,17 @@ var Test = require('../testparams');
 var StoreIndex = require('../../../lib/commands/yokozuna/storeindex');
 var FetchIndex = require('../../../lib/commands/yokozuna/fetchindex');
 var DeleteIndex = require('../../../lib/commands/yokozuna/deleteindex');
+var rs = require('randomstring');
 
-describe('Update and Fetch Yokozuna index - Integration', function() {
+describe('yokozuna-store-and-fetch', function() {
     var cluster;
+    var fetch_attempts = 10;
+    var fetch_timeout = 1000;
+    var total_timeout = (fetch_attempts * fetch_timeout) + 1000;
+    var tmp = 'idx_' + rs.generate(8);
+
+    this.timeout(total_timeout);
+
     before(function(done) {
         cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
@@ -18,13 +26,13 @@ describe('Update and Fetch Yokozuna index - Integration', function() {
                 done();
             };
             var store = new StoreIndex.Builder()
-                    .withIndexName('myIndex')
+                    .withIndexName(tmp)
                     .withCallback(callback)
                     .build();
             cluster.execute(store);
         });
     });
-    
+
     after(function(done) {
         var callback = function(err, resp) {
             assert(!err, err);
@@ -35,19 +43,19 @@ describe('Update and Fetch Yokozuna index - Integration', function() {
             });
         };
         var del = new DeleteIndex.Builder()
-				.withIndexName('myIndex')
+				.withIndexName(tmp)
 				.withCallback(callback)
 				.build();
         cluster.execute(del);
     });
-    
-    it('Should fetch an index', function(done) {
+
+    it('fetches', function(done) {
         var count = 0;
         var callback = function(err, resp) {
             count++;
-            if(err && err === 'notfound') {
-                if (count < 6) {
-                    setTimeout(fetchme, 2000 * count);
+            if (err && err === 'notfound') {
+                if (count < fetch_attempts) {
+                    setTimeout(fetchme, fetch_timeout);
                 } else {
                     assert(!err, err);
                 }
@@ -56,10 +64,9 @@ describe('Update and Fetch Yokozuna index - Integration', function() {
                 done();
             }
         };
-
         var fetchme = function() {
             var fetch = new FetchIndex.Builder()
-				.withIndexName('myIndex')
+				.withIndexName(tmp)
 				.withCallback(callback)
 				.build();
             cluster.execute(fetch);
