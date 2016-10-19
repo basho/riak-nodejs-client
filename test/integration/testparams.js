@@ -27,8 +27,8 @@ module.exports.bucketName = 'riak-nodejs-client';
 */
 module.exports.bucketType = 'plain';
 
-var riakHost = 'riak-test';
-var riakPort = 10017;
+var riakHost = 'localhost';
+var riakPort = 8087;
 if (process.env.RIAK_HOST) {
     riakHost = String(process.env.RIAK_HOST);
 }

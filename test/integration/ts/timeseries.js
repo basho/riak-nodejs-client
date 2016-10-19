@@ -33,6 +33,7 @@ var rows = [
 ];
 
 var cluster;
+var ts_supported = true;
 
 function validateResponseRow(got, want) {
     assert.equal(got.length, want.length);
@@ -45,11 +46,16 @@ function validateResponseRow(got, want) {
 
 describe('timeseries-integration', function () {
     before(function(done) {
+        var suite = this;
         cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
             var callback = function(err, resp) {
-                assert(!err, err);
-                assert(resp);
+                if (err) {
+                    ts_supported = false;
+                    suite.skip();
+                } else {
+                    assert(resp);
+                }
                 done();
             };
             var store = new TS.Store.Builder()
@@ -63,6 +69,12 @@ describe('timeseries-integration', function () {
     });
 
     describe('query', function () {
+        before(function(done) {
+            if (!ts_supported) {
+                this.skip();
+            }
+            done();
+        });
         it('describes-table', function(done) {
             var queryText = 'DESCRIBE GeoCheckin';
             var callback = function(err, resp) {
@@ -129,6 +141,12 @@ describe('timeseries-integration', function () {
     });
 
     describe('list-keys', function () {
+        before(function(done) {
+            if (!ts_supported) {
+                this.skip();
+            }
+            done();
+        });
         it('returns-all-keys-no-streaming', function(done) {
             var callback = function(err, resp) {
                 assert(!err, err);
@@ -168,6 +186,12 @@ describe('timeseries-integration', function () {
     });
 
     describe('describe', function () {
+        before(function(done) {
+            if (!ts_supported) {
+                this.skip();
+            }
+            done();
+        });
         it('returns-table-description', function(done) {
             var callback = function(err, resp) {
                 assert(!err, err);
@@ -184,6 +208,12 @@ describe('timeseries-integration', function () {
     });
 
     describe('Get', function () {
+        before(function(done) {
+            if (!ts_supported) {
+                this.skip();
+            }
+            done();
+        });
         it('returns one row of TS data', function(done) {
             var callback = function(err, resp) {
                 assert(!err, err);
@@ -236,6 +266,12 @@ describe('timeseries-integration', function () {
     });
 
     describe('Delete', function () {
+        before(function(done) {
+            if (!ts_supported) {
+                this.skip();
+            }
+            done();
+        });
         it('deletes-one-row-of-ts-data', function(done) {
             var key = [ 'hash1', 'user2', twentyMinsAgo ];
             var cb2 = function(err, resp, errdata) {
