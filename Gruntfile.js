@@ -37,7 +37,8 @@ module.exports = function(grunt) {
                 captureFile: 'unit-test-results.txt',
                 quiet: false,
                 clearRequireCache: false,
-                colors: false
+                colors: false,
+                useColors: false
             },
             src: ['test/unit/**/*.js']
         },
@@ -47,36 +48,19 @@ module.exports = function(grunt) {
                 captureFile: 'integration-test-results.txt',
                 quiet: false,
                 clearRequireCache: false,
-                colors: false
+                colors: false,
+                useColors: false
             },
-            src: ['test/integration/**/*.js', '!test/integration/crdt/*hll.js', '!test/integration/ts/*.js']
-        },
-        integration_hll: {
-            options: {
-                reporter: 'spec',
-                captureFile: 'integration-test-results.txt',
-                quiet: false,
-                clearRequireCache: false,
-                colors: false
-            },
-            src: ['test/integration/crdt/updateandfetchhll.js']
-        },
-        timeseries: {
-            options: {
-                reporter: 'spec',
-                captureFile: 'integration-test-results.txt',
-                quiet: false,
-                clearRequireCache: false,
-                colors: false
-            },
-            src: ['test/unit/ts/*.js', 'test/integration/ts/*.js']
+            src: ['test/integration/**/*.js']
         },
         security: {
             options: {
                 reporter: 'spec',
                 captureFile: 'security-test-results.txt',
                 quiet: false,
-                clearRequireCache: false
+                clearRequireCache: false,
+                colors: false,
+                useColors: false
             },
             src: ['test/security/**/*.js']
         }
@@ -115,9 +99,6 @@ module.exports = function(grunt) {
     grunt.task.run(['jshint', 'mochaTest:unit']);
   });
   grunt.registerTask('integration', ['jshint', 'mochaTest:integration']);
-  grunt.registerTask('integration-hll', ['jshint', 'mochaTest:integration_hll']);
-  grunt.registerTask('timeseries', ['jshint', 'mochaTest:timeseries']);
-  grunt.registerTask('security-test', ['mochaTest:security']);
   grunt.registerTask('security', ['jshint', 'mochaTest:security']);
   grunt.registerTask('default', ['jshint', 'mochaTest:unit', 'mochaTest:integration']);
   grunt.registerTask('docs', 'yuidoc');

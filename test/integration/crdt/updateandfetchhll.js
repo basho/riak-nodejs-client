@@ -7,16 +7,22 @@ var UpdateHll = require('../../../lib/commands/crdt/updatehll');
 var FetchHll = require('../../../lib/commands/crdt/fetchhll');
 var RiakCluster = require('../../../lib/core/riakcluster');
 
+var hll_supported = true;
+
 describe('Update and Fetch Hyperloglog - Integration', function() {
     var context;
     var cluster;
     before(function(done) {
+        var suite = this;
         cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
             var callback = function(err, resp) {
-                assert(!err, err);
-                assert.equal(resp.cardinality, 4);
-
+                if (err) {
+                    hll_supported = false;
+                    suite.skip();
+                } else {
+                    assert.equal(resp.cardinality, 4);
+                }
                 done();
             };
             var update = new UpdateHll.Builder()
@@ -31,11 +37,15 @@ describe('Update and Fetch Hyperloglog - Integration', function() {
     });
 
     after(function(done) {
-        Test.cleanBucket(cluster, Test.hllBucketType, Test.bucketName, function() {
-            cluster.stop(function (err, state) {
-                done();
+        if (hll_supported) {
+            Test.cleanBucket(cluster, Test.hllBucketType, Test.bucketName, function() {
+                cluster.stop(function (err, state) {
+                    done();
+                });
             });
-        });
+        } else {
+            done();
+        }
     });
 
     it('Should fetch a hyperloglog', function(done) {
@@ -70,5 +80,4 @@ describe('Update and Fetch Hyperloglog - Integration', function() {
                 .build();
         cluster.execute(fetch);
     });
-
 });
