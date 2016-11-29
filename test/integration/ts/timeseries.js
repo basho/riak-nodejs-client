@@ -6,9 +6,12 @@ var utils = require('../../../lib/utils');
 
 var assert = require('assert');
 var logger = require('winston');
+var crypto = require('crypto');
 var rs = require('randomstring');
 
 var tableName = 'GeoCheckin';
+var blobTableName = tableName + rs.generate(8);
+
 // NB: ends with 987ms to test ms resolution
 var now = 1443796900987;
 var fiveMinsInMsec = 5 * 60 * 1000;
@@ -25,11 +28,20 @@ var columns = [
     { name: 'temperature', type: TS.ColumnType.Double }
 ];
 
+var blobColumns = columns.concat({ name: 'sensor_data', type: TS.ColumnType.Blob });
+
 var rows = [
     [ 'hash1', 'user2', twentyMinsAgo, 'hurricane', 82.3 ],
     [ 'hash1', 'user2', fifteenMinsAgo, 'rain', 79.0 ],
     [ 'hash1', 'user2', fiveMinsAgo, 'wind', null ],
     [ 'hash1', 'user2', now, 'snow', 20.1 ]
+];
+
+var blobRows = [
+    rows[0].concat([null]),
+    rows[1].concat([null]),
+    rows[2].concat([crypto.randomBytes(16)]),
+    rows[3].concat([crypto.randomBytes(16)])
 ];
 
 var cluster;
@@ -38,14 +50,14 @@ var ts_supported = true;
 function validateResponseRow(got, want) {
     assert.equal(got.length, want.length);
     assert.strictEqual(got[0].toString('utf8'), 'hash1');
-	assert.strictEqual(got[1].toString('utf8'), 'user2');
-	assert(got[2].equals(fiveMinsAgo));
-	assert.strictEqual(got[3].toString('utf8'), 'wind');
-	assert.strictEqual(got[4], null);
+    assert.strictEqual(got[1].toString('utf8'), 'user2');
+    assert(got[2].equals(fiveMinsAgo));
+    assert.strictEqual(got[3].toString('utf8'), 'wind');
+    assert.strictEqual(got[4], null);
 }
 
-describe('timeseries-integration', function () {
-    before(function(done) {
+function storeTestData(tableName, columns, rows) {
+    return function(done) {
         var suite = this;
         cluster = Test.buildCluster(function (err, rslt) {
             assert(!err, err);
@@ -66,7 +78,11 @@ describe('timeseries-integration', function () {
                 .build();
             cluster.execute(store);
         });
-    });
+    };
+}
+
+describe('timeseries-integration', function () {
+    before(storeTestData(tableName, columns, rows));
 
     describe('query', function () {
         before(function(done) {
@@ -90,9 +106,8 @@ describe('timeseries-integration', function () {
             cluster.execute(q);
         });
         it('creates-table', function(done) {
-            var tmp = rs.generate(32);
-            var queryText = 'CREATE TABLE ' + tmp +
-                '(geohash varchar not null, user varchar not null, time timestamp not null, weather varchar not null, temperature double, ' +
+            var queryText = 'CREATE TABLE ' + blobTableName +
+                '(geohash varchar not null, user varchar not null, time timestamp not null, weather varchar not null, temperature double, sensor_data BLOB, ' +
                 'PRIMARY KEY((geohash, user, quantum(time, 15, m)), geohash, user, time))';
             var callback = function(err, resp) {
                 assert(!err, err);
@@ -296,6 +311,29 @@ describe('timeseries-integration', function () {
                 .withCallback(cb1)
                 .build();
             cluster.execute(cmd);
+        });
+    });
+
+    describe('BlobType', function () {
+        before(storeTestData(blobTableName, blobColumns, blobRows));
+        it('can-decode-blob-cells', function(done) {
+            var queryText = "select * from GeoCheckin where time > " + tenMinsAgo +
+                            " and time < " + now +
+                            " and geohash = 'hash1' and user = 'user2'";
+            var callback = function(err, resp) {
+                assert(!err, err);
+                assert.strictEqual(resp.columns.length, columns.length);
+                var got = resp.rows[0];
+                var want = rows[3];
+                validateResponseRow(got, want);
+                assert.strictEqual(got[5], want[5]);
+                done();
+            };
+            var q = new TS.Query.Builder()
+                .withQuery(queryText)
+                .withCallback(callback)
+                .build();
+            cluster.execute(q);
         });
     });
 
