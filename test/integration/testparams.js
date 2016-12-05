@@ -46,14 +46,18 @@ var certAuth = {
     // password: '', // NB: optional, leave null when using certs
     pfx: fs.readFileSync('./tools/test-ca/certs/riakuser-client-cert.pfx'),
     ca: [ fs.readFileSync('./tools/test-ca/certs/cacert.pem') ],
-    rejectUnauthorized: true
+    rejectUnauthorized: true,
+    start_tls: true,
+    tls: true
 };
 
 var passAuth = {
     user: 'riakpass',
     password: 'Test1234',
     ca: [ fs.readFileSync('./tools/test-ca/certs/cacert.pem') ],
-    rejectUnauthorized: true
+    rejectUnauthorized: true,
+    start_tls: true,
+    tls: true
 };
 
 module.exports.nodeAddresses = nodeAddresses;
