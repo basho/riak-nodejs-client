@@ -21,7 +21,8 @@ var columns = [
     { name: 'col_double',    type: TS.ColumnType.Double },
     { name: 'col_timestamp', type: TS.ColumnType.Timestamp },
     { name: 'col_boolean',   type: TS.ColumnType.Boolean },
-    { name: 'col_ms',        type: TS.ColumnType.Timestamp }
+    { name: 'col_ms',        type: TS.ColumnType.Timestamp },
+    { name: 'col_blob',      type: TS.ColumnType.Blob }
 ];
 
 var rpbcols = [];
@@ -49,10 +50,15 @@ var ts1ms = Long.fromNumber(ts1.getTime());
 module.exports.ts1 = ts1;
 module.exports.ts1ms = ts1ms;
 
+var blob1 = crypto.randomBytes(16);
+module.exports.blob1 = blob1;
+var blob2 = crypto.randomBytes(16);
+module.exports.blob2 = blob2;
+
 var rows = [
-    [ bd0, 0, 1.2, ts0, true, ts0ms ],
-    [ bd1, 3, 4.5, ts1, false, ts1ms ],
-    [ null, 6, 7.8, null, false, null ]
+    [ bd0, 0, 1.2, ts0, true, ts0ms, null ],
+    [ bd1, 3, 4.5, ts1, false, ts1ms, blob1 ],
+    [ null, 6, 7.8, null, false, null, blob2 ]
 ];
 module.exports.rows = rows;
 
@@ -63,8 +69,9 @@ for (var i = 0; i < rows.length; i++) {
     for (var j = 0; j < row.length; j++) {
         var cell = new TsCell();
         var val = row[j];
-        switch (j) {
+        switch (columns[j].type) {
             case TS.ColumnType.Varchar:
+            case TS.ColumnType.Blob:
                 cell.setVarcharValue(val);
                 break;
             case TS.ColumnType.Int64:
@@ -75,14 +82,15 @@ for (var i = 0; i < rows.length; i++) {
                 break;
             case TS.ColumnType.Timestamp:
                 if (val) {
-                    cell.setTimestampValue(Long.fromNumber(val.getTime()));
+                    if (val instanceof Long) {
+                        cell.setTimestampValue(val);
+                    } else {
+                        cell.setTimestampValue(Long.fromNumber(val.getTime()));
+                    }
                 }
                 break;
             case TS.ColumnType.Boolean:
                 cell.setBooleanValue(val);
-                break;
-            case 5:
-                cell.setTimestampValue(val);
                 break;
             default:
                 throw new Error('huh?');
@@ -137,6 +145,8 @@ function validateResponse(actual, expected) {
     assert.strictEqual(rc[5].name, 'col_ms');
     assert.strictEqual(rc[5].type, TsColumnType.TIMESTAMP);
     assert.strictEqual(rc[5].type, TS.ColumnType.Timestamp);
+    assert.strictEqual(rc[6].type, TsColumnType.BLOB);
+    assert.strictEqual(rc[6].type, TS.ColumnType.Blob);
 
     var rr = actual.rows;
     assert.strictEqual(rr.length, expected.rows.length);
@@ -150,6 +160,7 @@ function validateResponse(actual, expected) {
     assert(ts0ms.equals(r0[3]));
     assert.strictEqual(r0[4], true);
     assert(ts0ms.equals(r0[5]));
+    assert.strictEqual(r0[6], null);
 
     var r1 = rr[1];
     assert(r1[0] instanceof Buffer);
@@ -160,6 +171,8 @@ function validateResponse(actual, expected) {
     assert(ts1ms.equals(r1[3]));
     assert.strictEqual(r1[4], false);
     assert(ts1ms.equals(r1[5]));
+    assert(r1[6] instanceof Buffer);
+    assert(blob1.equals(r1[6]));
 
     var r2 = rr[2];
     assert.strictEqual(r2[0], null);
@@ -168,6 +181,8 @@ function validateResponse(actual, expected) {
     assert.strictEqual(r2[3], null);
     assert.strictEqual(r2[4], false);
     assert.strictEqual(r2[5], null);
+    assert(r2[6] instanceof Buffer);
+    assert(blob2.equals(r2[6]));
 }
 
 module.exports.validateResponse = validateResponse;

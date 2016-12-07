@@ -47,6 +47,10 @@ function validateTsPutReq(protobuf, hasCols) {
         var col5 = pcols[5];
         assert.strictEqual(col5.getName().toString('utf8'), 'col_ms');
         assert.strictEqual(col5.getType(), TsColumnType.TIMESTAMP);
+
+        var col6 = pcols[6];
+        assert.strictEqual(col6.getName().toString('utf8'), 'col_blob');
+        assert.strictEqual(col6.getType(), TsColumnType.BLOB);
     }
 
     var prows = protobuf.getRows();
@@ -71,7 +75,8 @@ function validateTsPutReq(protobuf, hasCols) {
     }
     assert(Long.isLong(r0c5ms));
     assert(r0c5ms.equals(d.ts0ms));
-    
+    assert(row0cells[6].getVarcharValue() === null);
+
     var row1 = prows[1];
     var row1cells = row1.getCells();
     var three = new Long(3);
@@ -93,6 +98,8 @@ function validateTsPutReq(protobuf, hasCols) {
     }
     assert(Long.isLong(r1c5ms));
     assert(r1c5ms.equals(d.ts0ms));
+    assert(d.blob1.equals(row1cells[6].getVarcharValue().toBuffer()));
+
 }
 
 describe('Store', function() {
@@ -129,10 +136,10 @@ describe('Store', function() {
             validateTsPutReq(protobuf, false);
             done();
         });
-        
+
         it('should take a TsPutResp and call the users callback with the response', function(done) {
             var tsPutResp = new TsPutResp();
-            
+
             var cb = function(err, response) {
                 assert(response === true);
                 done();
@@ -144,27 +151,27 @@ describe('Store', function() {
                .withRows(d.rows)
                .withCallback(cb)
                .build();
-       
+
             storeCommand.onSuccess(tsPutResp);
         });
-        
+
         it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
            var rpbErrorResp = new RpbErrorResp();
            rpbErrorResp.setErrmsg(new Buffer('this is an error'));
-           
+
            var cb = function(err, response) {
                 assert(err, !err);
                 assert.strictEqual(err, 'this is an error');
                 done();
             };
-           
+
             var storeCommand = new TS.Store.Builder()
                .withTable('table')
                .withColumns(d.columns)
                .withRows(d.rows)
                .withCallback(cb)
                .build();
-       
+
             storeCommand.onRiakError(rpbErrorResp);
         });
     });
