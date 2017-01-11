@@ -29,11 +29,8 @@ var RpbErrorResp = require('../../../lib/protobuf/riakprotobuf').getProtoFor('Rp
 var assert = require('assert');
 
 describe('FetchMap', function() {
-    
     describe('Build', function() {
-    
         it('should build a DtFetchReq correctly', function(done) {
-            
             var fetch = new FetchMap.Builder()
                 .withBucketType('maps')
                 .withBucket('myBucket')
@@ -57,11 +54,9 @@ describe('FetchMap', function() {
             assert.equal(protobuf.getBasicQuorum(), true);
             assert.equal(protobuf.getTimeout(), 20000);
             done();
-            
         });
         
         it('should take a DtFetchResp and call the users callback with the response', function(done) {
-           
             var dtFetchResp = new DtFetchResp();
             
             dtFetchResp.setType(DtFetchResp.DataType.MAP);
@@ -103,7 +98,6 @@ describe('FetchMap', function() {
                 mapEntries.push(mapEntry);
                 
                 return mapEntries;
-
             };
             
             Array.prototype.push.apply(dtValue.map_value, createMapEntries());
@@ -134,7 +128,6 @@ describe('FetchMap', function() {
                 verifyMap(resp.map);
                 verifyMap(resp.map.maps.map_1);
                 done();
-            
             };
             
             var fetch = new FetchMap.Builder()
@@ -145,12 +138,6 @@ describe('FetchMap', function() {
                 .build();
         
             fetch.onSuccess(dtFetchResp);
-            
-            
         });
-        
     });
-    
-    
-    
 });

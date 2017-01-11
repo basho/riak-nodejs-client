@@ -27,7 +27,6 @@ var assert = require('assert');
 describe('UpdateCounter', function() {
     describe('Build', function() {
         it('should build a DtUpdateReq correctly', function(done) {
-            
             var update = new UpdateCounter.Builder()
                 .withBucketType('counters')
                 .withBucket('myBucket')
@@ -53,8 +52,6 @@ describe('UpdateCounter', function() {
             assert.equal(protobuf.op.counter_op.increment, 100);
             assert.equal(protobuf.getTimeout(), 20000);
             done();
-
-            
         });
         
         it('should take a DtUpdateResp and call the users callback with the response', function(done) {
@@ -103,4 +100,3 @@ describe('UpdateCounter', function() {
         });
     });
 });
-
