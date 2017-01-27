@@ -140,6 +140,7 @@ module.exports.cleanBucket = function(cluster, type, bucket, callback) {
     };
 
     var list = new ListKeys.Builder()
+            .withAllowListing()
             .withBucket(bucket)
             .withBucketType(type)
             .withCallback(lkCallback)

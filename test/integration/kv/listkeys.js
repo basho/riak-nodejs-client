@@ -24,7 +24,6 @@ var ListKeys = require('../../../lib/commands/kv/listkeys');
 var StoreValue = require('../../../lib/commands/kv/storevalue');
 
 describe('ListKeys - Integration', function() {
-   
     var totalKeyCount = 50;
     var listKeysPrefix = 'listKeysPrefix_';
 
@@ -76,6 +75,7 @@ describe('ListKeys - Integration', function() {
             }
         };
         var list = new ListKeys.Builder()
+                .withAllowListing()
                 .withBucketType('default')
                 .withBucket(Test.bucketName)
                 .withCallback(callback)
