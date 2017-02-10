@@ -39,7 +39,7 @@ describe('Update and Fetch GSet - Integration', function() {
                     suite.skip();
                 } else {
                     assert.equal(resp.values.length, 2);
-                    assert(resp.context);
+                    assert.equal(resp.context, null);
                     context = resp.context;
                 }
                 done();
@@ -54,7 +54,7 @@ describe('Update and Fetch GSet - Integration', function() {
             cluster.execute(update);
         });
     });
-    
+
     after(function(done) {
         if (gset_supported) {
             Test.cleanBucket(cluster, Test.gsetBucketType, Test.bucketName, function() {
@@ -66,12 +66,12 @@ describe('Update and Fetch GSet - Integration', function() {
             done();
         }
     });
-    
+
     it('Should fetch a gset', function(done) {
         var callback = function(err, resp) {
             assert(!err, err);
             assert.equal(resp.values.length, 2);
-            assert(resp.context);
+            assert.equal(resp.context, null);
             done();
         };
         var fetch = new FetchSet.Builder()
@@ -82,7 +82,7 @@ describe('Update and Fetch GSet - Integration', function() {
                 .build();
         cluster.execute(fetch);
     });
-    
+
     it('Should report isNotFound if a gset does not exist', function(done) {
         var callback = function(err, resp) {
             assert(!err, err);
@@ -98,14 +98,14 @@ describe('Update and Fetch GSet - Integration', function() {
                 .build();
         cluster.execute(fetch);
     });
-    
+
     it('Should add to a gset', function(done) {
         var callback = function(err, resp) {
             assert(!err, err);
             assert.equal(resp.values.length, 3);
             done();
         };
-        
+
         var update = new UpdateGSet.Builder()
                 .withBucketType(Test.gsetBucketType)
                 .withBucket(Test.bucketName)
@@ -114,7 +114,7 @@ describe('Update and Fetch GSet - Integration', function() {
                 .withContext(context)
                 .withCallback(callback)
                 .build();
-        
+
         cluster.execute(update);
     });
 });
