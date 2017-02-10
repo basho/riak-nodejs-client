@@ -17,7 +17,7 @@
 
 'use strict';
 
-var UpdateSet = require('../../../lib/commands/crdt/updateset');
+var UpdateGSet = require('../../../lib/commands/crdt/updategset');
 var Rpb = require('../../../lib/protobuf/riakprotobuf');
 var DtUpdateReq = Rpb.getProtoFor('DtUpdateReq');
 var DtUpdateResp = Rpb.getProtoFor('DtUpdateResp');
@@ -28,24 +28,23 @@ var ByteBuffer = require('bytebuffer');
 var assert = require('assert');
 var utils = require('../../utils');
 
-describe('UpdateSet', function() {
+describe('UpdateGSet', function() {
     // ikea rugs
     var hampenBuffer = ByteBuffer.fromUTF8("hampen");
     var snabbfotadBuffer = ByteBuffer.fromUTF8("snabbfotad");
 
     var someContext = ByteBuffer.fromUTF8("context");
 
-    var builder = new UpdateSet.Builder().
-            withBucketType('sets_type').
-            withBucket('set_bucket').
-            withKey('cool_set');
+    var builder = new UpdateGSet.Builder().
+            withBucketType('gsets').
+            withBucket('gset_bucket').
+            withKey('cool_gset');
 
     describe('Build', function() {
         it('builds a DtUpdateSet correctly', function(done){
             var update = builder.
                     withContext(someContext).
                     withAdditions(["gåser", hampenBuffer]).
-                    withRemovals([snabbfotadBuffer, "valby ruta"]).
                     withCallback(function(){}).
                     withW(1).
                     withDw(2).
@@ -56,24 +55,17 @@ describe('UpdateSet', function() {
 
             var protobuf = update.constructPbRequest();
 
-            assert.equal(protobuf.getType().toString('utf8'), 'sets_type');
-            assert.equal(protobuf.getBucket().toString('utf8'), 'set_bucket');
-            assert.equal(protobuf.getKey().toString('utf8'), 'cool_set');
+            assert.equal(protobuf.getType().toString('utf8'), 'gsets');
+            assert.equal(protobuf.getBucket().toString('utf8'), 'gset_bucket');
+            assert.equal(protobuf.getKey().toString('utf8'), 'cool_gset');
             assert.equal(protobuf.getW(), 1);
             assert.equal(protobuf.getDw(), 2);
             assert.equal(protobuf.getPw(), 3);
-
             assert.equal(protobuf.getReturnBody(), false);
             assert.equal(protobuf.getTimeout(), 12345);
-
-            assert(utils.includesBuffer(protobuf.op.set_op.adds, "gåser"));
-            assert(utils.includesBuffer(protobuf.op.set_op.adds, "hampen"));
-
-            assert(utils.includesBuffer(protobuf.op.set_op.removes, "snabbfotad"));
-            assert(utils.includesBuffer(protobuf.op.set_op.removes, "valby ruta"));
-                                  
+            assert(utils.includesBuffer(protobuf.op.gset_op.adds, "gåser"));
+            assert(utils.includesBuffer(protobuf.op.gset_op.adds, "hampen"));
             assert.equal(protobuf.getContext().toString('utf8'), 'context');
-
             done();
         });
     });
@@ -82,7 +74,7 @@ describe('UpdateSet', function() {
         it('calls back with successful results', function(done) {
             var resp = new DtUpdateResp();
             resp.setContext(new Buffer("asdf"));
-            resp.setSetValue([hampenBuffer, snabbfotadBuffer]);
+            resp.setGsetValue([hampenBuffer, snabbfotadBuffer]);
 
             var callback = function(err, response) {
                 assert(!err);
@@ -110,7 +102,7 @@ describe('UpdateSet', function() {
         it('calls back with successful results', function(done) {
             var resp = new DtUpdateResp();
             resp.setContext(new Buffer("asdf"));
-            resp.setSetValue([hampenBuffer, snabbfotadBuffer]);
+            resp.setGsetValue([hampenBuffer, snabbfotadBuffer]);
 
             var callback = function(err, response) {
                 assert(!err);

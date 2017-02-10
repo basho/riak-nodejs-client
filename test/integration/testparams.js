@@ -97,11 +97,11 @@ module.exports.buildCluster = function(start_cb) {
  */
 module.exports.counterBucketType = 'counters';
 module.exports.setBucketType = 'sets';
+module.exports.gsetBucketType = 'gsets';
 module.exports.mapBucketType = 'maps';
 module.exports.hllBucketType = 'hlls';
 
 module.exports.cleanBucket = function(cluster, type, bucket, callback) {
-
     // Note this also acts as the integration test for ListKeys and
     // DeleteValue
     logger.debug('Clearing bucket: %s:%s', type, bucket);
@@ -129,17 +129,14 @@ module.exports.cleanBucket = function(cluster, type, bucket, callback) {
         };
 
         for (var i = 0; i < resp.keys.length; i++) {
-
             var del = new DeleteValue.Builder()
                     .withBucket(resp.bucket)
                     .withBucketType(resp.bucketType)
                     .withKey(resp.keys[i])
                     .withCallback(dCallback)
                     .build();
-
             cluster.execute(del);
         }
-
     };
 
     var list = new ListKeys.Builder()
@@ -148,7 +145,5 @@ module.exports.cleanBucket = function(cluster, type, bucket, callback) {
             .withCallback(lkCallback)
             .withStreaming(false)
             .build();
-
     cluster.execute(list);
-
 };

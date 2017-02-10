@@ -26,6 +26,7 @@ var RpbErrorResp = Rpb.getProtoFor('RpbErrorResp');
 
 var ByteBuffer = require('bytebuffer');
 var assert = require('assert');
+var utils = require('../../utils');
 
 describe('UpdateHll', function() {
 
@@ -38,17 +39,6 @@ describe('UpdateHll', function() {
             withKey('hll_1');
 
     describe('Build', function() {
-        var includesBuffer = function(haystack, needle) {
-            var len = haystack.length;
-            for (var i = 0; i < len; i++) {
-                if (haystack[i].toString('utf8') === needle) {
-                    return true;
-                }
-            }
-
-            return false;
-        };
-
         it('builds a DtUpdateHll correctly', function(done){
             var update = builder.
                     withAdditions(['Jokes', 'Are', 'Better', 'Explained']).
@@ -72,37 +62,14 @@ describe('UpdateHll', function() {
             assert.equal(protobuf.getReturnBody(), false);
             assert.equal(protobuf.getTimeout(), 12345);
 
-            assert(includesBuffer(protobuf.op.hll_op.adds,
-                                  "Jokes"));
-            assert(includesBuffer(protobuf.op.hll_op.adds,
-                                  "Are"));
-            assert(includesBuffer(protobuf.op.hll_op.adds,
-                                  "Better"));
-            assert(includesBuffer(protobuf.op.hll_op.adds,
-                                  "Explained"));
+            assert(utils.includesBuffer(protobuf.op.hll_op.adds, "Jokes"));
+            assert(utils.includesBuffer(protobuf.op.hll_op.adds, "Are"));
+            assert(utils.includesBuffer(protobuf.op.hll_op.adds, "Better"));
+            assert(utils.includesBuffer(protobuf.op.hll_op.adds, "Explained"));
 
             done();
         });
     });
-
-    var includesBuffer = function(haystack, needle) {
-        var needleBuf = new Buffer(needle);
-        var len = haystack.length;
-        for (var i = 0; i < len; i++) {
-            if (haystack[i].equals(needleBuf)) return true;
-        }
-
-        return false;
-    };
-
-    var includes = function(haystack, needle) {
-        var len = haystack.length;
-        for (var i = 0; i < len; i++) {
-            if (haystack[i] === needle) return true;
-        }
-
-        return false;
-    };
 
     describe('with body, without key, as buffers', function() {
         it('calls back with successful results', function(done) {

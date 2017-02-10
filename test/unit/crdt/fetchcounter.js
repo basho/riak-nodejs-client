@@ -95,6 +95,5 @@ describe('FetchCounter', function() {
         
             fetch.onRiakError(rpbErrorResp);
         });
-        
     });
 });
