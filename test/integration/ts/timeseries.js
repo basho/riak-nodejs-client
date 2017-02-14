@@ -182,13 +182,18 @@ describe('timeseries-integration', function () {
         it('returns-all-keys-no-streaming', function(done) {
             var callback = function(err, resp) {
                 assert(!err, err);
-                assert.equal(resp.keys.length, rows.length);
+                assert(resp.keys.length >= rows.length);
+                var keysFound = 0;
                 resp.keys.forEach(function (key) {
                     assert.strictEqual(key.length, 3);
-                    assert.equal(key[0], 'hash1');
-                    assert.equal(key[1], 'user2');
-                    assert(utils.isInteger(key[2]));
+                    if (key[0] == 'hash1') {
+                        assert.equal(key[0], 'hash1');
+                        assert.equal(key[1], 'user2');
+                        assert(utils.isInteger(key[2]));
+                        keysFound++;
+                    }
                 });
+                assert(keysFound >= rows.length);
                 done();
             };
             var cmd = new TS.ListKeys.Builder()
@@ -205,7 +210,7 @@ describe('timeseries-integration', function () {
                 assert(!err, err);
                 Array.prototype.push.apply(allKeys, resp.keys);
                 if (resp.done) {
-                    assert.strictEqual(allKeys.length, rows.length);
+                    assert(allKeys.length >= rows.length);
                     done();
                 }
             };
