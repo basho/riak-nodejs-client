@@ -193,7 +193,7 @@ describe('timeseries-integration', function () {
                         keysFound++;
                     }
                 });
-                assert.equal(keysFound, rows.length);
+                assert(keysFound >= rows.length);
                 done();
             };
             var cmd = new TS.ListKeys.Builder()
