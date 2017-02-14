@@ -19,6 +19,7 @@
 
 var rpb = require('../../../lib/protobuf/riakprotobuf');
 var ListBuckets = require('../../../lib/commands/kv/listbuckets');
+
 var RpbListBucketsResp = rpb.getProtoFor('RpbListBucketsResp');
 var RpbErrorResp = rpb.getProtoFor('RpbErrorResp');
 
@@ -26,9 +27,20 @@ var assert = require('assert');
 
 describe('ListBuckets', function() {
     describe('Build', function() {
+        it('throws if withAllowListing is not used', function(done) {
+            assert.throws(function () {
+                var listBuckets = new ListBuckets.Builder()
+                        .withBucketType('bucket_type')
+                        .withCallback(function(){})
+                        .withTimeout(30000)
+                        .build();
+            });
+            done();
+        });
+
         it('should build a RpbListBucketsReq correctly', function(done) {
-            
             var listBuckets = new ListBuckets.Builder()
+                    .withAllowListing()
                     .withBucketType('bucket_type')
                     .withCallback(function(){})
                     .withTimeout(30000)
@@ -41,11 +53,9 @@ describe('ListBuckets', function() {
             assert.equal(protobuf.stream, true);
             assert.equal(protobuf.timeout, 30000);
             done();
-            
         });
         
         it('should take multiple RpbListBucketsResp and call the users callback with the response', function(done) {
-           
             var callback = function(err, resp){
                 assert(!err, err);
                 assert.equal(resp.buckets.length, 100);
@@ -54,6 +64,7 @@ describe('ListBuckets', function() {
             };
             
             var listBuckets = new ListBuckets.Builder()
+                    .withAllowListing()
                     .withBucketType('bucket_type')
                     .withStreaming(false)
                     .withCallback(callback)
@@ -69,15 +80,12 @@ describe('ListBuckets', function() {
                 }
                 listBuckets.onSuccess(listBucketsResp);
             }
-            
         });
         
         it('should take multiple RpbListBucketsResp and stream the response', function(done) {
-           
             var count = 0;
             var timesCalled = 0;
             var callback = function(err, resp){
-                
                 timesCalled++;
                 count += resp.buckets.length;
                 if (resp.done) {
@@ -85,10 +93,10 @@ describe('ListBuckets', function() {
                     assert.equal(count, 100);
                     done();
                 }
-                
             };
             
             var listBuckets = new ListBuckets.Builder()
+                    .withAllowListing()
                     .withBucketType('bucket_type')
                     .withCallback(callback)
                     .build();
@@ -103,7 +111,6 @@ describe('ListBuckets', function() {
                 }
                 listBuckets.onSuccess(listBucketsResp);
             }
-            
         });
         
         it ('should take a RpbErrorResp and call the users callback with the error message', function(done) {
@@ -118,15 +125,12 @@ describe('ListBuckets', function() {
            };
            
            var listBuckets = new ListBuckets.Builder()
+                    .withAllowListing()
                     .withBucketType('bucket_type')
                     .withStreaming(false)
                     .withCallback(callback)
                     .build();
-       
             listBuckets.onRiakError(rpbErrorResp);
-           
-           
        });
-        
     });
 });

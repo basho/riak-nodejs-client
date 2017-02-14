@@ -19,6 +19,7 @@
 
 var rpb = require('../../../lib/protobuf/riakprotobuf');
 var ListKeys = require('../../../lib/commands/ts/listkeys');
+
 var TsListKeysResp = rpb.getProtoFor('TsListKeysResp');
 var TsCell = rpb.getProtoFor('TsCell');
 var TsRow = rpb.getProtoFor('TsRow');
@@ -46,8 +47,20 @@ function doCallListKeysOnSuccess(listKeysCmd) {
 
 describe('ListKeys', function() {
     describe('Build', function() {
+        it('throws if withAllowListing is not used', function(done) {
+            assert.throws(function () {
+                var listKeys = new ListKeys.Builder()
+                    .withTable('table')
+                    .withTimeout(1234)
+                    .withCallback(function(){})
+                    .build();
+            });
+            done();
+        });
+
         it('should build a RpbTsListKeysReq correctly', function(done) {
             var listKeys = new ListKeys.Builder()
+                .withAllowListing()
                 .withTable('table')
                 .withTimeout(1234)
                 .withCallback(function(){})
@@ -65,6 +78,7 @@ describe('ListKeys', function() {
                 done();
             };
             var listKeys = new ListKeys.Builder()
+                    .withAllowListing()
                     .withTable('table')
                     .withStreaming(false)
                     .withCallback(callback)
@@ -85,6 +99,7 @@ describe('ListKeys', function() {
                 }
             };
             var listKeys = new ListKeys.Builder()
+                    .withAllowListing()
                     .withTable('table')
                     .withCallback(callback)
                     .build();
@@ -101,6 +116,7 @@ describe('ListKeys', function() {
                }
            };
            var listKeys = new ListKeys.Builder()
+                    .withAllowListing()
                     .withTable('table')
                     .withStreaming(false)
                     .withCallback(callback)

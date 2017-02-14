@@ -91,6 +91,7 @@ describe('ListBuckets - Integration', function() {
             }
         };
         var list = new ListBuckets.Builder()
+                .withAllowListing()
                 .withCallback(callback)
                 .build();
         cluster.execute(list);
@@ -106,6 +107,7 @@ describe('ListBuckets - Integration', function() {
             }
         };
         var list = new ListBuckets.Builder()
+                .withAllowListing()
                 .withCallback(callback)
                 .withBucketType(Test.bucketType)
                 .build();

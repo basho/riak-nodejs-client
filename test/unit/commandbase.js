@@ -120,12 +120,12 @@ describe('CommandBase', function() {
     });
 
     describe('Commands', function() {
-        var default_options = {
+        var default_options = Object.freeze({
             bucketType: 'baz',
             bucket: 'foo',
             key: 'bar',
             callback: cb
-        };
+        });
 
         var ts_options = {
             table: 'table',
@@ -212,18 +212,20 @@ describe('CommandBase', function() {
                     options : default_options,
                     builder_func : default_builder_func
                 },
+            'CRDT.FetchHll' : {
+                    options : default_options,
+                    builder_func : default_builder_func
+                },
             'CRDT.UpdateCounter' : {
                     options : {
                         bucketType: default_options.bucketType,
                         bucket: default_options.bucket,
                         key: default_options.key,
-                        increment: 1,
-                        callback: cb
+                        callback: default_options.callback,
+                        increment: 1
                     },
                     builder_func: function (b) {
-                        b.withBucketType(default_options.bucketType);
-                        b.withBucket(default_options.bucket);
-                        b.withKey(default_options.key);
+                        default_builder_func(b);
                         b.withIncrement(1);
                     }
                 },
@@ -232,19 +234,30 @@ describe('CommandBase', function() {
                         bucketType: default_options.bucketType,
                         bucket: default_options.bucket,
                         key: default_options.key,
-                        op: updateMapOp,
-                        callback: cb
+                        callback: default_options.callback,
+                        op: updateMapOp
                     },
                     builder_func: function (b) {
-                        b.withBucketType(default_options.bucketType);
-                        b.withBucket(default_options.bucket);
-                        b.withKey(default_options.key);
+                        default_builder_func(b);
                         b.withMapOperation(updateMapOp);
                     }
                 },
             'CRDT.UpdateSet' : {
                     options : default_options,
                     builder_func : default_builder_func
+                },
+            'CRDT.UpdateHll' : {
+                    options : {
+                        bucketType: default_options.bucketType,
+                        bucket: default_options.bucket,
+                        key: default_options.key,
+                        callback: default_options.callback,
+                        additions: ['foo']
+                    },
+                    builder_func : function (b) {
+                        default_builder_func(b);
+                        b.withAdditions(['foo']);
+                    }
                 },
             'KV.DeleteValue' : {
                     options : default_options,
@@ -254,12 +267,7 @@ describe('CommandBase', function() {
                     }
                 },
             'KV.FetchPreflist' : {
-                    options : {
-                        bucketType: default_options.bucketType,
-                        bucket: default_options.bucket,
-                        key: default_options.key,
-                        callback: cb
-                    },
+                    options : default_options,
                     builder_func: function (b) {
                         b.withBucket(default_options.bucket);
                         b.withKey(default_options.bucket);
@@ -284,17 +292,24 @@ describe('CommandBase', function() {
                 },
             'KV.ListBuckets' : {
                     options : {
+                        allowListing: true,
                         bucketType: default_options.bucketType,
                         callback: cb
+                    },
+                    builder_func: function (b) {
+                        b.withAllowListing();
+                        b.withBucketType(default_options.bucketType);
                     }
                 },
             'KV.ListKeys' : {
                     options : {
+                        allowListing: true,
                         bucketType: default_options.bucketType,
                         bucket: default_options.bucket,
                         callback: cb
                     },
                     builder_func: function (b) {
+                        b.withAllowListing();
                         b.withBucket(default_options.bucket);
                     }
                 },
@@ -338,13 +353,11 @@ describe('CommandBase', function() {
                         bucketType: default_options.bucketType,
                         bucket: default_options.bucket,
                         key: default_options.key,
-                        value: 'blargh',
-                        callback: cb
+                        callback: default_options.callback,
+                        value: 'blargh'
                     },
                     builder_func : function (b) {
-                        b.withBucketType(default_options.bucketType);
-                        b.withBucket(default_options.bucket);
-                        b.withKey(default_options.key);
+                        default_builder_func(b);
                         b.withContent('blargh');
                     }
                 },
@@ -393,10 +406,12 @@ describe('CommandBase', function() {
                 },
             'TS.ListKeys' : {
                     options : {
+                        allowListing: true,
                         table: ts_options.table,
                         callback: cb
                     },
                     builder_func: function (b) {
+                        b.withAllowListing();
                         b.withTable(ts_options.table);
                     }
                 },
@@ -404,8 +419,8 @@ describe('CommandBase', function() {
 
         it('should throw when callback passed via options', function(done) {
             Object.keys(commands).forEach(function (cmd_name) {
-                var options = commands[cmd_name].options;
-                var eval_str = "new Riak.Commands." + cmd_name + "(options, cb);";
+                var cmd_opts = commands[cmd_name].options;
+                var eval_str = "new Riak.Commands." + cmd_name + "(cmd_opts, cb);";
                 var e_message = null;
                 try {
                     var cmd = eval(eval_str); // jshint ignore:line

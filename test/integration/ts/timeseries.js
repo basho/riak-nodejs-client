@@ -192,6 +192,7 @@ describe('timeseries-integration', function () {
                 done();
             };
             var cmd = new TS.ListKeys.Builder()
+                .withAllowListing()
                 .withTable(tableName)
                 .withStreaming(false)
                 .withCallback(callback)
@@ -209,6 +210,7 @@ describe('timeseries-integration', function () {
                 }
             };
             var cmd = new TS.ListKeys.Builder()
+                .withAllowListing()
                 .withTable(tableName)
                 .withStreaming(true)
                 .withCallback(callback)
